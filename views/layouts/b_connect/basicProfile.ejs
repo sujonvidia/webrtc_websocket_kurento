@@ -1,0 +1,588 @@
+<section id="profile-right-section" style="display:none">
+    <!-- <div id="generalMainTab" style="display:block"  class="profile-tab-body">
+        <div class="tab-pane fade in show active" id="General" role="tab">
+            <div class="invite-friends">
+                <p class="invite-friend">Invite Friends!</p>
+                <p class="start-inviting-your">Start inviting your family &amp; friends to join Hayven!</p>
+                <input type="email" id="inviteFriends" placeholder="Enter email address">
+                <button id="invite">Invite</button>
+                <div class="border_invite"></div>
+                <p class="language">Language</p>
+                <p class="set-the-language-use">Set the language used for Hayven</p>
+                <select id="optionList">
+                    <option>Canada (EN)</option>
+                </select>
+                <div class="border_invite"></div>
+                <p class="visit-our-about-us-p">Visit our <span class="blue-color">About Us</span> page to learn more about Hayven.</p>
+            </div>
+        </div>
+    </div> -->
+    <div id="account" class="profile-tab-body"  style="display:none">
+        <div class="main-account">
+            <h2>Personal Information</h2>
+            <div class="picture-upload-div">
+                <div class="view-picture">
+                    <img src="/images/basicAssets/user-solid.svg" alt="">
+                </div>
+                <div class="upload-picture">
+                    <p>Upload a profile picture</p>
+                    <label for="uploadProPic">Upload
+                        <input id="uploadProPic" type="file" name="" id="">
+                    </label>
+                </div>
+            </div>
+            <div class="personal-info">
+                <div class="personal-data-input">
+                    <label class="account-input-label" for="">First Name</label>
+                    <input type="text" placeholder="First name">
+                </div>
+                <div class="personal-data-input">
+                    <label class="account-input-label" for="">Middle Name</label>
+                    <input type="text" placeholder="Middle name">
+                </div>
+                <div class="personal-data-input">
+                    <label class="account-input-label" for="">Last Name</label>
+                    <input type="text" placeholder="Last name">
+                </div>
+                <div class="personal-data-input">
+                    <label class="account-input-label" for="">Primary Email Adderss</label>
+                    <input type="text" placeholder="Email address">
+                </div>
+                <div class="personal-data-input">
+                    <label class="account-input-label" for="">Secondary Email Adderss</label>
+                    <input type="text" placeholder="Email address">
+                </div>
+            </div>
+            <div class="company-info">
+                <div class="company-data-input">
+                    <label class="account-input-label" for="">Job title</label>
+                    <input type="text" placeholder="Enter your title">
+                </div>
+                <div class="company-data-input">
+                    <label class="account-input-label" for="">Company</label>
+                    <input type="text" placeholder="Enter company name">
+                </div>
+                <div class="company-data-input">
+                    <label class="account-input-label" for="">Office Location</label>
+                    <input type="text" placeholder="Enter office location">
+                </div>
+            </div>
+            <div class="address-info">
+                <div class="personal-address">
+                    <label class="account-input-label" for="">Personal Address</label>
+                    <input type="text" placeholder="Street address, Appartment, Suite, Building, Floor, etc.">
+                </div>
+                <div class="city-country">
+                    <label class="account-input-label" for="">City</label>
+                    <input type="text" placeholder="Enter your city">
+                </div>
+                <div class="state-postCode">
+                    <label class="account-input-label" for="">Provience/State</label>
+                    <input type="text" placeholder="Provience/State">
+                </div>
+                <div class="state-postCode">
+                    <label class="account-input-label" for="">Postal Code</label>
+                    <input type="text" placeholder="Postal Code">
+                </div>
+                <div class="city-country">
+                    <label class="account-input-label" for="">Country</label>
+                    <select name="" id="">
+                        <option value="">Select a Country</option>
+                    </select>
+                </div>
+                <div class="city-country">
+                    <label class="account-input-label" for="">Language</label>
+                    <select name="" id="">
+                        <option value="">Canada (EN)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="save-info">
+                <button class="save-info-btn">Save</button>
+            </div>
+            <h2>Social Media</h2>
+            <div class="social-media-info">
+                <div class="social-data-input">
+                    <label class="account-input-label" for="">Linkdin </label>
+                    <input type="text" placeholder="Enter your Linkdin URL">
+                </div>
+                <div class="social-data-input">
+                    <label class="account-input-label" for="">Twitter </label>
+                    <input type="text" placeholder="Enter your Twitter URL">
+                </div>
+                <div class="social-data-input">
+                    <label class="account-input-label" for="">Facebook </label>
+                    <input type="text" placeholder="Enter your Facebook URL">
+                </div>
+                <div class="social-data-input">
+                    <label class="account-input-label" for="">Instagram </label>
+                    <input type="text" placeholder="Enter your Instagram URL">
+                </div>
+                <div class="social-info-save">
+                        <button class="social-info-save-btn">Save</button>
+                </div>
+            </div>
+            <h2>Change Password</h2>
+            <div class="change-password-div">
+                <div class="password-data-input">
+                    <label class="account-input-label" for="">Old Password</label>
+                    <input type="text" placeholder="Enter Old Password">
+                </div>
+                <div class="password-data-input">
+                    <label class="account-input-label" for="">New Password</label>
+                    <input type="text" placeholder="Enter New Password">
+                </div>
+                <div class="password-data-input">
+                    <label class="account-input-label" for="">Confirm New Password</label>
+                    <input type="text" placeholder="Enter New Password">
+                </div>
+                <div class="save-password">
+                        <button class="save-password-btn">Save</button>
+                </div>
+            </div>
+            <div class="upload-csv-div">
+                <h2>Contacts</h2>
+                <p>Upload your CSV file and sync your contacts</p>
+                <label for="uploadCsv">Upload File
+                    <input type="file" name="" id="uploadCsv">
+                </label>
+            </div>
+            <div class="deactivate-ac-div">
+                <h2>Deactivate Account</h2>
+                <p>We’re sad to see you leave :(</p>
+                <button class="deactive-btn">Deactivate Account</button>
+            </div>
+        </div>
+    </div>
+    <div id="notification" class="profile-tab-body" style="display:none">
+        <div class="main-notification">
+            <h2>Email Notifications</h2>
+            <div class="notification-setting">
+                <div class="each-notifi-setting">
+                    <div class="notification-text"> 
+                        <p>Send email when I recieve DM messages</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email when I get mentioned in messages</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email when tasks are completed</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email when a project is completed</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email reminding me about my pending tasks</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email for other notifications and alerts</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email when I get assigned to task/project</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email when changes occur on tasks/projects</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Send email when I get invited to events</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Recieve weekly digest</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="toggle-btn-div">
+                    <button class="toggle-all-notification">Opt out all email notifications</button>
+                </div>
+            </div>
+            <h2>Desktop Notifications</h2>
+            <div class="desktop-notification-setting">
+                <div class="each-notifi-setting">
+                    <div class="notification-text"> 
+                        <p>Play sound when recieving message</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Play sound when recieving a notification</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Show preview of message</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="each-notifi-setting">
+                    <div class="notification-text">
+                        <p>Enable Desktop notification</p>
+                    </div>
+                    <div class="notification-active-inactive">
+                        <label class="switchNav">
+                            <input type="checkbox">
+                            <span class="sliderNav round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="email-preference">
+                <h2>Email Preference</h2>
+                <p>We will use the bellow email to send you notifications</p>
+                <select name="" id="">
+                    <option value="">rosina.mccullough@hotmail.com</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="privacy" class="profile-tab-body" style="display:none">
+        <div class="main-privacy">
+            <h2>Security Questions</h2>
+            <p>Add your customized questions and answers below, this will help us verify your identity should you forget your password.</p>
+            <div class="questions-div">
+                <div class="each-question">
+                    <label for="" class="answer-question-label">Question 1</label>
+                    <input class="answer-question-input" type="text" placeholder="Add your question">
+                </div>
+                <div class="each-question">
+                    <label for="" class="answer-question-label">Answer 1</label>
+                    <input class="answer-question-input" type="text" placeholder="Type your answer">
+                </div>
+                <div class="each-question">
+                    <label for="" class="answer-question-label">Question 2</label>
+                    <input class="answer-question-input" type="text" placeholder="Add your question">
+                </div>
+                <div class="each-question">
+                    <label for="" class="answer-question-label">Answer</label>
+                    <input class="answer-question-input" type="text" placeholder="Type your answer">
+                </div>
+                <button class="add-question">+ Add another security question</button>
+            </div>
+            <h2>Feedback Participation</h2>
+            <div class="feedback-participation">
+                <button onclick="showProfilePopup('feedbackParticipation')">Feedback Participation </button>
+            </div>
+            <h2>Marketing Emails</h2>
+            <div class="marketing-email">
+                <button onclick="showProfilePopup('marketing')">Marketing Emails</button>
+            </div>
+            <h2>Why We Love Cookies?</h2>
+            <div class="learn-more">
+                <button onclick="showProfilePopup('learnMore')">Learn More</button>
+            </div>
+        </div>
+    </div>
+    <div id="support" class="profile-tab-body" style="display:none">
+        <div class="main-support">
+            <h2>Create Ticket</h2>
+            <div class="create-ticket">
+                <p>Experiencing a problem? submit a ticket</p>
+                <button onclick="showProfilePopup('createTicket')">Create Ticket</button>
+            </div>
+            <h2>Open Tickets</h2>
+            <div class="open-ticket">
+                <p>Already submitted a ticket? want to know it’s status?</p>
+                <button onclick="showProfilePopup('openTicket')">Open Tickets</button>
+            </div>
+            <h2>Get In Touch</h2>
+            <div class="get-in-touch">
+                <p>We appreciate your interest in Hayven and thank you for trusting us with your questions or concerns.</p>
+                <h5>Toronto Office: <span>416-834-9232 </span></h5>
+                <h5>Toll Free: <span> 1-866-342-1111</span></h5>
+                <h5>Email: <span> Info@hayven.io</span></h5>
+            </div>
+            <h2>Give Feedback</h2>
+            <div class="feedback">
+                <p>Found a bug? have a suggestion? click on the hyperlink bellow, fill out the form and we’ll look into it.</p>
+                <button onclick="showProfilePopup('givefeedback')">Give Feedback</button>
+            </div>
+            <p class="support-footer">Visit our <a href="#"> Help Center </a>page for more information.</p>
+        </div>
+    </div>
+    <div id="billing" class="profile-tab-body" style="display:none">
+        <div class="main-billing">
+            <div class="hayven-basic">
+                <h2>Hayven Basic</h2>
+                <p>See other plans</p>
+                <button>Upgrade</button>
+            </div>
+            <div class="storage-proggressbar">
+                <p class="left-label">Used Storage</p>
+                <p class="right-label">Using <span> 700 MB</span> of 5GB</p>
+                <div class="progress-bar">
+                    <div class="proggress">14%</div>
+                </div>
+            </div>
+            <div class="payment-method">
+                <h2>Payment Method</h2>
+                <p>We accept all major credit cards</p>
+            
+                <div class="payment-data-input card-name">
+                    <label class="payment-label" for="">Card Holder Name</label>
+                    <input type="text" placeholder="Enter card holder name">
+                </div>
+                <div class="payment-data-input card-number">
+                    <label class="payment-label" for="">Card Number</label>
+                    <input type="text" placeholder="Enter 16 digits on card">
+                </div>
+                <div class="payment-data-input exp-date">
+                    <label class="payment-label" for="">Expiry Date</label>
+                    <input class="month" type="text" placeholder="MM">
+                    <input class="year" type="text" placeholder="YYY">
+                </div>
+                <div class="payment-data-input cvv">
+                    <label class="payment-label" for="">CVV</label>
+                    <input type="text" placeholder="882">
+                </div>
+                <div class="payment-data-input">
+                    <button class="add-card">Add Card</button>
+                </div>
+            </div>
+            <div class="billing-history">
+                <h2>Billing History</h2>
+                <table id="billHistory" class="billing-table">
+                    <thead>
+                        <tr>
+                            <th class="heading-title">Date</th>
+                            <th class="heading-title">Invoice Number</th>
+                            <th class="heading-title">Amount (CAD)</th>
+                            <th class="heading-title">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="billing-table-body">
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                        <tr>
+                            <td>28 May 2018</td>
+                            <td>HA-76253</td>
+                            <td>$200</td>
+                            <td><a href="#">Download</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="profileBackWrap">
+    <div id="feedbackPopup" style="display:none">
+        <h2>Feedback Participation</h2>
+        <img onclick="closeProfilePop('feedbackPopup')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <p class="privacy-term">Hayven analytics programs help us understand how our customer use our products and services so we can personalize your experience and build better online, mobile, and desktop applications.</p>
+        <p class="privacy-term">By analyzing usage trends an patterns we can optimize current features, make positive changes for future releases, provide more useful communications, and improve performance and quality.</p>
+        <p class="privacy-term">You may opt out of data collection in desktop products for Hayven analytics programs by unchecking the box bellow.</p>
+        <p class="checkAgree"> <span></span> I agree to data collection in desktop products for Hayven analytics program.</p>
+        <div class="learn-more-div">
+            <a href="#">Learn more about our privacy here.</a>
+        </div>
+        <button class="saveFeedBack">Save</button>
+    </div>
+    <div id="marketingEmail" style="display:none">
+        <h2>Marketing Email</h2>
+        <img onclick="closeProfilePop('marketingEmail')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="each-notifi-setting">
+            <div class="email-notification-text">
+                <p>I would like to recieve updates about products & services, promotions, special offers, news & events from Hayven via email.</p>
+            </div>
+            <div class="email-notification-active-inactive">
+                <label class="switchNav">
+                    <input type="checkbox">
+                    <span class="sliderNav round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div id="loveCookie" style="display:none">
+        <h2>Why we love cookies?</h2>
+        <img onclick="closeProfilePop('loveCookie')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <p>We use cookies to try and give you a better experience in Hayven.</p>
+
+        <p>You can learn more about what kind of cookies we use, why, and how from our <a href="#">Privacy Policy</a>. If you hate cookies, or are just on a diet, you can disable them altogether too. Just note that the Hayven is pretty big on some cookies (we love the choco-chip ones), and some portions of Hayven may not work properly if you disable cookies.</p>
+
+        <p>We’ll also assume you agree to the way we use cookies and are ok with it as described in our <a href="#">Privacy Policy</a>, unless you choose to disable them altogether through your browser.</p>
+    </div>
+    <div id="createTicketPopup" style="display:none">
+        <h2>Create A New Ticket</h2>
+        <img onclick="closeProfilePop('createTicketPopup')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="ticket-data-input">
+            <label class="ticket-input-label" for="">Category</label>
+            <select name="" id="">
+                <option value="">Select a category</option>
+            </select>
+        </div>
+        <div class="ticket-data-input">
+            <label class="ticket-input-label" for="">Subject</label>
+            <input type="text" placeholder="Enter a subject for your category">
+        </div>
+        <div class="ticket-data-input" style="margin-bottom:5.25px">
+            <label class="ticket-input-label" for="">Description</label>
+            <textarea name="" id="" placeholder="Tell us what problems are you having"></textarea>
+        </div>
+        <label class="attach-ticket-file" for="tktAttach">Attach files
+            <input type="file" name="" id="tktAttach">
+        </label>
+        <button class="create-ticket-btn">Create Ticket</button>
+    </div>
+    <div id="openTicketpopup" style="display:none">
+        <h2>Open Tickets <span>(3)</span></h2>
+        <img onclick="closeProfilePop('openTicketpopup')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="tikets">
+            <p class="ticket-id">ID: 840IRN</p>
+            <p class="ticket-label closed">Closed</p>
+            <div class="ticket-body">
+                <p class="ticket-msg">Need to upgrade plan! having an error when paying.</p>
+                <p class="submit-date">Submitted: 07/06/2018 @ 3:47PM</p>
+            </div>
+        </div>
+        <div class="tikets">
+            <p class="ticket-id">ID: 840IRN</p>
+            <p class="ticket-label open">Open</p>
+            <div class="ticket-body">
+                <p class="ticket-msg">Can’t sign into my account????</p>
+                <p class="submit-date">Submitted: 07/06/2018 @ 3:47PM</p>
+            </div>
+        </div>
+        <div class="tikets">
+            <p class="ticket-id">ID: 840IRN</p>
+            <p class="ticket-label pending">Pending</p>
+            <div class="ticket-body">
+                <p class="ticket-msg">When inviting a guest to a project, they can’t see t…</p>
+                <p class="submit-date">Submitted: 07/06/2018 @ 3:47PM</p>
+            </div>
+        </div>
+    </div>
+    <div id="giveFeedback" style="display:none">
+        <h2>Give feedback!</h2>
+        <img onclick="closeProfilePop('giveFeedback')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <textarea class="give-feedback-div" name="" id="" placeholder="What’s your feedback on ?"></textarea>
+        <button class="send-feedback-btn">Send Feedback</button>
+    </div>
+</div>

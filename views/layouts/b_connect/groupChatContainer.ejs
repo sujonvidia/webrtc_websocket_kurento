@@ -1,0 +1,1131 @@
+<div class="rightSectionpageloader" style="display: none;">
+    <div class="containerLoader">
+        <!-- <div class="logo"><img src="/images/logo_icon_h.png"></div>	 -->
+        <div class="loadingParcent">
+            <h1>Loading... <span id="parcentOnText">100%</span></h1>
+        </div>
+        <div class="progressLoaderBar" style="width:100%">
+            <!-- <div class="progressLoader"></div> -->
+        </div>
+
+    </div>
+</div>
+<div id="groupChatContainer" class="chat-div connect_right_section" style="display: block;">
+    <div class="searchAndFilter">
+        <input class="_inputBar" type="text" id="_inputBar" onkeyup="search_inputBar(event)" onfocus="check_search_val()" name="" placeholder="Search Task(s)">
+        <div class="clrChkSrc" onclick="clearSearchBtn(event)"></div>
+        <div class="oneTimeSearchButton" onclick="searchChecklistFT()">Search</div>
+        <span class="submit_inputBar" onclick="_searchForm()"></span>
+        <div class="backwrap" id="_searchForm" style="display: none;">
+            <div class="_searchForm">
+                <h2 class="popheader">Filter your search:</h2>
+                <div class="seaction_filter">
+                    <div class="filter_group">
+                        <h3><span class="label_text">Search for:</span></h3>
+                        <input type="text" id="search_for" onkeyup="search_inputBar(event)" placeholder="Task name contains..." required="required" autocomplete="off">
+                    </div>
+                    <div class="filter_group">
+                        <h3 id="selectedUserli"><span class="label_text">Shared between you and any of the following teammate(s):</span></h3>
+                        <input type="text" id="allUser_input" onkeyup="allUser_listSearch(event)" onclick="allUser_list(event)" placeholder="Pick one or many teammates" required="required" autocomplete="off">
+                        <ul class="allUser_list"> </ul>
+                    </div>
+                    <div class="filter_group date_group">
+                        <h3>
+                            <span class="label_text">Date Shared between:</span>
+                            <input style="width: 120px" type="text" id="select_startDate" placeholder="start date" required="required" autocomplete="off">
+                            <span class="select_startDate clearDate"></span>
+                            <span style="float: left;margin: 0 12px;">and</span>
+                            <input style="width: 120px" type="text" id="select_endDate" placeholder="end date" required="required" autocomplete="off">
+                            <span class="select_endDate clearDate"></span>
+                        </h3>
+                    </div>
+                </div>
+                <div class="seaction_filter">
+                    <div class="button_ active" onclick="searchChecklistFT()">Search</div>
+                    <div class="button_" onclick="clearSearchBtn(event)">Reset</div>
+                    <!-- <div class="button_" onclick="_searchForm()">Close</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checklistListFilter onlyChk" style="display: none;">
+        <div class="main_ul">
+
+            <div class="checklistfilter_item" onclick="viewFilterPopup(event,'room')">
+                Filter by room
+                <div class="checklistFilterPopup">
+                    <div class="search_area">
+                        <input type="" class="filter" name="filterRoomList" onkeyup="searchFilterPopup(event)" placeholder="Search">
+                    </div>
+                    <ul class="filterItemList" id="filterRoomList">
+                        <li class="">A</li>
+                    </ul>
+                    <div class="filterBtnGrp">
+                        <div class="filterBtn" onclick="addFilterData('clear','fil_room')">Clear</div>
+                        <div class="filterBtn" onclick="addFilterData('ok','fil_room')">Ok</div>
+                    </div>
+                </div>
+            </div>
+            <div class="checklistfilter_item" onclick="viewFilterPopup(event,'checklist_title')">
+                Filter by name
+                <div class="checklistFilterPopup">
+                    <div class="search_area">
+                        <input type="" class="filter" name="checklist_title_filter" onkeyup="searchFilterPopup(event)" placeholder="Search">
+                    </div>
+                    <ul class="filterItemList" id="checklist_title_filter">
+                        <li class="">A</li>
+                    </ul>
+                    <div class="filterBtnGrp">
+                        <div class="filterBtn" onclick="addFilterData('clear','fil_name')">Clear</div>
+                        <div class="filterBtn" onclick="addFilterData('ok','fil_name')">Ok</div>
+                    </div>
+                </div>
+            </div>
+            <div class="checklistfilter_item" onclick="viewFilterPopup(event,'last_update_by')">
+                Filter by person
+                <div class="checklistFilterPopup">
+                    <div class="search_area">
+                        <input type="" class="filter" name="last_update_by_filter" onkeyup="searchFilterPopup(event)" placeholder="Search">
+                    </div>
+                    <ul class="filterItemList" id="last_update_by_filter">
+                        <li class="">A</li>
+                    </ul>
+                    <div class="filterBtnGrp">
+                        <div class="filterBtn" onclick="addFilterData('clear','fil_person')">Clear</div>
+                        <div class="filterBtn" onclick="addFilterData('ok','fil_person')">Ok</div>
+                    </div>
+                </div>
+            </div>
+            <div class="checklistfilter_item" onclick="viewFilterPopup(event,'last_update_date')">
+                Filter by date
+                <div class="checklistFilterPopup">
+                    <!-- <div class="search_area">
+						<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+					</div> -->
+                    <div class="search_area from_date">
+                        <input type="" id="filter_from" name="" placeholder="From date">
+                    </div>
+                    <div class="search_area to_date">
+                        <input type="" id="filter_to" name="" placeholder="To date">
+                    </div>
+
+                    <div class="filterBtnGrp">
+                        <div class="filterBtn" onclick="addFilterData('clear','fil_date')">Clear</div>
+                        <div class="filterBtn" onclick="addFilterData('ok','fil_date')">Ok</div>
+                    </div>
+                </div>
+            </div>
+            <div class="filterApply" onclick="apply_filter()">APPLY FILTER</div>
+        </div>
+        <div class="activeFilterList">
+
+        </div>
+    </div>
+    <!-- top: 113px -->
+    <ul class="checklistListViewHeader onlyChk" style="top: 135px">
+        <li style="width: 25%" class="roomListHead" onclick="sortingChecklist(this,'room')">Room Name</li>
+        <li style="width: 35%" class="taskListHead" onclick="sortingChecklist(this,'title')">Task List Title</li>
+        <li style="width: 20%" class="personListHead" onclick="sortingChecklist(this,'last_modified_by')">Last Updated by</li>
+        <li style="width: 20%" class="lastUpdateListHead" onclick="sortingChecklist(this,'last_modified')">Last Updated on</li>
+        <!-- <li onclick="sortingChecklist(this,'created_by')">Created by</li> -->
+        <!-- <li onclick="sortingChecklist(this,'itremcounter')">Status</li> -->
+        <!-- <li style="width: 17%" class="statusListHead">Status</li> -->
+    </ul>
+    <ul class="msgListViewHeader" style="top: 83px">
+        <li style="width: 25%" onclick="sortingMsgList(this,'room')" class="roomListHead"> Room Name </li>
+        <li style="width: 35%" onclick="sortingMsgList(this,'title')" class="taskListHead"> Message </li>
+        <li style="width: 20%" onclick="sortingMsgList(this,'sender')" class="personListHead"> Sender Name </li>
+        <li style="width: 20%" onclick="sortingMsgList(this,'createdAt')" class="personListHead"> Created at </li>
+    </ul>
+    <div class="taskList_panel" id="taskList_panel"></div>
+
+    <div id="closeRoomLabel" class="chat_foot_msg" data-type="close">
+        <div id="closeRoomMsg"></div>
+        <div id="hideRoomBtn" class="foot_btn" onclick="removeThisList($('.sideActive.selected').attr('data-conversationid'))">Hide this room from left panel</div>
+        <div id="reOpenThisRoomBtn" onclick="$('#reopenThisRoom').trigger('click')" class="foot_btn">Re-open this room</div>
+    </div>
+    <div class="chat-header" id="personalConnectActive">
+        <div id="subconversation_create" class="subconversation_create" onclick="createPopupforSub('subConv',(conv_id_for_createRoom == null? conversation_id:conv_id_for_createRoom))"><span>Create Sub-room</span></div>
+        <div class="headMenuForMobile">
+            <div class="menuforHead" onclick="showleftSide()">
+                <!-- <i class="fa fa-users" aria-hidden="true" style="color: #FFFFFF; width: 20px; height: 20px;"></i> -->
+            </div>
+        </div>
+        <%if(conv_type == 'personal'){%>
+
+            <div class="chat-head-name" style="margin-top:28px;">
+                <%}else{%>
+
+                    <div class="chat-head-name" style="margin-top: 17px; height: 47px;">
+                        <%}%>
+                            <div id="roomIdDiv" topic-type="" topic-unit="" topic-tag="" data-convimg="" data-roomid="" data-rfu="" data-title="" data-privecy="" data-keyspace="" onclick="roomEdit(event,$(this).attr('data-roomid'),$(this).attr('data-title'),$(this).attr('data-privecy'),$(this).attr('data-keyspace'),$(this).attr('data-convimg'))">
+                                <%if(conv_type == 'personal'){%>
+                                    <span id="conv_title" style="margin-left: 27px;">
+						<span class="online" style="top: 44px;z-index: 9; position: absolute;"></span>
+                                    <div class="msg-user-photo" onclick="actionMentionUser('onload')">
+                                        <img class="user_img<%= id %>" src="https://wfss001.freeli.io/profile-pic/Photos/<%= receiver_img %>" alt="" style="position:absolute; margin:auto;left:17px;top:18px;background: #f5f5f5;" onclick="viewRoomImg(event,'user',this)" data-value="/images/users/<%= receiver_img %>">
+                                    </div>
+                                    <span id="nds" class="converstaion_name user_name<%= id %> " style="margin-left: 27px;" onclick="actionMentionUser('onload')"><%= receiver_fullname %></span>
+                                    </span>
+                                    <%} else {%>
+                                        <span id="conv_title" style="margin-left: 27px;">
+						<span class="online" style="position: absolute;top: 16px; display: none"></span>
+                                        <div class="msg-user-photo">
+                                            <img src="https://wfss001.freeli.io/room-images-uploads/Photos/<%= receiver_img %>" onclick="expandMyimg($(this).attr('src'))" alt="" style="position:absolute; margin:auto;left:17px;top:18px;background: #f5f5f5;" data-value="room-images-uploads/Photos/<%= receiver_img %>">
+                                        </div>
+                                        <span id="nds" class="converstaion_name user_name<%= conv_id %>" style="margin-left: 27px;"><%= receiver_fullname %></span>
+                                        </span>
+                                        <%}%>
+
+                            </div>
+                            <%if(conv_type !== 'personal'){%>
+                                <h4 onclick="viewMemberList(event)" style="position: relative; width:100%;  display: block"><img src="/images/basicAssets/Users.svg" alt=""> <span id="totalMember"></span> <span id="conv_key"></span> | <span id="topicTypeName"></span></h4>
+                                <%}else{%>
+                                    <h4 onclick="viewMemberList(event)" style="position: relative; width:100%;  display: none"><img src="/images/basicAssets/Users.svg" alt=""> <span id="totalMember"></span> <span id="conv_key"></span> | <span id="topicTypeName"></span></h4>
+                                    <!-- <h4 onclick="viewMemberList(event)" style="position: absolute;top:40px;left:69px;display: none;"><img src="/images/basicAssets/Users.svg" alt=""> <span id="totalMember"></span>  </h4> -->
+                                    <%}%>
+                    </div>
+                    <div style="height: auto;" class="searchplot">
+                        <div class="src_total_msg">
+                            <div class="dropbtn_search"></div>
+                            <span class="TextDrop" onclick="triggerFunfilter(event,'conversation')">Conversation</span>
+                            <button class="dropbtn">
+                                <img class="nav_ico" src="/images/basicAssets/Down_Chevron.svg" alt="">
+                            </button>
+                            <div id="input_values">
+                                <input type="text" id="searchAfter" class="search-menu" onkeyup="searchThisThread(event,this)" onblur="//searchThisThreadBlur(this)" placeholder="Type and enter to search meassage(s) in conversation">
+
+                            </div>
+
+
+                            <div class="search-close" id="headSearchClose">
+                                <div class="searchCount" style="display:none">
+                                    <p id="viewlength">0</p>
+                                    <p>/</p>
+                                    <p id="totalLength">0</p>
+                                    <div class="searchPrev" onclick="prevSearch()"></div>
+                                    <div class="searchNext" onclick="nextSearch()"></div>
+                                </div>
+
+                                <div onclick="hideSearchForHead()" class="remove" style="float:right; background-size: 90%"></div>
+
+                            </div>
+                        </div>
+                        <div class="src_total_msg_content">
+                            <div class="itm">Message tag(s)</div>
+                            <div class="itm">Image(s)</div>
+                            <div class="itm">Video(s)</div>
+                            <div class="itm">Audio(s)</div>
+                            <div class="itm">File(s)</div>
+                            <div class="itm">Link(s)</div>
+                            <div class="itm">View By Tag(s)</div>
+
+                        </div>
+
+                        <div class="taglisttag">
+                            <!-- <div class="remove" ></div> -->
+
+                            <div>
+
+                                <div class="headTagIconAppend"></div>
+                                <hr width='100%'>
+                                <div id="filterTagOnlyBtndiv">
+                                    <div id="filterTagOnlyBtn1" onclick="filterOnlyTagMsg(this)" tag-id="filteTagOnly">Filter tag(s) only</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="sub_conv_holder" class="sub_conv_holder"></div>
+                    <div class="chat-head-calling">
+                        <div data-type="audio" onclick="openVideoCall(this)" class="voice-call"></div>
+                        <div data-type="video" onclick="openVideoCall(this)" class="video-call"></div>
+                        <div data-type="join" onclick="openVideoCall(this)" class="join-call onC animate-flicker-call"></div>
+                        <div class="pin-unpin">
+                            <span class="pin-to-bar" id="pin-to-bar" data-conversationid="" data-id="" data-pinned="" data-subtitle="" data-img="" data-name="" data-type="" src="/images/basicAssets/custom_pinned.svg" alt=""></span>
+                        </div>
+                        <!-- <div class="tagged" onclick="tagPopupOpen()"></div>
+			<div class="addTagConv" style="display: none">
+				<span id="tagItemList"></span>
+				<div class="taglistHolder">
+					<input type="" name="" class="createConvTag" id="createConvTag" placeholder="Create or Search Tag(s)" data-roomid="">
+					<img class="settingEmail tagSet" onclick="removeUsertag(this);" src="/images/basicAssets/Settings.svg">
+					<ul class="taggedList" id="taggedList"></ul>
+				</div>
+			</div>
+			<!- video call popup start here -->
+                        <div class="videoCallMenuPopup" style="display:none">
+                            <div id="callAdvanceOption">
+                                <div class="call-advance-option-div">
+                                    <p>CHOOSE ROOM MEMBERS</p>
+                                    <div class="channel-member-search">
+                                        <input type="text" placeholder="Search" onkeyup="searchCallMember($(this).val())">
+                                        <p class="call-users-count">User(s) online: <span class="call-users-online"></span> | offline: <span class="call-users-offline"></span></p>
+                                    </div>
+                                    <!-- <button style="color:white;background:var(--PrimaryC);margin-left:15px;padding:1px 6px 1px 6px;border:0px;border-radius:3px;margin-bottom:5px !important" class="check_uncheck ">Check all </button>
+						<div  style="height:auto;max-height: 250px !important;position:relative"  class="overlayScrollbars added-channel-members"> -->
+
+                                    <div style="height:auto;max-height: 215px; position:relative" class="overlayScrollbars added-channel-members">
+                                        <div id="memberHolderCall"></div>
+                                    </div>
+                                </div>
+                                <div class="todo-btn-group">
+                                    <button type="button" class="call-cancel-btn" onclick="cancelCall()">Cancel</button>
+                                    <!-- <button id="btnWindowOpen" type="button" class="call-open-btn" onclick="ringGroupCall('window')">Open Window</button> -->
+                                    <button id="btnMakecall" type="button" data-type="ring" class="call-create-btn" onclick="ringGroupCall()">Make a call</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- video call popup end here -->
+                        <div class="flagged_filter_ico" data-count="0" id="flagged_icon_filter" data-balloon="Filter flagged message only" data-balloon-pos="up" onclick="filter_flag(event)"></div>
+                        <div class="conv_tagged" onclick="tagOptionOpen()" data-balloon="Filter message only" data-balloon-pos="up"></div>
+                        <div class="conv_tagOptions">
+                            <li id="filterTagOnlyBtn2" class="convTagOpt" onclick="filterOnlyTagMsg(this)" tag-id="filteTagOnly">Filter tag(s) only</li>
+                            <li class="convTagOpt srcConv_tag" onclick="searchDivOn(event,this)">Search tag
+                                <ul class="only_filter_list">
+                                    <div class="tag_srcContainer">
+                                        <div id="containSelectedTag"></div>
+                                        <div class="remove" onclick="$('.convTagOpt.srcConv_tag').removeClass('activeUl'); $('.conv_tagOptions').hide() "></div>
+                                        <div class="customTooltip"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px"></div>
+                                        <input type="text" placeholder="Search tag" class="multi-search" name="" onkeyup="searchTagConvHead(event,this)">
+                                        <button class="tag_goBtn" onclick="_tag_goBtn()">Go</button>
+                                    </div>
+                                    <div class="headTagIconAppend">
+
+                                    </div>
+
+                                </ul>
+                            </li>
+                        </div>
+
+                        <div class="search-menu" id="searchBefore" data-balloon="Search this channel" data-balloon-pos="up" onclick="showSearchHead()"></div>
+
+                        <!--<input type="text" id="searchAfter" class="search-menu"  onkeyup="searchThisThread(event,this)" onblur="searchThisThreadBlur(this)" style="display:none">-->
+                        <!--<div class="search-close" id="headSearchClose" style="display: none">-->
+                        <!--	<div onclick="hideSearchForHead()" class="remove" style="float:right; background-size: 90%"></div>-->
+                        <!--	<div class="searchCount" style="display:none">-->
+                        <!--		<p id="viewlength">0</p><p>/</p><p id="totalLength">0</p>-->
+                        <!--		<div class="searchPrev" onclick="prevSearch()"></div>-->
+                        <!--		<div class="searchNext" onclick="nextSearch()"></div>-->
+                        <!--	</div>-->
+                        <!--</div>-->
+
+                        <div class="muteConv_point" id="viewMuteNotification" onclick="viewAllBackWrap('notificationPopup')"></div>
+                        <div class="viewFilterPopup" id="viewFilterPopup" onclick="moreMenuPopup(event,'FilterPopup')"></div>
+                        <div class="more-menu" onclick="moreMenuPopup(event,'moreMenu')"></div>
+                        <!-- more menu panel popup start here -->
+                        <div class="filterListPopup">
+                            <!-- <li class="moreOpt_list flagFilter filterFlagged_msg" id="filterFlagged_msg_2" onclick="filter_flag(event)">Flagged</li> -->
+                            <li class="moreOpt_list" id="filterFlagged_msg_2" onclick="filter_flag(event)">Filter by:</li>
+                            <li class="optionalList moreOpt_list" id="optionalChecklist" onclick="viewChecklistMsg()">checklist(s)</li>
+                            <li class="moreOpt_list" id="callNotifications" onclick="callNotificationView(this)">Call history</li>
+                            <li class="moreOpt_list" id="threadChatsOnly" onclick="threadChatOnly(this)">Threaded chat(s)</li>
+                            <li class="moreOpt_list" id="privateChatsOnly" onclick="privateChatsOnly(this)">Private message(s)</li>
+                        </div>
+                        <div class="moreMenuPopup" style="display:none">
+                            <!-- <li class="optionalList moreOpt_list" id="optionalTag" onclick="tagPopupOpen()">Tag</li> -->
+                            <li class="optionalList moreOpt_list" id="optionalFiles" onclick="mediaFilePopup()">Files</li>
+                            <li class="moreOpt_list" id="selectMessage" onclick="selectMessageOn(this)">Select Message</li>
+                            <!-- <li class="moreOpt_list" id="viewMuteNotification" onclick="viewAllBackWrap('notificationPopup')">Mute Notifications</li> -->
+                            <!-- <li class="moreOpt_list" id="unMuteThis" onclick="unMuteThis()"> Unmute this room only</li> -->
+                            <!-- <li class="moreOpt_list" id="setNotify">
+				Set Notification Tune
+				<ul class="only_filter_list">
+					<li class="moreOpt_list flagFilter filterFlagged_msg" onclick="setAsNotify(this, 'notification')" data-title="fluit.mp3">fluit.mp3</li>
+					<li class="moreOpt_list flagFilter filterFlagged_msg" onclick="setAsNotify(this, 'notification')" data-title="hangout.ogg">hangout.ogg</li>
+				</ul>
+			</li> -->
+                            <!-- <li class="moreOpt_list" id="allFilterIn_doted">
+				Filter
+				<ul class="only_filter_list">
+					<li class="moreOpt_list flagFilter filterFlagged_msg" id="filterFlagged_msg_2" onclick="filter_flag(event)">Flagged</li>
+					<li class="optionalList moreOpt_list" id="optionalChecklist" onclick="viewChecklistMsg()">Filter checklist(s) only</li>
+					<li class="moreOpt_list" id="callNotifications" onclick="callNotificationView(this)">Filter call history only</li>
+					<li class="moreOpt_list" id="threadChatsOnly" onclick="threadChatOnly(this)">Filter thread chat(s) only</li>
+				</ul>
+			</li>-->
+                            <li class="moreOpt_list" id="clear_all_deleted_msg">Remove all deleted Message(s)</li>
+                            <li class="moreOpt_list" id="clear_all">Clear Message(s)</li>
+                            <li class="moreOpt_list" id="leaveThisRoom">Leave this Room</li>
+                            <!-- <li id="hideThisRoom">Leave this room</li> -->
+                            <li class="moreOpt_list" class="" id="reopenThisRoom">Re-open this Room</li>
+                            <li class="moreOpt_list" class="" id="closeThisRoom">Close this Room</li>
+                            <li class="moreOpt_list" class="" id="readallmessages" onclick="read_all_msgs()">Mark all read</li>
+                            <li class="moreOpt_list" class="" id="convert_conversation"></li>
+                        </div>
+
+                        <!-- more menu panel popup end here -->
+                        <div class="headFiles" onclick="mediaFilePopup()" data-balloon="View all Files in this Room" data-balloon-pos="up">
+                            <!-- <p class="headText" id="conversationFileView">Files</p> -->
+                            <p class="headText">Files</p>
+                        </div>
+                        <!-- search bar open  start -->
+                        <!-- <input type="text" id="searchAfter" class="search-menu"  onkeyup="searchThisThread(event,this)" onblur="searchThisThreadBlur(this)" placeholder=" search meassage">
+		<div class="search-close" id="headSearchClose" >
+			<div onclick="hideSearchForHead()" class="remove" style="float:right; background-size: 90%"></div>
+			<div class="searchCount" style="display:none">
+				<p id="viewlength">0</p><p>/</p><p id="totalLength">0</p>
+				<div class="searchPrev" onclick="prevSearch()"></div>
+				<div class="searchNext" onclick="nextSearch()"></div>
+			</div>
+		</div> -->
+                        <!-- search bar open end -->
+
+
+
+                        <div style="display: none;" class="headFiles classForChecklist" onclick="viewChecklistMsg()">
+                            <p class="headText" id="checkListCounter">Task List</p>
+                            <ul class="checklist_more_option">
+                                <!-- <li id="checklistGridView" onclick="viewChecklistMsg('grid_view')">Card View</li>
+				<li id="checklistListVieworigin" onclick="viewChecklistMsg('list_view_origin')">List View</li>
+				<li id="checklistListView" onclick="viewChecklistMsg('list_view')">Message View</li>
+				<li id="checklistListViewExit" onclick="$('#conv'+conversation_id).click()">Exit Checklist View</li> -->
+                            </ul>
+                        </div>
+                        <div class="headFiles" onclick="addMsgCheckList('team_tasks')">
+                            <p class="headText" id="getTeamTask">Team Task</p>
+                        </div>
+                        <!-- <li  onclick="callNotificationView(this)">Filter call history only</li> -->
+
+                        <!-- <div class="group_input callNotifications">
+				<span class="switchFor">Show Call History</span>
+				<label class="switchNav">
+					<input onclick="callNotificationView(this)" type="checkbox" id="callNotifications">
+					<span class="sliderNav round"></span>
+				</label>
+			</div> -->
+                        <!-- <div id="hideCallHistory" onclick="$('#callNotifications').click()" class="voice-call-noti">Call History Filter</div> -->
+
+                    </div>
+                    <ul class="checklist_view_options">
+                        <li id="checklistGridView" class="filter_item" onclick="viewChecklistMsg('grid_view')">
+                            <span class="tooltip_view" data-balloon="Card View" data-balloon-pos="up" data-balloon-length="small"></span>
+                            <span class="filter_title">Card View</span>
+                        </li>
+                        <li id="checklistListVieworigin" class="filter_item" onclick="viewChecklistMsg('list_view_origin')">
+                            <span class="tooltip_view" data-balloon="List View" data-balloon-pos="up" data-balloon-length="small"></span>
+                            <span class="filter_title">List View</span>
+                        </li>
+                        <li id="completeChecklist" class="filter_item" onclick="showAllChecklist(event)">
+                            <span class="tooltip_view" data-balloon="Show All" data-balloon-pos="up" data-balloon-length="small"></span>
+                            <span class="filter_title">Show All</span>
+                            <span class="active_bar"></span>
+                        </li>
+                        <li id="incompleteChecklist" class="filter_item" onclick="showIncompleteChecklist(event)">
+                            <span class="tooltip_view" data-balloon="Pending" data-balloon-pos="up" data-balloon-length="small"></span>
+                            <span class="filter_title">Pending</span>
+                            <span class="active_bar"></span>
+                        </li>
+                        <li id="flaggedChecklist" class="filter_item" onclick="showFlaggedChecklist(event)">
+                            <span class="tooltip_view" data-balloon="Flagged" data-balloon-pos="up" data-balloon-length="small"></span>
+                            <span class="filter_title">Flagged</span>
+                            <span class="active_bar"></span>
+                        </li>
+                        <li class="inputcheclist" style="display: none;">
+                            <input type="text" placeholder="Type and enter to search checklist" name="" id="filter_checklist_text" onkeyup="filter_checklist_text(event)">
+                            <div class="remove clrChkSrc" onclick="clearSearchBtn(event)"></div>
+                            <div class="oneTimeSearchButton" onclick="searchChecklistFT()"></div>
+                        </li>
+                        <!-- <li>
+				<span class="media-close-tooltip" style="margin-top: 10px;" onclick="$('#conv'+conversation_id).click();" data-balloon="Click to close" data-balloon-pos="left"></span>
+			</li> -->
+                    </ul>
+                    <div id="showHeadRightOptions" class="chat-head-more-menu">
+                        <!-- Create todo popup start here -->
+                        <div class="create-todo" id="createTodo" onclick="createToDo(event)">
+                            <!-- <img src="/images/basicAssets/To_Do_White.svg" alt=""> -->
+                            <p><span>+</span> Task</p>
+                        </div>
+                        <div class="create-todo-popup">
+                            <input type="text" name="createTsk" class="create-todo-popup-title" placeholder="Create a Task list with this room">
+                            <div class="create-todo-ad-option" onclick="todoToggleAdvance()">
+                                <p>ADVANCED OPTIONS</p>
+                            </div>
+                            <div id="todoAdvanceOption" style="display: none;">
+                                <div class="todo-advance-option-div">
+                                    <p>CHOOSE ROOM MEMBERS</p>
+                                    <div class="channel-member-search">
+                                        <input type="text" placeholder="Search" onkeyup="searchTodoMember($(this).val())">
+                                    </div>
+                                    <div id="memberHolder" class="overlayScrollbars added-channel-members">
+
+                                    </div>
+                                </div>
+                                <div class="todo-btn-group">
+                                    <button type="button" class="todo-cancel-btn" onclick="cancelTodo()">Cancel</button>
+                                    <button type="button" class="todo-create-btn" onclick="createTOD()">Create Task</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Create todo popup end here -->
+                        <!-- Create event popup start here -->
+                        <div class="create-event" id="CreateEvent" onclick="createEventPop(event)" style="display:none">
+                            <!-- <img src="/images/basicAssets/Create_Event_White.svg" alt=""> -->
+                            <p><span>+</span> Schedule</p>
+                        </div>
+                        <div class="create-event-popup">
+                            <input type="" name="" class="create-event-popup-title" placeholder="Create a event list with this room">
+                            <div class="event-date-location">
+                                <input class="event-date-time" type="text" placeholder="Choose date and time" id="eventDateAndTime">
+                                <input class="event-location" type="text" placeholder="Enter event location" id="">
+                                <!-- CREATE event CALENDER -->
+                                <div class="todo-calender" style="display:none" id="calenderPicker">
+                                    <h4>August 2018 <span class="prev-arrow"><img src="/images/basicAssets/CalendarChevronRight.svg" alt=""></span> <span class="next-arrow"><img src="/images/basicAssets/CalendarChevronRight.svg" alt=""></span></h4>
+                                    <div class="todo-days">
+                                        <span>S</span>
+                                        <span>M</span>
+                                        <span>T</span>
+                                        <span>W</span>
+                                        <span>T</span>
+                                        <span>F</span>
+                                        <span>S</span>
+                                    </div>
+                                    <div class="todo-dates">
+                                        <span class="perv-month">27</span>
+                                        <span class="perv-month">28</span>
+                                        <span class="perv-month">29</span>
+                                        <span class="perv-month">30</span>
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>3</span>
+                                        <span>4</span>
+                                        <span>5</span>
+                                        <span class="selected">6</span>
+                                        <span>7</span>
+                                        <span>8</span>
+                                        <span>9</span>
+                                        <span>10</span>
+                                        <span>11</span>
+                                        <span>12</span>
+                                        <span class="">13</span>
+                                        <span>14</span>
+                                        <span>15</span>
+                                        <span>16</span>
+                                        <span>17</span>
+                                        <span>18</span>
+                                        <span>19</span>
+                                        <span>20</span>
+                                        <span>21</span>
+                                        <span>22</span>
+                                        <span>23</span>
+                                        <span>24</span>
+                                        <span>25</span>
+                                        <span>26</span>
+                                        <span>27</span>
+                                        <span>28</span>
+                                        <span>29</span>
+                                        <span>30</span>
+                                        <span>31</span>
+                                    </div>
+                                    <div class="todo-from-to-reminder">
+                                        <input class="todo-from" type="text" placeholder="From">
+                                        <input class="todo-to" type="text" placeholder="To">
+                                        <input class="todo-reminder" type="text" placeholder="Set Reminder">
+                                    </div>
+                                    <div class="todo-btn-div">
+                                        <button class="todo-cancel-btn" id="calenderCancelBtn" type="button">Cancel</button>
+                                        <button class="todo-done-btn" id="calenderDoneBtn" type="button">Done</button>
+                                    </div>
+                                </div>
+                                <!-- CREATE event CALENDER -->
+                            </div>
+                            <div class="create-todo-ad-option" onclick="eventToggleAdvance()" style="margin: 18px 0px;">
+                                <p>ADVANCED OPTIONS</p>
+                            </div>
+                            <div class="todo-advance-option-div" id="eventAdvanceOption" style="margin-top: -8px !important;margin-bottom: 16px;overflow: hidden; display: none">
+                                <p>choose channel members</p>
+                                <div class="room-member-search">
+                                    <input type="text" placeholder="Search">
+                                </div>
+                                <div class="added-room-members">
+                                    <li>
+                                        <label class="">John Smith
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Mahfuzur Rahman
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">AH Nayeem
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Dalim Chowdhury
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Dipok Chakraborty
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Sadikur Rahman
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">John Smith
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Mahfuzur Rahman
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">AH Nayeem
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Dalim Chowdhury
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Dipok Chakraborty
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                    <li>
+                                        <label class="">Sadikur Rahman
+								<input class="checkmember" type ="checkbox" value="1">
+								<span class="checkmark"></span>
+							</label>
+                                    </li>
+                                </div>
+                            </div>
+                            <div class="event-btn-group">
+                                <button class="event-cancel-btn" onclick="CancelEvent()">Cancel</button>
+                                <button class="event-create-btn" onclick="createEventF(event)">Create Event</button>
+                            </div>
+                        </div>
+                        <!-- Create event popup end here -->
+                        <div class="createFeedBack" style="display:none">
+                            <p><span>+</span> Feedback</p>
+                        </div>
+                        <!-- search panel popup start here -->
+                        <!-- <div class="search" onclick="searchConversation(event)" id="searchConversation"><img src="/images/basicAssets/Search_White.svg"
+				    alt=""></div>
+			<div class="search-panel">
+				<input type="text" id="search-msg" placeholder="Search Conversation">
+			</div> -->
+                        <!-- search panel popup end here -->
+                        <!-- <div class="more-menu" onclick="moreMenuPopup()">
+				<img src="/images/basicAssets/More_Menu_White.svg" alt="">
+			</div> -->
+                        <!-- more menu panel popup start here -->
+                        <!-- <div class="moreMenuPopup" style="display:none">
+				<li>Start a Poll</li>
+				<li onclick="mediaFilePopup()">Media & Files</li>
+				<li>Mute Notifications</li>
+				<li>Leave this room</li>
+
+			</div> -->
+                        <!-- more menu panel popup end here -->
+                    </div>
+                    <div class="selectedMsgAction" id="selectedMsgActionDiv">
+                        <div class="deleteMessage share" id="shareSelectedMsgbtn" onclick="shareSelectedMsg()" data-balloon="Click to share selected item" data-balloon-pos="left"></div>
+                        <div class="deleteMessage flag" id="addFlaggedMsgbtn" onclick="flagSelectedMsg()" data-balloon="Click to add flag on selected item" data-balloon-pos="left"></div>
+                        <div class="deleteMessage" id="deleteSelectedMsg" onclick="removeSelectedMsg()" data-balloon="Click to delete selected item" data-balloon-pos="left">
+                        </div>
+                    </div>
+                    <!-- <div class="selectedMsgAction" id="checklistActiondiv">
+			<div class="deleteMessage complete" id="completeChecklist" onclick="showAllChecklist(event)" ></div>
+			<div class="deleteMessage incomplete" id="incompleteChecklist" onclick="showIncompleteChecklist(event)" ></div>
+			<div class="deleteMessage flagged" id="flaggedChecklist" onclick="showFlaggedChecklist(event)" ></div>
+			<div class="selectmsgA" >
+				<div class="deleteMessage share"  onclick="shareSelectedMsg()" ></div>
+				<div class="deleteMessage flag"  onclick="flagSelectedMsg()" ></div>
+				<div class="deleteMessage"  onclick="removeSelectedMsg()" ></div>
+			</div>
+
+			<div class="deleteMessage close" id="closeChecklist" onclick="$('#conv'+conversation_id).click()" ></div>
+		</div> -->
+                    <div id="unredScrollMsg" data-value="0" onclick="scrolltoDownChat('msg')"></div>
+                    <div class="chevron_right_head" onclick="showHeadRightOptions()" style="display: none"></div>
+                    <img id="scroll_loader" style="display:none;z-index: 999;position: absolute;left: 40%;top: 20px;" src="/images/loader.gif">
+                    <div class="msg-separetor_head">
+                        <div id="top-date"></div>
+                    </div>
+            </div>
+
+            <div class="chat-header" id="topicActive" style="display: none;">
+                <div class="chat-head-name">
+                    <div class="_4zoz" style="background: transparent;">
+                        <div class="_1b3n">
+                            <span class="_5qtp">Filter Messages by topic item <span class="filterList"> </span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-page overlayScrollbars" id="groupChatContainerChatpage">
+
+                <div id="msg-container" data-search="false" has-private="false">
+                    <!-- <div class="send-photo">
+				<img src="/images/basic_view/Halsbandsittich.jpg" alt="">
+			</div>
+			<div class="msg-separetor">
+				<p>Today</p>
+			</div>
+			<div class="msgs-form-users">
+				<div class="msg-user-photo">
+					<img src="/images/users/nayeem.jpg" alt="">
+				</div>
+				<div class="user-msg">
+					<h4>Joshua Tran
+						<span class="msg-time">2:12 PM</span>
+						<img class="flaggedMsg" src="/images/basicAssets/Flagged.svg">
+					</h4>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem voluptatum nam animi laboriosam optio
+						quasi, sed
+						molestiae quidem in ea dicta a. Deserunt blanditiis pariatur quisquam. Optio, quisquam. Facilis, magni! Lorem
+						ipsum
+						dolor sit amet consectetur adipisicing elit. Voluptatem voluptatum nam animi laboriosam optio quasi, sed
+						molestiae
+						quidem in ea dicta a. Deserunt blanditiis pariatur quisquam. Optio, quisquam.!</p>
+					<div class="toDoContent">
+						<div class="toDoContent_Sec1">
+							<img src="/images/basicAssets/custom_to_do_for_msg.svg">
+							<p class="toDoName">Amazon Office Wishlist</p>
+							<p>Due Date: 14 September, 2018</p>
+						</div>
+						<div class="toDoContent_Sec2">
+							<button class="accept_toDO" onclick="acceptToDo(event)">Accept</button>
+							<button class="decline_toDo">Decline</button>
+						</div>
+					</div>
+				</div>
+				<div class="msgs-form-users-options">
+					<div class="call-rep-emoji" onclick="viewEmojiList(event)">
+						<img src="/images/basicAssets/AddEmoji.svg" alt="">
+					</div>
+					<div class="flag" onclick="flggUserMsg(event)">
+						<img src="/images/basicAssets/NotFlagged.svg" alt="">
+					</div>
+					<div class="replys" onclick="threadReply()">
+						<img src="/images/basicAssets/Thread.svg" alt="">
+					</div>
+					<div class="more">
+						<img src="/images/basicAssets/MoreMenu.svg" alt="">
+						<div class="msg-more-popup" style="display:none">
+							<p onclick="viewCreateTodoPopup()">Create a to do</p>
+							<p>Schedule an event</p>
+							<p>Share Message</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="msgs-form-users">
+				<div class="msg-user-photo">
+					<img src="/images/users/nayeem.jpg" alt="">
+				</div>
+				<div class="user-msg">
+					<h4>Leo Max
+						<span class="msg-time">2:42 PM</span>
+					</h4>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem voluptatum nam animi laboriosam optio
+						quasi.!</p>
+					<div class="event_content">
+						<div class="event_content_sec1">
+							<img src="/images/basicAssets/custom_event_for_msg.svg">
+							<p class="toDoName">Mira Weekly Meeting</p>
+							<span class="dateAndTime">When: 14 September, 2018(3:30pm - 4:30pm)</span>
+							<span class="location">Where: Boardroom</span>
+						</div>
+						<div class="event_content_sec2">
+							<button class="attending" onclick="viewEventMember(event)">Attending</button>
+							<button class="maybe_attending" onclick="viewEventMember(event)">Maybe Attending</button>
+							<button class="not_attending" onclick="viewEventMember(event)">Not Attending</button>
+						</div>
+					</div>
+				</div>
+				<div class="msgs-form-users-options">
+					<div class="call-rep-emoji" onclick="viewEmojiList(event)">
+						<img src="/images/basicAssets/AddEmoji.svg" alt="">
+					</div>
+					<div class="flag" onclick="flggUserMsg(event)">
+						<img src="/images/basicAssets/NotFlagged.svg" alt="">
+					</div>
+					<div class="replys" onclick="threadReply()">
+						<img src="/images/basicAssets/Thread.svg" alt="">
+					</div>
+					<div class="more">
+						<img src="/images/basicAssets/MoreMenu.svg" alt="">
+						<div class="msg-more-popup" style="display:none">
+							<p onclick="viewCreateTodoPopup()">Create a to do</p>
+							<p>Schedule an event</p>
+							<p>Share Message</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="msgs-form-users">
+				<div class="msg-user-photo">
+					<img src="/images/users/nayeem.jpg" alt="">
+				</div>
+				<div class="user-msg">
+					<h4>George Jsons
+						<span class="msg-time">3:12 PM</span>
+					</h4>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem volupt.!</p>
+					<div class="msgReply" onclick="viewAllThread()">
+						<div class="groupImg">
+							<img src="/images/users/joni.jpg">
+							<img src="/images/users/joni.jpg">
+							<img src="/images/users/joni.jpg">
+							<img src="/images/users/joni.jpg">
+						</div>
+						<div class="countReply">
+							<img src="/images/basicAssets/custom_thread_for_reply.svg">
+							<p><span>4</span> Reply</p>
+							<img class="replyarrow" src="/images/basicAssets/custom_rightChevron_for_reply.svg">
+						</div>
+					</div>
+				</div>
+				<div class="msgs-form-users-options">
+					<div class="call-rep-emoji" onclick="viewEmojiList(event)">
+						<img src="/images/basicAssets/AddEmoji.svg" alt="">
+					</div>
+					<div class="flag" onclick="flggUserMsg(event)">
+						<img src="/images/basicAssets/NotFlagged.svg" alt="">
+					</div>
+					<div class="replys" onclick="threadReply()">
+						<img src="/images/basicAssets/Thread.svg" alt="">
+					</div>
+					<div class="more">
+						<img src="/images/basicAssets/MoreMenu.svg" alt="">
+						<div class="msg-more-popup" style="display:none">
+							<p onclick="viewCreateTodoPopup()">Create a to do</p>
+							<p>Schedule an event</p>
+							<p>Share Message</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="msgs-form-users">
+				<div class="msg-user-photo">
+					<img src="/images/users/nayeem.jpg" alt="">
+				</div>
+				<div class="user-msg">
+					<h4>Joshua Tran
+						<span class="msg-time">4:12 PM</span>
+					</h4>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing.!</p>
+					<img src="/images/basic_view/HighlandTige.jpg" alt="">
+				</div>
+				<div class="msgs-form-users-options">
+					<div class="call-rep-emoji" onclick="viewEmojiList(event)">
+						<img src="/images/basicAssets/AddEmoji.svg" alt="">
+					</div>
+					<div class="flag" onclick="flggUserMsg(event)">
+						<img src="/images/basicAssets/NotFlagged.svg" alt="">
+					</div>
+					<div class="replys" onclick="threadReply()">
+						<img src="/images/basicAssets/Thread.svg" alt="">
+					</div>
+					<div class="more">
+						<img src="/images/basicAssets/MoreMenu.svg" alt="">
+						<div class="msg-more-popup" style="display:none">
+							<p onclick="viewCreateTodoPopup()">Create a to do</p>
+							<p>Schedule an event</p>
+							<p>Start a poll</p>
+							<p>Share Message</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="msgs-form-users">
+				<div class="msg-user-photo">
+					<img src="/images/users/nayeem.jpg" alt="">
+				</div>
+				<div class="user-msg">
+					<h4>Joshua Tran
+						<span class="msg-time">4:12 PM</span>
+					</h4>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing.!</p>
+					<div class="send-image-from-user">
+						<img src="/images/contact/107.jpg" alt="">
+					</div>
+					<div class="send-image-from-user">
+						<img src="/images/contact/115.jpg" alt="">
+					</div>
+					<div class="send-image-from-user">
+						<img src="/images/contact/109.jpg" alt="">
+					</div>
+					<div class="send-image-from-user">
+						<img src="/images/contact/117.jpg" alt="">
+					</div>
+				</div>
+				<div class="msgs-form-users-options">
+					<div class="call-rep-emoji" onclick="viewEmojiList(event)">
+						<img src="/images/basicAssets/AddEmoji.svg" alt="">
+					</div>
+					<div class="flag" onclick="flggUserMsg(event)">
+						<img src="/images/basicAssets/NotFlagged.svg" alt="">
+					</div>
+					<div class="replys" onclick="threadReply()">
+						<img src="/images/basicAssets/Thread.svg" alt="">
+					</div>
+					<div class="more">
+						<img src="/images/basicAssets/MoreMenu.svg" alt="">
+						<div class="msg-more-popup" style="display:none">
+							<p onclick="viewCreateTodoPopup()">Create a to do</p>
+							<p>Schedule an event</p>
+							<p>Start a poll</p>
+							<p>Share Message</p>
+						</div>
+					</div>
+				</div>
+			</div> -->
+                </div>
+                <div class="" id="checklist-container" style="display: none">
+                    <div class="checklist_msgs">
+                        <div class="msg-user-photo">
+                            <img src="/images/users/nayeem.jpg" alt="">
+                        </div>
+                        <div class="user-msg">
+                            <h4 class="sender_title">Joshua Tran </h4>
+                            <p class="msg-time">2:12 PM</p>
+                            <p class="checkListPlainText" onkeydown="checkListPlainText(event)">Hello World!</p>
+                            <ul class="check_options">
+                                <li> Pending (5) </li>
+                                <li> Completed (5) </li>
+                                <li> Show All (10) </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="checklist_msgs">
+                        <div class="msg-user-photo">
+                            <img src="/images/users/nayeem.jpg" alt="">
+                        </div>
+                        <div class="user-msg">
+                            <h4 class="sender_title">Joshua Tran </h4>
+                            <p class="msg-time">2:12 PM</p>
+                            <p class="checkListPlainText" onkeydown="checkListPlainText(event)">Hello World!</p>
+                            <ul class="check_options">
+                                <li> Pending (5) </li>
+                                <li> Completed (5) </li>
+                                <li> Show All (10) </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="checklist_msgs">
+                        <div class="msg-user-photo">
+                            <img src="/images/users/nayeem.jpg" alt="">
+                        </div>
+                        <div class="user-msg">
+                            <h4 class="sender_title">Joshua Tran </h4>
+                            <p class="msg-time">2:12 PM</p>
+                            <p class="checkListPlainText" onkeydown="checkListPlainText(event)">Hello World!</p>
+                            <ul class="check_options">
+                                <li> Pending (5) </li>
+                                <li> Completed (5) </li>
+                                <li> Show All (10) </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="checklist_msgs">
+                        <div class="msg-user-photo">
+                            <img src="/images/users/nayeem.jpg" alt="">
+                        </div>
+                        <div class="user-msg">
+                            <h4 class="sender_title">Joshua Tran </h4>
+                            <p class="msg-time">2:12 PM</p>
+                            <p class="checkListPlainText" onkeydown="checkListPlainText(event)">Hello World!</p>
+                            <ul class="check_options">
+                                <li> Pending (5) </li>
+                                <li> Completed (5) </li>
+                                <li> Show All (10) </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="createIssueBtn" class="openIssue" onclick="toggeCreateMsgContainer(this)"></div>
+            <div id="msgUrlPreview" class="msg_url_preview" style="display: none">
+                <div class="ulr_img">
+                </div>
+                <div class="url_properties">
+                    <div class="url_title">
+                    </div>
+                    <div class="url_desc">
+                    </div>
+                </div>
+                <div class="close_previewUrl" onclick="closeModal('msgUrlPreview')"></div>
+            </div>
+            <div class="send-msgs">
+                <div class="mention_user_list" id="mention_user_list"> </div>
+                <p class="send_msg_info tooltip_target" onclick="info_tooltip('send_msg','top',this, event)"><span style="height: 17px;"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="17px" height="17px" ></span></p>
+                <p id="msg_pvt_btn" data-balloon="Send a private message to selected user(s)" data-balloon-pos="up-left" class="send_msg_info tooltip_target private_msg_icon" onclick="viewmentionuserlists()"><span>
+                    <!-- <img src="/images/basicAssets/private_message.png" alt="i" width="100%" height="100%" > -->
+                </span></p>
+
+                <div class="issueActivebody">
+                    <div class="popuptitle">Create a new issue</div>
+                    <div class="closeIssueMsg" style="display: none" onclick="$('#createIssueBtn').trigger('click')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                    <div id="secretUserList" class="secretUserList"></div>
+                    <div id="issue_req_for">
+                        <div style="float: left;">New Request for</div>
+                        <div id="issue_req_users" data-id="" onclick="setissueUser(this)"></div>
+                    </div>
+                    <div contenteditable="true" id="msg" class="write-msgs" placeholder="" data-checklist="false"></div>
+
+
+                    <p class="typing-indicator"></p>
+                    <div class="snd_options">
+                        <% if(data[0].myid[0].user_role != 'Guest') { %>
+                            <div class="add_check_list" id="createTeamTasks" onclick="addMsgCheckList('team_tasks')" data-balloon="Create Team Tasks" data-balloon-pos="left"></div>
+                            <div class="add_check_list" id="msgCheckListBtn" onclick="addMsgCheckList()" data-balloon="Create Checklist" data-balloon-pos="left"></div>
+                            <% } %>
+                                <div class="send-attach-file" onclick="chatFileUploadFunc('msg')" data-balloon="Attach files" data-balloon-pos="left"></div>
+                                <div class="send-emoji" data-balloon="Insert emoji" data-balloon-pos="left" onclick="open_emoji()"></div>
+                                <div class="circle_up_arrow" onclick="clickToSend('msg')" data-balloon="Click to send or press Enter" data-balloon-pos="left"></div>
+                    </div>
+
+                    <div id="msgCustomEditOption" class="msgCustomEditOption">
+                        <!-- <div class="activeCheckbox active" onclick="customEditor('cl')"></div>
+				<div class="activeNumber" onclick="customEditor('ol')"></div>
+				<div class="activeRadio" onclick="customEditor('ul')"></div> -->
+                        <!-- <div class="activeMail" onclick="customEditor('mail')"></div> -->
+
+                    </div>
+                    <!-- <div class="setTimer" onclick="setMsgTimer(this)" id="setMsgTimer" value=""></div> -->
+                    <div class="setTimer2" onclick="setMsgTimer(this)"></div>
+                    <!-- <div class="addmsgtag" onclick="toggleMessageTag(this)"></div> -->
+                    <div class="msgTagHolder backwrap" id="groupAdminArea" data-mute-id="" style="display: none">
+                        <div class="groupHvIn">
+                            <div class="_3ubp _sg2 _76ge">
+                                <span class="_sg1">
+							<span class="_5qtp">Create topic on message</span>
+                                </span>
+                            </div>
+                            <div class="_3u17" role="button"><i alt="" class="sp_b5lOLcZ0oBP sx_595d8d"></i></div>
+                            <div class="_4zoz">
+                                <div class="_1b3n">
+                                    <input type="text" class="tag_input_box" placeholder="Start your discussion on ..." name="" onkeyup="createNewMsgTag(event)" onkeydown="createTemppTagD(event)">
+                                </div>
+                            </div>
+                            <div style="float: left;" class="_1b34n container" id="msg_tag_container">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="slideUP" style="display: none">
+                        <ul class="options_container" id="options_container">
+                            <li onclick="toggleTopicCont(this)">
+                                <div class="option">
+                                    <div class="plus_conv_ico"></div>
+                                    <div class="text">Add new topic</div>
+                                </div>
+                            </li>
+                            <li onclick="toggleManageTopic(this)">
+                                <div class="option">
+                                    <div class="cog_conv_ico"></div>
+                                    <div class="text">Manage topic</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="hayven_eidtor" onclick="showMsgEditor()"></div> -->
+                    <!-- <div class="send-attach-file" onclick="uploadFileFunction()" data-balloon="Attach files" data-balloon-pos="left"></div> -->
+
+                    <button class="hideRoom_fromLeft" id="hideRoom_fromLeft" onclick="removeThisList($('.sideActive.selected').attr('data-conversationid'))">Hide this room from left panel</button>
+                    <div class="hayven_Modal_endSection">
+                        <div class="btn_group">
+                            <button class="buttonAction" onclick="createIssue()">Create</button>
+                            <!-- <button class="buttonAction" onclick="closeModal('createIssueTagPop')">Create</button> -->
+                            <button class="buttonCancel" onclick="$('#createIssueBtn').trigger('click')">Cancel</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+    <div id="NotificationContainer" class="connect_right_section">
+        <div class="chat-header" style="top: 64px;">
+            <div class="headMenuForMobile">
+                <div class="menuforHead" onclick="showleftSide()">
+                    <!-- <i class="fa fa-users" aria-hidden="true" style="color: #FFFFFF; width: 20px; height: 20px;"></i> -->
+                </div>
+            </div>
+            <div class="chat-head-name" style="margin-top: 28px; height: auto; pointer-events: auto; border:none;">
+                <div style="cursor: default;">
+                    <span style="margin-left: 27px;     color: var(--PrimaryC);
+					font-family: 'hvAssistant';font-size: 18px;font-weight: 600;line-height: 19px;float: left;">
+						<div class="msg-user-photo">
+							<span style="position: absolute;margin: auto;left: 17px;top: 18px;overflow: hidden;display: flex;width: 44px;height: 44px;border-radius: 15px;justify-content: center; align-items: center;">
+								<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bell" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-bell fa-w-14 fa-2x"><path fill="currentColor" d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z" class=""></path></svg>
+							</span>
+                </div>
+                <span class="converstaion_name" onclick="start_conversation('notification')" style="margin-left: 27px;">Workfreeli Notification(s) |<span class="starshow" id="hasNewNotification"> *</span></span>
+                <span class="converstaion_name" onclick="clearNotificationAll()">Clear Notification(s) |</span>
+                <span class="converstaion_name" id="archiveNotification" onclick="archiveNotification()">Archive Notification(s)</span>
+                <!-- <span class="tips-before" onclick="start_tips('tips')" style="margin-left: 27px;">Tip(s)<span class="starshow" id="hasNewTips"> *</span></span> -->
+                </span>
+            </div>
+
+        </div>
+        <div class="chatting-date-header">
+            <p>Notification</p>
+        </div>
+    </div>
+    <div id="notification_body" class="notification-tips"></div>
+
+
+    <div id="tips_body" class="tips-body">
+        <div class="tips-container">
+            <div class="tips-search-container">
+                <form autocomplete="off">
+                    <input type="text" placeholder="Search tips.." id="tips-search" autocomplete="off">
+                    <button type="button"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+
+            <div class="all-tips">
+                <h3>All Tip's</h3>
+            </div>
+
+            <div id="show_tips_containter">
+                <!-- <h3 class="no-tips-find">No tips are available at this moment.</h3>-->
+                <!-- <div class="simple-view-tips">
+					<h3 class="tips-header">Workfreeli</h3>
+					<p class="noti-tips-details">Workfreeli is the smart business management application that reorganizes your work world and combines all your channels into a single platform. It is a new business application that OHS Global Inc. has been developing and we are happy to begin implementation of this application within our internal teams. To kick off, we’re launching the Connect platform.</p>
+					<p class="tips-hotkeys"><b>Hot keys: </b>Workfreeli, Freeli</p>
+				</div>
+				<div class="simple-view-tips">
+					<h3 class="tips-header">Workfreeli</h3>
+					<p class="noti-tips-details">Workfreeli is the smart business management application that reorganizes your work world and combines all your channels into a single platform. It is a new business application that OHS Global Inc. has been developing and we are happy to begin implementation of this application within our internal teams. To kick off, we’re launching the Connect platform.</p>
+					<p class="tips-hotkeys"><b>Hot keys: </b>Workfreeli, Freeli</p>
+				</div> -->
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+</div>

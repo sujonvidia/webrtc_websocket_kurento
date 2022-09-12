@@ -1,0 +1,924 @@
+/* .chat-head-name{
+    display: none !important;
+}
+.chat-head-calling{
+    display: none !important;
+}
+
+
+#create_conv_btn{
+    display: none !important;
+}
+#msg{
+    display: none !important;
+} */
+
+
+.search-chats {
+    display: none !important;
+}
+
+.sub-text {
+    /* display: none; */
+}
+
+#school {
+    width: 100% !important;
+}
+
+.select2-container .select2-choice,
+.select2-result-label {
+    font-size: 1.5em;
+    height: 41px;
+    overflow: auto;
+}
+
+.select2-arrow,
+.select2-chosen {
+    padding-top: 6px;
+}
+
+#preview {
+    width: 100%;
+    height: 100%;
+    margin: 0px auto;
+    display: block;
+    /* position: relative; */
+    /* top: 20px; */
+}
+
+#qr_status {
+    /* height: 15vh; */
+    text-align: center;
+    /* font-size: 1rem; */
+    text-transform: uppercase;
+    margin: auto;
+    width: 80%;
+    padding: 10px;
+    font-size: calc(1vw + 1vh);
+}
+
+#qr_status_text {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#survey_back_btn {
+    position: absolute;
+    left: 7%;
+    top: 9%;
+    padding: 4px;
+    box-sizing: border-box;
+    border-radius: 100%;
+    width: 33px;
+    height: 30px;
+    background-image: url(/images/basicAssets/BackArrow.svg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    cursor: pointer;
+    display: none !important;
+}
+
+.dir-msg-close.back {}
+
+#connectAsideContainer .pinned-chats {
+    display: block !important;
+}
+
+.checklistListFilter {
+    display: none !important;
+}
+
+.checklistListViewHeader {
+    display: none !important;
+}
+
+#pintul {
+    display: none !important;
+}
+
+.label_head_aside {
+    display: none !important;
+}
+
+.side_bar_list_item li .protected {
+    margin-left: 0px;
+    left: 10px;
+}
+
+.send-msgs {
+    display: none !important;
+}
+
+#main {
+    padding: 0 !important;
+}
+
+#main header {
+    background-color: var(--PrimaryC);
+    margin-bottom: 0rem!important;
+    text-align: center;
+}
+
+#survey-form {
+    padding: 2rem !important;
+}
+
+#personalConnectActive {
+    display: none !important;
+}
+
+#form_report {
+    display: none;
+    /* width: 80%;
+    margin: auto; */
+}
+
+#image_qr {
+    text-align: center;
+    /* background: var(--Gray); */
+    border-radius: 8px;
+    /* border: 1px solid var(--PrimaryC); */
+}
+#serial_qr{
+    padding-bottom: 5px;
+}
+
+#text_qr {
+    display: none;
+    padding: 10px;
+    border: 3px solid var(--NewSimpleRed);
+    border-radius: 8px;
+}
+
+#image_qr canvas {
+    width: 186px;
+    height: 186px;
+    padding: 15px 15px 0 15px;
+}
+
+#box_survey_propic {
+    border: 1px solid var(--PrimaryC);
+    display: none !important;
+}
+
+#box_survey_propic img {
+    max-width: 186px;
+    max-height: 186px;
+    padding: 15px;
+}
+
+.idcard_img {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#box_scan_propic {
+    border: 1px solid var(--PrimaryC);
+    /* display: none; */
+}
+
+#box_scan_propic img {
+    max-width: 186px;
+    max-height: 186px;
+    padding: 15px;
+}
+
+.option-box {
+    /* border: 1px solid var(--PrimaryC); */
+    /* line-height: 30px; */
+    text-align: center;
+    /* float: left; */
+    width: 65%;
+    box-sizing: border-box;
+    font-size: 23px;
+    font-weight: normal;
+    /* padding: 10px; */
+    font-weight: normal;
+    letter-spacing: 0px;
+    border-radius: 8px;
+    margin: 20px auto;
+    cursor: pointer;
+    color: var(--PrimaryC);
+}
+
+.survey-center {
+    width: 80% !important;
+    margin: auto !important;
+    padding-bottom: 5%;
+    padding-top: 1%;
+}
+
+.quelist.disabled label {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.status-head {
+    text-align: center;
+    background-color: #023d67;
+    color: white;
+    padding: 5px;
+    font-size: 35px;
+    border-radius: 10px;
+}
+
+.status-body {
+    /* text-align: center; */
+    margin: 50px 0;
+}
+
+.status-list {
+    list-style-position: inside;
+}
+
+#groupChatContainerChatpage {
+    margin: 0px !important;
+    height: calc(100% - 64px) !important;
+}
+
+#submit_covid_btn,
+.submit_covid_btn {
+    color: var(--CFFF);
+    background-color: var(--PrimaryC);
+    font-size: 20px;
+    border: 1px solid var(--PrimaryC);
+    text-align: center;
+    border-radius: 4px;
+    padding: 10px 0;
+    margin: 0;
+    /* position: absolute; */
+    cursor: pointer;
+    display: inline-block;
+    width: 100%
+}
+
+.no_covid_btn,
+#no_covid_btn {
+    color: var(--CFFF);
+    background-color: var(--PrimaryC);
+    font-size: 20px;
+    border: 1px solid var(--PrimaryC);
+    text-align: center;
+    border-radius: 4px;
+    padding: 10px 0;
+    margin: 0;
+    /* position: absolute; */
+    cursor: pointer;
+    display: inline-block;
+    width: 100%
+}
+
+.chat_container {
+    height: calc(100% - 100px) !important;
+}
+
+#start_covid_btn {
+    color: var(--CFFF);
+    background-color: var(--PrimaryC);
+    font-size: 20px;
+    width: 10%;
+    border: 1px solid var(--PrimaryC);
+    text-align: center;
+    height: 48px;
+    line-height: 48px;
+    border-radius: 4px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.box_ico {
+    font-size: 12px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.box5 {
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 102, 204);
+    color: rgb(0, 102, 204);
+    border-radius: 4px;
+    box-sizing: border-box;
+    box-shadow: none;
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    line-height: 1.55556;
+    margin: 10px auto 10px 0px;
+    min-width: 10rem;
+    padding: 0.625rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* margin-right: 10%; */
+}
+
+.box_row {
+    /* width: 100%; */
+    /* margin-right:10%;*/
+    /* float: left;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 40px auto; */
+}
+
+.box_row_text {
+    /*  margin-right:10%;*/
+    color: black !important;
+    margin-top: 20px;
+    float: left;
+    display: grid;
+    /* grid-template-columns: 40px auto; */
+    text-align: initial;
+}
+
+.Head_text {
+    font-weight: bold;
+    font-size: 23px;
+    color: black !important;
+    /* margin: 0.25rem 1rem 1rem 1rem; */
+}
+
+.content_text {
+    font-size: 18px;
+    padding: 10px 0px;
+    /* font-weight: 700; */
+}
+
+.ico {
+    margin: 10px auto 10px 0px;
+    left: 0px;
+    color: red;
+    font-size: 18px;
+}
+
+.left-input {
+    display: inline-block;
+    width: 100%;
+    /*    margin-left: 10px;
+*/
+}
+
+.left-input.review {
+    width: 70%;
+    display: inline-block
+}
+
+.right-input.review {
+    /* width:27%; */
+    display: inline-block;
+    /* position: absolute; */
+    /* margin: 1%; */
+}
+
+body {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cover {
+    /* min-height: 100vh; */
+    width: 100%;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.report_head {
+    /* margin-left: 1px; */
+    width: 100%;
+    height: auto;
+    background: #D9E2E8;
+    box-shadow: 5px 5px 5px var(--Gray);
+    /* border-radius: 10px 10px 0px 0px; */
+}
+
+#box_survey_txt2 {
+    padding: 10px;
+}
+
+#box_survey_comment2 {
+    padding: 10px;
+    padding-top: 0px;
+}
+
+
+/*.headrow {
+    margin: 0 auto;
+    padding: 0 auto;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}*/
+
+
+/* .leftSearch input{
+  padding-left:23px;
+  padding-right:10px;
+  height: 30px;
+  width: 90%;
+  border:0px;
+  outline: none;
+} */
+
+
+/* .campus_name,.stu_name,.dropbtn_search2{
+  margin: 10px;
+} */
+
+.RemoveIcon {
+    background: blue;
+    height: 100%;
+    background: red;
+}
+
+.report_table {
+    color: var(--PrimaryC);
+    width: 100%;
+    /* border-top: 1px solid #D8D8D8; */
+    /* border-bottom: 1px solid #D8D8D8; */
+    /* border-left: 1px dashed #D8D8D8; */
+    /* margin-top: 10px; */
+    background: white;
+    padding-bottom: 10px;
+}
+
+.report_table tr:not(:first-child):hover {
+    background: var(--AIC)
+}
+
+.report_table th {
+    border-right: 1px dashed #d8d8d8;
+    padding: 2px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1rem;
+    max-width: 14vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: var(--PrimaryC);
+    color: white;
+}
+
+.idcard_check_btn {
+    background-color: var(--RBC);
+    color: white;
+}
+
+.idcard_btn_allow {
+    background-color: #2196F3;
+}
+
+.idcard_btn_deny {
+    background-color: var(--NewSimpleRed);
+}
+
+.idcard_btn_allow:hover {
+    background-color: var(--C16);
+}
+
+.idcard_btn_deny:hover {
+    background-color: red;
+}
+
+.idcard_btn_checkout {
+    background-color: #2196F3;
+}
+
+.idcard_btn_cancel {
+    /* display: block; */
+    margin: 0;
+    padding: 0;
+    font-size: 25px;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    padding: 0px 5px;
+    background-color: red;
+    border-radius: 8px;
+}
+
+.idcard_btn_cancel:before {
+    content: '\f00d';
+    font-family: 'FontAwesome';
+    font-size: 26px;
+    color: #FFF;
+}
+
+#idcard_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.report_table td {
+    border-right: 1px solid #d8d8d8;
+    padding: 2px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1rem;
+    max-width: 14vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #FFF;
+    color: black;
+}
+
+.report_table thead {
+    background-color: #023d67;
+    color: white;
+}
+
+
+/* .report_table th:not(:last-child):after{
+    content: '\f160';
+    font-family: 'FontAwesome';
+    margin-left: 4px;
+    font-size: 16px;
+} */
+
+.report_table th.active:after {
+    content: '\f161';
+    font-family: 'FontAwesome';
+    margin-left: 4px;
+    font-size: 16px;
+}
+
+:root {
+    --F4: "Source Sans Pro";
+    --border: 1px solid #d8d8d8;
+    --hv-f-h: var(--F1);
+    --BtnC: #5cd4ef;
+    --PrimaryC: #023d67;
+    --CFFF: #ffffff;
+    --AIC: #d9e2e8;
+    --Ac: #fce053;
+    --Away: #67cce8;
+    --newBlu: #023D67;
+    --Trpnt: transparent;
+    --Gray: #9b9b9b;
+    --NewblueC: #2196F3;
+    --NewSimpleRed: #E91E63;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    font-family: var(--F4) !important;
+}
+
+#form_id {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 auto;
+    position: relative;
+    height: 100%;
+    display: block;
+}
+
+.id-bold {
+    font-weight: bold;
+    display: block;
+}
+
+#qr_student_id,
+#qr_student_email {}
+
+#form_qrcode {
+    height: 95%;
+}
+
+.id_card {
+    position: absolute;
+    height: 80%;
+    width: 47%;
+    float: left;
+    left: 0;
+    border: 1px solid gray;
+    box-shadow: 2px 3px 4px gray;
+}
+
+.status_card {
+    height: 80%;
+    position: absolute;
+    float: right;
+    right: 0;
+    width: 47%;
+    border: 1px solid gray;
+    box-shadow: 4px 4px 8px gray;
+}
+
+.submitBtn {
+    display: none;
+    overflow: hidden;
+    /* float: left; */
+    position: absolute;
+    /* right: 26px; */
+    bottom: 0;
+    /* left: 0; */
+    width: 100%;
+    height: 20%;
+}
+
+.submitBtn .cancel {
+    width: 47%;
+    float: left;
+    background: #00ff00;
+    color: black;
+    font-weight: 900;
+    font-size: calc(2vw + 2vh);
+    margin-top: 2vh;
+    border-radius: 5px;
+}
+
+.submitBtn .create {
+    width: 47%;
+    float: right;
+    background: #e91e63;
+    color: white;
+    font-size: calc(2vw + 2vh);
+    margin-top: 2vh;
+    border-radius: 5px;
+}
+
+.stu_photo {
+    /* width:80%; */
+    /* left:10%; */
+    /* margin:0 auto;
+  padding:0 auto; */
+    text-align: center;
+}
+
+
+/* .qr_photo{
+  width:60%;
+  left:10%;
+  margin:0 auto;
+  padding:0 auto;
+} */
+
+.hz_line {
+    border-bottom: 2px solid var(--PrimaryC);
+    margin-top: 2vw;
+}
+
+.stu_image {
+    border-radius: 50%;
+    align-items: center;
+    width: 100%;
+    height: 10vh;
+    border: 2px solid grey;
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.qr_image {
+    align-items: center;
+    margin: 0 auto;
+    padding: 0 auto;
+    width: 100%;
+    height: 7vw;
+}
+
+.id_info {
+    width: 100%;
+    left: 10%;
+    margin: 0 auto;
+    padding: 0 auto;
+    bottom: 1vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.id_info .Name {
+    font-size: calc(1.5vw + 1.5vh);
+    font-weight: bold;
+    color: var(--PrimaryC);
+    margin-bottom: 1.5vw;
+    margin-top: 1.5vw;
+    text-align: center;
+}
+
+.id_info .details {
+    /* font-size: .8rem; */
+    /* font-weight: bold; */
+    color: var(--PrimaryC);
+    font-size: calc(1.2vw + 1.2vh);
+}
+
+.covid-form {
+    /* width:80%; */
+    /* margin:auto; */
+    /* padding:10 auto; */
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 auto;
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* align-content: center; */
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
+.divHead {
+    width: 100%;
+    border-radius: 5px;
+    height: auto;
+    background: var(--PrimaryC);
+    color: white;
+    position: relative;
+}
+
+
+/*.row1{
+    display: grid;
+    grid-template-columns: 80% 20%;
+}*/
+
+.row2 {
+    height: auto;
+    padding: 10px;
+}
+
+.text3 {
+    text-align: center;
+    font-size: 35px;
+    width: 100%;
+    font-weight: 700;
+}
+
+.input1 {
+    border: none;
+    border-bottom: 1px solid black;
+    border-color: grey;
+    width: 100px;
+    outline: none;
+}
+
+.grey {
+    color: #5C5554;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+
+/*.title{
+    font-size:1.6vw;
+    font-weight: bold;
+
+
+}*/
+
+.question {
+    display: grid;
+    grid-template-columns: 65px auto;
+    margin: 20px 9% 20px 7%;
+}
+
+.question2 {
+    display: grid;
+    /* grid-template-columns: 65px auto; */
+    margin: 28px 1%;
+}
+
+.question3 {
+    display: grid;
+    grid-template-columns: auto;
+    margin: 20px 9% 20px 7%;
+}
+
+.queHead {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.queHead_hint {
+    font-size: 18px;
+    color: #5C5554;
+    font-weight: normal;
+    margin-top: 22px;
+}
+
+.quelist {
+    width: 100%;
+    /* margin-left: 2%; */
+    list-style: none;
+}
+
+.quelist li {
+    font-weight: bold;
+    color: black;
+    font-size: 18px;
+}
+
+.goog-te-banner-frame .common_head {
+    bottom: 40px !important;
+    top: 40px;
+}
+
+.right-input {
+    margin: 5px 10px auto 0px;
+}
+
+.right-input2 {
+    display: none;
+}
+
+input[type=checkbox] {
+    -ms-transform: scale(2);
+    /* IE */
+    -moz-transform: scale(2);
+    /* FF */
+    -webkit-transform: scale(2);
+    /* Safari and Chrome */
+    -o-transform: scale(2);
+    /* Opera */
+    transform: scale(2);
+    vertical-align: middle;
+}
+
+
+/* Might want to wrap a span around your checkbox text */
+
+.right-input label {
+    /* Checkbox text */
+    padding: 5px 10px;
+    cursor: pointer;
+    /* margin-right:20px; */
+}
+
+hr {
+    background: var(--PrimaryC);
+    height: 1px;
+}
+
+.result {
+    display: grid;
+    grid-template-columns: 40px auto;
+}
+
+.result li {
+    margin-top: 10px;
+}
+
+.question.hideinput {
+    display: grid;
+    grid-template-columns: auto !important;
+    margin: 20px 0px 20px 0px;
+}
+
+.covid_action_btn {
+    width: calc(30%);
+}
+
+
+/*Mobile desgin*/
+
+@media all and (max-width:768px) {
+    #survey_action_btn,
+    .survey_action_btn {
+        text-align: initial !important;
+    }
+    .option-box {
+        font-size: 23px;
+        /* padding: 10px; */
+        width: 100% !important;
+        margin: 20px auto;
+    }
+    .btnAlign.btnGrid {
+        /* display: grid !important; */
+        /* grid-template-columns: 47% 6% 47% !important; */
+        width: 100%;
+    }
+    /*  .btnAlign {
+        width: 100% !important;
+    }*/
+    .back_covid_res {
+        width: calc(50% - 13px) !important;
+    }
+    .covid_action_btn {
+        width: calc(100% - 2px);
+    }
+    .text3 {
+        font-size: 32px;
+        font-weight: 700;
+    }
+}

@@ -1,0 +1,87 @@
+<%- include('layouts/head') %>    
+    <div class="centered-form__form forgot-password">
+        <form onsubmit="return validateForm(event)"> 
+            <div class="logo_icon">
+                <a href="/">
+                    <img src="/images/Workfreeli_logo_full_connect.png" alt="workfreeli" style="border-radius: 4px;background-color: #023d67 !important">
+                </a>
+            </div>
+            <div class="hello-welcome-back">
+                Set your PIN/Password
+            </div>
+            <% if (error) { %><div class="error-msg" style="text-align: center;top: 35px;position: relative;z-index: 1;font-size: 16px;font-weight: bold;"><%= error %></div><% } %>
+            <div class="form-field email-address">
+                <label for="pass">New PIN/Password</label><br>
+                <input type="password" class="full_width" minlength="6" name="pass" id="pass">
+                <p id="errNewPasMsg" style="display: none;"></p>
+            </div>
+            <div class="form-field email-address">
+                <label for="pass2">Confirm PIN/Password</label><br>
+                <input type="password" class="full_width" minlength="6" name="pass2" id="pass2">
+                <p id="errConPasMsg" style="display: none;"></p>
+            </div>
+            <div class="sign-in">
+                <input id="uid" type="hidden" name="id" value="<%= id %>">
+                <button type="submit" class="submitBtn " id="submitBtn">Next</button><br><br>
+                <button onclick="location.href='/signup/loading'" class="cancleBtn " id="cancleBtn"  >Skip</button>
+            </div>          
+        </form>
+    </div>
+<%- include('layouts/foot') %>
+<div class="backwrap" id="removeWarning" data-mute-id="" style="display: none;">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<div class="closeModal" onclick="window.location.href='/logout'" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h4 id="existRoomPrivate">Password has been set successfully.</h4>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="window.location.href='/logout'">Cancel</button>
+				<button class="buttonAction" onclick="window.location.href='/'">Continue to WORKFREELI</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function validateForm(e){
+    e.preventDefault();
+    var new_password = $("#pass").val().trim();
+    var con_password = $("#pass2").val().trim();
+    $("#errNewPasMsg").html("").hide();
+    $("#errConPasMsg").html("").hide();
+    if(new_password == con_password){
+        console.log(40)
+        if(new_password == '123456'){
+            console.log(42)
+            $("#errNewPasMsg").html("You can not set your pin/Password like 123456.").css('color','#F55').show();
+            return false;
+        }
+        else if(new_password.length<6){
+            console.log(47)
+            $("#errNewPasMsg").html("PIN/Password must have minimum 6 characters.").css('color','#F55').show();
+            return false;
+        }
+    }else{
+        console.log(58)
+        $("#errConPasMsg").html("New PIN/Password and confirm PIN/Password doesn't match.").css('color','#F55').show();
+        return false;
+    }
+    $.ajax({
+        url: "/signup/pass_set",
+        data: {id: $("#uid").val(), pass: new_password, pass2: con_password},
+        dataType: "JSON",
+        type: "POST",
+        success: function(res){
+            console.log(res);
+            // $("#removeWarning").css("display", "flex");
+            window.location.assign("/signup/loading");
+        },
+        error: function(e){
+            console.log(e);
+        }
+    });
+}
+</script>

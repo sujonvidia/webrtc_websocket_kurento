@@ -1,0 +1,2672 @@
+<!-- <link rel="stylesheet" type="text/css" href="/stylesheets/taskOnconnect.css?v=<%= moment().format('X') %>"> -->
+<link href="/stylesheets/pluginCss/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/todo_chat_style.css">
+<section class="right-section" id="right-section-area" style="display:none;margin-top:0px;">
+    <div class="to_do_container" >
+        <div class="to_do_header">
+            <div class="to_do_head_left" id="toDoName">
+              <label class="checkbox_container">
+                <input id="amazonWishlist" type="checkbox">
+                <span class="checkmark"></span>
+              </label>
+              <textarea class="edit-todo-name" type="textarea" maxlength="128" id="todoTitle" placeholder="New Task" spellcheck="false"></textarea>
+              <div class="secLabel" style="position: absolute;height: 18px;bottom: 2px;">
+                <p id="totalTask" onclick="totalSubTask()" style="float: right;margin-right: 7px;cursor: pointer;border-left: 2px solid #d8d8d8;padding-left: 7px;">0 Subtask(s)</p>
+                <div class="customToolTip" style="text-align:left;width:200px;left: unset;top:21px;right: -58px" id="TST"></div>
+                <p id="totalTaskMember" onclick="totalTaskMember()" style="float: right;margin-right: 7px;cursor: pointer;margin-left: 7px;border-left: 2px solid #d8d8d8;padding-left: 7px;">0 Member(s)</p>
+                <div class="customToolTip" style="text-align:left;width:200px;left: unset;top:21px;right: 16px" id="TTM"></div>
+                <span id="taskCreated_By"style="line-height: 17px;"></span>
+                <span id="taskCreated_At"style="line-height: 17px;"></span>
+                <span id="taskCreated_At_time" style="margin-left:5px;line-height: 17px;"></span>
+              </div>
+            </div>
+            <div class="to_do_head_right">
+              <div class="pin" id="toDoPinUnpinDiv" style="display:flex">
+                <img id="pin_unpin" onclick="todopinunpin($(this).attr('data-acid'));" data-acid=""  data-pinid="" class="pin-to-bar unpin" src="/images/basicAssets/custom_not_pin.svg">
+              </div>
+              <div class="tags" id="tagged_area" onclick="tagged_area();" name="" style="display:flex">
+                <img src="/images/basicAssets/custom_not_tag.svg" class="tagged" alt="">
+              </div>
+              <div class="addTagConv" style="display: none">
+                <span id="taskTagItemList"></span>
+                <div class="taglistHolder">
+                  <input type="" name="" class="createConvTag" id="createTaskConvTag" placeholder="Create or Search Tag(s)" data-acid=""><img class="settingEmail tagSet" onclick="removeTaskUsertag(this);" src="/images/basicAssets/Settings.svg">
+                  <ul class="taggedList" id="taskTaggedList"></ul>
+                </div>
+              </div>
+              <div class="flag" onclick="toDoFlagUnflag(event)" style="display:flex">
+                <img id="flag_unflag" data-flagid="" class="unflag" src="/images/basicAssets/Not_Flagged.svg">
+              </div>
+              <div class="more" onclick="showMorePopUp()" style="display:flex">
+                <img src="/images/basicAssets/custom_moreForHead_menu.svg">
+              </div>
+              <div class="moreMenuPopup" style="display:none">
+                <li id="deletetodoTopBar" data-activityid="" onclick="showRemovePopUp($(this).data('activityid'));">Delete Task</li>
+                <li id="duplicateActivty" data-activityid="" onclick="duplicateActivity($(this).data('activityid'));">Duplicate Task</li>
+              </div>
+            </div>
+            <div class="to_do_head_right_section">
+              <div class="create-event chat" id="chat_icon" style="display: none;">
+                <img src="/images/basicAssets/Chat.svg" style="width: 14px; height: 14px;pointer-events: none;">
+                <p  style="pointer-events: none;">Task Chat</p>
+              </div>
+              <div class="create-todo" id="createTodo" onclick="closeRightSection()">
+                  <p>Close</p>
+              </div>
+            </div>
+          </div>
+        <div class="taskLoaderFull"></div>
+        <div class="workspaceform" style="display:none">
+            <div class="content-wraper">
+                <!-- New Design Start -->
+                <div class="group-input">
+        
+                    <div class="date_team_group" style="position:relative;overflow: unset">
+                    <label class="fullLabel due-date" for="">Due date
+                        <input type="text" name="dueDateWS" id="dueDatePicker" class="dueDate-input" placeholder="Choose a date" readonly >
+                    </label>
+                    <label class="fullLabel team-select">Team
+                        <select class="select-workspace" id="selectWorkspace" required>
+                        <option value="Navigate">Navigate</option>
+                        <option value="Freelance">Freelance</option>
+                        <option value="Personal">Personal</option>
+                        </select>
+                    </label>
+                    <div class="share-with-group">
+                        <div class="share-drop-list mycustomTooltip tooltips">
+                        <label class="fullLabel" >Creator/Admin(s)</label>
+                        <div placeholder="" name="" id="taskOwnerList" class="share-input " onclick="taskManage(this,'owner')">
+                            <span class="count_plus" style="display:none;">+4</span>
+                        </div>
+                        <span class="tooltipspan"></span>
+                        </div>
+                    </div>
+                    <div class="share-with-group">
+                        <div class="share-drop-list mycustomTooltip tooltips">
+                        <label class="fullLabel" >Observer(s)</label>
+                        <div placeholder="" name="" id="taskObserverList" class="share-input" onclick="taskManage(this,'observer')">
+                            <span class="count_plus" style="display:none;">+4</span>
+                        </div>
+                        <span class="tooltipspan"></span>
+                        </div>
+                    </div>
+                    <div class="share-with-group">
+                        <div class="share-drop-list mycustomTooltip tooltips">
+                        <label class="fullLabel" >Assignee <span class="rdonlyText assigntxt" style="color:#b9b9b9;display:none">(Readonly)</span></label>
+                        <div placeholder="" name="" id="taskAssigneeList" class="share-input" onclick="taskManage(this,'assignee')">
+                            <span class="count_plus" style="display:none;">+4</span>
+                        </div>
+                        <span class="tooltipspan"></span>
+                        </div>
+                    </div>
+        
+                    <label class="fullLabel task_status" for="">Task Status <span class="rdonlyText" style="color:#b9b9b9">(Readonly)</span>
+                        <div class="rdonlyDiv"></div>
+                        <select class="select-workspace" id="taskStatusSelect" required>
+                        <option value="Initiate" selected>Initiate</option>
+                        <option value="Working">Working</option>
+                        <option value="Feedback">Waiting for feedback</option>
+                        <option value="Completed">Completed</option>
+                        </select>
+                    </label>
+        
+        
+                    <!-- Due Calendar design start-->
+                    <div class="todo-calender" style="display:none" id="dueDatePickerDiv">
+                        <span class="closeMiniPopUp" onclick="closeMiniPopUp('dueDatePickerDiv')">+</span>
+                        <div class="addTimePicker">
+                            <li class="time-from">
+                            <input class="datefrom" id="timeFrom" type="text" placeholder="From">
+                            </li>
+                            <li class="time-to">
+                            <input id="timeTo" class="dateto" type="text" placeholder="To">
+                            </li>
+                            <li class="remind-time">
+                            <select id="ReminderTime" class="reminder" required>
+                                <option value="" disabled selected>Set Reminder</option>
+                                <option value="15">Snooze 15 Minutes before</option>
+                                <option value="30">Snooze 30 Minutes before</option>
+                                <option value="45">Snooze 45 Minutes before</option>
+                                <option value="1">Snooze 1 Hours before</option>
+                                <option value="2">Snooze 2 Hours before</option>
+                                <option value="3">Snooze 3 Hours before</option>
+                                <option value="4">Snooze 4 Hours before</option>
+                                <option value="5">Snooze 5 Hours before</option>
+                            </select>
+                            </li>
+                        </div>
+                    </div>
+                        <!-- Due Calendar design end-->
+                        <!-- <span class="more_task_inputs" onclick="showMoreTaskInput()">Show more options...</span> -->
+                    </div>
+                    <div class="toggleGroupLabel">
+                        <span id="action_hour" class="" data-setval="2" data-setid="" onclick="toggleMoreOption('hour', this)">Task Time</span>
+                        <span id="action_amount" class="" data-setval="2" data-setid="" onclick="toggleMoreOption('amount', this)">Task Budget</span>
+                        <span id="actionNoteDesc" class="" data-setval="2" data-setid="" onclick="toggleMoreOption('desc', this)">Task Description</span>
+                        <!-- <span id="actionFileUpload" data-myid="" data-type="task" onclick="open_file_browser_for_send_msg(this)">Upload File(s)</span> -->
+                    </div>
+                    <div class="budget_to_status" style="display:block;">
+                        <div class="group-note" id="task_desc_group" style=" display:none;width: calc(100% - 0%); min-height:80px;" data-width="100">
+                            <div class="note_file_group" style="box-sizing:border-box">
+                                <label class="fullLabel note-label" style="display: none">
+                                    <!--  <textarea class="notes_area" id="notes_area" placeholder="Enter your task description" style="height: 128px"></textarea> -->
+                                    <div class="notes_area" contenteditable="true" id="notes_area" placeholder="Write a description" style="height: 144px" onblur="taskDescKeyUp(event,this)"></div>
+                                    <label for="notes_area">Task description</label>
+                                    
+                                </label>
+                                <div class="centered no_desc_open" style="width: 100%; display: none">
+                                    <div class="group">
+                                    <div type="text" id="addTodoTaskDescription" placeholder="Write a description" contenteditable="true" onblur="taskDescKeyUp(event,this)"></div>
+                                    <label for="addTodoTaskDescription" onclick="$('#addTodoTaskDescription').focus()">Task description</label>
+                                    <div class="bar"></div>
+                                    <!-- <h3 class="name_label" onclick="open_file_browser_for_send_msg()">Upload File(s)</h3> -->
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-note" data-width="16.66" style="display:none;width:16.66%; min-height:80px;" id="task_b_a_Amount">
+                            <label class="fullLabel task_time_est" for="">Budget Amount 
+                                <input type="text" name="" id="taskBAinput" class="task_inputs" placeholder="0.00">
+                            </label>
+                            <label class="fullLabel task_budget"  for="">Actual Amount 
+                                <input type="text" name="" id="taskAAinput" class="task_inputs" placeholder="0.00">
+                            </label>
+                            <label class="fullLabel task_budget _inactive" id="budget_variance">Budget Variance: <span></span></label>
+                        </div>
+                        <div class="group-note" data-width="16.6" style="display:none;width:16.6%; min-height:80px;" id="task_e_a_hours">
+                            <label class="fullLabel task_budget" for="">Estimated Work Hour 
+                                <input type="text" name="" id="taskEHinput" class="task_inputs" placeholder="hh:mm">
+                            </label>
+                            <label class="fullLabel task_actual" for="taskEHRinput">Estimated Hourly Rate 
+                                <input type="text" name="" id="taskEHRinput" class="task_inputs" placeholder="0.00">
+                            </label>
+                            <label class="fullLabel task_budget _inactive" id="e_h_variance">Estimated Cost:<span></span> </label>
+                        </div>
+                        <div class="group-note" data-width="16.6" style="display:none;width:16.6%; min-height:80px;" id="task_e_a_hrate">
+                            
+                            <label class="fullLabel task_budget" for="" style="padding-right: 0px">Actual Work Hours 
+                                <input type="text" name="" id="taskAHinput" class="task_inputs" placeholder="hh:mm">
+                            </label>
+                            <label class="fullLabel task_budget" for="" style="padding-right: 0px">Actual Hourly Rate 
+                                <input type="text" name="" id="taskAHRinput" class="task_inputs" placeholder="0.00">
+                            </label>
+                            <label class="fullLabel task_budget _inactive" id="e_h_r_variance">Actual Cost: <span></span> </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="centered add_st_group" style="margin-top: 0px;">
+                  <div class="group">
+                    <input type="text" id="addTodoCheckList" placeholder="Write a subtask and Enter to add" autofocus required>
+                    <label for="addTodoCheckList">Add a subtask</label>
+                    <div class="bar"></div>
+                  </div>
+                </div>
+                <div class="multipleProgress">
+                  <div class="text total" id="totalProgressSubtask">0%</div>
+                  <div class="progressBarContainer">
+                    <!-- <div class="completed" style="width:0%" id="completedProgress"></div>
+                    <div class="working" style="width:0%" id="workingProgress"></div>
+                    <div class="waitingFeedback" style="width:0%" id="waitingFeedbackProgress"></div>
+                    <div class="incomplete" style="width:100%" id="incompleteProgress"></div> -->
+                  </div>
+                  
+                  <!-- <span class="showArchive" onclick="archiveView(this)" style="display:block">Show Archive</span> -->
+                  <span id="openBatchAction" onclick="open_selected_subtask_propertis()" style="display:none" data-balloon="Batch Action" data-balloon-pos="up"><span class="batch_label">Batch Actions</span> <span class="big_tooltip"> Batch Actions </span> </span>
+                  <span id="filteringTask" onclick="filteringTaskList(this)">Hide Completed Subtask(s)</span>
+                  <span id="subtasksOptions" onclick="toggleSubtasksOption(this)">Subtask Options </span>
+                  <div id="custom_toDoMoreOptionView">
+                    <div class="dialog-node">
+                      <span class="closeMiniPopUp" onclick="$('#subtasksOptions').trigger('click')">+</span>
+                      <div class="column-menu-dialog-wrapper">
+                        <!-- <span class="column-menu-patch"></span> -->
+                        <div class="ds-menu-inner">
+                            <div class="ds-menu-section ">
+                                <div class="column-menu-item active" data-name="owner"  onclick="column_menu_item(event)" style="display:none">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <svg class="svg-inline--fa fa-user fa-w-16" aria-hidden="true" data-prefix="fa" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 0c88.366 0 160 71.634 160 160s-71.634 160-160 160S96 248.366 96 160 167.634 0 256 0zm183.283 333.821l-71.313-17.828c-74.923 53.89-165.738 41.864-223.94 0l-71.313 17.828C29.981 344.505 0 382.903 0 426.955V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-37.045c0-44.052-29.981-82.45-72.717-93.134z"></path></svg>
+                                    </div>
+                                    <span class="ds-title">Owner</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-setval="2" data-setid="" onclick="owner_co_owner(this)" id="owner_co_owner">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-users"></i>
+                                    </div>
+                                    <span class="ds-title">Owner/Co-owner</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="coowner" onclick="column_menu_item(event)" style="display: none">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <svg class="svg-inline--fa fa-user fa-w-16" aria-hidden="true" data-prefix="fa" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 0c88.366 0 160 71.634 160 160s-71.634 160-160 160S96 248.366 96 160 167.634 0 256 0zm183.283 333.821l-71.313-17.828c-74.923 53.89-165.738 41.864-223.94 0l-71.313 17.828C29.981 344.505 0 382.903 0 426.955V464c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48v-37.045c0-44.052-29.981-82.45-72.717-93.134z"></path></svg>
+                                    </div>
+                                    <span class="ds-title">Co-owner</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item active" data-name="Observer" id="set_Observer" data-setval="2" data-setid=""  onclick="column_menu_item(event)">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-users"></i>
+                                    </div>
+                                    <span class="ds-title">Observer</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item active" data-name="assignee" id="set_assignee" data-setval="2" data-setid=""  onclick="column_menu_item(event)">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fas fa-user"></i>
+                                    </div>
+                                    <span class="ds-title">Assignee</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item active" data-name="phase" id="set_phase" data-setval="2" data-setid=""  onclick="column_menu_item(event)">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-align-justify"></i>
+                                    </div>
+                                    <span class="ds-title">Phase</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item active" data-name="dueby" id="set_dueby" data-setval="2" data-setid=""  onclick="column_menu_item(event)">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <span class="ds-title">Due date</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item active" data-name="compdate" id="set_compdate" data-setval="2" data-setid=""  onclick="column_menu_item(event)">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <span class="ds-title">Completed date</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="timeest"  onclick="column_menu_item(event)" style="display:none">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-clock"></i>
+                                    </div>
+                                    <span class="ds-title">Time Estimate</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="actualHour" onclick="column_menu_item(event)" style="display:none">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-clock"></i>
+                                    </div>
+                                    <span class="ds-title">Actual Hour</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="manhourcost" onclick="column_menu_item(event)" style="display:none;">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-file"></i>
+                                    </div>
+                                    <span class="ds-title">Man Hour Cost</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="hourlyrate" onclick="column_menu_item(event)" style="display:none;">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa_number"></i>
+                                    </div>
+                                    <span class="ds-title">Hourly Rate</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="timevariance" onclick="column_menu_item(event)" style="display:none;">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa_number"></i>
+                                    </div>
+                                    <span class="ds-title">Hourly Rate</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="budget" onclick="column_menu_item(event)" style="display:none;">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-download"></i>
+                                    </div>
+                                    <span class="ds-title">Budget</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="actual" onclick="column_menu_item(event)" style="display:none;">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-download"></i>
+                                    </div>
+                                    <span class="ds-title">Actual</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" data-name="variance" onclick="column_menu_item(event)" style="display:none;">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="fa fa-download"></i>
+                                    </div>
+                                    <span class="ds-title">Variance</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" id="budget_set" onclick="budget_set(this)" data-setval="2" data-setid="" >
+                                  <div class="ds-menu-item" >
+                                    <div class="ds-icon">
+                                      <i class="fa fa-money-bill-alt"></i>
+                                    </div>
+                                    <span class="ds-title">Task Budget</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item" id="task_time_set" onclick="task_time_set(this)" data-setval="2" data-setid="" >
+                                  <div class="ds-menu-item" >
+                                    <div class="ds-icon">
+                                      <i class="fas fa-clock"></i>
+                                    </div>
+                                    <span class="ds-title">Task Time</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                                <div class="column-menu-item active" data-name="statuscol" id="set_statuscol" data-setval="2" data-setid="" onclick="column_menu_item(event)">
+                                  <div class="ds-menu-item">
+                                    <div class="ds-icon">
+                                      <i class="icon status-column-icon"></i>
+                                    </div>
+                                    <span class="ds-title">Status</span>
+                                    <i class="fas fa-check"></i>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="taskLoader2" style="display: none;"></div>
+              <div class="subtaskContainer">
+                <div class="group-header-wrapper">
+                  <div class="group-header-component">
+                    <div class="frzHandler name-column-header" data-id="NameCell">
+                        <!-- <div class="drop-menu-wrapper outerDropDownMenu kill" onclick="openDropMenu('outerDropDownMenu')"> -->
+                        <div class="drop-menu-wrapper outerDropDownMenu kill">
+                            <!-- <span class="fa fa-caret-down outer_dropDown"></span> -->
+                        </div>
+                        <!-- <div class="dialog-node" id="outerDropDownMenu">
+
+                        </div> -->
+                        <div class="column-header-inner">
+                            <span class="sort-button" id="sortPluseSerial" data-type="row_pluse_count" onclick="sortPluseSerial(this)">
+                              <svg class="svg-inline--fa fa-caret-up fa-w-10 asce" aria-hidden="true" data-prefix="fa" data-icon="caret-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z"></path></svg>
+                              
+                              <svg class="svg-inline--fa fa-caret-down fa-w-10 dasce" aria-hidden="true" data-prefix="fa" data-icon="caret-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"></path></svg>
+                            </span>
+                          <input type="checkbox" id="cbx" style="display: none;" onclick="selectAllST(this)">
+                          <label for="cbx" class="check">
+                            <svg width="16px" height="16px" viewBox="0 0 18 18">
+                              <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                              <polyline points="1 9 7 14 15 4"></polyline>
+                            </svg>
+                          </label>
+                          <span class="group-name ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;margin-top: 3px;">
+                              <div class="ds-text-component" dir="auto">
+                                <span style="color:#333" class="editableCon" data-type="name-cell" onclick="sortTitleCol('name-cell')">Title</span>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                    </div>
+
+                    <div class="frzHandler column-header owner ownerClass own-header ownClass" data-id="alsoowner" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_ownerClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                <i class="fa fa-lock" id="ownerClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                <i class="fa fa-eye-slash" id="ownerClass_eye"></i>
+                                <span data-type="WonerCell" id="searchOwnerSpan" onclick="sortWonerCellCol('WonerCell')" class="editableCon">Owner</span>
+                                <input type="text" id="searchOwner" onkeyup="search_Ow_Cow_Ob_Ass(event,'WonerCell')" onblur="hideColumnSrc('searchOwner','searchOwnerSpan')" placeholder="Search Owner"/>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'ownerDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                          </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="ownerDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="owner" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Owner</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+
+                                      <div class="ds-menu-item aseSort dynamicSort" data-setval="2" data-setid="" id="aseSort_WonerCell"  data-type="WonerCell" onclick="ascSort(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                        <span class="ds-title">Sort by ascending</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_WonerCell"   data-type="WonerCell" onclick="descSort(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                        <span class="ds-title">Sort by descending</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_WonerCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_ownerClass" data-setval="2" data-setid=""  onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item"  onclick="Woner_canbanview()">
+                                        <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                        <span class="ds-title">Kanban view</span>
+                                      </div> -->
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('OwnerInner')">
+                                        <div class="ds-icon">
+                                          <i class="fa fa-lock"></i>
+                                        </div>
+                                        <span class="ds-title">Column Permissions</span>
+                                        <div class="secondary-menu-icon" style="margin-left:35px">
+                                          <i class="fa fa-caret-right"></i>
+                                        </div>
+                                      </div> -->
+                                      <div class="inner_menu" id="OwnerInner">
+                                          <div class="ds-menu-item"  onclick="restrict('ownerClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('ownerClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header coowner Co_ownerClass coownerclass coowner-header" data-id="alsocoowner" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                        <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_coownerclass"></i>
+
+                        <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                <i class="fa fa-lock" id="Co_ownerClass_lock"  onclick="lockClick($(this).attr('id'))"></i>
+                                <i class="fa fa-eye-slash" id="Co_ownerClass_eye"></i>
+                                <span data-type="coowonerCell"id="searchCoownerSpan" onclick="sortcownCol('coowonerCell')" class="editableCon">Co-owner</span>
+                                <input type="text" id="searchCoowner" onkeyup="search_Ow_Cow_Ob_Ass(event,'coowonerCell')" onblur="hideColumnSrc('searchCoowner','searchCoownerSpan')" placeholder="Search Co-owner" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'coWonerDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="coWonerDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="coowner" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Co-owner</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" data-setval="2" data-setid="" id="aseSort_coowonerCell"  data-type="coowonerCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_coowonerCell"  data-type="coowonerCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_coowonerCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_coownerclass" data-setval="2" data-setid=""   onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item"  onclick="coowoner_canbanview()">
+                                        <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                        <span class="ds-title">Kanban view</spSan>
+                                      </div> -->
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('CoownerInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="CoownerInner">
+                                          <div class="ds-menu-item" onclick="restrict('Co_ownerClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('Co_ownerClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header Observer Observer-header observerclass ownClass" data-id="alsoObserver" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                        <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_observerclass"></i>
+
+                        <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                <i class="fa fa-lock" id="Observer_lock"  onclick="lockClick($(this).attr('id'))"></i>
+                                <i class="fa fa-eye-slash" id="Observer_eye"></i>
+                                <span data-type="ObserverCell" id="searchObserverSpan" onclick="sortObserverCol('ObserverCell')" class="editableCon">Observer</span>
+                                <input type="text" id="searchObserver" onkeyup="search_Ow_Cow_Ob_Ass(event,'ObserverCell')" onblur="hideColumnSrc('searchObserver','searchObserverSpan')" placeholder="Search Observer" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'observerDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="observerDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="observer" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Observer</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_ObserverCell" data-setval="2" data-setid=""  data-type="ObserverCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" id="descSort_ObserverCell"  data-type="ObserverCell" data-setval="2" data-setid=""  onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_ObserverCell" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+
+                                      <div class="ds-menu-item" id="collapse_observerclass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item" id="observerCanyon"  onclick="observer_colum()">
+                                        <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                        <span class="ds-title">Kanban view </span>
+                                      </div> -->
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('ObserverInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="ObserverInner">
+                                          <div class="ds-menu-item" onclick="restrict('Observer')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('Observer')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header assignee assignClass assign-header" data-id="alsoassignee" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_assignClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="assignClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="assignClass_eye"></i>
+                                <span data-type="assignClass" id="searchAssigneeSpan" onclick="sortAssigneeCellCol('AssigneeCell')" class="editableCon">Assignee</span>
+                                <input type="text" id="searchAssignee" onkeyup="search_Ow_Cow_Ob_Ass(event,'AssigneeCell')" onblur="hideColumnSrc('searchAssignee','searchAssigneeSpan')" placeholder="Search Assignee"/>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'AssigneeDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="AssigneeDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="assignee" onclick="search(this)">
+                                        <div class="ds-icon">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <span class="ds-title">Search by Assignee</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_AssigneeCell" data-setval="2" data-setid=""   data-type="AssigneeCell"  onclick="ascSort(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                        <span class="ds-title">Sort by ascending</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_AssigneeCell" data-type="AssigneeCell"  onclick="descSort(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                        <span class="ds-title">Sort by  descending</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_AssigneeCell" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_AssigneeCell" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item" id="ssigneeCanyon"  onclick="assigneeDetail()">
+                                      <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                      <span class="ds-title">Kanban view </span>
+                                    </div> -->
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('AssigneeInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="AssigneeInner">
+                                          <div class="ds-menu-item"   onclick="restrict('assignClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('assignClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header phase priorityClass priority-header" data-id="alsophase" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                        <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_priorityClass"></i>
+                        <div class="column-header-inner">
+                          <div class="dragColumn" style="width: 8px;">
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                          </div>
+                          <div class="title-wrapper">
+                            <span class="column-title ">
+                              <div class="ds-editable-component  " style="width: auto; height: auto;">
+                                <div class="ds-text-component" dir="auto">
+                                    <i class="fa fa-lock" id="priorityClass_lock"  onclick="lockClick($(this).attr('id'))"></i>
+                                    <i class="fa fa-eye-slash" id="priorityClass_eye"></i>
+                                  <span data-type="priorityCell" id="searchByPhaseSpan" onclick="sortpriorityCellCol('priorityCell')" class="editableCon">Phase</span>
+                                  <input type="text" class="" id="searchByPhase" onkeyup="srcPha_Sta(event,'priorityCell','view_priority')" onblur="hideColumnSrc('searchByPhase','searchByPhaseSpan')" placeholder="Search Phase"/>
+                                </div>
+                              </div>
+                            </span>
+                          </div>
+                          <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'priorityDropDownMenu')">
+                              <span class="fa fa-caret-down dropDown"></span>
+                          </div>
+                          <!-- <div class="col_resizer"></div> -->
+                          <div class="col_permission_setting">
+                            <h3 class="permission_pop_title">Who can view this column</h3>
+                            <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                            <div class="s_userlist"></div>
+                            <div class="granted_person_list">
+
+                            </div>
+                          </div>
+                          <div class="dialog-node" id="priorityDropDownMenu">
+                            <div class="column-menu-dialog-wrapper">
+                                <span class="column-menu-patch"></span>
+                                <div class="ds-menu-inner">
+                                    <div class="ds-menu-section">
+                                        <div class="ds-menu-item search" data-type="phase" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Phase</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item aseSort dynamicSort"  id="aseSort_priorityCell" data-setval="2" data-setid=""   data-type="priorityCell"  onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_priorityCell"  data-type="priorityCell"  onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item freezeCol" id="freezeCol_priorityCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                          <span class="ds-title">Freeze Column</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item" id="collapse_priorityClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                          <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                          <span class="ds-title">Collapse Column</span>
+                                        </div>
+                                        <!-- <div class="ds-menu-item" id="phaseActivety"  onclick="phaseActivety()">
+                                          <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                          <span class="ds-title">Kanban view </span>
+                                        </div> -->
+                                        <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('PhaseInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                        <div class="inner_menu" id="PhaseInner">
+                                            <div class="ds-menu-item"  onclick="restrict('priorityClass')">
+                                              <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                              <span class="ds-title">Restrict column edit</span>
+                                            </div>
+                                            <div class="ds-menu-item"  onclick="restrictColumnView('priorityClass')">
+                                              <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                              <span class="ds-title">Restrict column view</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="frzHandler column-header dueby dateClass date-header" data-id="alsodueby" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_dateClass"></i>
+                        <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="dateClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="dateClass_eye"></i>
+                                <span data-type="DateCell" id="searchByddSpan" onclick="sortDateCellCol('DateCell')" class="editableCon">Due date</span>
+                                <input type="text" class="datePick flatpickr-input" data-id="" data-createdby="" id="searchBydd" onblur="hideColumnSrc('searchBydd','searchByddSpan')" placeholder="Due Date" readonly/>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'dateDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="dateDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="duedate" onclick="search(this)">
+                                        <div class="ds-icon">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <span class="ds-title">Search by due date</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_DateCell" data-setval="2" data-setid=""   data-type="DateCell" onclick="ascSort(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                        <span class="ds-title">Sort by ascending</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_DateCell" data-type="DateCell" onclick="descSort(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                        <span class="ds-title">Sort by  descending</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item freezeCol"  id="freezeCol_DateCell" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_dateClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item"  onclick="duedate_canbanview()">
+                                        <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                        <span class="ds-title">Kanban view</span>
+                                      </div> -->
+
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('DueByInner')">
+                                        <div class="ds-icon">
+                                          <i class="fa fa-lock"></i>
+                                        </div>
+                                        <span class="ds-title">Column Permissions</span>
+                                        <div class="secondary-menu-icon">
+                                          <i class="fa fa-caret-right"></i>
+                                        </div>
+                                      </div> -->
+                                      <div class="inner_menu" id="DueByInner">
+                                          <div class="ds-menu-item"  onclick="restrict('dateClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('dateClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header completedat compdate com_dateClass comdateClass date-header" data-id="alsocompletedat" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                        <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_comdateClass"></i>
+                          <div class="column-header-inner">
+                          <div class="dragColumn" style="width: 8px;">
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                          </div>
+                          <div class="title-wrapper">
+                            <span class="column-title ">
+                              <div class="ds-editable-component  " style="width: auto; height: auto;">
+                                <div class="ds-text-component" dir="auto">
+                                    <i class="fa fa-lock" id="com_dateClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                    <i class="fa fa-eye-slash" id="com_dateClass_eye"></i>
+                                  <span data-type="DateCell" id="searchBycdSpan" onclick="sortDateCellCol('DateCell')" class="editableCon">Completed date</span>
+                                  <input type="text" class="datePick flatpickr-input" data-id="" data-createdby="" id="searchBycd" onblur="hideColumnSrc('searchBycd','searchBycdSpan')" placeholder="Completed Date" readonly/>
+                                </div>
+                              </div>
+                            </span>
+                          </div>
+                          <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'comdateDropDownMenu')">
+                              <span class="fa fa-caret-down dropDown"></span>
+                          </div>
+                          <!-- <div class="col_resizer"></div> -->
+                          <div class="col_permission_setting">
+                            <h3 class="permission_pop_title">Who can view this column</h3>
+                            <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                            <div class="s_userlist"></div>
+                            <div class="granted_person_list">
+          
+                            </div>
+                          </div>
+                          <div class="dialog-node" id="comdateDropDownMenu">
+                            <div class="column-menu-dialog-wrapper">
+                                <span class="column-menu-patch"></span>
+                                <div class="ds-menu-inner">
+                                    <div class="ds-menu-section ">
+                                        <div class="ds-menu-item search" data-type="compdate" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by due date</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item aseSort dynamicSort" id="aseSort_comDateCell" data-setval="2" data-setid=""   data-type="DateCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_comDateCell"  data-type="DateCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item freezeCol" id="freezeCol_comDateCell" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                          <span class="ds-title">Freeze Column</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item" id="collapse_comdateClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                          <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                          <span class="ds-title">Collapse Column</span>
+                                        </div>
+                                        <!-- <div class="ds-menu-item"  onclick="completeDate_kanbanView()">
+                                        <div class="ds-icon"><i class="fas fa-eye"></i></div>
+                                        <span class="ds-title">Kanban view</span>
+                                        </div> -->
+          
+                                        <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('DueByInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                        <div class="inner_menu" id="DueByInner">
+                                            <div class="ds-menu-item"  onclick="restrict('dateClass')">
+                                              <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                              <span class="ds-title">Restrict column edit</span>
+                                            </div>
+                                            <div class="ds-menu-item"  onclick="restrictColumnView('dateClass')">
+                                              <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                              <span class="ds-title">Restrict column view</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="frzHandler column-header budget BudgetClass amount-header amountClass include_rule" data-id="alsobudget" data-size="flex-basis: 120px" style="flex-basis: 120px;display: none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_amountClass"></i>
+
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="BudgetClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="BudgetClass_eye"></i>
+                                <span data-type="AmountCell" id="searchBudgetSpan" onclick="sortAmountCellCol('AmountCell')" class="editableCon">Budget Amount</span>
+                                <input type="text" id="searchBudget" onkeyup="srcVa_Hac_Bud_Hra_Mhra(event,'AmountCell','amountInputValue')" onblur="hideColumnSrc('searchBudget','searchBudgetSpan')" placeholder="Search Budget"/>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'AmountDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="AmountDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                    <div class="ds-menu-item search" data-type="budget" onclick="search(this)">
+                                      <div class="ds-icon">
+                                          <i class="fas fa-search"></i>
+                                      </div>
+                                      <span class="ds-title">Search by Budget</span>
+                                      <i class="fa fa-check checkMenu"></i>
+                                    </div>
+
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_AmountCell"  data-setval="2" data-setid=""   data-type="AmountCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_AmountCell" data-type="AmountCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_AmountCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_amountClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('BudgetInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="BudgetInner">
+                                          <div class="ds-menu-item" onclick="restrict('BudgetClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('BudgetClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header actual actualClass amount-header include_rule" data-id="alsoactual" data-size="flex-basis: 120px" style="flex-basis: 120px;display: none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_actualClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="actualClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="actualClass_eye"></i>
+                                <span class="editableCon" id="searchActualSpan" onclick="sortactualCellCol('actutalCell')">Actual Amount</span>
+                                <input type="text" id="searchActual" onkeyup="srcVa_Hac_Bud_Hra_Mhra(event,'actualCell','amountInputValue')" onblur="hideColumnSrc('searchActual','searchActualSpan')" placeholder="Search A.A" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'actualDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="actualDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="actual" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Actual</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_actutalCell" data-setval="2" data-setid="" data-type="actutalCell"  onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_actutalCell"  data-type="actutalCell"  onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_actutalCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_actualClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('ActualInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="ActualInner">
+                                          <div class="ds-menu-item" onclick="restrict('actualClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('actualClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header variance varianceClass amount-header include_rule" data-id="alsovariance" data-size="flex-basis: 120px" style="flex-basis: 120px;display: none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_varianceClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="varianceClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="varianceClass_eye"></i>
+                                <span class="editableCon" id="searchVarianceSpan" onclick="sortvarianceCellCol('varianceCell')" >Variance</span>
+                                <input type="text" id="searchVariance" onkeyup="srcVa_Hac_Bud_Hra_Mhra(event,'varianceCell','varianceCellSpan')" onblur="hideColumnSrc('searchVariance','searchVarianceSpan')" placeholder="Search Variance" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'varianceDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="varianceDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="variance" onclick="search(this)">
+                                        <div class="ds-icon">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <span class="ds-title">Search by Variance</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item aseSort dynamicSort"  id="aseSort_Variance" data-setval="2" data-setid="" data-type="varianceCell"  onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_Variance" data-type="varianceCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_Variance" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_varianceClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('VarianceInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="VarianceInner">
+                                          <div class="ds-menu-item" onclick="restrict('varianceClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('varianceClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header timeest timeEstClass timeEst-header include_rule longTitle" data-id="alsotimeest" data-size="flex-basis: 120px" style="flex-basis: 120px;display:none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_timeEstClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="timeEstClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="timeEstClass_eye"></i>
+                                <span data-type="timeEstCell" id="timeEstCellSPan" onclick="sorttimeEstCellCol('timeEstCell')" class="editableCon">Estimated Work Hour</span>
+                                <input type="text" id="searchtimeEst" onkeyup="srcEstT_Acth(event,'timeEstCellSpan')" onblur="hideColumnSrc('searchtimeEst','timeEstCellSPan')" placeholder="Search Est.H"/>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'timeEstDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="timeEstDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="timeest" onclick="search(this)">
+                                        <div class="ds-icon">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <span class="ds-title">Search by time estimate</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_timeEstCell" data-setval="2" data-setid=""   data-type="timeEstCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_timeEstCell"  data-type="timeEstCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_timeEstCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_timeEstClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('TimeEstInner')">
+                                        <div class="ds-icon">
+                                          <i class="fa fa-lock"></i>
+                                        </div>
+                                        <span class="ds-title">Column Permissions</span>
+                                        <div class="secondary-menu-icon">
+                                          <i class="fa fa-caret-right"></i>
+                                        </div>
+                                      </div> -->
+                                      <div class="inner_menu" id="TimeEstInner">
+                                          <div class="ds-menu-item"  onclick="restrict('timeEstClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('timeEstClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header manhourcost mh_cost include_rule longTitle" data-id="alsomanhourcost" data-size="flex-basis: 120px" style="flex-basis: 120px; display: none;">
+                        <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_manhourcost"></i>
+                        <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="mh_cost_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="mh_cost_eye"></i>
+                                <span data-type="ManHourRateCell" id="searchMHCSpan" onclick="sortManHourRateCellCol('ManHourRateCell')" class="editableCon">Estimated Hourly Rate</span>
+                                <input type="text" id="searchMHC" onkeyup="srcVa_Hac_Bud_Hra_Mhra(event,'ManHourRateCell','ManHourRateSpan')" onblur="hideColumnSrc('searchMHC','searchMHCSpan')" placeholder="Search Est.H.R"/>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'mhCostEstDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="mhCostEstDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="manhcost" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Man-hour Cost</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item aseSort dynamicSort"  id="aseSort_ManHourRateCell"  data-setval="2" data-setid=""   data-type="ManHourRateCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" id="descSort_ManHourRateCell" data-setid=""   data-type="ManHourRateCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol"  id="freezeCol_ManHourRateCell" data-setval="2" data-setid="" onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_manhourcost" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('ManInner')">
+                                        <div class="ds-icon">
+                                          <i class="fa fa-lock"></i>
+                                        </div>
+                                        <span class="ds-title">Column Permissions</span>
+                                        <div class="secondary-menu-icon">
+                                          <i class="fa fa-caret-right"></i>
+                                        </div>
+                                      </div> -->
+                                      <div class="inner_menu" id="ManInner">
+                                          <div class="ds-menu-item"  onclick="restrict('mh_cost')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('mh_cost')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header actualHour actualHourClass actualHour-header include_rule longTitle" data-id="alsotactualtime" data-size="flex-basis: 120px" style="flex-basis: 120px;display:none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_actualHourClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="actualHourClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="actualHourClass_eye"></i>
+                                <span data-type="actualHourCell" id="actualHourCellSpan" onclick="sortactualHourCellCol('actualHourCell')" class="editableCon">Actual Work Hour</span>
+                                <input type="text" id="searchactualHour" onkeyup="srcEstT_Acth(event,'actualHourCellSpan')" onblur="hideColumnSrc('searchactualHour','actualHourCellSpan')" placeholder="Search Act. Hour" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'actualHourDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="actualHourDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="actualtime" onclick="search(this)">
+                                        <div class="ds-icon">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <span class="ds-title">Search by Actual time</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_timeEstCellM" data-setval="2" data-setid=""   data-type="timeEstCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid=""  id="descSort_timeEstCellM" data-type="timeEstCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_timeEstCellM" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_actualHourClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('TimeEstInner')">
+                                        <div class="ds-icon">
+                                          <i class="fa fa-lock"></i>
+                                        </div>
+                                        <span class="ds-title">Column Permissions</span>
+                                        <div class="secondary-menu-icon">
+                                          <i class="fa fa-caret-right"></i>
+                                        </div>
+                                      </div> -->
+                                      <div class="inner_menu" id="TimeEstInner">
+                                          <div class="ds-menu-item"  onclick="restrict('timeEstClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('timeEstClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header hourlyrate hourlyClass include_rule longTitle" data-id="alsohourlyrate" data-size="flex-basis: 120px" style="flex-basis: 120px;display: none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_hourlyClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="hourlyClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="hourlyClass_eye"></i>
+                                <span class="editableCon" id="searchHourRateSPan"  onclick="sortActualHourRateCellCol('hourlyRateCell')">Actual Hourly Rate</span>
+                                <input type="text" id="searchHourRate" onkeyup="srcVa_Hac_Bud_Hra_Mhra(event,'hourlyRateCell','amountInputValue')" onblur="hideColumnSrc('searchHourRate','searchHourRateSPan')" placeholder="Search A.H.R" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'hourlyRateDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="hourlyRateDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="hourlyrate" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Hourly Rate</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_ahr" data-setval="2" data-setid="" data-type="hourlyRateCell"  onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_ahr" data-type="hourlyRateCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_ahr" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_hourlyClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('HourlyInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="HourlyInner">
+                                          <div class="ds-menu-item" onclick="restrict('hourlyClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('hourlyClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header timevariance timevarianceClass amount-header include_rule" data-id="alsotimevariance" data-size="flex-basis: 120px" style="flex-basis: 120px;display: none;">
+                      <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_timevarianceClass"></i>
+                      <div class="column-header-inner">
+                        <div class="dragColumn" style="width: 8px;">
+                          <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                        </div>
+                        <div class="title-wrapper">
+                          <span class="column-title ">
+                            <div class="ds-editable-component  " style="width: auto; height: auto;">
+                              <div class="ds-text-component" dir="auto">
+                                  <i class="fa fa-lock" id="timevarianceClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                  <i class="fa fa-eye-slash" id="timevarianceClass_eye"></i>
+                                <span class="editableCon" id="searchtimeVarianceSpan"  onclick="sorttimevarianceCellCellCol('timevarianceCell')">Variance</span>
+                                <input type="text" id="searchtimeVariance" onkeyup="srcVa_Hac_Bud_Hra_Mhra(event,'timevarianceCell','timevarianceCellSpan')" onblur="hideColumnSrc('searchtimeVariance','searchtimeVarianceSpan')" placeholder="Search Variance" />
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'timevarianceDropDownMenu')">
+                            <span class="fa fa-caret-down dropDown"></span>
+                        </div>
+                        <!-- <div class="col_resizer"></div> -->
+                        <div class="col_permission_setting">
+                          <h3 class="permission_pop_title">Who can view this column</h3>
+                          <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                          <div class="s_userlist"></div>
+                          <div class="granted_person_list">
+
+                          </div>
+                        </div>
+                        <div class="dialog-node" id="timevarianceDropDownMenu">
+                          <div class="column-menu-dialog-wrapper">
+                              <span class="column-menu-patch"></span>
+                              <div class="ds-menu-inner">
+                                  <div class="ds-menu-section ">
+                                      <div class="ds-menu-item search" data-type="timevariance" onclick="search(this)">
+                                        <div class="ds-icon">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <span class="ds-title">Search by Variance</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item aseSort dynamicSort" id="aseSort_var" data-setval="2" data-setid="" data-type="timevarianceCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_var" data-type="timevarianceCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                      <div class="ds-menu-item freezeCol" id="freezeCol_var" data-setval="2" data-setid=""  onclick="stickTocol(event,this)">
+                                        <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                        <span class="ds-title">Freeze Column</span>
+                                        <i class="fa fa-check checkMenu"></i>
+                                      </div>
+                                      <div class="ds-menu-item" id="collapse_timevarianceClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                        <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                        <span class="ds-title">Collapse Column</span>
+                                      </div>
+                                      <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('VarianceInner')">
+                                          <div class="ds-icon">
+                                            <i class="fa fa-lock"></i>
+                                          </div>
+                                          <span class="ds-title">Column Permissions</span>
+                                          <div class="secondary-menu-icon" style="margin-left:35px">
+                                            <i class="fa fa-caret-right"></i>
+                                          </div>
+                                        </div> -->
+                                      <div class="inner_menu" id="VarianceInner">
+                                          <div class="ds-menu-item" onclick="restrict('varianceClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                          <div class="ds-menu-item"  onclick="restrictColumnView('varianceClass')">
+                                            <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                            <span class="ds-title">Restrict column view</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="frzHandler column-header statuscol statusClass status-header" data-id="alsostatuscol" data-size="flex-basis: 120px" style="flex-basis: 120px;">
+                        <i class="icon icon-v2-collapse-column expand-column" onclick="expand_column(event)" data-setid="" data-type="collapse_statusClass"></i>
+
+                        <div class="column-header-inner">
+                          <div class="dragColumn" style="width: 8px;">
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                          </div>
+                          <div class="title-wrapper">
+                            <span class="column-title ">
+                              <div class="ds-editable-component  " style="width: auto; height: auto;">
+                                <div class="ds-text-component" dir="auto">
+                                    <i class="fa fa-lock" id="statusClass_lock" onclick="lockClick($(this).attr('id'))"></i>
+                                    <i class="fa fa-eye-slash" id="statusClass_eye"></i>
+                                  <span data-type="StatusCell" id="searchByStatusSpan" onclick="sortStatusCellCol('StatusCell')" class="editableCon">Status</span>
+                                  <input type="text" class="" id="searchByStatus" onkeyup="srcPha_Sta(event,'StatusCell','view_status')" onblur="hideColumnSrc('searchByStatus','searchByStatusSpan')" placeholder="Search Status" />
+                                </div>
+                              </div>
+                            </span>
+                          </div>
+                          <div class="drop-menu-wrapper header_menu_btn" onclick="openDropMenu(event,this,'statusDropDownMenu')">
+                              <span class="fa fa-caret-down dropDown"></span>
+                          </div>
+                          <!-- <div class="col_resizer"></div> -->
+                          <div class="col_permission_setting">
+                            <h3 class="permission_pop_title">Who can view this column</h3>
+                            <input class="search_persion_input" type="text" placeholder="Entre a person name">
+                            <div class="s_userlist"></div>
+                            <div class="granted_person_list">
+
+                            </div>
+                          </div>
+                          <div class="dialog-node" id="statusDropDownMenu">
+                            <div class="column-menu-dialog-wrapper">
+                                <span class="column-menu-patch"></span>
+                                <div class="ds-menu-inner">
+                                    <div class="ds-menu-section ">
+                                        <div class="ds-menu-item search" data-type="status" onclick="search(this)">
+                                          <div class="ds-icon">
+                                              <i class="fas fa-search"></i>
+                                          </div>
+                                          <span class="ds-title">Search by Status</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>  
+                                        <div class="ds-menu-item aseSort dynamicSort"  id="aseSort_StatusCell" data-setval="2" data-setid=""   data-type="StatusCell" onclick="ascSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-down"></i></div>
+                                          <span class="ds-title">Sort by ascending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item descSort dynamicSort" data-setval="2" data-setid="" id="descSort_StatusCell"  data-type="StatusCell" onclick="descSort(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-sort-amount-up"></i></div>
+                                          <span class="ds-title">Sort by  descending</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item freezeCol"  id="freezeCol_StatusCell" data-setval="2" data-setid=""   onclick="stickTocol(event,this)">
+                                          <div class="ds-icon"><i class="fa fa-hand-paper"></i></i></div>
+                                          <span class="ds-title">Freeze Column</span>
+                                          <i class="fa fa-check checkMenu"></i>
+                                        </div>
+                                        <div class="ds-menu-item" id="collapse_statusClass" data-setval="2" data-setid="" onclick="collapse(event,this)">
+                                          <div class="ds-icon"><i class="icon icon-v2-collapse-column"></i></div>
+                                          <span class="ds-title">Collapse Column</span>
+                                        </div>
+                                        <!-- <div class="ds-menu-item"  onclick="status_canban_popup()">
+                                          <div class="ds-icon "> 
+                                          <i class="fas fa-eye"></i> 
+                                          </div>
+                                          <span class="ds-title"> Kanban view</span>
+                                        </div> -->
+                                        <!-- <div class="ds-menu-item has_inner" onclick="innerOpen('StatusInner')">
+                                            <div class="ds-icon">
+                                              <i class="fa fa-lock"></i>
+                                            </div>
+                                            <span class="ds-title">Column Permissions</span>
+                                            <div class="secondary-menu-icon" style="margin-left:35px">
+                                              <i class="fa fa-caret-right"></i>
+                                            </div>
+                                          </div> -->
+                                        <div class="inner_menu" id="StatusInner">
+                                          <div class="ds-menu-item" onclick="restrict('statusClass')">
+                                            <div class="ds-icon"><i class="fa fa-lock"></i></div>
+                                            <span class="ds-title">Restrict column edit</span>
+                                          </div>
+                                            <div class="ds-menu-item"  onclick="restrictColumnView('statusClass')">
+                                              <div class="ds-icon"><i class="fa fa-eye-slash"></i></div>
+                                              <span class="ds-title">Restrict column view</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="add-column-container">
+                    </div> -->
+                  </div>
+                </div>
+                  <!-- pulse body wrapper start here -->
+                <div class="pulse-component-wrapper" id="thisWeekPluseContainer">
+                  <!-- each pulse row start -->
+                  <div class="pulse-component" id="OnlyForClone">
+
+                    <div id="NameCell" class="cell-component name-cell NameCell">
+                      <div class="name-cell-component ">
+                        <div class="pulse-left-indicator can-edit " data-value="#d8d8d8;" style="background-color: #d8d8d8; color: rgb(87, 155, 252);">
+                          <div class="left-indicator-inner" onclick="checkEachSubtask(event,this)">
+                            <span class="row_pluse_count"></span>
+                            <div class="left-indicator-checkbox" >
+                              <span class="left-indicator-checkbox-mark fa fa-check"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="name-text">
+                          <div class="ds-editable-component" style="width: auto; height: 24px;">
+                            <div class="ds-text-component" dir="auto">
+                              <div class="pulse_title" data-title = "" data-id="" data-createdby="" id="pulseOne" onblur="pulseTitleOnBlur(event)"></div>
+                            </div>
+                          </div>
+                          <div class="edit-indicator" onclick="editPulseName(this)">
+                            <i class="fas fa-pencil-alt"></i>
+                          </div>
+                          <div class="flagIco" data-id="" data-flagid="" onclick="flagSubtask(this)"></div>
+                          <div class="more_files" onclick="showFilesList(event,this)">
+                            <img class="ellipsis" src="/images/basicAssets/ellipsis.svg">
+                            <img class="ellipsis_color" src="/images/basicAssets/ellipsis_color.svg">
+                          </div>
+                          <div class="subtaskAllFile">
+                              <span class="closeMiniPopUp" onclick="closeMiniPopUp('subtaskAllFile')">+</span>
+                            <!-- <div class="users_container"> -->
+                              <div class="subtask_note_view moreFileLi renameSubtask" onclick="renameSubtask(this)">
+                                <div class="ico_div">
+                                    <i class="icon ic2 icon-v2-edit"></i>
+                                  </div>
+                                <h3 class="name_label" style="pointer-events:none">Rename <span class="cmdKey">(Shift + R)</span></h3>
+                              </div>
+
+                              <div class="subtask_note_view duplicate moreFileLi" onclick="duplicateSubtask(this)">
+                                <div class="ico_div">
+                                    <i class="icon ic2 icon-v2-duplicate"></i>
+                                  </div>
+                                <h3 class="name_label" style="pointer-events:none">Duplicate <span class="cmdKey">(Shift + D)</span></h3>
+                              </div>
+                              <div class="subtask_note_view batchAct moreFileLi" onclick="openbatchactionbytrigger()">
+                                  <div class="ico_div">
+                                    <img src="/images/basicAssets/new_note.svg">
+                                  </div>
+                                <h3 class="name_label" style="pointer-events:none">Batch Action <span class="cmdKey">(Shift + B)</span></h3>
+                              </div>
+                              <div class="subtask_note_view moreFileLi addNotePopup" data-unseen="0" onclick="subtaskProperty(this)">
+                                <div class="ico_div">
+                                  <img src="/images/basicAssets/new_note.svg">
+                                  </div>
+                                <h3 class="name_label" style="pointer-events:none">Note <span class="cmdKey">(Shift + N)</span></h3>
+                              </div>
+
+                              <div class="subtask_chat moreFileLi subChat" data-unseen="" onclick="subtaskProperty(this)">
+                                <div class="ico_div">
+                                  <img src="/images/basicAssets/chat_blue.svg">
+                                </div>
+                                <h3 class="name_label">Chat <span class="cmdKey">(Shift + C)</span></h3>
+                              </div>
+                              <div class="subtask_file_view moreFileLi" onclick="viewSUbtaskFile(this)">
+                                <div class="ico_div">
+                                  <img src="/images/basicAssets/view.svg">
+                                </div>
+                                <h3 class="name_label">View File(s)</h3>
+                              </div>
+                              <div class="subtask_file_up moreFileLi" id="">
+                                <div class="ico_div">
+                                  <img src="/images/basicAssets/new_upload.svg">
+                                </div>
+                                <h3 class="name_label datamyid" data-myid=""  data-type="subtask" onclick="open_file_browser_for_send_msg(this)">Upload File(s)</h3>
+                              </div>
+                              <!-- <div class="subtask_file_up moreFileLi addArchive" onclick="addToArchive(this)">
+                                <div class="ico_div">
+                                  <i class="beforeArchiveIco"></i>
+                                </div>
+                                <h3 class="name_label">Add To Archive</h3>
+                              </div> -->
+                              <div class="subtask_file_up deleteSubtask moreFileLi" onclick="deleteSubtask(this)">
+                                <div class="ico_div">
+                                    <i class="icon ic2 icon-v2-delete"></i>
+                                </div>
+                                <h3 class="name_label">Delete <span class="cmdKey">(Del)</span></h3>
+                              </div>
+                              <div class="subtask_file_up moreFileLi subProperty" onclick="subtaskProperty(this)">
+                                <div class="ico_div">
+                                    <img src="/images/basicAssets/properties_blue.svg">
+                                </div>
+                                <h3 class="name_label">Properties <span class="cmdKey">(Shift + P)</span></h3>
+                              </div>
+                            <!-- </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="WonerCell" class="cell-component person-cell WonerCell alsoowner" style="flex-basis: 120px;">
+                      <div class="person-cell-component can-edit">
+                        <div class="person-image-wrapper">
+                          <div class="person-bullet-component inline-image">
+                            <img class="person-bullet-image owner_img" src="/images/users/default_profile_empty.png" class="person-bullet-image" title="Dipok" alt="Dipok">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="Co_wonerCell" class="cell-component person-cell coowonerCell alsocoowner" style="flex-basis: 120px;">
+                      <div class="person-cell-component can-edit coownerViewList" data-id="" data-createdby="" onclick="viewUsersList(event)">
+                        <div class="person-image-wrapper" style="pointer-events: none;">
+                          <div class="person-bullet-component inline-image">
+                            <img src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img" title="Dipok" alt="Dipok">
+                            <span class="more_observer"></span>
+                          </div>
+                        </div>
+                        <div class="assignee_users">
+                            <span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+                            <input class="src_users" type="text" placeholder="Person Name" onkeyup="searchUsersContainer(event,'co-owner')">
+                            <div class="users_container">
+                              <div class="usersList">
+                                <img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+                                <h3 class="name_label">AH Nayeem</h3>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div id="ObserverCell" class="cell-component person-cell ObserverCell alsoObserver" style="flex-basis: 120px;">
+                      <div class="person-cell-component can-edit observerViewList" data-id="" data-createdby="" onclick="viewUsersList(event)">
+                        <div class="person-image-wrapper" style="pointer-events: none;">
+                          <div class="person-bullet-component inline-image">
+                            <img src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img" title="Dipok" alt="Dipok">
+                            <span class="more_observer"></span>
+                          </div>
+                        </div>
+                        <div class="assignee_users">
+                            <span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+                            <input class="src_users" type="text" placeholder="Person Name" onkeyup="searchUsersContainer(event,'observer')">
+                            <div class="users_container">
+                              <div class="usersList">
+                                <img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+                                <h3 class="name_label">AH Nayeem</h3>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div id="AssigneeCell" class="cell-component person-cell AssigneeCell alsoassignee" style="flex-basis: 120px;">
+                      <div class="person-cell-component can-edit assigneeViewList" data-id="" data-createdby="" onclick="viewUsersList(event)">
+                        <div class="person-image-wrapper" style="pointer-events: none;">
+                          <div class="person-bullet-component inline-image">
+                              <img src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img" title="Dipok" alt="Dipok">
+                              <span class="more_observer"></span>
+                          </div>
+                        </div>
+                        <div class="assignee_users">
+                            <span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+                            <input class="src_users" type="text" placeholder="Person Name" onkeyup="searchUsersContainer(event,'assignee')">
+                            <div class="users_container">
+                              <div class="usersList">
+                                <img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+                                <h3 class="name_label">AH Nayeem</h3>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div id="priorityCell" class="cell-component color-cell priorityCell alsophase" style="flex-basis: 120px;">
+                      <div class="status-cell-component">
+                        <div class="transparent-deadline-indicator left-to-linked"></div>
+                        <div class="priority-note-wrapper  ">
+                          <div>
+                            <!-- <div class="add-status-note"></div>
+                            <i class="fa fa-ellipsis-h menu-dog-ear-color" style="color: rgb(196, 196, 196);"></i> -->
+
+                          </div>
+                        </div>
+                        <div class="priority-label menu-color menu-color-print-helper-grey left-to-linked" style="background-color: #c3c4c3">
+                          <div class="status-label-marking">
+                            <div class="ds-text-component priority-label-container" data-color="#d8d8d8;" onclick="choosePriority(event)" dir="auto">
+                              <span class="view_priority">Phase 1</span>
+                            </div>
+                            <div class="priority-picker-wrapper">
+                                <span class="closeMiniPopUp" onclick="closeMiniPopUp('priority-picker-wrapper')">+</span>
+                              <div class="priority_container" style="position:relative">
+                                  <span onclick="pickPriority(this)"  style="background-color:#d8d8d8;" data-color="#d8d8d8;" data-id="" data-createdby="" class="single_priority">
+                                      <!-- <span class="prioritySamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                      <span onclick="editPrioritylabel(this)" style="width: 100% !important;" class="priorityLabel">Phase 1</span>
+                                    </span>
+                                    <!-- <div class="priorityChangeColor"></div> -->
+                                    
+                                    <span onclick="pickPriority(this)" data-id="" data-createdby=""  style="background-color:#e2445c;" data-color="#e2445c;" class="single_priority">
+                                        <!-- <span class="prioritySamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                        <span onclick="editPrioritylabel(this)" style="width: 100% !important;" class="priorityLabel">Phase 2</span>
+                                    </span>
+                                    <!-- <div class="priorityChangeColor"></div> -->
+          
+                                    <span onclick="pickPriority(this)" data-id="" data-createdby=""  style="background-color:#00c875;" data-color="#00c875;" class="single_priority">
+                                      <!-- <span class="prioritySamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                      <span onclick="editPrioritylabel(this)" style="width: 100% !important;" class="priorityLabel">Phase 3</span>
+                                    </span>
+                                    <!-- <div class="priorityChangeColor"></div> -->
+                                <span onclick="createPriority(event)" class="create_priority">New Phase</span>
+                              </div>
+                              <div class="priority-color-wrapper">
+                                <div class="status-change-color open priorityAllColors" style="top: 176px; transform-origin: center bottom 0px; padding-right: 4px; padding-left: 4px;">
+
+                                </div>
+                              </div>
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="DateCell" class="cell-component date-cell DateCell alsodueby" style="flex-basis: 120px">
+                      <div class="date-cell-component">
+                        <div class="deadline-indication-wrapper"></div>
+                        <div class="date-cell-content date-cell-icons-picker-ignore-hide empty-and-editable">
+                          <div class="ds-text-component" dir="auto">
+                            <!-- <span class="cell_clock_ico" onclick="$(this).next('.datePick').trigger('click')"><i class="far fa-clock"></i></span> -->
+                            <input class="datePick dueDateInput" type="text" data-date="" onmousedown="toggleCalPicker(event,this)"> 
+                            <span class="datepicker_icon"></span>
+                          </div>
+                        </div>
+                        <div class="icon-picker-wrapper"></div>
+                      </div>
+                    </div>
+
+                    <div id="com_DateCell" class="cell-component date-cell com_DateCell alsocompletedat" style="flex-basis: 120px">
+                      <div class="date-cell-component">
+                        <div class="deadline-indication-wrapper"></div>
+                        <div class="date-cell-content date-cell-icons-picker-ignore-hide empty-and-editable">
+                          <div class="ds-text-component" dir="auto">
+                            <!-- <span class="cell_clock_ico" onclick="$(this).next('.datePick').trigger('click')"><i class="far fa-clock"></i></span> -->
+                            <input class="datePick com_DateInput" type="text" data-date="" onmousedown="toggleCalPicker(event,this)"> 
+                            <span class="datepicker_icon"></span>
+                          </div>
+                        </div>
+                        <div class="icon-picker-wrapper"></div>
+                      </div>
+                    </div>
+
+                    <div id="AmountCell" class="cell-component numeric-cell AmountCell alsobudget" style="flex-basis: 120px; display: none">
+                      <div class="numeric-cell-component">
+                        <div class="ds-editable-component  " style="width: 100%; height: 25px;">
+                          <div class="ds-text-component" dir="auto">
+                            <span placeholder="0.00" contenteditable="true" onclick="focusAndCaretAtEnd(this);" onkeydown="onInputValue(event)"  onblur="amountInputBlur(event)" class="amountInputValue AmountCellSpan"  data-d="" data-createdby="" data-title="Press Enter for update">0</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="ActualCell" class="cell-component numeric-cell actutalCell actualCell alsoactual" style="flex-basis: 120px;display: none;">
+                      <div class="numeric-cell-component">
+                        <div class="ds-editable-component  " style="width: 100%; height: 25px;">
+                          <div class="ds-text-component" dir="auto">
+                            <span placeholder="0.00" contenteditable="true" onclick="focusAndCaretAtEnd(this)" onkeydown="onInputValue(event)"  onblur="amountInputBlur(event)" class="amountInputValue actualCellSpan"  data-d="" data-createdby=""  data-title="Press Enter for update">0</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="VarianceCell" class="cell-component numeric-cell varianceCell alsovariance" style="flex-basis: 120px;display: none;">
+                      <div class="numeric-cell-component">
+                        <div class="ds-editable-component  " style="width: 100%; height: 25px;">
+                          <div class="ds-text-component" dir="auto">
+                            <span placeholder="0.00" contenteditable="true" onclick="focusAndCaretAtEnd(this)" onkeydown="onInputValue(event)"  onblur="amountInputBlur(event)" class="amountInputValue varianceCellSpan" data-d="" data-createdby=""  data-title="Press Enter for update">0.00</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="timeEstCell" class="cell-component numeric-cell timeEstCell alsotimeest" style="flex-basis: 120px;display:none;">
+                        <div class="right-click-menu-anchor" style="position: absolute; top: 3.5px; left: 135px;"></div>
+                        <div class="numeric-cell-component">
+                            <div class="ds-editable-component" style="width: 100%; height: 25px;">
+                                <div class="ds-text-component" dir="auto">
+                                    <span placeholder="hh:mm" contenteditable="true" onblur="timeInputBlur(event)" onkeydown="timeCol(event)" onclick="timeInputClick(event,this)" class="timeInputValue timeEstCellSpan" data-val="1" data-title="Press Enter for update">0 h</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ManHourRateCell" class="cell-component numeric-cell ManHourRateCell alsomanhourcost" style="flex-basis: 120px; display: none;">
+                      <div class="numeric-cell-component">
+                        <div class="ds-editable-component  " style="width: 100%; height: 25px;">
+                          <div class="ds-text-component" dir="auto">
+                            <span placeholder="0.00" contenteditable="true" onclick="focusAndCaretAtEnd(this)" onkeydown="onInputValue(event)" onblur="amountInputBlur(event)" class="amountInputValue ManHourRateSpan" data-d="" data-createdby=""  data-title="Press Enter for update">0</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="actualHourCell" class="cell-component numeric-cell actualHourCell alsotactualtime" style="flex-basis: 120px;display:none;">
+                      <div class="right-click-menu-anchor" style="position: absolute; top: 3.5px; left: 135px;"></div>
+                      <div class="numeric-cell-component">
+                          <div class="ds-editable-component" style="width: 100%; height: 25px;">
+                              <div class="ds-text-component" dir="auto">
+                                  <span placeholder="hh:mm" contenteditable="true" onblur="timeInputBlur(event)" onkeydown="timeCol(event)" onclick="timeInputClick(event,this)" class="timeInputValue actualHourCellSpan" data-val="1" data-title="Press Enter for update">0 h</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                    <div id="HourlyRateCell" class="cell-component numeric-cell hourlyRateCell alsohourlyrate" style="flex-basis: 120px; display:none">
+                        <div class="numeric-cell-component">
+                          <div class="ds-editable-component  " style="width: 100%; height: 25px;">
+                            <div class="ds-text-component" dir="auto">
+                              <span placeholder="0.00" contenteditable="true" onclick="focusAndCaretAtEnd(this)" onkeydown="onInputValue(event)"  onblur="amountInputBlur(event)" class="amountInputValue hourlyRateCellSpan"   data-d="" data-createdby=""  data-title="Press Enter for update">0</span>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div id="TmeVarianceCell" class="cell-component numeric-cell timevarianceCell alsotimevariance" style="flex-basis: 120px;display: none;">
+                      <div class="numeric-cell-component">
+                        <div class="ds-editable-component  " style="width: 100%; height: 25px;">
+                          <div class="ds-text-component" dir="auto">
+                            <span placeholder="0.00" onclick="focusAndCaretAtEnd(this)" onkeydown="onInputValue(event)"  onblur="amountInputBlur(event)" class="amountInputValue timevarianceCellSpan" data-d="" data-createdby=""  data-title="Press Enter for update">0.00</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="StatusCell" class="cell-component color-cell StatusCell alsostatuscol" style="flex-basis: 120px;">
+                      <div class="status-cell-component">
+                        <div class="transparent-deadline-indicator left-to-linked"></div>
+                        <div class="status-note-wrapper  ">
+                          <div>
+                            <!-- <div class="add-status-note"></div>
+                            <i class="fa fa-ellipsis-h menu-dog-ear-color" style="color: rgb(196, 196, 196);"></i> -->
+                          </div>
+                        </div>
+                        <div class="status-label menu-color menu-color-print-helper-grey left-to-linked" style="border-bottom-color: #f0f0f0;background-color:#d8d8d8">
+                          <div class="status-label-marking">
+                            <div class="ds-text-component status-label-container" onclick="chooseStatus(event)" dir="auto" data-color="#d8d8d8">
+                              <span class="view_status" >Initiate</span>
+                            </div>
+                            <div class="status-picker-wrapper">
+                                <span class="closeMiniPopUp" onclick="closeMiniPopUp('status-picker-wrapper')">+</span>
+                              <div class="status_container" style="position:relative">
+                                <span onclick="pickStatus(this)"  data-color="#d8d8d8;"  style="background-color:#d8d8d8" data-id="" data-createdby="" class="initiate single_status">
+                                  <!-- <span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                  <span style="width: 100% !important;" class="statusLabel">Initiate</span>
+                                </span>
+                                <!-- <div class="statusChangeColor"></div> -->
+                                <span onclick="pickStatus(this)" data-id="" data-createdby="" data-color="#fdab3d;" style="background-color:#fdab3d" class="single_status working">
+                                  <!-- <span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                  <span style="width: 100% !important;" class="statusLabel">Working</span>
+                                </span>
+                                <!-- <div class="statusChangeColor"></div> -->
+                                <span onclick="pickStatus(this)" data-id="" data-createdby=""  data-color="#0086c0;"  style="background-color:#0086c0" class="single_status waitfeedback">
+                                  <!-- <span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                  <span style="width: 100% !important;" class="statusLabel">Waiting for feedback</span>
+                                </span>
+                                <!-- <div class="statusChangeColor"></div> -->
+                                <span onclick="pickStatus(this)"  data-color="#00c875;"  style="background-color:#00c875" data-id="" data-createdby="" class="rowComplted single_status">
+                                  <!-- <span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span> -->
+                                  <span style="width: 100% !important;" class="statusLabel">Completed</span>
+                                </span>
+                                <!-- <div class="statusChangeColor"></div> -->
+                                <span onclick="createStatus(event)" class="create_new_status">New Status</span>
+                              </div>
+                              <div class="status-color-wrapper">
+                                <div class="status-change-color open" style="top: 176px; transform-origin: center bottom 0px; padding-right: 4px; padding-left: 4px;">
+
+                                </div>
+                              </div>
+                              <!-- <div class="status-picker-footer editDisabled" onclick="editAddStatus(event)">
+                                <i class="icon icon-v2-edit"> </i>Add/Edit Labels
+                              </div> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- <div class="pulse-right-indicator"></div> -->
+
+                  </div>
+                </div>
+              </div>
+            <!-- New Design Start -->
+    
+            <div class="button-section">
+                <button class="cancel-btn" id="cancel-btn" onclick="closeRightSection();">Cancel</button>
+                <button class="create-btn" id="create-btn" onclick="createNewActivity();">Create Task</button>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="backwrap member_add_on_fly" id="member_add_on_fly" style="display:none;">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Assign Member(s)</p>
+          <p class="delete_msg_sec_title">Do you want to assign to the Subtask(s) ?</p>
+          <div class="main-deleted-msg"></div>
+          <p class="btn_div">
+              <br>
+              <button type="button" class="btn-cancel" data-type="" onclick="deleteParticipantsOncalen(this)">Cancel</button>
+              <button type="button" class="btn-msg-del" style="background: #1676ea;" data-type="" onclick="add_assign_members(this)" data-id="">Confirm</button>
+          </p>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap member_add_on_fly" id="member_add_on_fly" style="display:none;">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Assign Member(s)</p>
+          <p class="delete_msg_sec_title">Do you want to assign to the Subtask(s) ?</p>
+          <div class="main-deleted-msg"></div>
+          <p class="btn_div">
+              <br>
+              <button type="button" class="btn-cancel" data-type="" onclick="deleteParticipantsOncalen(this)">Cancel</button>
+              <button type="button" class="btn-msg-del" style="background: #1676ea;" data-type="" onclick="add_assign_members(this)" data-id="">Confirm</button>
+          </p>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap exceed_value" id="exceed_value" style="display:none;">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Warning!!!</p>
+          <p class="delete_msg_sec_title">Value exceed</p>
+          <p class="btn_div">
+              <br>
+              <button type="button" class="btn-cancel" onclick="closeAllPopUp()">Cancel</button>
+              <button type="button" class="btn-msg-del" style="background: #1676ea;" data-type="" onclick="updateExceedValue(this)" data-value="">Update</button>
+          </p>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap" id="memberListBackWrap" style="display: none;">
+  <div class="memberListContainer">
+      <div class="closeBackwrap">
+          <img src="/images/basicAssets/close_button.svg"> </div>
+      <div class="label">
+          <h1 class="label_Title">Members</h1>
+          <h1 class="list_Count">(8)</h1>
+      </div>
+      <input type="text" placeholder="Search by name" class="search_List">
+      <div class="forScrollBar overlayScrollbars">
+          <div class="memberList">
+              <div class="list static_design">
+                  <img src="/images/users/joni.jpg">
+                  <span class="online"></span>
+                  <h1 class="memberName">Dalim Chy</h1>
+                  <di class="hoverContent">
+                      <div class="conversation"></div>
+                      <div class="voiceCall"></div>
+                      <div class="videoCall"></div>
+                      <div class="close"><span class="remove" onclick="closeMembers(e)"></span></div>
+                  </di>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="backwrap" id="taskManage" style="display: none;" data-type="">
+  <div class="memberListContainer">
+      <div class="closeBackwrap" style="display: flex;align-items: center;justify-content: center;" onclick="$('#taskManage').hide()">
+          <img style="position:unset" src="/images/basicAssets/close_button.svg"> </div>
+      <div class="label">
+          <h1 class="label_Title">Members</h1>
+          <h1 class="list_Count">(8)</h1>
+      </div>
+      <div id="task_Member_List" class="header_box">
+          <input type="text" placeholder="Search by name" class="search_List" onkeyup="task_Member_ListSearch(event,this)">
+      </div>
+
+      <button class="freli-btn f-btn-primary" style="display: none;margin-top: 16px;margin-left: 7px;padding: 13px 12px;" onclick="updateTaskList(this)" id="updateTaskListBtn" data-type="">Update</button>
+
+      <button class="freli-btn f-btn-primary" style="margin-top: 16px;margin-left: 7px;padding: 13px 25px;" onclick="addActivitAdmin(this)" id="addActivitAdminBtn" data-type="">Add</button>
+
+      <div class="forScrollBar overlayScrollbars" style="width: 100%; float: left;">
+          <div class="memberList">
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap" id="delete_task_msg_div" style="display: none">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Delete message</p>
+          <p class="delete_msg_sec_title">Are you sure you want to delete this message? This cannot be undone.</p>
+          <div class="main-deleted-msg"></div>
+          <p class="btn_div">
+              <br />
+              <button type="button" class="btn-cancel" onclick="closeAllPopUp()">Cancel</button>
+              <button type="button" class="btn-msg-del" onclick="delete_task_commit(this)" data-id="' + msgid + '">Delete for me</button>
+              <button type="button" class="btn-msg-del btn-msg-del-all" onclick="delete_task_commit(this)" data-id="' + msgid + '">Delete for all</button>
+          </p>
+      </div>
+  </div>
+</div>
+<div class="backwrap" id="delete_to_do_div" style="display: none">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Delete Task</p>
+          <p class="delete_msg_sec_title">Are you sure you want to delete this Task? This cannot be undone.</p>
+          <div class="main-deleted-msg"></div>
+          <p class="btn_div">
+              <br />
+              <button type="button" class="btn-cancel" onclick="closeAllPopUp()">Cancel</button>
+              <button type="button" class="btn-msg-del" onclick="delete_commit_td(this)" data-id="">Confirm Delete</button>
+          </p>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap" id="completed_activity_div">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Complete TASK</p>
+          <p class="delete_msg_sec_title"></p>
+          <div class="main-deleted-msg checklistDiv" id="COmchecklistDiv">
+
+          </div>
+          <p class="btn_div">
+              <br />
+              <button type="button" class="btn-msg-del" id="checkedYes" onclick="checkedYes()">Yes</button>
+              <button type="button" class="btn-msg-del btn-msg-del-all" id="checkedNo" onclick="closeAllPopUp()">No</button>
+          </p>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap" id="subtaskWarningBackwrap" style="display: none">
+  <div class="delete_msg_div">
+      <img onclick="$('#subtaskWarningBackwrap').hide()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title" id="subtaskWarningTitle"></p>
+          <p class="delete_msg_sec_title" id="subtaskWarningMessage"></p>
+          <div class="main-deleted-msg" id="subtaskWarningContent">
+
+          </div>
+          <p class="btn_div">
+              <button type="button" class="btn-cancel" onclick="$('#subtaskWarningBackwrap').hide()">Cancel</button>
+              <button type="button" class="btn-msg-del" data-status="" id="removeBtnWarning" onclick="removeSubtaskPnS(this)" data-type="" data-id="">Remove</button>
+          </p>
+      </div>
+  </div>
+</div>
+
+<div class="backwrap" id="reopen_activity_div">
+  <div class="delete_msg_div">
+      <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="body">
+          <p class="del_msg_title">Reopen TODO</p>
+          <p class="delete_msg_sec_title"></p>
+          <div class="main-deleted-msg checklistDiv" id="ROchecklistDiv">
+
+          </div>
+          <p class="btn_div">
+              <br />
+              <button type="button" class="btn-msg-del" id="reopenCheckedYes" onclick="reopenCheckedYes()">Yes</button>
+              <button type="button" class="btn-msg-del btn-msg-del-all" id="reopenCheckedNo" onclick="closeAllPopUp()">No</button>
+          </p>
+      </div>
+  </div>
+</div>
+<div class="backwrap" data-sid="" data-cid="" id="subtaskNoteBackwrap" style="display:none">
+  <div class="subtask_note">
+      <img class="close_note" src="/images/basicAssets/close_button.svg" alt="">
+      <h3 class="subtask_note_title">Subtask Note</h3>
+      <textarea id="noteTestRaea" data-sid="" data-cid="" onkeypress="saveNote(this);" cols="30" rows="10"></textarea>
+  </div>
+</div>
+
+<input type="hidden" id="activityCreatedAt" value="0" />
+<input type="hidden" id="updateAction" value="0" />
+<input type="hidden" id="actCre" value="0" />
+<div class="customTooltip"></div>
+<div id="subTaskTitleEdit" data-id="" data-createdby="" onkeyup="saveSubTask(event);" onblur="saveSubTask_ob(event,this)"></div>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+<!-- right chat area-->
+<div class="backwrap" id="addnewcolumn" style="display: none;">
+  <div class="popup-inner" id="createcolumn-popup">
+      <img class="close-createcolumn-popup" src="/images/basicAssets/close_button.svg" alt="Close" onclick="addnewcolumn_popup()">
+      <h2 class="column_heading">Add Column </h2>
+      <p class="title_text">Title</p>
+      <input type="text" id="newcolname" class="title_textbox" value="" placeholder="Enter a title">
+
+      <div class="options">
+          <input name="columntype" type="radio" id="for_Number" value="Number" class="hide" checked>
+          <label for="for_Number">Number</label>
+
+          <input name="columntype" type="radio" id="for_Text" value="Text" class="hide">
+          <label for="for_Text">Text</label>
+
+          <input name="columntype" type="radio" id="for_Formula" value="Formula" class="hide">
+          <label for="for_Formula">Formula</label>
+      </div>
+
+      <table id="createcolumn_advance" width="100%" style="margin-top: 10px;">
+          <tr>
+              <td colspan="3">
+                  <div style="float:left;height: 25px;margin-top: 17px;">=</div>
+                  <div contenteditable="true" id="formula_str" onblur="$('#fildnamehelper').html('')" onkeydown="onkeydownoff(event)" onkeyup="fildhelperon(event)"></div>
+                  <ul id="fildnamehelper"></ul>
+              </td>
+              <!-- <td width="100px"></td> -->
+              <tr>
+                  <tr>
+                      <td colspan="3">
+                          <ul id="fildnameli">
+                              <script>
+                                  $.each($(".include_rule"), function(k, v) {
+                                      document.write("<li data-val='" + $(v).attr("data-id") + "' onclick='addtoformula(event)'>" + $(v).find(".editableCon").text() + "</li>");
+                                  });
+                              </script>
+                          </ul>
+                          <ul id="signli">
+                              <li data-val='+' onclick='addtoformula(event)'>+</li>
+                              <li data-val='-' onclick='addtoformula(event)'>-</li>
+                              <li data-val='*' onclick='addtoformula(event)'>*</li>
+                              <li data-val='/' onclick='addtoformula(event)'>/</li>
+                              <li data-val='(' onclick='addtoformula(event)'>(</li>
+                              <li data-val=')' onclick='addtoformula(event)'>)</li>
+                              <li data-val='%' onclick='addtoformula(event)'>%</li>
+                              <li onclick="addnewcolumn()">=</li>
+                              <li onclick="backone()">
+                                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="backspace" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-backspace fa-w-20">
+                                      <path fill="currentColor" d="M576 64H205.26A63.97 63.97 0 0 0 160 82.75L9.37 233.37c-12.5 12.5-12.5 32.76 0 45.25L160 429.25c12 12 28.28 18.75 45.25 18.75H576c35.35 0 64-28.65 64-64V128c0-35.35-28.65-64-64-64zm-84.69 254.06c6.25 6.25 6.25 16.38 0 22.63l-22.62 22.62c-6.25 6.25-16.38 6.25-22.63 0L384 301.25l-62.06 62.06c-6.25 6.25-16.38 6.25-22.63 0l-22.62-22.62c-6.25-6.25-6.25-16.38 0-22.63L338.75 256l-62.06-62.06c-6.25-6.25-6.25-16.38 0-22.63l22.62-22.62c6.25-6.25 16.38-6.25 22.63 0L384 210.75l62.06-62.06c6.25-6.25 16.38-6.25 22.63 0l22.62 22.62c6.25 6.25 6.25 16.38 0 22.63L429.25 256l62.06 62.06z" class=""></path>
+                                  </svg>
+                              </li>
+                              <li onclick="clearall()"><i class="fas fa-trash-alt"></i></li>
+                          </ul>
+                      </td>
+                  </tr>
+      </table>
+      <button type="button" class="createcolumn_btn" name="button" onclick="addnewcolumn()">Add New Column</button>
+  </div>
+</div>
+<div class=" "></div>
+
+<!-- <div class="backwrap" id="shareMessagePopUp" style="display: none">
+  <div class="hayven_Modal_Container">
+      <div class="hayven_Modal_heading">
+          <h1>Forward message to</h1>
+          <div class="closeModal" onclick="closeModal('shareMessagePopUp')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+          <div class="searchInput" id="searchInputForShare" contenteditable="true" onkeyup="filter_user_list(event)" spellcheck="false" placeholder="Search by name"></div>
+          <input type="button" class="shareButton" value="Share" onclick="share_this_msg_with(event)">
+          <div class="no_of_user_left_to_add"><span>10</span> members left</div>
+      </div>
+      <div class="hayven_Modal_Content">
+          <div class="allMemberList overlayScrollbars">
+              <ul class="suggested-list" id="shareSuggestedList">
+
+              </ul>
+          </div>
+      </div>
+  </div>
+</div> -->
+
+<div class="fileSliderBackWrap" id="taskFilePreview" style="display:none">
+  <div class="media-file-popup" style="display:block">
+    <div class="media-tab-header">
+      <span class="media-back-tooltip" data-balloon="Click to back" data-balloon-pos="right">
+        <img class="back-media-popup" onclick="closeMediaPopup()" src="/images/basicAssets/BackArrow.svg" alt="">
+      </span>
+      <span class="media-close-tooltip" data-balloon="Esc to close" data-balloon-pos="left">
+        <img class="close-media-popup" onclick="closeMediaPopup()" src="/images/basicAssets/close_button.svg" alt="">
+      </span>
+      <ul class="media-tabs">
+        <li class="active" onclick="viewMediaFile('MediaImages',this)"><a class="">Images</a></li>
+        <li onclick="viewMediaFile('MediaVideos',this)"><a>Videos</a></li>
+        <li onclick="viewMediaFile('MediaAudios',this)"><a>Audios</a></li>
+        <li onclick="viewMediaFile('MediaFiles',this)"><a>Files</a></li>
+        <li onclick="viewMediaFile('MediaLinks',this)"><a>links</a></li>
+        <li onclick="viewMediaFile('MediaTags',this)" id="mediaTagDivHead"><a>Tags</a></li>
+      </ul>
+      <ul class="mediaAction_item" id="media_Action_Div_task" style="display: none">
+        <li class="download" onclick="downloadFiles('mediaImages')" data-balloon="Download" data-balloon-pos="left"></li>
+        <li class="share" data-balloon="Share" data-balloon-pos="right"></li>
+        <li class="delete" data-balloon="Delete" data-balloon-pos="right"></li>
+      </ul>
+      <input class="Search-img" type="text" placeholder="Search Images">
+    </div>
+    <div class="media-tab-body">
+      <div id="taskMediaImages" data-type="MediaImages" class="main-images-tab media_Tab_Content"> </div>
+      <div id="taskMediaVideos" data-type="MediaVideos" class="media_Tab_Content" style="display:none">  </div>
+      <div id="taskMediaAudios" data-type="MediaAudios" class="media_Tab_Content" style="display:none"></div>
+      <div id="taskMediaFiles" data-type="MediaFiles" class="media_Tab_Content" style="display:none"></div>
+      <div id="taskMediaLinks" data-type="MediaLinks" class="media_Tab_Content" style="display:none"></div>
+      <div id="tasktagListFormediaView" class="tagListFormediaView" style="display:none">
+        <div class="showingTag" id="visibleTagList">
+          <div id="visibleTagMedia"></div>
+        </div>
+      </div>
+      <div id="taskMediaTags" data-type="MediaTags" class="media_Tab_Content" style="display:none"></div>
+    </div>
+  </div>
+  <div class="image-popup-slider overlayScrollbars" style="display:none">
+    <div class="image-popup-header">
+      <div class="media-back-tooltip"  onclick="backToMediaTab()" data-balloon="Back" data-balloon-pos="up">
+        <!-- <img class="back-media-popup" onclick="backToMediaTab()" src="/images/basicAssets/BackArrow.svg" alt=""> -->
+      </div>
+      <h2 onclick="backToMediaTab()" style="cursor:pointer">Images</h2>
+      <div class="current-slide-image-details">
+        <div class="shared-by-user-photo"><img src="/images/users/nayeem.jpg" alt=""></div>
+        <div class="shared-by-user-details">
+          <h3>Dean Alvarado</h3>
+          <p>August 23rd, 2017 @ 12:10pm</p>
+        </div>
+      </div>
+      <div class="slide-image-more-option" data-balloon="Download" data-balloon-pos="up">
+        <a href="" download="">
+          <img src="/images/basicAssets/Download.svg" alt="">
+        </a>
+      </div>
+      
+      <span class="close-img-popup-tooltip" data-balloon="Esc to close" data-balloon-pos="left">
+        <!-- <img class="close-image-popup-slider" onclick="backToMediaTab()" src="/images/basicAssets/close_button.svg" alt=""> -->
+      </span>
+    </div>
+    <div class="images-slide-body">
+      <div class="slider-left-arrow" onclick="slaclick()" data-balloon="Previous" data-balloon-pos="up">
+        <img src="/images/basicAssets/Chevron_Left_for_img_slider.svg" alt="">
+      </div>
+      <div class="slider-right-arrow" onclick="sraclick()" data-balloon="Next" data-balloon-pos="up">
+        <img src="/images/basicAssets/Chevron_right_for_img_slider.svg" alt="">
+      </div>
+      <img class="currentimg" src="" alt="">
+    </div>
+    <div class="images-slider-footer">
+    </div>
+    <div class="show-picture-comment">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio expedita, fugit, .</p>
+    </div>
+  </div>
+</div>
+
+
+<%- include('activity_chat/act_chat') %>
+<!-- <%- include('activity_chat/todo_file_upload') %> -->
+<script src="/javascripts/socket-client-side.js"></script>
+<script src="/javascripts/socket-calling.js"></script>
+<script src="/javascripts/plugins/highlight.min.js"></script>
+<script src="/javascripts/plugins/quill.js"></script>
+<!-- <script src="/javascripts/custom_to_do.js"></script> -->
+<script src="/javascripts/chat_to_do.js"></script>
+<script src="/javascripts/jQuery/jquery-ui-datepicker.min.js"></script>
+<script src="/javascripts/plugins/select2.min.js"></script>
+<!-- <script src="/javascripts/taskOnconnect.js"></script> -->
+<script src="/javascripts/timepicki.js"></script>
+<script src="/javascripts/SubtaskClone.js"></script>
+<script>
+var workspace_user = _.orderBy(allUserdata[0].users, ["fullname"], ["asc"]);
+var dept = [];
+var memberList = [];
+var adminList = [];
+var adminListUUID = [];
+var memberListUUID = [];
+var typing = false; //Global typing variable, for storing typing status
+var timeout = undefined; //Global timeout variable, for storing when typing timeout
+var frzIndex = 0;
+var ascIndex = 0;
+var descIndex = 0;
+var formula = [];
+var title_formula = [];
+var sharedMemberList = [];
+var addAsCoOwnerArr = [];
+var addAsObsrvrArr = [];
+var addAsAssigneeArr = [];
+var editorlabel = [];
+var all_subtask_inthis_task = [];
+</script>
+

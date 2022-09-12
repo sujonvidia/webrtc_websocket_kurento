@@ -1,0 +1,114 @@
+<ul class="singlerow">
+    <span class="row_handlr"></span>
+    <!-- Expandable Body Column start -->
+    <li class="task_expandable">
+        <div class="ds-menu-button-container" style="opacity: 1;position: relative;right: -4px;">
+            <div class="ds-menu-button ds-menu-button-sm right" onclick="expandActivity(this,event)" style="background-color: rgb(240, 240, 240);">
+                <i class="fa fa-caret-down"></i>
+                <i class="fa fa-caret-right"></i>
+            </div>
+        </div>
+    </li>
+    <!-- Title Body Column start -->
+    <li class="sticky_title" onclick="subtasksByThisTask(this)" style="max-width: 500px;min-width: 33%;">
+        <span class="checkThis_task" onclick="selectThis_row(this, event)">
+            <div class="left-indicator-checkbox">
+                <span class="left-indicator-checkbox-mark fa fa-check"></span>
+            </div>
+        </span>
+        <div class="editable_title" onkeypress="saveThisTitle(this, event)" onblur="$(this).attr('contenteditable','false')" onfocus="selectAllTxt(this)" contenteditable="false"><%= title %></div> 
+        <div class="group_option">
+            <span class="edit_thisTitle" onclick="edit_thisTitle(this, event)"><i class="fas fa-pencil-alt"></i></span>
+            <!-- <span class="flag_thisTask"></span> -->
+            <span class="moreOpt_thisTask"  onclick="singleRowOption(this, event)"><i style="font-size: 18px;" class="fas fa-ellipsis-h"></i></span>
+        </div>
+    </li>
+    <!-- Owner Body Column start -->
+    <li class="owner_column" style="min-width: 15%;">
+        <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+            <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+            <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+        </div>
+    </li>
+    <!-- Co-owner Body Column start -->
+    <li class="coowner_column" style="min-width: 15%;">
+        <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+            <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+            <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+        </div>
+    </li>
+    <!-- Observer Body Column start -->
+    <li class="observer_column" style="min-width: 15%;">
+        <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+            <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+            <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+        </div>
+    </li>
+    <!-- Assignee Body Column start -->
+    <li class="assignee_column" style="min-width: 15%;">
+        <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+            <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+            <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+        </div>
+    </li>
+    <!-- Actual Amount Body Column start -->
+    <li class="acAmount_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+    <!-- Variance Body Column start -->
+    <li class="bgVariance_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+    <!-- Estimated Work Hour Body Column start -->
+    <li class="estWorkHour_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress_2(event)" class="input_field colon_field" value="">
+    </li>
+
+    <!-- Hours Worked Body Column start -->
+    <li class="hoursWorked_column" style="min-width: 15%;">
+        <input type="text" onclick="hoursWorkedInformation(this)" onkeypress="globalOnKeypress_2(event)" class="input_field colon_field" value="">
+    </li>
+    <!-- Budget Amount Body Column start -->
+    <li class="bgAmount_column" style="min-width: 15%;">
+        <input type="text" onclick="viewExpensedtl(this)" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+    <!-- Money Spent Body Column start -->
+    <li class="moneySpent_column" style="min-width: 15%;">
+        <input type="text" onclick="viewExpensedtl(this)" onclick="viewExpensedtl(this)" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+
+    <!-- Estimated Hourly Rate Body Column start -->
+    <li class="estHourRate_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+    <!-- Actual Work Hour Body Column start -->
+    <li class="acWorkHour_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress_2(event)" class="input_field colon_field" value="">
+    </li>
+    <!-- Actual Hourly Rate Body Column start -->
+    <li class="acHourRate_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+    <!-- Actual Variance Rate Body Column start -->
+    <li class="acVarianceRate_column" style="min-width: 15%;">
+        <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+    </li>
+    <!-- Due Date Body Column start -->
+    <li class="dueDate_column due_date_div" style="min-width: 15%;">
+        <input type="text" class="due_date" value="12.11.2019">
+    </li>
+    <!-- Completed Date Body Column start -->
+    <li class="compDate_column due_date_div" style="min-width: 15%;">
+        <input type="text" class="due_date" value="12.11.2019">
+    </li>
+    <!-- Phase Body Column start -->
+    <li class="phase_column" style="min-width: 15%;">
+        <div class="phaseBody_txt" onclick="choosePhase(this)">High </div>
+    </li>
+    <!-- Status Body Column start -->
+    <li class="status_column" style="min-width: 15%;">
+        <div class="statusBody_txt" style="background-color: #d8d8d8;" onclick="chooseStatus(this)">Initiate</div>
+    </li>
+    <!-- Ending Body Column start -->
+    <li class="lastColumn_ofRow" style="min-width: 35px;max-width: 35px;"></li>
+</ul>

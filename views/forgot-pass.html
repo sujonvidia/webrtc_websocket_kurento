@@ -1,0 +1,24 @@
+<%- include('layouts/head') %>
+    
+    <div class="centered-form__form forgot-password">
+        <form action="/forgot-password" method="POST">
+            <div class="logo_icon">
+                <a href="/">
+                    <img src="/images/Workfreeli_logo_full_connect.png" alt="workfreeli" style="border-radius: 4px;background-color: #023d67 !important">
+                </a>
+            </div>
+            <div class="hello-welcome-back">
+                Forgot PIN/Password
+            </div>
+            <% if (error) { %><div class="error-msg" style="text-align: center;top: 35px;position: relative;z-index: 1;font-size: 16px;font-weight: bold;"><%= error %></div><% } %>
+            <div class="form-field email-address">
+                <label>Email Address</label><br>
+                <input type="email" name="email" id="email" placeholder="example@workfreeli.com" autocomplete="on" autofocus />
+            </div>
+            <div class="sign-in">
+                <button type="submit" class="submitBtn" id="submitBtn">Reset</button><br><br>
+                <button class="cancleBtn" id="cancleBtn">Back</button>
+            </div>          
+        </form>
+    </div>
+<%- include('layouts/foot') %>

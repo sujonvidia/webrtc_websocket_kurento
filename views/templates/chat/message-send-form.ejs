@@ -1,0 +1,803 @@
+<div id="ChatFileUpload" class="Chat_File_Upload backwrap" style="display: none">
+    <div class="chat-file-upload-popup">
+        <!--   <h4 class="chat-upload-popup-title">Upload File <span class="close-chat-file-popup" onclick="closeUploadPopup()" data-balloon="Press esc to close" data-balloon-pos="up"><img src="/images/basicAssets/close_button.svg" alt=""></span></h4> -->
+        <h4 class="chat-upload-popup-title">Upload File <span class="close-chat-file-popup closeModal" onclick="closeUploadPopup()" data-balloon="Press esc to close" data-balloon-pos="up"></span></h4>
+        <span class="drag_handlr"></span>
+        <div class="chat-upload-popup-content">
+            <form method="POST" encType="multipart/form-data">
+                <div id="UploadedFileChat" style="margin-bottom: 16px">
+                    <!-- Drag & Drop file -->
+                    <label class="chat-file-drag-upload-label">Click here to upload file(s) from your device.</label>
+                </div>
+                <!-- Drag & Drop file -->
+                <div id="attach_chat_file_list"></div>
+                <div class="upload_warning" id="upload_warning"></div>
+                <!-- <div class="upload_warning" id="upload_warning2"></div> -->
+                <div class="chat-file-upload-comment">
+                    <label for="">Comments</label>
+
+                    <div class="secretUserList" id="secretUserList_file"></div>
+                    <!-- <div name="" id="FileComment" onkeypress="check_val_for_activef()" onpaste="filterPasteText(event)" cols="" rows="" placeholder="Add a comment..." contenteditable="true"></div> -->
+                    <div name="" id="FileComment" onpaste="onpasteFun(event)" onkeypress="check_val_for_activef()" cols="" rows="" placeholder="Add a comment..." contenteditable="true"></div>
+                    <div class="mention_user_list" id="mention_user_list_file"></div>
+                </div>
+                <input type="file" name="file_upload" id="msgFile" multiple class="hidden" onchange="uploadAttachFileServer(this.files)">
+                <button type="button" id="uploadbtn" class="uploadbtn inactive" onclick="submit_attachment()">Upload</button>
+                <button type="button" id="uploadbtn_f_todo" class="uploadbtn" onclick="upload_attachment()">Upload</button>
+            </form>
+            <!-- <div class="tagged"><img id="taggedIMGAttachFile" src="/images/basicAssets/custom_not_tag.svg"></div> -->
+            <!-- <div class="tagged" onclick="$(this).find('input').focus()">
+                    <div style="float: left;" class="container" id="AttachmentTagHolder"></div>
+                <input id="AttachmentTagHolderInput" type="text" placeholder="Tag upload(s) to be more organized..." onfocus="$('.chat-upload-popup-content .addTagConv').show()" onkeyup="searchTagListAttach(event,this)">
+            </div> -->
+            <!-- <div class="addTagConv" style="display: none">
+                <span id="CustagItemList"></span>
+                <div class="taglistHolder">
+                    <input type="text" id="customAdd" class="createConvTag" placeholder="Add custom tag"/>
+                    <div class="overlayScrollbars tagScroll">
+                        <ul class="taggedList" id="cusTaggedList"></ul>
+                    </div>
+                </div>
+            </div> -->
+            <div class="addTagConv" style="display: none">
+                <!-- <span id="selectedFileTag"></span> -->
+                <div class="taglistHolder">
+                    <!-- <input type="text" id="addTagForUploadedFile" class="createConvTag" placeholder="Add custom tag"/> -->
+                    <div class="overlayScrollbars tagScroll">
+                        <ul class="taggedList" id="tagsForUploadedFile"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- invalid modal popup -->
+<div id="ws" class="backwrap" style="display: none;position:absolute;">
+    <div class="hayven_Modal_Container" style="max-width: 522px;width: 100%;">
+        <div class="hayven_Modal_heading">
+            <h1 id="warningTitle2">Warning!</h1>
+            <div class="closeModal" onclick="closeModal('ws')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <h6 id="warningMessage2">dll,exe,bat files are not allowed to upload here..</h6>
+        </div>
+        <div class="hayven_Modal_endSection">
+            <div class="btn_group">
+
+                <button id="warning_op2" class="buttonAction" onclick="closeModal('ws')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- invalid modal popup end -->
+<script type="text/javascript">
+    var comment_text = '';
+    var temp_conv_ori_name = [];
+
+    var check_val_for_activef = () => {
+        // if ($("#FileComment").val() != "")
+        //     $('.uploadbtn').addClass('active');
+        // else
+        //     $('.uploadbtn').removeClass('active');
+
+    };
+    // var filterPasteText = (event) => {
+    // 	event.preventDefault();
+    // 	let clipboardData = event.clipboardData || window.clipboardData || event.originalEvent.clipboardData;
+    // 	let withFormat = clipboardData.getData('Text');
+    // 	$("#FileComment").text(withFormat);
+    // 	// console.log(withFormat);
+    // }
+    var submit_attachment = () => {
+        // debugger;
+        var msg_text_from_file_comment = $('#FileComment').html();
+        var type = $('#uploadbtn').attr("data-type");
+        $('#upload_warning').html('');
+        // $('#upload_warning2').html('');
+        if (type == 'msg') {
+            if (msg_text_from_file_comment != "")
+                $('#msg').html(msg_text_from_file_comment);
+            else
+                $('#msg').html(comment_text);
+
+            msg_form_submit();
+        } else if (type == 'repmsg') {
+            $("#threadReplyPopUp").show();
+            if (msg_text_from_file_comment != "")
+                $('#msg_rep').html(msg_text_from_file_comment);
+            else
+                $('#msg_rep').html(comment_text);
+
+            if (typeof callCleanupLogic == 'function' && window.name == 'calling') rep_msg_send_fn_call();
+            else rep_msg_send_fn();
+        }
+
+        $('.uploadbtn').addClass('inactive').removeClass('active');
+        closeUploadPopup();
+        //$('.send-msgs.issueActive[popup="reOpenable"]').show();
+    }
+    var add_file_data = (data) => {
+        $.each(data, function(k, v) {
+            allfiles.push(v);
+            // per_conv_all_files.push(v);
+            var mime = v.mimetype;
+            if (mime.indexOf('image') != -1)
+                imgfile.push(v.bucket + '/' + v.key);
+            else if (mime.indexOf('video') != -1)
+                videofile.push(v.bucket + '/' + v.key);
+            else if (mime.indexOf('audio') != -1)
+                audiofile.push(v.bucket + '/' + v.key);
+            else
+                otherfile.push(v.bucket + '/' + v.key);
+        });
+        filedata = [{
+            audiofile,
+            imgfile,
+            otherfile,
+            videofile,
+            allfiles
+        }];
+    };
+
+    var tmpArr = [];
+    var tmptagListTitle = [];
+    var tmptagListForDisplayTitle = [];
+    var count_files = 0;
+
+
+    function chatFileUploadFunc(type) {
+        // $('#secretUserList').html('');
+        // $('#secretUserList_rep').html('');
+        console.log(103, bucket_name);
+        set_bucket_name();
+        tempAttachmentTag = [];
+        $('#AttachmentTagHolder').html("");
+        $('#AttachmentTagHolder').next("input").val('');
+        if ($('#uploadbtn').hasClass('active')) {
+            $('#uploadbtn').removeClass('active');
+            $('#uploadbtn').addClass('inactive');
+        }
+
+        filedata.length = 0;
+        filedata = [];
+        audiofile.length = 0;
+        audiofile = [];
+        imgfile.length = 0;
+        imgfile = [];
+        otherfile.length = 0;
+        otherfile = [];
+        videofile.length = 0;
+        videofile = [];
+        formDataTemp.length = 0;
+        formDataTemp = [];
+        count_files = 0;
+        comment_text = '';
+        temp_conv_ori_name = [];
+        console.log(139, deletedFilesId)
+        $.each(per_conv_all_files, function(k, v) {
+            if (v.is_delete != 1) {
+                if (deletedFilesId.indexOf(v.originalname) == -1) {
+                    console.log(143, v);
+                    temp_conv_ori_name.push(v.originalname);
+                }
+            }
+        });
+        $('#uploadbtn').attr("data-type", "msg");
+        if (type == 'repmsg') {
+            if ($("#threadReplyPopUp").is(':visible')) {
+                uploadPopup_visible = 'rep_msg';
+            } else {
+                uploadPopup_visible = 'msg';
+            }
+            // if(window.name !='calling') 
+            if (typeof callCleanupLogic !== 'function' && window.name !== 'calling') {
+                $("#threadReplyPopUp").hide();
+            }
+            $('#uploadbtn').attr("data-type", "repmsg");
+
+        }
+        console.log(temp_conv_ori_name);
+        // $("#CustagItemList").text('');
+        // $("#fileAttachTagLs").html(''); 
+
+        $('#ChatFileUpload').css('display', 'flex');
+        $('#FileComment').html($('#msg').html());
+        //$('.send-msgs.issueActive').attr('popup','reOpenable').hide();
+        // $("textarea#FileComment").focus();
+
+        if ($("#right-section-area-todo").is(":visible")) {
+            $("#uploadbtn").hide();
+            $("#uploadbtn_f_todo").show();
+            $("#viewUploadFileviewUploadFile").show();
+        } else {
+            $("#uploadbtn").show();
+            $("#uploadbtn_f_todo").hide();
+            $("#viewUploadFileviewUploadFile").hide();
+        }
+
+        socket.emit('getConvTagId', {
+            conversation_id: conversation_id,
+            company_id: company_id
+        }, function(res) {
+            if (res.status) {
+                console.log(res);
+                var fileTaglist = [];
+
+                $('#tagsForUploadedFile').html('');
+                $.each(allUserTagList, function(k, v) {
+                    if (fileTaglist.indexOf(v.tag_id) > -1) {
+                        tempAttachmentTag.push(v.tag_id);
+                        // $('#tagsForUploadedFile').prepend('<div class="item"><p class="valtext">'+v.title+'</p><span class="valremove" data-val="'+v.title+'" tag-id="'+v.tag_id+'" onclick="removeConvTag(this)"></span></div>')
+                        //$('#tagsForUploadedFile').prepend('<li onclick="tagOnCov(this)" data-type="addedTag" class="tag tag_id_'+v.tag_id+'" data-id="'+v.tag_id+'" conv-id="'+conversation_id+'">'+v.title+'</li>');
+                    } else {
+                        $('#tagsForUploadedFile').append('<li onclick="tagForAttach(this)" class="tag tag_id_' + v.tag_id + '" data-id="' + v.tag_id + '" conv-id="' + conversation_id + '">' + v.title + '</li>');
+                    }
+                });
+            }
+        });
+        if ($('#AttachmentTagHolder').find('.item').length > 0) {
+            $('#AttachmentTagHolderInput').attr('placeholder', '');
+        } else {
+            $('#AttachmentTagHolderInput').attr('placeholder', 'Tag upload(s) to be more organized...');
+        }
+        // $('#FileComment').focus();
+        placeCaretAtEnd(document.getElementById('FileComment'));
+    }
+
+    var removeCustomTag = (title) => {
+        removeA(tagListForFileAttach, title.toLowerCase());
+        removeA(tmptagListForDisplayTitle, title.toLowerCase());
+        $("#CustagItemList").text(tmptagListForDisplayTitle.join(','));
+
+        $('#cusTaggedList li').each(function(k, v) {
+            if ($(this).text().toLowerCase() === title) {
+                $(this).remove();
+            }
+        });
+    }
+    var remoeag = (title) => {
+        $('#cusTaggedList li').each(function(k, v) {
+            if ($(this).text().toLowerCase() === title) {
+                if ($(this).hasClass('newlytagged')) {
+                    removeA(tagListForFileAttach, title.toLowerCase());
+                    removeA(tmptagListForDisplayTitle, title.toLowerCase());
+                    $("#CustagItemList").text(tmptagListForDisplayTitle.join(','));
+                    $(this).removeClass('newlytagged');
+                    $(this).text(title);
+                } else {
+                    var design = title.toLowerCase() + '<span class="tagcheck"></span>';
+                    $(this).html(design);
+                    $(this).addClass('newlytagged');
+                    tagListForFileAttach.push(title);
+                    tmptagListForDisplayTitle.push(title);
+                    $("#CustagItemList").text(tmptagListForDisplayTitle.join(','));
+                }
+
+            }
+        });
+        var checkNewTag = $('#CustagItemList').text().length;
+        if (checkNewTag !== 0) {
+            $('#CustagItemList').css('background-image', 'url(/images/basicAssets/custom_tagged2.svg)')
+        } else {
+            $('#CustagItemList').css('background-image', 'url(/images/basicAssets/custom_not_tag.svg )')
+        }
+    }
+
+    var addCustomTag = (title) => {
+        if (tagListForFileAttach.indexOf(title) === -1) {
+            tagListForFileAttach.push(title);
+            tmptagListForDisplayTitle.push(title);
+            $("#CustagItemList").text(tmptagListForDisplayTitle.join(','));
+
+            $('#cusTaggedList li').each(function(k, v) {
+                if ($(this).text().toLowerCase() === title) {
+                    var design = title.toLowerCase() + '<span class="tagcheck"></span>';
+                    $(this).html(design);
+                    $(this).addClass('newlytagged');
+                }
+            });
+        } else {
+
+            $('#cusTaggedList li').each(function(k, v) {
+                if ($(this).text().toLowerCase() === title) {
+                    if ($(this).hasClass('newlytagged')) {
+                        removeA(tagListForFileAttach, title.toLowerCase());
+                        removeA(tmptagListForDisplayTitle, title.toLowerCase());
+                        $("#CustagItemList").text(tmptagListForDisplayTitle.join(','));
+                        $(this).removeClass('newlytagged');
+                        $(this).text(title);
+                    }
+                }
+            });
+        }
+        var checkNewTag = $('#CustagItemList').text().length;
+        if (checkNewTag !== 0) {
+            $('#CustagItemList').css('background-image', 'url(/images/basicAssets/custom_tagged2.svg)')
+        } else {
+            $('#CustagItemList').css('background-image', 'url(/images/basicAssets/custom_not_tag.svg )')
+        }
+    }
+
+    var closeUploadPopup = () => {
+        // files_list_drop = null;
+        filedata.length = 0;
+        filedata = [];
+        allfiles.length = 0;
+        allfiles = [];
+        audiofile.length = 0;
+        audiofile = [];
+        imgfile.length = 0;
+        imgfile = [];
+        otherfile.length = 0;
+        otherfile = [];
+        videofile.length = 0;
+        videofile = [];
+        formDataTemp.length = 0;
+        formDataTemp = [];
+        temp_conv_ori_name = [];
+        $('#upload_warning').html('');
+        // $('#upload_warning2').html('');
+        $("#attach_chat_file_list").html("");
+        $('#ChatFileUpload').hide();
+        $('.chat-file-upload-popup').removeAttr('style').removeClass('ui-draggable');
+        $('.drag_handlr').removeClass('ui-draggable-handle');
+
+        if (uploadPopup_visible != '') {
+            if (uploadPopup_visible == 'rep_msg') {
+                $('#threadReplyPopUp').show();
+                uploadPopup_visible = '';
+            } else {
+                uploadPopup_visible = '';
+            }
+        }
+        if ($('#threadReplyPopUp').is(':visible')) {
+            placeCaretAtEnd(document.getElementById('msg_rep'));
+        } else {
+            placeCaretAtEnd(document.getElementById('msg'));
+        }
+    }
+
+    var closeAttachFile = (id) => {
+        $('.close-chat-uploading-file').on('click', function(e) {
+            var filename = $(this).parents('.chat-uploading-files').find('.chat-file-icons>img').attr('data-name');
+            var filename_for_unlink = $(this).parents('.chat-uploading-files').find('.close-chat-uploading-file').attr('data-filename');
+            console.log("filename_for_unlink", filename_for_unlink, filename);
+            var fileindex = $(this).parents('.chat-uploading-files').attr('data-index'); //alert(fileindex);
+            // if(files_list_drop) files_list_drop.items.remove(fileindex);
+            formDataTemp.forEach(function(vv, key) {
+                if (vv.name == filename) {
+                    formDataTemp.splice(key, 1);
+                }
+            });
+            audiofile.forEach(function(fv, fk) {
+                if (fv == filename_for_unlink)
+                    audiofile.splice(fk, 1);
+            });
+            imgfile.forEach(function(fv, fk) {
+                if (fv == filename_for_unlink)
+                    imgfile.splice(fk, 1);
+            });
+            otherfile.forEach(function(fv, fk) {
+                if (fv == filename_for_unlink)
+                    otherfile.splice(fk, 1);
+            });
+            videofile.forEach(function(fv, fk) {
+                if (fv == filename_for_unlink)
+                    videofile.splice(fk, 1);
+            });
+            allfiles.forEach(function(fv, fk) {
+                if (fv.bucket + '/' + fv.key == filename_for_unlink)
+                    allfiles.splice(fk, 1);
+            });
+
+            count_files--;
+            $(this).parents('.chat-uploading-files').remove();
+
+            if ($("#attach_chat_file_list").find(".warning").length == 0 && $("#attach_chat_file_list").find('.chat-uploading-files').length != 0)
+                $('.uploadbtn').addClass('active').removeClass('inactive');
+            else
+                $('.uploadbtn').addClass('inactive').removeClass('active');
+
+            request[id].abort();
+            var bucket_name = filename_for_unlink.substring(0, filename_for_unlink.indexOf("/"));
+            var attch_list = JSON.stringify([filename_for_unlink.substring(filename_for_unlink.indexOf("/") + 1)]);
+            $.ajax({
+                url: "/s3Local/deleteObjects",
+                type: "POST",
+                data: {
+                    bucket_name,
+                    attch_list
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    console.log(299, bucket_name, attch_list);
+                },
+                success: function(res) {
+                    console.log("Unlink successfully", res);
+                },
+                error: function(e) {
+                    console.log("Error in unlink: ", e);
+                }
+            });
+
+        });
+    }
+
+    $('#UploadedFileChat').on('click', function() {
+        $('#msgFile').val("");
+        $('#msgFile').trigger('click');
+    });
+    var request = [];
+    var noofcomplete = 0;
+    var uploadAttachFileServer = (files) => {
+        console.log('fff', files);
+        // if(files_list_drop == null){ files_list_drop = new DataTransfer(); }
+
+        noofcomplete = 0;
+        request = [];
+        formDataTemp.length = 0;
+        for (var i = 0; i < files.length; i++) {
+            // files_list_drop.items.add(files[i]);
+            console.log('fff2', bytesToSize2(files[i].size));
+            // 100.5 MB = 105381888 Bytes
+            if(files[i].size < 105381888){
+                if (count_files > 19) {
+                    // alert("You can upload max 20 files at a time");
+                    $('#upload_warning').html('You can upload 20 files. Max allowed each file size is 100 MB.');
+                    return false;
+                }
+                var fileName = document.getElementById('msgFile').value.toLowerCase();
+                if (fileName.endsWith('.dll') || fileName.endsWith('.exe') || fileName.endsWith('.bat')) {
+                    $('#ws').show();
+                    continue;
+                }
+                var formData = new FormData();
+                var entries = formData.entries();
+                for (var pair of entries) {
+                    formData.delete(pair[0]);
+                }
+                var has_already = false;
+                formDataTemp.forEach(function(vv) {
+                    if (vv.name == files[i].name) {
+                        has_already = true;
+                    }
+                });
+                if (has_already === true) continue;
+                // comment_text += files[i].name + '\n'; // If file name as comment
+                comment_text = 'No Comments';
+                formDataTemp.push(files[i]);
+                formData.append('bucket_name', bucket_name);
+                formData.append('file_upload', files[i]);
+                count_files++;
+                var slid = Number(moment().unix()) + i + 1;
+                formData.append('sl', slid);
+                var file_ext = files[i].name.split('.').pop().toLowerCase();
+                switch (file_ext) {
+                    case 'ai':
+                    case 'mp3':
+                    case 'mp4':
+                    case 'mkv':
+                    case 'avi':
+                    case 'wmv':
+                    case 'm4v':
+                    case 'mpg':
+                    case 'doc':
+                    case 'docx':
+                    case 'indd':
+                    case 'js':
+                    case 'sql':
+                    case 'pdf':
+                    case 'ppt':
+                    case 'pptx':
+                    case 'psd':
+                    case 'svg':
+                    case 'xls':
+                    case 'xlsx':
+                    case 'zip':
+                    case 'rar':
+                        file_ext = file_ext;
+                        break;
+                    default:
+                        file_ext = 'other';
+                }
+
+                if (files[i].type.startsWith('image/')) {
+                    var imgsrc = window.URL.createObjectURL(files[i]);
+                } else {
+                    var imgsrc = "/images/basicAssets/" + file_ext + ".svg";
+                }
+                var imgalt = window.URL.createObjectURL(files[i]);
+                var stopthis = () => {
+                    this.abort();
+                };
+                request[slid] = $.ajax({
+                    xhr: function() {
+                        $('.fileno_' + slid).find('.chat_file_progress').show();
+                        var xhr = new XMLHttpRequest();
+                        xhr.upload.addEventListener("loadstart", function(et) {
+                            var ext = files[i].name.split('.').pop();
+                            this.progressId = slid;
+                            var html = '<div class="chat-uploading-files fileno_' + this.progressId + '" data-name="' + files[i].name + '">';
+                            html += '<span class="close-chat-uploading-file"> <span class="remove" data-balloon="Click to remove" data-balloon-pos="left"></span></span>';
+                            html += '<span class="edit_uploading-file "> <span onclick="active_for_rename(event)" class="edit" data-balloon="Click to Edit" data-balloon-pos="left"></span></span>';
+                            html += '<div class="chat-file-icons">';
+                            html += '<img src="' + imgsrc + '" alt="' + imgalt + '" data-filetype="' + files[i].type + '" data-name="' + files[i].name + '">';
+                            html += '</div>';
+                            html += '<div class="chat-file-information">';
+                            html += '<h4><div class="name" onblur="rename_done_for_check(\'' + slid + '\')">' + (files[i].name).replace("." + ext, "") + '</div><span>.' + ext + '</span></h4>';
+                            html += '<p>' + bytesToSize2(files[i].size) + '</p>';
+                            // html += '<p>' + bytesToSize2(files[i].size) + ', ' + moment().format('MMM DD, YYYY @ h:mm a') + '</p>';
+                            html += '<div class="chat_file_progress">';
+                            html += '<div class="progress-bar progress-bar-success progress-bar-striped">&nbsp;</div>';
+                            html += '</div>';
+                            html += '</div>';
+                            $("#attach_chat_file_list").append(html);
+                            $("#viewUploadFileviewUploadFile").append(html);
+                            $("#attach_chat_file_list").scrollTop($("#attach_chat_file_list")[0].scrollHeight);
+                            closeAttachFile(this.progressId);
+                            $('.fileno_' + slid).find('.chat_file_progress').show();
+                        });
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                var percom = Math.ceil(percentComplete * 100) - 1;
+                                console.log('Upload Progress status', percom);
+                                // if(percom >50) xhr.abort();
+                                var progel = document.getElementsByClassName('fileno_' + this.progressId);
+                                var progelbar = progel[0].getElementsByClassName('progress-bar');
+                                progelbar[0].style.width = percom + "%";
+                                progelbar[0].setAttribute("aria-valuenow", percom);
+                                if (percom >= 99)
+                                    progelbar[0].innerHTML = "Processing uploaded file…";
+                                // $('.fileno_' + this.progressId).find('.progress-bar').css("width", percom + "%");
+                                // $('.fileno_' + this.progressId).find('.progress-bar').attr("aria-valuenow", percom);
+                                // if(percom == 100)
+                                //     $('.fileno_' + this.progressId).find('.progress-bar').text("Processing uploaded file…");
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    url: '/s3Local/upload_obj',
+                    type: "POST",
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function(res) {
+                        // //debugger
+                        console.log(res.file_info)
+                        $('.fileno_' + res.sl).find('.chat_file_progress').remove();
+                        var comfile = JSON.parse(request[res.sl].responseText);
+                        $('.fileno_' + res.sl).find('.close-chat-uploading-file').attr('data-filename', comfile.file_info[0].bucket + '/' + comfile.file_info[0].key);
+                        add_file_data(res.file_info);
+                        if ($("#attach_chat_file_list").find(".warning").length == 0)
+                            $('.uploadbtn').addClass('active').removeClass('inactive');
+                        if (temp_conv_ori_name.indexOf(comfile.file_info[0].originalname) > -1) {
+                            rename_needed(res.sl);
+                            $('.uploadbtn').addClass('inactive').removeClass('active');
+                        } else {
+                            var no_match = 0;
+                            $.each(temp_conv_ori_name, function(k, v) {
+                                // console.log(489, v.replace(/ /g, "_").replace(/#/g, "_"))
+                                // console.log(490, comfile.file_info[0].originalname);
+                                if (v.replace(/ /g, "_").replace(/#/g, "_") == comfile.file_info[0].originalname) no_match++;
+                                if (k + 1 == temp_conv_ori_name.length && no_match > 0) {
+                                    rename_needed(res.sl);
+                                    $('.uploadbtn').addClass('inactive').removeClass('active');
+                                }
+                            });
+                            if (no_match == 0) {
+                                $.each($('.chat-uploading-files h4'), function(k, v) {
+                                    // console.log(443, $(v).text().replace(/ /g, "_"), comfile.file_info[0].originalname);
+                                    if ($(v).text().replace(/ /g, "_").replace(/#/g, "_") == comfile.file_info[0].originalname) no_match++;
+                                    if (k + 1 == $('.chat-uploading-files').length && no_match > 1) {
+                                        rename_needed(res.sl);
+                                        $('.uploadbtn').addClass('inactive').removeClass('active');
+                                    }
+                                });
+                            }
+                        }
+                        $("#FileComment").focus();
+                        var entries = formData.entries();
+                        for (var pair of entries) {
+                            formData.delete(pair[0]);
+                        }
+                    },
+                    complete: function(e) {
+                        noofcomplete++;
+                        is_drop = false;
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+                
+            }else {
+                $('#upload_warning').html('You can upload 20 files. Max allowed each file size is 100 MB.');
+            }
+        }
+    };
+
+    function rename_needed(sl) {
+        console.log(469, sl);
+        $('.fileno_' + sl).find('h4').attr('data-oldname', $('.fileno_' + sl).find('h4').text());
+        $('.fileno_' + sl).find('h4 .name').attr('contenteditable', true);
+        $('.fileno_' + sl).find('h4').css('background-color', '#FFF');
+        $('.fileno_' + sl).find('h4 .name').attr('onkeyup', 'check_all_files_for_unique(event, ' + sl + ')');
+        if ($('.fileno_' + sl).find('.chat-file-information').find('.warning').length == 0)
+            $('.fileno_' + sl).find('.chat-file-information').append('<p class="warning" style="color:#F00;">A file with the same name and extension already exists in this channel! Please revise the name of this new file. <span style="color:#00F; cursor:pointer;" onclick="replace_old(event)">Replace Original</span></p>');
+        // $('.fileno_' + sl).find('h4 .name').attr('onclick', 'active_for_rename(event)');
+        $('.fileno_' + sl).find('h4 .name').attr('onblur', 'rename_done_for_check(' + sl + ')');
+        $('.fileno_' + sl).css('background-color', '#fdea64');
+        if (!$('.fileno_' + sl).hasClass('rename_needed')) {
+            $('.fileno_' + sl).addClass('rename_needed');
+        }
+        if ($('.chat-file-information .warning').length > 0) {
+            $('.uploadbtn').addClass('inactive').removeClass('active');
+        } else {
+            $('.uploadbtn').removeClass('inactive').addClass('active');
+        }
+
+    }
+
+    function rename_done(sl) {
+        for (var i = 0; i < allfiles.length; i++) {
+            if ($('.fileno_' + sl).find('.close-chat-uploading-file').attr('data-filename') == allfiles[i].bucket + '/' + allfiles[i].key) {
+                allfiles[i].originalname = $('.fileno_' + sl).find('h4').text();
+                allfiles[i].voriginalName = $('.fileno_' + sl).find('h4').text();
+                i = allfiles.length;
+            }
+        }
+        $('.fileno_' + sl).find('h4').attr('data-oldname', $('.fileno_' + sl).find('h4').text());
+        $('.fileno_' + sl).find('h4 .name').attr('contenteditable', false);
+        $('.fileno_' + sl).find('h4').css('background-color', 'unset');
+        $('.fileno_' + sl).find('h4 .name').attr('onkeyup', 'check_all_files_for_unique(event, ' + sl + ')');
+        $('.fileno_' + sl).find('.warning').remove();
+        // $('.fileno_' + sl).find('h4 .name').attr('onclick', 'active_for_rename(event)');
+        $('.fileno_' + sl).find('h4 .name').attr('onblur', 'rename_done_for_check(' + sl + ')');
+        $('.fileno_' + sl).css('background-color', '#FFF');
+        if ($('.fileno_' + sl).hasClass('rename_needed')) {
+            $('.fileno_' + sl).removeClass('rename_needed');
+        }
+        console.log(527, $("#attach_chat_file_list").find(".warning").length);
+
+        if ($("#attach_chat_file_list").find(".warning").length == 0)
+            $('.uploadbtn').addClass('active').removeClass('inactive');
+    }
+
+    function upload_attachment() {
+        $("#ChatFileUpload").hide();
+    }
+
+    function active_for_rename(event) {
+        $(event.target).closest('.chat-uploading-files').css('background-color', '#fdea64');
+        $(event.target).closest('.chat-uploading-files').find('.name').attr('contenteditable', true).focus();
+        $(event.target).closest('.chat-uploading-files').find('h4').css('background-color', '#FFF');
+        $('.uploadbtn').addClass('inactive').removeClass('active');
+    }
+
+    function check_all_files_for_unique(event, sl) {
+        if (event.keyCode == 13) {
+            rename_done_for_check(sl);
+        } else {
+            rename_valid(sl);
+        }
+    }
+
+    function rename_done_for_check(sl) {
+        var str = $('.fileno_' + sl).find('h4').text().trim();
+        var regx1 = /^[^\\\/\:\*\?\"\<\>\|\.]+(\.[^\\\/\ \\:\*\?\"\<\>\|\.]+)+$/;
+        if (regx1.test(str)) {
+            if (temp_conv_ori_name.indexOf(str) == -1 && str.length > 0) {
+                var no_match = 0;
+                $.each($('.chat-uploading-files h4'), function(k, v) {
+                    if ($(v).text() == str) no_match++;
+                    if (k + 1 == $('.chat-uploading-files').length && no_match == 1) {
+                        rename_done(sl);
+                    } else if (k + 1 == $('.chat-uploading-files').length) {
+                        if ($('.fileno_' + sl).find('.chat-file-information').find('.warning').length == 0) {
+                            $('.fileno_' + sl).find('.chat-file-information').append('<p class="warning" style="color:#F00;">A file with the same name and extension just uploaded in this channel! Please revise the name of this new file.</p>');
+                        } else {
+                            $('.fileno_' + sl).find('.chat-file-information .warning').text('A file with the same name and extension just uploaded in this channel! Please revise the name of this new file.');
+                        }
+                    }
+                });
+            } else {
+                $('.fileno_' + sl).css('background-color', '#fdea64');
+                if (!$('.fileno_' + sl).hasClass('rename_needed')) {
+                    $('.fileno_' + sl).addClass('rename_needed');
+                }
+                if ($('.fileno_' + sl).find('.chat-file-information').find('.warning').length == 0)
+                    $('.fileno_' + sl).find('.chat-file-information').append('<p class="warning" style="color:#F00;">A file with the same name and extension already exists in this channel! Please give a unique name to this file to avoid file name conflict in this channel.</p>');
+                else
+                    $('.fileno_' + sl).find('.chat-file-information .warning').text('A file with the same name and extension already exists in this channel! Please give a unique name to this file to avoid file name conflict in this channel.');
+            }
+        } else {
+            $('.fileno_' + sl).css('background-color', '#fdea64');
+            if (!$('.fileno_' + sl).hasClass('rename_needed')) {
+                $('.fileno_' + sl).addClass('rename_needed');
+            }
+            if ($('.fileno_' + sl).find('.chat-file-information').find('.warning').length == 0) {
+                $('.fileno_' + sl).find('.chat-file-information').append('<p class="warning" style="color:#F00;">Invalid filename! Please give a valid filename with extention.</p>').show();
+            } else {
+                $('.fileno_' + sl).find('.chat-file-information .warning').text('Invalid filename! Please give a valid filename with extention.').show();
+            }
+        }
+    }
+
+    function rename_valid(sl) {
+        var str = $('.fileno_' + sl).find('h4').text();
+
+        if (temp_conv_ori_name.indexOf(str) == -1) {
+            var no_match = 0;
+            $.each($('.chat-uploading-files h4'), function(k, v) {
+                if ($(v).text() == str && str.length > 0) no_match++;
+                if (k + 1 == $('.chat-uploading-files').length && no_match == 1) {
+                    $('.fileno_' + sl).css('background-color', '#FFF');
+                    if ($('.fileno_' + sl).hasClass('rename_needed')) {
+                        $('.fileno_' + sl).removeClass('rename_needed');
+                    }
+                    $('.fileno_' + sl).find('.chat-file-information').find('.warning').hide();
+                    // if($("#attach_chat_file_list").find(".warning").length == 0)
+                    //     $('.uploadbtn').addClass('active').removeClass('inactive');
+                } else if (k + 1 == $('.chat-uploading-files').length) {
+                    $('.fileno_' + sl).css('background-color', '#fdea64');
+                    if (!$('.fileno_' + sl).hasClass('rename_needed')) {
+                        $('.fileno_' + sl).addClass('rename_needed');
+                    }
+                    $('.fileno_' + sl).find('.chat-file-information').find('.warning').show();
+                    $('.uploadbtn').addClass('inactive').removeClass('active');
+                }
+            });
+        } else {
+            $('.fileno_' + sl).css('background-color', '#fdea64');
+            if (!$('.fileno_' + sl).hasClass('rename_needed')) {
+                $('.fileno_' + sl).addClass('rename_needed');
+            }
+            $('.fileno_' + sl).find('.chat-file-information').find('.warning').show();
+            $('.uploadbtn').addClass('inactive').removeClass('active');
+        }
+    }
+
+    function replace_old(e) {
+        var sl = ($(e.target).closest('.chat-uploading-files').attr('class')).match(/\d/g).join("");
+        var str = $(e.target).closest('.chat-file-information').find('h4').attr('data-oldname');
+        console.log(676, str, sl)
+        $.each(per_conv_all_files, function(k, v) {
+            if (v.is_delete != 1) {
+                if (deletedFilesId.indexOf(v.originalname) == -1) {
+                    if (v.originalname == str) {
+                        // console.log("Need rename = ", v);
+                        var newname = v.key.replace("@", "_");
+                        $.ajax({
+                            url: "/alpha2/rename_dbfile",
+                            data: {
+                                id: v.id,
+                                name: newname
+                            },
+                            dataType: "JSON",
+                            type: "POST",
+                            success: function(res) {
+                                if (res.status) {
+                                    v.originalname = newname;
+                                    // console.log(670, v.originalname);
+                                    for (var i = 0; i < temp_conv_ori_name.length; i++) {
+                                        if (temp_conv_ori_name[i] == str) {
+                                            temp_conv_ori_name[i] = v.originalname;
+                                            // console.log(674, temp_conv_ori_name[i]);
+                                        }
+                                    }
+                                    rename_done_for_check(sl);
+                                }
+                            },
+                            error: function(err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>
+<script src="/javascripts/drag_drop_upload.js"></script>

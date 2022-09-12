@@ -1,0 +1,36 @@
+<%- include('layouts/mob_head') %>
+	<section class="index_page">
+		<div class="login_content">
+		
+			<div class="freeli_ico"><img src="/images/workfreeli_final_logo.png"></div>
+			<div class="heading">Hello! Welcome Back.</div>
+			<div class="intro">Sign into your account here.</div>
+			<% if (error) { %>
+				<div class="form-field">
+					<% for(var i=0; i < error.length; i++) { %>
+						<p style="line-height: 40px;text-align: center; color: #900; font-family: var(--F1); font-size: 1.2em;"><%= error[i].msg %></p>
+					<% } %>
+				</div>
+			<% } %>
+		<!-- </div> -->
+		<div class="mid_sec">
+			<form action="/" class="login_form" method="POST">
+				<div class="label_input">Email Address</div>
+				<input type="email" name="email" required="true" placeholder="example@freeli.com">
+
+				<div class="label_input">Password</div>
+				<input type="password" name="password" required="true" placeholder="Enter password">
+
+				<div class="forgot_sec" style="display: none">Forgot Your Password ?</div>
+
+				<div class="remember_ico">
+					<div class="box_ico" ontouchend="toggleRemember(this)"></div>
+					<div class="text">Remember me</div>
+				</div>
+				<button type="submit">Sign in</button>
+				<div class="register_sec" style="display: none">Don't have an account ? <span onclick="window.location.href='/signup'">Sign up</span></div>
+			</form>
+		</div>
+		</div>
+	</section>
+<%- include('layouts/mob_foot') %>

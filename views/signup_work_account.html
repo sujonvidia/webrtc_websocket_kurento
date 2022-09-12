@@ -1,0 +1,86 @@
+<%- include('layouts/head') %>
+    <link href="/stylesheets/singup.css" rel="stylesheet">
+     <div class="logo_icon">
+					<a href="/">
+						<img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="workfreeli" style="border-radius: 4px;">
+					</a>
+          <span class="workfreeli_text">Workfreeli</span>
+     </div>
+		<div class="backPage_area">
+				<a href="/signup" data-tooltip="Back to previous page" class="tooltip-right"> 
+						<button class="backBtn">
+								<img class="back_icon" src="/images/back-icon.png" alt="" style="border-radius: 4px;width: 25px;">
+						</button>
+				</a>
+		</div>
+
+     <div class="new_account_text">New Work Account</div>
+
+        <form action="/signup_activation" method="POST"> 
+            <div class="centered_form_area">
+   
+                <div class="input_area">
+                    <label class="form_label" for="workspace_Name">Business or Workspace Name</label>
+                    <% if(comid == "") { %>
+                        <input class="full_width" type="text" id="workspace_Name" list="company_name_list" name="company_name" placeholder="Business or Workspace Name" autocomplete="off">
+                        <datalist id="company_name_list">
+                            <% if(company.length > 0){ %>
+                                <% _.each(company, function(v, k) { %>
+                                    <option value="<%= v.company_id %>"><%= v.company_name %></option>
+                                <% }); %>
+                            <% } %>
+                        </datalist>
+                    <% } else { %>
+                        <% if(company.length > 0){ %>
+                            <% _.each(company, function(v, k) { %>
+                                <% if (v.company_id == comid) { %>
+                                    <input class="full_width" id="workspace_Name" disabled type="text" value="<%= v.company_name %>">
+                                <% } %>
+                            <% }); %>
+                        <% } %>
+                        <input type="hidden" name="company_name" value="<%= comid %>">
+                    <% } %>
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="email">Email Address</label>
+                    <% if(email != "") { %>
+                        <input type="email" class="full_width" disabled id="email" value="<%= email %>">
+                        <input type="hidden" name="email" value="<%= email %>">
+                    <% } else { %>
+                        <input type="email"  class="full_width" id="email" name="email" placeholder="Email Address">
+                    <% } %>
+                    <p class="discribe_text">Please use your work email so we can help connect you with your team.</p>
+                </div>
+                <div class="input_area_helf">
+                    <label class="form_label" for="fname">First Name</label>
+                    <input type="text" class="half_width"  id="fname" name="first_name" placeholder="First Name">
+                </div>
+                    <div class="input_area_helf">
+                    <label class="form_label" for="lname">Last Name</label>
+                    <input type="text" class="half_width"  id="lname" name="last_name" placeholder="Last Name">
+                </div>
+                
+                <div class="input_area">
+                    <label class="form_label" for="phone">Phone Number (Optional)</label>
+                    <input type="text"  class="full_width" id="phone" name="phone" placeholder="Phone Number">
+                    <p class="discribe_text">This is for verification and security purposes only. We will never share your phone number with anyone.</p>
+                </div>
+            </div>
+            <div class="checkboxdiv">
+                <input type="checkbox" name="agreement"> <span class="agreement_text" >I agree to the <a href="#"> Workfreeli agreement</a>, <a href="#">terms of service</a> and <a href="#">privacy policy</a></span>
+            </div>
+            <div class="submit_area">
+                <button type="submit" class="submitBtn " id="submitBtn"  >Sign-up</button>
+                <button  class="cancleBtn " id="cancleBtn"  >Cancel</button>
+                <input type="hidden" name="account_type" value="Business">
+            </div>
+        </form>
+ 
+   
+   
+    <script type="text/javascript">
+
+
+    </script>
+
+    <%- include('layouts/foot') %>

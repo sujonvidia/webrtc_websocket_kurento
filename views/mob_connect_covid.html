@@ -1,0 +1,507 @@
+<%- include('layouts/mob_head_covid') %>
+    <div class="loading_connect connectLoader"> <img src="/images/assets/loading_data.gif"></div>
+    <style>
+        #iframe_addparent {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            border: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            z-index: 9999999999;
+            display: none;
+            /* top: 120px; */
+        }
+    </style>
+    <section class="connect_section">
+        <div class="connect_tab_container">
+            <ul>
+                <li class="b_label active">Health Screening</li>
+            </ul>
+        </div>
+
+        <div class="conv_list_container" id="chat_conversations">
+
+        </div>
+        <!-- <div id="div_addparent"> -->
+        <iframe id="iframe_addparent" class="iframe_parent"></iframe>
+        <!-- </div> -->
+
+        <div class="conv_list_container" id="all_channels" style="display: none"></div>
+        <div class="conv_list_container" id="conversations_notify" style="display: none">
+            <div id="notification_body"> </div>
+        </div>
+        <div class="conv_list_container" id="call_conversations" style="display: none"> </div>
+    </section>
+    <!-- <div class="thread_notify" id="thread_notify" onclick="filter_thread_msg()"> <span id="thread_notify_cntr">0</span> Threaded message(s)</div> -->
+
+    <div class="changePwdPopup" id="changePwdPopup">
+        <form action="" autocomplete="off">
+            <div class="changePwdPopupBody">
+                <div class="close_popup" onclick="close_change_password()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title">Change Password</h2>
+                <div class="input_row">
+                    <label for="" class="input_lable">Current Password</label>
+                    <input type="password" autocomplete="new-password" id="old_password" value="" class="input_field" placeholder="********">
+                </div>
+                <div class="input_row">
+                    <label for="" class="input_lable">New Password</label>
+                    <input type="password" autocomplete="new-password" id="new_password" value="" class="input_field" placeholder="********">
+                </div>
+                <div class="input_row">
+                    <label for="" class="input_lable">Confirm Password</label>
+                    <input type="password" autocomplete="new-password" id="con_password" value="" class="input_field" placeholder="********">
+                </div>
+                <div class="pwd_btn_group">
+                    <button class="cancel_pwd" type="reset" onclick="close_change_password()">Cancel</button>
+                    <button class="update_pwd" onclick="change_user_password()">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="/javascripts/socket-client-side.js"></script>
+    <script>
+        var session_id = '<%= session_id %>';
+        var user_id = '<%= user_id %>'; //alert(user_id);
+        var company_id = '<%= company_id %>';
+        var user_email = '<%= user_email %>';
+        var user_fullname = '<%= user_fullname %>';
+        var user_img = '<%= user_img %>'; //alert(user_img);
+        var company_img = '<%= company_img %>'; //alert(company_img);
+        var file_server = '<%= file_server %>';
+        var typing = false; //Global typing variable, for storing typing status
+        var timeout = undefined; //Global timeout variable, for storing when typing timeout
+        var allUserdata = <%- JSON.stringify(data) %>;
+        var user_row = allUserdata[0].user_row; console.log('user__row', user_row);
+        var access_user_list 	= allUserdata[0].users;
+        var all_unread_data = <%- JSON.stringify(all_unread_data) %>;
+        var student_list = <%- JSON.stringify(student_list) %>; 
+        var user_role = '<%= user_role %>'; //alert(user_role);
+        var user_campus = '<%= campus %>'; //alert(user_campus);
+
+        if(has_permission(user_id, COVID_ADMIN)) {
+            user_role = 'Admin User';
+        }
+        if(has_permission(user_id, COVID_STUFF)) {
+            user_role = 'Stuff User';
+        }
+        
+        function show_addparent_from() {
+            $('#iframe_addparent').show();
+            $('.head_container .down_arrow').trigger('click');
+        }
+
+        function back_covid_parent() {
+            $('#iframe_addparent').hide();
+        }
+        $("#iframe_addparent").attr('src', '/covid/signup/' + user_id+'/'+user_campus);
+
+        function removeStudentParent() {
+            // alert(student_id);
+            $.ajax({
+                url: '/covid/removeStudentParent',
+                type: "POST",
+                data: {
+                    student_id: student_id,
+                    user_id: user_id
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.msg == "success") {
+                        $('#parentsPopup').hide();
+                        $('#studentid_' + student_id).remove();
+                        $('#warnignMsgText').text('Parent deleted successfully.');
+                        $('#warningsPopup').css('display', 'flex');
+                    } else {
+                        $('#warnignMsgText').text('Operation failed.');
+                        $('#warningsPopup').css('display', 'flex');
+
+                    }
+
+                },
+                complete: function() {
+                    console.log('process complete');
+                },
+                error: function(err) {
+                    console.log('process error', err);
+                }
+            });
+        }
+        
+        function drawCovidConv(student, survey_status_txt, itsyu) {
+            if($('#chat_conversations .conv_area.convid[student-id="'+student.id+'"]').length) return;
+            if (student.id == user_id) {
+                $('#covid_company_pic').attr('src',file_server+'profile-pic/Photos/'+company_img);
+            }
+            if (survey_status_txt == 'Stay Home / Quarantine') {
+                var bgcolor = 'background:#ED7D31;';
+                var fontcolor = 'color:white;'
+            }
+            // else if(survey_status_txt=='Screening Required'){
+            // 	var bgcolor='background:#4472C4;';
+            // 	var fontcolor='color:white;'
+            // }
+            else if (survey_status_txt == 'OK to Check-in') {
+                var bgcolor = 'background:#70AD47;';
+                var fontcolor = 'color:white;'
+            }
+
+            var currentDate = new Date();
+            var html = '<div style="' + bgcolor + '" data-type="survey" id="studentid_' + student.id + '" student-id="' + student.id + '" student-name="' + student.fullname + '" student-role="' + student.role + '"';
+            html += 'room-status="active" ';
+            html += 'data-convtype="pinuser" user-id="' + user_id + '" ';
+            html += 'data-conv-id="roomId"';
+            html += 'data-name="title" data-img="img.png" ';
+            html += 'data-team="selectecosystem" data-nom="0"';
+            html += 'data-privacy = "grpprivacy"';
+            html += 'data-unreadThread="false" ';
+            html += 'has_flagged="false" ';
+            html += 'class="conv_area convid" ';
+            html += 'onclick="startConversation(event,this)">';
+            html += '	<div class="right_">';
+            html += '		<div class="conv_img">';
+            html += '			<img class="user_profile_pic" src="' + file_server + 'profile-pic/Photos/' + student.img + '">';
+            html += '			<div class="status offline conv_"></div>';
+            html += '			<div class="privacy_status"></div>';
+            html += '		</div>';
+            html += '	</div>';
+            html += '	<div class="mid_">';
+            html += '		<div class="conv_name">';
+            // html  += '			<div class="privacy_status"></div>';
+            html += '			<div class="title" style="' + fontcolor + '">' + student.fullname + itsyu + '</div>';
+            html += '		</div>';
+            html += '		<div class="last_msg" style="' + fontcolor + '">' + survey_status_txt + '</div>';
+            html += '	</div>';
+            html += '	<div class="left_">';
+            html += '		<div class="last_msg_date">' + moment(currentDate).format('ll') + '</div>';
+            html += '		<div class="more_noti">';
+            html += '			<div class="unread_msg"></div>';
+            html += '			<div class="unread_thread"></div>';
+            html += '			<div class="pin" onclick=""></div>';
+            html += '			<div class="mute_noti"></div>';
+            html += '			<div class="room_status">[Closed]</div>';
+            html += '		</div>';
+            html += '	</div>';
+            html += '</div>';
+
+            $('#chat_conversations').append(html);
+        }
+
+        function drawSuffConv(survey_status_txt, itsyu,type) {
+            var currentDate = new Date();
+            var html = '<div data-type="' + type + '"';
+            html += 'room-status="active" ';
+            html += 'data-convtype="pinuser" user-id="' + user_id + '" ';
+            html += 'data-conv-id="roomId"';
+            html += 'data-name="title" data-img="img.png" ';
+            html += 'data-team="selectecosystem" data-nom="0"';
+            html += 'data-privacy = "grpprivacy"';
+            html += 'data-unreadThread="false" ';
+            html += 'has_flagged="false" ';
+            html += 'class="conv_area convid" ';
+            html += 'onclick="startConversation(event,this)">';
+            html += '	<div class="right_">';
+            html += '		<div class="conv_img">';
+            html += '			<img src="' + file_server + 'profile-pic/Photos/img.png">';
+            html += '			<div class="status offline conv_"></div>';
+            html += '			<div class="privacy_status"></div>';
+            html += '		</div>';
+            html += '	</div>';
+            html += '	<div class="mid_">';
+            html += '		<div class="conv_name">';
+            // html  += '			<div class="privacy_status"></div>';
+            html += '			<div data-type="'+type+'" class="title" style="line-height:40px">' + survey_status_txt + '</div>';
+            html += '		</div>';
+            html += '		<div class="last_msg">' + itsyu + '</div>';
+            html += '	</div>';
+            html += '	<div class="left_">';
+            html += '		<div class="last_msg_date">' + moment(currentDate).format('ll') + '</div>';
+            html += '		<div class="more_noti">';
+            html += '			<div class="unread_msg"></div>';
+            html += '			<div class="unread_thread"></div>';
+            html += '			<div class="pin" onclick=""></div>';
+            html += '			<div class="mute_noti"></div>';
+            html += '			<div class="room_status">[Closed]</div>';
+            html += '		</div>';
+            html += '	</div>';
+            html += '</div>';
+
+            $('#chat_conversations').append(html);
+        }
+
+        $(document).ready(function() {
+            $('#user_email').text(user_email);
+            // debugger
+            for (let student of student_list) {
+                console.log(1092, student);
+                var survey_status_txt = '';
+                if (student.answer_result == 'yes') {
+                    survey_status_txt = 'Stay Home / Quarantine';
+                } else if (student.answer_result == 'no') {
+                    survey_status_txt = 'OK to Check-in';
+                } else {
+                    survey_status_txt = 'Screening Required';
+                }
+
+                if (student.id == user_id) {
+                    var itsyu = " - ( yourself )"
+                } else {
+                    var itsyu = ""
+                }
+                drawCovidConv(student, survey_status_txt, itsyu);
+            }
+            if (user_role == 'Stuff User') {
+                // drawSuffConv('QR Scanner', '');
+                drawSuffConv('Scan or Search', '','scan');
+            } 
+            else if (user_role == 'Admin User') {
+                $('#covid_qrcode').hide();
+                $('#covid_report').show();
+                
+                drawSuffConv('Scan', '','qr');
+                // drawSuffConv('Report', '','report');
+
+                drawSuffConv('Report', '','report');
+                
+            } else if (user_role == 'Student User') {
+                $('#addparent_menu_div').show();
+            } else {
+                $('#covid_qrcode').hide();
+                $('#covid_report').hide();
+            }
+        });
+        var user_list = access_user_list = allUserdata[0].users;
+
+        var dept = [];
+        var memberList = [];
+        var adminList = [];
+        var adminListUUID = [];
+        var memberListUUID = [];
+        var unread_replay_data = [];
+        var data_unreadAllMsg = [];
+        var data_allEditUnreadMsg = [];
+        var allUnit = [];
+        var alltags = allUserdata[0].tags;
+        var all_conv = allUserdata[0].all_conv;
+        var temTNA = [];
+        var temp_tag_str = [];
+        var page_title = "<%= page %>";
+        var conversation_id = '';
+        var data_for_visibility = [];
+
+        console.log(223, all_unread_data);
+    </script>
+    
+    <script src="/javascripts/socket-calling.js"></script>
+    <script src="/javascripts/mob_connect_page_covid.js"></script>
+    <script>
+        $(function() {
+            var shteamlist = getCookie("sh_team_lists").split("@");
+            // console.log(318, shteamlist);
+            if (shteamlist.length > 0) {
+                $.each(shteamlist, function(k, v) {
+                    if (v != "")
+                        $(".conv_area[data-team='" + v + "']").hide();
+                });
+            }
+
+            socket.emit('get_all_team', {
+                user_id: user_id
+            }, function(res) {
+                if (res.status) {
+                    $('#select-ecosystem').html("");
+                    allteams = res.teams;
+                    var html = "";
+                    $.each(allteams, function(k, v) {
+                        if (v.participants.indexOf(user_id) > -1) {
+                            var chk = shteamlist.indexOf(v.team_id) == -1 ? "checked" : "";
+                            html = '<div class="group_input">' +
+                                '<label class="switchNav">' +
+                                '<input type="checkbox" onclick="onoffteamroom(event)" ' + chk + ' id="myteamid' + v.team_id + '" value="' + v.team_id + '">' +
+                                '<span class="sliderNav round"></span>' +
+                                '<span class="switchFor">' + v.team_title + '</span>' +
+                                '</label>' +
+                                '</div>';
+                            $('#profile_teams').append(html);
+                        }
+                    });
+                }
+            });
+            var my_all_conv = [];
+            $.each($('.conv_area'), function(k, v) {
+                if ($(v).attr('data-conv-id') != undefined) {
+                    var id = $(v).attr('data-conv-id');
+                    my_all_conv.push(id);
+                }
+            });
+
+            // socket.emit('get_all_member_ina_room', {my_all_conv}, function(data){
+            // 	data_for_visibility = data;
+            // 	$.each(data, function(k, v){
+            // 		var participantActive = _.intersection(onlineUserList, v.participants);
+            // 		if (participantActive.length > 1) {
+            // 			$('.conv_'+v.conversation_id).addClass('online').removeClass('offline');
+            // 		} else {
+            // 			$('.conv_'+v.conversation_id).addClass('offline').removeClass('online');
+            // 		}
+            // 	});
+            // });
+
+            var _visibility = setInterval(_visibility, 1500);
+
+            function _visibility() {
+                $.each(data_for_visibility, function(k, v) {
+                    var participantActive = _.intersection(onlineUserList, v.participants);
+                    if (participantActive.length > 1) {
+                        $('.conv_' + v.conversation_id).addClass('online').removeClass('offline');
+                        $('._call_' + v.conversation_id + ' .status').addClass('online').removeClass('offline');
+                    } else {
+                        $('.conv_' + v.conversation_id).addClass('offline').removeClass('online');
+                        $('._call_' + v.conversation_id + ' .status').addClass('offline').removeClass('online');
+                    }
+                });
+                // console.log(307, onlineUserList);
+            }
+
+            /**
+             * Mute
+             */
+            socket.emit('all_mute_conv', user_id, function(data) {
+                $.each(data, function(k, v) {
+                    if (v.mute_status == "active") {
+                        var startTime = moment(new Date(v.mute_start_time)).format("llll")
+                        var now = moment(new Date()).format("llll"); //todays date
+                        var end = moment(new Date(v.mute_end_time)).format("llll");
+                        var date2 = new Date(now);
+                        var date1 = new Date(end);
+                        var timeDiff = Math.ceil(date1.getTime() - date2.getTime());
+                        var dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                        if (timeDiff > 0) {
+                            if (dayDifference == 1) {
+                                if (v.mute_end_time !== null) {
+                                    let end = moment(v.mute_end_time).format("x"); // activity end date
+                                    let date2 = moment().format('x');
+                                    let timeDiff = Math.ceil(end - date2);
+                                    let secDifference = Math.ceil(timeDiff / 1000);
+                                    let minDiff = Math.ceil(secDifference / 60);
+                                }
+                            }
+                            $('.convid' + v.conversation_id).find('.mute_noti').addClass('active');
+                            $('.convid' + v.conversation_id).find('.mute_noti').attr('data-mute-id', v.mute_id);
+                            $('.convid' + v.conversation_id).find('.mute_noti').attr('onclick', 'unmuteNotification(event, "' + v.mute_id + '")');
+                            // myAllMuteConvid.push(v.conversation_id);
+                            // myAllMuteConv.push(v);
+
+                        }
+                    }
+                });
+
+            });
+
+
+            $.each(alltags, function(k, v) {
+                if (v.title != "" && v.visibility != null && v.visibility != 'hidden') {
+                    var html = '<li class="added-tag-list">';
+                    html += '<label for="tag_id_' + v.tag_id + '">' + v.title;
+                    html += '<input onclick="select_filter_tag(event)" id="tag_id_' + v.tag_id + '" data-tagid="' + v.tag_id + '" data-tagtitle="' + v.title + '" class="checkmember checkToDo" type="checkbox">';
+                    html += '<span class="checkmark"></span>';
+                    html += '</label>';
+                    html += '</li>';
+                    $("#taggedItem").append(html);
+                }
+            });
+
+            $.each(all_conv, function(k, v) {
+                if (v.is_active !== null) {
+                    if (v.is_active.indexOf(user_id) > -1) {
+                        var html = '<li class="hiddenconv-list">';
+                        html += '<label for="hidden_convid_' + v.conversation_id + '">' + v.title;
+                        html += '<input onclick="show_hidden_conv(\'' + v.conversation_id + '\', \'' + v.company_id + '\')" id="hidden_convid_' + v.conversation_id + '" class="checkmember" type="checkbox">';
+                        html += '<span class="checkmark"></span>';
+                        html += '</label>';
+                        html += '</li>';
+                        $("#unhide_conv").append(html);
+                    }
+                }
+            });
+            $.each(alltags, function(k, v) {
+                if (v.title != "" && v.visibility != null && v.visibility != 'hidden') {
+                    var html = '<li class="added-tag-list">';
+                    html += '<label for="tag_id_' + v.tag_id + '">' + v.title;
+                    html += '<input onclick="select_filter_tag(event)" id="tag_id_' + v.tag_id + '" data-tagid="' + v.tag_id + '" data-tagtitle="' + v.title + '" class="checkmember checkToDo" type="checkbox">';
+                    html += '<span class="checkmark"></span>';
+                    html += '</label>';
+                    html += '</li>';
+                    $("#taggedItem").append(html);
+                }
+            });
+
+            socket.emit('myTopicList', {
+                userid: user_id
+            }, (respons) => {
+                if (respons.staus) {
+                    $("#topicItem").html("");
+                    $.each(respons.rooms, function(k, v) {
+                        if (v.single == 'no') {
+                            if (v.title != '' && v.title != null) {
+                                if (my_all_conv.indexOf(v.conversation_id.toString()) > -1 && v.title.indexOf(',') == -1) {
+                                    var html = '<li class="added-topic-list">' +
+                                        '<label for="topic_id' + v.conversation_id.toString() + '"> ' + v.title +
+                                        '<input id="topic_id' + v.conversation_id.toString() + '" class="checkmember checkToDo" onclick="conv_show_hide(event)" checked type="checkbox">' +
+                                        '<span class="checkmark"></span>' +
+                                        '</label>' +
+                                        '</li>';
+                                    $("#topicItem").append(html);
+                                }
+                            }
+                        }
+                    });
+
+                    $.each(respons.rooms, function(k, v) {
+                        if (v.single == 'no') {
+                            if (v.title != '' && v.title != null) {
+                                if (my_all_conv.indexOf(v.conversation_id.toString()) == -1 && v.title.indexOf(',') == -1) {
+                                    var html = '<li class="added-topic-list">' +
+                                        '<label for="topic_id' + v.conversation_id.toString() + '"> ' + v.title +
+                                        '<input id="topic_id' + v.conversation_id.toString() + '" class="checkmember checkToDo" onclick="conv_show_hide(event)" type="checkbox">' +
+                                        '<span class="checkmark"></span>' +
+                                        '</label>' +
+                                        '</li>';
+                                    $("#topicItem").append(html);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        function findObjForUser(value) {
+            
+            for (var i = 0; i < user_list.length; i++) {
+                if (user_list[i]['id'] === value) {
+                    if (user_list[i].login_total == null) {
+                        user_list[i].login_total = 0;
+                    }
+                    var userData = {
+                        email: user_list[i].email,
+                        fullname: user_list[i].fullname,
+                        id: user_list[i].id,
+                        img: user_list[i].img,
+                        designation: user_list[i].designation,
+                        dept: user_list[i].dept,
+                        createdat: user_list[i].createdat,
+                        conference_id: user_list[i].conference_id,
+                        login_total: user_list[i].login_total
+
+                    }
+                    return userData;
+                }
+            }
+            return false;
+        }
+    </script>
+
+    <%- include('layouts/mob_foot_covid') %>

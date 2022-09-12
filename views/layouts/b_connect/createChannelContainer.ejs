@@ -1,0 +1,1261 @@
+<div id="createChannelContainer" class="create-channel connect_right_section inactive" style="display: none;">
+    <!-- <h2 class="create-channel-heading">Create a Topic</h2> -->
+    <h2 class="create-topic-heading">Create a Work Room</h2>
+    <!-- <img class="dir-msg-close back" onclick="closeRightSection()" src="/images/basicAssets/BackArrow.svg" alt="">
+	<img class="dir-msg-close" onclick="closeRightSection()" src="/images/basicAssets/close_button.svg" alt=""> -->
+    <span class="dir-msg-close back" onclick="closeRightSection()"></span>
+    <div class="dir-msg-close closeModal" onclick="closeRightSection()"></div>
+
+    <div class="name_and_profile" style="width: 50%;border-right: 1px solid #d8d8d8;display: inline-block;">
+        <div class="channel-name" style="float: left;width: 100%;">
+            <div class="redioGroup" style="float: left;">
+                <label class="radioItem showEl">
+					<span class="radioItemName">Work Room</span>
+					<input class="radioItemInput" name="room_type" type="radio" value="work" onchange="socialChange(this)" checked>
+					<span class="customRadioMark"></span>
+				</label>
+            </div>
+            <div class="redioGroup" style="float: left;">
+                <label class="radioItem showEl">
+					<span class="radioItemName">Project Room</span>
+					<input class="radioItemInput" name="room_type" type="radio" value="project_room" onchange="socialChange(this)" checked>
+					<span class="customRadioMark"></span>
+				</label>
+            </div>
+            <div class="redioGroup" style="float: left;pointer-events: none;opacity: 0.5; pointer-events: none;">
+                <label class="radioItem showEl">
+					<span class="radioItemName">Support Room</span>
+					<input class="radioItemInput" name="room_type" type="radio" value="support_room" onchange="socialChange(this)">
+					<span class="customRadioMark"></span>
+				</label>
+            </div>
+        </div>
+        <div class="workspace" id="business_unitHolder" style="float: left;width: 100% ;margin-bottom: 22px;">
+            <p>Work Category (<span class="red_star">*</span>)</p>
+            <select onchange="business_unitChange(this)" class="select-ecosystem" id="business_unit" required style="width: calc(100% - 35px);">
+				<option value="" disabled selected>Choose</option>
+				<option value="marketing">Marketing</option>
+				<option value="product_design">Product Design</option>
+				<option value="hr_discussion">HR Discussion</option>
+			</select>
+        </div>
+        <div class="channel-name" style="float: left;width: 100%;margin-top: 18px;">
+            <p>Title of Room (<span class="red_star">*</span>)</p>
+            <input type="text" name="team-name" class="team-name" onkeyup="keyupRoomName(event)" id="team-name" onclick="titleRoomOnClick(this)" onblur="saveFUpdate(event)" placeholder="Pick a title that easily describes how the room will be used....">
+        </div>
+        <div class="workspace" id="team_name_holder" style="width:100%;margin-bottom: 14px;">
+            <p style="display: flex; align-items: center;">Team (<span class="red_star">*</span>) <span class="create_room_info tooltip_target" onclick="info_tooltip('team','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px" ></span></p>
+            <select class="select-ecosystem" id="select-ecosystem" onchange="updateWorkspace(this.value)" required>
+				<option value="" disabled selected>Choose a workspace</option>
+			</select>
+        </div>
+
+        <div class="photo-upload-invite-member">
+            <div class="invite-member">
+                <!-- <p class="labelinputBox">Invite Member(s) to this Room</p> -->
+                <!-- <span class="remove searchClear" style="display: none;"></span> -->
+
+                <form autocomplete="off">
+                    <div class="input_email" id="newlyAddmembers" onclick="viewtemamemberlists(event,this)" style="background-color: var(--PrimaryC)">
+                        <input type="text" value="Add Member(s) to this Room" autocomplete="off" class="invitedMem" placeholder="Add Member(s) to this Room" onkeydown="memberForRoomDown(event)" onkeyup="findMemberForRoom(event,this)" onfocus="$(this).blur();$('#addMemberPopup input').focus()"
+                            style="background-color:var(--PrimaryC);color: #FFF;font-size: 15px;text-align: center;" onblur="fimfronblur(this)">
+                    </div>
+                </form>
+                <!-- <ul class="hayvenList" id="newRoomMemberList">
+
+				</ul> -->
+                <div class="adminList" style="margin-top: 22px">
+                    <div class="type-name" style="display: flex; align-items: center;">Room Member(s) <span class="create_room_info tooltip_target" onclick="info_tooltip('members','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px" ></span></div>
+                </div>
+                <ul class="hayvenList" id="listAddedmember" style="display: block">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="name_and_profile" style="width:50%;padding-left: 33px;float:right;padding-top: 0;">
+
+        <div class="upload-channel-photo" style="width: 100%;float: left;">
+            <div class="img-div" onclick="roomImgoptionView(this,'create')">
+                <img src="https://wfss001.freeli.io/room-images-uploads/Photos/feelix.jpg" id="demoImg" alt="">
+                <div class="RoomImgOptDiv" id="roomimgAdd" style="top: 52px">
+                    <li class="removeImg" onclick="removeRoomImg(this,'create')">Remove Image</li>
+                    <li onclick="$('#upload-channel-photo').trigger('click')" class="uploadimg">Change Image</li>
+                </div>
+            </div>
+            <form name="roomImg" id="roomImg" class="roomImg" method="post" enctype="multipart/form-data">
+                <div class="file-up-div">
+                    <p>Set an Avatar</p>
+                    <label for="upload-channel-photo">Upload</label>
+                    <input type="file" id="upload-channel-photo" data-img="feelix.jpg" name="photos" onchange="roomImageUpdate('',event,this.files)" accept="image/x-png,image/jpeg,image/jpg">
+                </div>
+            </form>
+        </div>
+        <div class="make_private" style="width: 100%;float: left;margin-top: 21px;">
+            <label class="switch">
+				<input type="checkbox" id="grpPrivacy" checked>
+				<span class="slider round"></span>
+			</label>
+            <p class="label_head" style="display: flex; align-items: center;">Make this a Private Room <span class="create_room_info tooltip_target" onclick="info_tooltip('privacy','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px" ></span></p><br>
+            <p class="label_for">Only invited members will have access to this Room.</p>
+        </div>
+        <!-- <div class="make_private" style="width: 100%;float: left;margin-top: 36px;">
+			<p style="color: #53627C;
+			    font-family: var(--F1);
+			    font-size: 12px;
+			    font-weight: 500;
+			    line-height: 16px;
+			    margin-bottom: 6px;">Add or create Tag to this Room</p>
+			<div class="input_hayven" onclick="addConvTagFoucs()" style="width: 100%; cursor: pointer;" >
+				<div class="mini_item_holder"  id="newConvTag" placeholder="Add or create Tag to this Room"></div>
+			</div>
+		</div> -->
+        <div class="guest_member_div" style="width: 100%;float: left;margin-top: 56px;">
+            <!-- p class="label_head" style="display: flex; align-items: center;">Invite guest member <span class="create_room_info tooltip_target" onclick="info_tooltip('guest_user_invite','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px" ></span></p> -->
+            <div class="input_hayven" style="width: 100%;" onclick="">
+                <input type="button" name="guest_member_emails" data-type="new" onclick="viewtemamemberlists(event,this)" value="Invite Guest Member(s) to this Room" id="guest_member_emails1" style="font-size: 16px;width: 100%; padding: 6px;background-color: var(--PrimaryC);color: #FFF"
+                    placeholder="Enter email address">
+            </div>
+            <ul class="hayvenList" id="guestlistAddedmember" style="display: block">
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="submitBtn">
+        <button class="cancel" onclick="closeRightSection()">Cancel</button>
+        <button class="create" onclick="CreateGroup();">Create Room</button>
+    </div>
+</div>
+
+<div id="updatechannelContainer" class="create-channel connect_right_section" style="display: none;">
+    <!-- <h2 class="create-channel-heading">Create a Topic</h2> -->
+    <h2 class="create-topic-heading">Update Room</h2>
+    <h2 class="create-topic-heading" id="room_title_edit">Update Room</h2>
+    <!-- <img class="dir-msg-close back" onclick="closeRightSection()" src="/images/basicAssets/BackArrow.svg" alt=""> -->
+    <div class="dir-msg-close back" onclick="closeRightSection()"></div>
+    <!-- <img class="dir-msg-close" onclick="closeRightSection()" src="/images/basicAssets/close_button.svg" alt=""> -->
+    <div class="dir-msg-close closeModal" onclick="closeRightSection()"></div>
+
+    <div class="name_and_profile" style="width: 50%;border-right: 1px solid #d8d8d8;display: inline-block;">
+        <div class="channel-name" style="float: left; width: 100%">
+            <div class="redioGroup" id="work_conv_type_update_room" style="float: left;">
+                <label class="radioItem showEl">
+					<span class="radioItemName">Work Room</span>
+					<input class="radioItemInput" name="room_type" type="radio" value="work" onchange="socialChange(this)" checked>
+					<span class="customRadioMark"></span>
+				</label>
+            </div>
+            <div class="redioGroup" style="float: left;" id="Project_conv_type_update_room">
+                <label class="radioItem showEl">
+					<span class="radioItemName">Project Room</span>
+					<input class="radioItemInput" name="room_type" type="radio" value="project_room" onchange="socialChange(this)" checked>
+					<span class="customRadioMark"></span>
+				</label>
+            </div>
+            <div class="redioGroup" style="float: left;pointer-events: none;opacity: 0.5;">
+                <label class="radioItem showEl">
+					<span class="radioItemName">Support Room</span>
+					<input class="radioItemInput" name="room_type" type="radio" value="support_room" onchange="socialChange(this)">
+					<span class="customRadioMark"></span>
+				</label>
+            </div>
+            <!-- <div class="redioGroup inactive" style="float: left; margin-bottom: 22px;display: none">
+				<label class="radioItem showEl">
+					<span class="radioItemName">Social <span style="font-family: 'hvAssistant'; color:var(--BtnC); font-size:12px">  (Coming Soon)</span></span>
+					<input class="radioItemInput" name="room_type" type="radio" value="social" onchange="socialChange(this)" >
+					<span class="customRadioMark"></span>
+				</label>
+			</div> -->
+
+        </div>
+        <div class="workspace" style="float: left;width: 100% ;margin-bottom: 22px;" id="upbusinessHolder">
+            <p>Work Category</p>
+            <select onchange="business_unitChangeUp(this)" class="select-ecosystem" id="business_unitUpdate" required style="width: calc(100% - 35px);">
+
+			</select>
+        </div>
+        <div class="channel-name" style="float: left;width: 100%;margin-top: 18px;">
+            <p>Title of Room</p>
+            <input type="text" id="updateRoomTitle" name="team-name" class="team-name" onblur="saveFUpdate(event)" placeholder="Pick a title that easily describes how the room will be used....">
+        </div>
+        <div class="workspace" style="width:100%;" id="updateWorkspaceTeam">
+            <p>Team</p>
+            <select class="select-ecosystem noupdatethistime" onchange="updateWorkspace(this.value)" required>
+				<option value="" disabled selected>Choose a workspace</option>
+				<!-- <option value="Navigate">Navigate</option>
+				<option value="Freelance">Freelance</option>
+				<option value="Personal">Personal</option> -->
+				<option value="itl">ITL</option>
+				<option value="ohs_global">OHS Global</option>
+				<!-- <option value="navigate_group">Navigate Group</option>
+				<option value="navigate_design">Navigate Design</option>
+				<option value="nav_43">Nav 43</option>
+				<option value="thirty_six_knots">Thirty Six Knots</option>
+				<option value="kloth_studio">Kloth Studio</option> -->
+			</select>
+        </div>
+
+        <div class="photo-upload-invite-member">
+            <div class="invite-member">
+                <!-- <p class="labelinputBox">Invite Member(s) to this Room</p> -->
+                <!-- <input type="text" class="add-team-member" name="add-team-member" onfocus="addTeamMemberfocus(event)"  placeholder="Search by name or email" onkeyup="searchsldefclas(event,$(this).val());"> -->
+                <div class="addbtn" id="memberAddBtn" onclick="updateTempoMember(this)">Update</div>
+                <form autocomplete="off">
+                    <div class="input_email" id="inviteMemberBox" onclick="updateInviteMemberBox(this)" style="background-color: var(--PrimaryC)">
+                        <!-- <div class="customToolTip permissionTool"> Only Room Admin Can Modify This Section </div> -->
+                        <input type="text" value="Add Member(s) to this Room" class="invitedMem" autocomplete="off" id="findUserForRoom" placeholder="Add Member(s) to this Room" onkeydown="memberForRoomDown(event)" onkeyup="findMemberForRoom(event,this)" style="background-color:var(--PrimaryC);color: #FFF;font-size: 15px;text-align: center;"
+                            onfocus="fiMFROnfocus(this)" onblur="fimfronblur(this)">
+                    </div>
+                </form>
+
+                <ul class=" hayvenList" id="updateRoomListMember">
+
+                </ul>
+
+                <!-- <div class="adminList">
+					<div class="type-name" style="display:none;">Admin</div>
+					<div class="ml-listHA"></div>
+				</div>
+				<div class="member_list">
+					<div class="type-name" style="display:block;">Member</div>
+					<div class="ml-listHA">
+						<div class="member-div" id="member53819bb6-c0d1-4dd0-81c7-7099bde62ee3">
+							<img src="/images/users/img.png" class="member-img">
+							<div class="member-name">Rumi Rabbi+</div>
+							<span class="remove-it GroupFlRight" onclick="removeMember('member','53819bb6-c0d1-4dd0-81c7-7099bde62ee3','0d362b13-9d64-4877-8fe8-70e5df31cc76');" style="display: none;">Remove</span>
+							<img src="/images/admin-remove_12px @1x.png" class="remove-admin remove2 GroupFlRight arfImg" onclick="makeMember('img.png','Rumi Rabbi+','Test','53819bb6-c0d1-4dd0-81c7-7099bde62ee3','0d362b13-9d64-4877-8fe8-70e5df31cc76')">
+							<img src="/images/admin-add_12px @1x.png" class="add-admin add2 GroupFlRight arfImg" onclick="makeAdmin('img.png','Rumi Rabbi+','Test','53819bb6-c0d1-4dd0-81c7-7099bde62ee3','0d362b13-9d64-4877-8fe8-70e5df31cc76')" style="display: none;">
+						</div>
+					</div>
+				</div> -->
+
+                <div class="memberList" id="viewlistUpdateroom">
+                    <div class="adminList" style="display: none">
+                        <div class="type-name" id="ml-admintype" style="display:none;">Room Admin(s)</div>
+                        <div class="ml-listHA" id="ml-listHA"></div>
+                    </div>
+                    <div class="member_list">
+                        <!--	<div class="type-name" id="ml-membertype" style="display:none;">Room Member(s)</div> -->
+                        <div class="ml-listHl" id="ml-listHl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="name_and_profile" style="width:50%;padding-left: 33px;float:right;padding-top: 0;">
+        <div class="upload-channel-photo" style="width: 100%;float: left;">
+            <div class="img-div" onclick="roomImgoptionView(this,'update')">
+                <img src="" onclick="$('#updateImgInput').trigger('click')" id="updateRoomImg" alt="">
+                <div class="RoomImgOptDiv" style="top: 52px">
+                    <!-- <li onclick="viewRoomImg(event,'updateContainer',this)" class="viewImg">View Image</li> -->
+                    <li class="removeImg" onclick="removeRoomImg(this,'update')">Remove Image</li>
+                    <li onclick="$('#updateImgInput').trigger('click')" class="uploadimg">Change Image</li>
+                </div>
+            </div>
+            <form name="roomImg" class="roomImg" method="post" enctype="multipart/form-data">
+                <div class="file-up-div">
+                    <p>Set an Avatar</p>
+                    <label for="updateImgInput">Change</label>
+                    <label id="forClearRoomImg" class="bg_danger" onclick="removeRoomImg(this,'update')" style=" margin-left: 8px;">Clear</label>
+                    <input type="file" id="updateImgInput" data-img="feelix.jpg" name="room_image" onchange="getInfo(event)" accept="image/x-png,image/jpeg,image/jpg">
+                </div>
+            </form>
+        </div>
+        <div class="make_private" style="width: 100%;float: left;margin-top: 22px;">
+            <label class="switch">
+				<input type="checkbox" id="grpPrivacyUpdate" checked>
+				<span class="slider round"></span>
+			</label>
+            <p class="label_head">Make this a Private Room </p><br>
+            <p class="label_for">Only invited members will have access to this Room.</p>
+        </div>
+        <!-- <div class="make_private" style="width: 100%;float: left;margin-top: 36px;" id="customTagHolderup"> -->
+        <!-- <p style="color: #53627C;
+			    font-family: var(--F1);
+			    font-size: 12px;
+			    font-weight: 500;
+			    line-height: 16px;
+			    margin-bottom: 6px;">Add or create Tag to this Room</p> -->
+        <!-- <div class="groupHvIn" onclick="$('#updateMessageTag').show()"> -->
+        <!-- <div style="float: left;" class="container"  id="convTagslistmini" ></div> -->
+        <!-- <input type="text" placeholder="Add or create Tag to this Room" name=""  onkeyup="addNewtagForConv(event)" onkeydown="createTemppTagD(event)" required> -->
+        <!-- <div class="addBtn" onclick="addtagNew(this)">+Add</div> -->
+        <!-- </div> -->
+        <!-- <div class="oldTagholder" id="oldCovTagall" style="display: none">
+
+			</div> -->
+        <!-- </div> -->
+        <div class="caller-url">
+            <p style="display: flex; align-items: center;">Caller ID <span class="create_room_info tooltip_target" onclick="info_tooltip('caller_id_room','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px"></span></p>
+            <input type="text" id="callerid_url" onClick="this.select();" readonly>
+            <label id="call_reseturl_btn" class="bg_danger" onclick="call_reset_url('group')" style="margin-left: 8px; visibility: visible; width: 132px;display: block;float: right;margin-right: 8px;">Reset URL</label>
+            <label id="call_copyurl_btn" style="visibility: visible; width: 132px; display: block; float: right;">Copy URL</label>
+        </div>
+        <div class="make_private guest_member_div" style="width: 100%;float: left;margin-top: 66px;">
+            <!-- <p class="label_head" style="display: flex; align-items: center;">Invite guest member <span class="create_room_info tooltip_target" onclick="info_tooltip('guest_user_invite','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px" ></span></p> -->
+            <div class="input_hayven" style="width: 100%;" onclick="">
+                <input type="button" name="guest_member_emails" data-type="update" onclick="updateGuestMemberBox(this)" value="Invite Guest Member(s) to this Room" id="guest_member_emails2" style="font-size: 15px;width: 100%; padding: 6px;background-color: var(--PrimaryC);color: #FFF;cursor: pointer"
+                    placeholder="Enter email address">
+            </div>
+            <div class="ml-listHl" id="guestml-listHl"></div>
+            <div class="input_hayven all_invite" style="width: 100%;" onclick="">
+                <div data-type="update" onclick="invite_all_guest()" data-value="0" id="guest_member_emails3" style="dispaly:none; font-size: 15px;width: 100%; padding: 6px;background-color: var(--PrimaryC);color: #FFF;cursor: pointer">Send Invitation</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="submitBtn" id="forAdminBtn" style="display: none">
+        <!-- <button class="cancel" onclick="closeRightSection()">Cancel</button> -->
+        <button class="create" onclick="closeRightSection();">Close</button>
+    </div>
+
+    <div class="submitBtn" id="forMemberBtn" style="display: none">
+        <button class="cancel" onclick="closeRightSection()">Close</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var temTNA = [];
+    var readyTag = [];
+
+    function createTemppTagD(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    }
+
+    function createTemppTag(e) {
+        var value = $(e.target).val();
+        value = value.trim().toLowerCase().replace(/[`~!@#$%^&*()|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        value = value.replace(/\s/g, '');
+
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            //customTagAddlike($(e.target),value);
+        } else {
+            console.log($(".oldTagholder .tag"))
+            $(".oldTagholder .tag").each(function() {
+                if ($(this).text().toLowerCase().search(value.toLowerCase()) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            $('.oldTagholder .tag').unhighlight();
+            $('.oldTagholder .tag').highlight(value);
+
+            if (e.keyCode == 8) {
+                if (value == '') {
+                    $(e.target).prev('.container').find('.item:last').find('.valremove').trigger('click');
+                    $('.oldTagholder .tag').unhighlight();
+                    $('.oldTagholder .tag').highlight(value);
+                }
+            }
+        }
+        if (value == '') {
+            $('.oldTagholder .tag').unhighlight();
+            $('.oldTagholder .tag').highlight(value);
+        }
+        submitActiveClass('addroomTagPopup', temppReadyTag.length + temppcusTna.length);
+    }
+
+    function retemt(data) {
+        var html = '<div class="item" >' +
+            '<p class="valtext">' + data.name + '</p>' +
+            '<span class="valremove" data-val="' + data.name + '" onclick="removeTemppTag(this)"></span>' +
+            '</div>';
+
+        return html;
+    }
+
+    function addReadytag(elm) {
+        var tagid = $(elm).attr('data-id');
+        var tagname = $(elm).text();
+        $('.tag_id_' + tagid + '').remove();
+        // readyTag.push(tagid);
+        temppReadyTag.push(tagid);
+
+        var html = '<div class="item" >' +
+            '<p class="valtext">' + tagname + '</p>' +
+            '<span class="valremove" data-val="' + tagname + '" data-id="' + tagid + '" onclick="removeReadyTagconv(this)"></span>' +
+            '</div>';
+
+        $('#temmpTagContainer').prepend(html);
+        submitActiveClass('addroomTagPopup', temppReadyTag.length + temppcusTna.length);
+
+
+
+    }
+
+    function removeTemppTag(elm) {
+        // removeA(temTNA,$(elm).attr('data-val'));
+        removeA(temppcusTna, $(elm).attr('data-val'));
+        $(elm).parent('.item').remove();
+        $('#temmpTagContainer').next('input').focus();
+
+        submitActiveClass('addroomTagPopup', temppReadyTag.length + temppcusTna.length);
+
+    }
+
+    function removeReadyTagconv(elm) {
+        // removeA(readyTag,$(elm).attr('data-id'));
+        removeA(temppReadyTag, $(elm).attr('data-id'));
+        $('#temmpTagContainer').next('input').focus();
+        $('#newCovTagall').prepend('<div onclick="addReadytag(this)" class="tag tag_id_' + $(elm).attr('data-id') + '" data-id="' + $(elm).attr('data-id') + '">' + $(elm).attr('data-val') + '</div>')
+        $(elm).parent('.item').remove();
+        submitActiveClass('addroomTagPopup', temppReadyTag.length + temppcusTna.length);
+    }
+</script>
+
+
+
+
+<div class="backwrap" id="addMemberPopup" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <span class="drag_handlr"></span>
+            <h1>Add Member(s)</h1>
+            <div class="closeModal" onclick="closeModal('addMemberPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="mini_item_holder" id="addnewMemberMini"> </div>
+                <div class="input_hayven">
+                    <input type="text" id="search_member" autocomplete="off" onkeyup="findMemberForPopup(event,this)" onkeydown="memberForRoomDown(event)" placeholder="Search user">
+                </div>
+            </form>
+            <div class="sub_btn" onclick="submitAddmemberPop()">Submit</div>
+            <ul id="userListFornewRoom" class="hayvenList" style="display:block; width:100%">
+
+            </ul>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="backwrap" id="addroomTagPopup" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <h1>Add tag</h1>
+            <div class="closeModal" onclick="closeModal('addroomTagPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="groupHvIn" style="width:calc(100% - 80px)">
+                    <div style="float: left;" class="container" id="temmpTagContainer"> </div>
+                    <input type="text" autocomplete="off" placeholder="Add or create Tag" name="" onblur="if($(this).val() == '') // $('#newCovTagall').hide()" onfocus="$('#newCovTagall').show()" onkeyup="createTemppTag(event)" onkeydown="createTemppTagD(event)" required>
+                    <!-- <div class="addBtn" onclick="addtagNew(this)">+Add</div> -->
+                </div>
+            </form>
+            <div class="sub_btn" onclick="submitAddTagPop()">Submit</div>
+            <div class="oldTagholder" id="newCovTagall" style="display: block !important">
+
+            </div>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+
+<div class="backwrap" id="updateroomTagPopup" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <h1>Add tag</h1>
+            <div class="closeModal" onclick="closeModal('updateroomTagPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="groupHvIn" style="width:calc(100% - 80px)" onclick="$(this).find('input').focus()">
+                    <div style="float: left;" class="container" id="updateTagContainer"></div>
+                    <input type="text" autocomplete="off" placeholder="Add or create Tag" name="" onkeyup="addNewtagForConv(event)" onkeydown="createTemppTagD(event)" required>
+                    <!-- <div class="addBtn" onclick="addtagNew(this)">+Add</div> -->
+                </div>
+            </form>
+            <div class="sub_btn" onclick="closeModal('updateroomTagPopup'); $('#updateroomTagPopup .sub_btn').removeClass('active'); $('#updateTagContainer').html('')">Submit</div>
+            <div class="oldTagholder" id="oldCovTagall" style="display: block !important">
+
+            </div>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+
+
+<div class="backwrap" id="updateMessageTag" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <div class="tag_section">
+                <span class="dir-msg-close-backs back" style="width:36px !important;margin-top:1px !important" onclick="closeModal('updateMessageTag')"></span>
+                <!-- 				<li class="dir-msg-close-tag back" onclick="closeModal('updateMessageTag')"></li>
+ -->
+                <li onclick="changeTagMode('public')" id="publicTeamTagTab" class="public" data-count="0">Team Tag(s) <span class="counter_tag"></span></li>
+                <li onclick="changeTagMode('private')" class="private" data-count="0">My Tag(s) <span class="counter_tag"></span></li>
+                <!-- <li onclick="changeTagMode('sharedtag')" class="sharedtag" data-count="0">Shared with me<span class="counter_tag"></span></li> -->
+            </div>
+            <div class="closeModal" onclick="closeModal('updateMessageTag')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div style="float: left;" class="container" id="updateMsgTagContainer"></div>
+                <div class="groupHvIn" style="width:calc(100% - 0px)">
+                    <input id="tagSearchAddInput" maxlength="25" type="text" autocomplete="off" placeholder="Search tag or add a new one" name="" onkeyup="addNewtagForConv(event)" onkeydown="createTemppTagD(event)" required>
+                </div>
+            </form>
+
+            <div id="selectToallShareTag" onclick="selectToSharetag(this)"><span class="Custom_checkboxF"></span> <span class="check_title">Make visible your private tag(s) to other(s)</span></div>
+            <div class="ShareWithmeLabel">List of tags shared by other members (view only)</div>
+            <div class="oldTagholder" id="AllTagList" style="display: block !important">
+
+            </div>
+
+        </div>
+        <div class="hayven_Modal_endSection">
+            <!-- <div style="width: 100%;float: left;border-top: 1px solid #d8d8d8;margin-top: 12px;"></div> -->
+            <!-- <div class="color_defined">
+				<ul>
+					<li><span class="color_view" style="background-color: var(--PrimaryC)"></span><span class="describes_li">My Tag</span></li>
+					<li><span class="color_view" style="background-color: green"></span><span class="describes_li">Shared by me</span></li>
+					<li><span class="color_view" style="background-color: blue"></span><span class="describes_li">Shared to me</span></li>
+				</ul>
+			</div> -->
+            <div class="showonlyForTeam">Please ask your Team Admins to add any new team tags</div>
+            <div class="btn_group">
+                <button class="buttonCancel" onclick="closeModal('updateMessageTag')" autocomplete="off" id="tagpopCloseBtn">Cancel</button>
+                <div class="sub_btn active" id="tagAddAndsubmitbtN" onclick="submitTagOption()">Submit</div>
+                <div id="tagAddBtn">Add</div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div class="backwrap" id="updateMemberPopup" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <span class="drag_handlr"></span>
+            <h1>Update Member(s)</h1>
+            <div class="closeModal" onclick="closeModal('updateMemberPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="mini_item_holder" id="updatenewMemberMini"> </div>
+                <div class="input_hayven">
+                    <input type="text" id="search_member_update" autocomplete="off" onkeyup="findMemberForPopup(event,this)" onkeydown="memberForRoomDown(event)" placeholder="Search user">
+                </div>
+            </form>
+            <div class="sub_btn" onclick="updateTempoMember(this);  ">Submit</div>
+            <ul id="updateRoomListMember2" class="hayvenList" style="display:block; width:100%">
+
+            </ul>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+
+<div class="backwrap" id="mentionMemberPopup" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <!-- <span class="drag_handlr"></span> -->
+            <h1>Mention Member(s)</h1>
+            <div class="closeModal" onclick="closeModalmentionMemberPopup()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="mini_item_holder" id="mentionnewMemberMini"> </div>
+                <div class="input_hayven">
+                    <input type="text" id="search_member_mention" autocomplete="off" onkeyup="findMentionForPopup(event,this)" onkeydown="mentionForRoomDown(event)" placeholder="Search user">
+                </div>
+            </form>
+            <div class="sub_btn" onclick="updateTempoMention();  ">Submit</div>
+            <ul id="updateRoomListMention" class="hayvenList" style="display:block; width:100%">
+
+            </ul>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function findMemberForPopup(e, elm) {
+        var value = $(elm).val().trim();
+        if (e.keyCode !== 40 && e.keyCode !== 38 && e.keyCode !== 13 && e.keyCode !== 27) {
+            $(".backwrap .hayvenList .s-l-def-clas").each(function() {
+                if ($(this).text().toLowerCase().search(value.toLowerCase()) > -1) {
+                    $(this).parent('li').show();
+                    $(this).parent('li').addClass('showEl');
+                } else {
+                    $(this).parent('li').hide();
+                    $(this).parent('li').removeClass('showEl');
+                }
+            });
+
+            if (value !== '') {
+                $('#userListFornewRoom li').removeClass("hoverLi");
+                $('#userListFornewRoom li.showEl').last().addClass('hoverLi');
+                console.log($('#userListFornewRoom li.showEl').last());
+            } else {
+                $('#userListFornewRoom li').removeClass("hoverLi");
+            }
+
+            $('.backwrap .hayvenList .s-l-def-clas').unhighlight();
+            $('.backwrap .hayvenList .s-l-def-clas').highlight(value);
+        }
+
+        if (e.keyCode == 8) {
+            if (value == '') {
+                $(elm).prev('.mini_item_holder').find('.mini_item:last .mini_remove_ico').trigger('click');
+            }
+        }
+    }
+
+    function memberDesignpop(v) {
+        if (!has_permission(v.id, GUEST)) {
+            if ($("input[name='room_type']:checked").val() == 'work') {
+                var html = '<li class="showEl findMember" onclick="addNewMemberForGroup(this,\'' + v.id + '\',\'' + v.fullname + '\',\'' + v.img + '\')">'
+                    // +'<img src="'+file_server+'profile-pic/Photos/'+v.img+'" class="profile">'
+                    // +'<span class="name s-l-def-clas" data-uuid="'+v.id+'">'+v.fullname+'</span>'
+
+                +'<div class="addMember-on-off-pop">' +
+                '<img src="' + file_server + 'profile-pic/Photos/' + v.img + '" class="profile">';
+                if (onlineUserList.indexOf(v.id) == -1) {
+                    html += '<span class="offline online_' + v.id + '" style="top: 30px; left: 6px; z-index: 1; position: absolute;"></span>';
+                } else {
+                    html += '<span class="online online_' + v.id + '" style="top: 30px; left: 6px; z-index: 1; position: absolute;"></span>';
+                }
+                html += '</div>' +
+                    '<span class="name s-l-def-clas" data-uuid="' + v.id + '">' + v.fullname + ' <span class="id-beside-name">[' + v.email + ']</span></span>' +
+                    '</li>';
+                return html;
+            } else {
+                var html = '<li class="showEl findMember" onclick="addNewMemberForGroup(this,\'' + v.id + '\',\'' + v.fullname + '\',\'' + v.img + '\')">'
+                    // +'<img src="'+file_server+'profile-pic/Photos/'+v.img+'" class="profile">'
+                    // +'<span class="name s-l-def-clas" data-uuid="'+v.id+'">'+v.fullname+'</span>'
+
+                +'<div class="addMember-on-off-pop">' +
+                '<img src="' + file_server + 'profile-pic/Photos/' + v.img + '" class="profile">';
+                if (onlineUserList.indexOf(v.id) == -1) {
+                    html += '<span class="offline online_' + v.id + '" style="top: 30px; left: 6px; z-index: 1; position: absolute;"></span>';
+                } else {
+                    html += '<span class="online online_' + v.id + '" style="top: 30px; left: 6px; z-index: 1; position: absolute;"></span>';
+                }
+                html += '</div>' +
+                    '<span class="name s-l-def-clas" data-uuid="' + v.id + '">' + v.fullname + ' <span class="id-beside-name">[' + v.email + ']</span></span>'
+
+                +
+                '<div class="actions"><span class="action_item" onclick="addNewMemberAs(\'ADMIN\',\'' + v.id + '\')">ADMIN</span><span class="action_item" onclick="addNewMemberAs(\'SERVICE PROVIDER\',\'' + v.id + '\')">SERVICE PROVIDER</span><span class="action_item" onclick="addNewMemberAs(\'MEMBER\',\'' + v.id + '\')">MEMBER</span></div>' +
+                    '</li>';
+                return html;
+            }
+        }
+    }
+
+    function mini_itemDesign(data, type) {
+        var membertag = '';
+        var newClass = '';
+        if (temppNewSPuudi.indexOf(data.id) > -1) {
+            membertag = '(SP)';
+            newClass = 'room_sp';
+        } else if (temppNewAdminuudi.indexOf(data.id) > -1) {
+            membertag = '(A)';
+            newClass = 'room_admin';
+        } else {
+            // membertag = '(M)';
+            membertag = '';
+            newClass = 'room_member';
+        }
+        if (type == 'add') {
+
+            var html = '<div class="mini_item _mini_item_' + data.id + '" >' +
+                '<div class="mini_img"><img src="' + file_server + 'profile-pic/Photos/' + data.img + '"></div>' +
+                '<p class="mini_name">' + data.fullname + membertag + '</p>' +
+                '<span class="mini_remove_ico ' + newClass + '" onclick="removeAddMember(this,\'' + data.id + '\',\'' + data.fullname + '\',\'' + data.img + '\')"></span>' +
+                '</div>';
+        } else {
+            var html = '<div class="mini_item _mini_item_' + data.id + '" >' +
+                '<div class="mini_img"><img src="' + file_server + 'profile-pic/Photos/' + data.img + '"></div>' +
+                '<p class="mini_name">' + data.fullname + '</p>' +
+                '<span class="mini_remove_ico" onclick="removeTempoArray(\'' + data.fullname + '\',\'' + data.id + '\')" data-id="' + conversation_id + '"></span>' +
+                '</div>';
+        }
+
+        return html;
+    }
+
+    function mini_itemDesignPvt(data, type) {
+        // //debugger
+        var membertag = '';
+        var newClass = '';
+        if (temppNewSPuudi.indexOf(data.id) > -1) {
+            membertag = '(SP)';
+            newClass = 'room_sp';
+        } else if (temppNewAdminuudi.indexOf(data.id) > -1) {
+            membertag = '(A)';
+            newClass = 'room_admin';
+        } else {
+            // membertag = '(M)';
+            membertag = '';
+            newClass = 'room_member';
+        }
+        if (type == 'add') {
+
+            var html = '<div class="mini_item _mini_item_' + data.id + '" >' +
+                '<div class="mini_img"><img src="' + file_server + 'profile-pic/Photos/' + data.img + '"></div>' +
+                '<p class="mini_name">' + data.fullname + membertag + '</p>' +
+                '<span class="mini_remove_ico ' + newClass + '" onclick="removeAddMemberPvt(this,\'' + data.id + '\',\'' + data.fullname + '\',\'' + data.img + '\')"></span>' +
+                '</div>';
+        } else {
+            var html = '<div class="mini_item _mini_item_' + data.id + '" >' +
+                '<div class="mini_img"><img src="' + file_server + 'profile-pic/Photos/' + data.img + '"></div>' +
+                '<p class="mini_name">' + data.fullname + '</p>' +
+                '<span class="mini_remove_ico" onclick="removeTempoArray(\'' + data.fullname + '\',\'' + data.id + '\')" data-id="' + conversation_id + '"></span>' +
+                '</div>';
+        }
+
+        return html;
+    }
+
+    function addNewMemberForGroup(elm, id, fullname, img) {
+
+        var data = {
+            id: id,
+            fullname: fullname,
+            img: img
+        }
+        $(elm).remove();
+
+        if ($("#roomIdDiv").attr('data-rfu') == 'ready') {
+            $('#memberAddBtn').show();
+            var subtitle = $(elm).find('.designation-name').text();
+            $('#inviteMemberBox').append(returnRoomMinide(mydata, 'tempo'));
+            tempoRoomUpdateArray.push(mydata.id);
+            $('#updatenewMemberMini').next('input').val('');
+            $('#updatenewMemberMini').next('input').focus();
+            $('.hayvenList .s-l-def-clas').unhighlight();
+            $('#updateRoomListMember2').find('li').show();
+
+        } else {
+            // memberList.push(fullname);
+            // memberListUUID.push(id);
+            temppNewMembername.push(fullname);
+            temppNewMemberuudi.push(id);
+            $("#numbers").text(parseInt(memberList.length) + 1);
+
+            // $('#newlyAddmembers').append(mini_itemDesign(data,'add'));
+            $('#addnewMemberMini').append(mini_itemDesign(data, 'add'));
+            $('#addnewMemberMini').next('input').val('');
+            $('#addnewMemberMini').next('input').focus();
+            $('.hayvenList .s-l-def-clas').unhighlight();
+            $('#userListFornewRoom').find('li').show();
+        }
+        $("#addMemberPopup #search_member").val("").trigger("input");
+        submitActiveClass('addMemberPopup', temppNewMembername.length);
+    }
+
+    function submitActiveClass(id, length) {
+        if (length > 0) {
+            $('#' + id).find('.sub_btn').addClass('active');
+        } else {
+            $('#' + id).find('.sub_btn').removeClass('active');
+        }
+    }
+
+    function submitActiveClassMen(id) {
+        if ($('#mentionMemberPopup .mini_remove_ico').length > 0) {
+            $('#' + id).find('.sub_btn').addClass('active');
+        } else {
+            $('#' + id).find('.sub_btn').removeClass('active');
+        }
+    }
+    var temppNewMembername = [];
+    var temppNewMemberuudi = [];
+    var temppNewSPuudi = [];
+    var temppNewAdminuudi = [];
+
+    function removeAddMember(elm, id, fullname, img) {
+        $('._mini_item_' + id).remove();
+        // removeA(memberList, fullname);
+        // removeA(memberListUUID, id);
+        removeA(temppNewMembername, fullname);
+        removeA(temppNewMemberuudi, id);
+
+        if ($(elm).hasClass('room_admin')) {
+            removeA(temppNewAdminuudi, id);
+        } else if ($(elm).hasClass('room_sp')) {
+            removeA(temppNewSPuudi, id);
+        }
+
+        $("#numbers").text(parseInt(memberList.length) + 1);
+        $.each(user_list, function(k, v) {
+            if (v.id == id) {
+                // $('#userListFornewRoom').prepend(memberDesignpop(v));
+                member_sort_by_append("#userListFornewRoom", v);
+            }
+        });
+
+        submitActiveClass('addMemberPopup', temppNewMembername.length);
+        $('#addnewMemberMini').next('input').click();
+        $('#addnewMemberMini').next('input').focus();
+        $("#addMemberPopup #userListFornewRoom li").show();
+        $("#addMemberPopup #search_member").val("");
+    }
+
+    function member_sort_by_append(id, val) {
+        var ele = $(id + " li");
+        var appended = false;
+        $.each(ele, function(k, v) {
+            if ($(v).text().toLocaleLowerCase().localeCompare(val.fullname) === -1 && $(v).next().text().toLocaleLowerCase().localeCompare(val.fullname) === 1) {
+                $(v).after(memberDesignpop(val));
+                appended = true;
+            }
+        });
+        if (appended === false)
+            $(id).append(memberDesignpop(val));
+    }
+
+    function submitAddmemberPop() {
+        // console.log('onlineUserList', onlineUserList);
+
+        memberList = temppNewMembername;
+        // memberListUUID = temppNewMemberuudi;
+        // $('#listAddedmember').append;
+        $.each(user_list, function(k, v) {
+            // if(v.id == user_id){
+            // 	var html = '<li class="showEl">'
+            // 					+'<img src="'+file_server+'profile-pic/Photos/'+v.img+'" class="profile">'
+            // 					+'<span class="name s-l-def-clas" data-uuid="'+v.id+'">'+v.fullname+'</span>'
+            // 					+'<span class="designation-name"> @ Creator</span>'
+            // 				+'</li>';
+            // 	$('#listAddedmember').prepend(html);
+            // }else
+            if (temppNewMemberuudi.indexOf(v.id) > -1) {
+                console.log(v);
+                memberListUUID.push(v.id);
+                var classNew = 'MEMBER';
+                if (v.id == user_id) {
+                    classNew = 'CREATOR';
+                } else if (temppNewAdminuudi.indexOf(v.id) > -1) {
+                    classNew = 'ADMIN';
+                } else if (temppNewSPuudi.indexOf(v.id) > -1) {
+                    classNew = 'SP';
+                }
+                var subtitle = 'Member';
+                if (v.id == user_id) {
+                    subtitle = 'Creator';
+                } else if (temppNewAdminuudi.indexOf(v.id) > -1) {
+                    subtitle = 'Admin';
+                } else if (temppNewSPuudi.indexOf(v.id) > -1) {
+                    subtitle = 'Service Provider';
+                } else if (has_permission(v.id, GUEST)) {
+                    subtitle = 'Guest';
+                }
+                var html = '<li class="showEl temppaddedMember_ ' + classNew + '" id="temppaddedMember_' + v.id + '">';
+
+                if (onlineUserList.indexOf(v.id) == -1) {
+                    html += '<span class="offline online_' + v.id + '" style="top: 32px; left: 6px; position: absolute;"></span>'
+                } else {
+                    html += '<span class="online online_' + v.id + '" style="top: 32px; left: 6px; position: absolute;"></span>'
+                }
+
+                html += '<img src="' + file_server + 'profile-pic/Photos/' + v.img + '" class="profile">'
+                html += '<span class="name s-l-def-clas" data-uuid="' + v.id + '" onclick="actionMentionUser(\'' + v.id + '\')">' + v.fullname + '</span>'
+                html += '<span class="designation-name">[' + subtitle + ']</span>'
+                if (has_permission(v.id, GUEST)) {
+                    html += '<div class="primary mini-btn more_option"><div class="more_options" ><span class="option_item cls_dg" onclick="actemmpusersupport(\'remove\',\'' + v.id + '\')">Remove</span></div></div>';
+                } else {
+                    html += '<div class="primary mini-btn more_option"><div class="more_options" ><span class="option_item acadmin" onclick="actemmpusersupport(\'admin\',\'' + v.id + '\')">Admin</span><span class="option_item acsp" onclick="actemmpusersupport(\'sp\',\'' + v.id + '\')">Service Provider</span><span class="option_item acmember" onclick="actemmpusersupport(\'member\',\'' + v.id + '\')">Member</span><span class="option_item cls_dg" onclick="actemmpusersupport(\'remove\',\'' + v.id + '\')">Remove</span></div></div>';
+                }
+                html += '</li>';
+                if (has_permission(v.id, GUEST))
+                    $('#guestlistAddedmember').append(html);
+                else
+                    $('#listAddedmember').append(html);
+            }
+        });
+        closeModal('addMemberPopup');
+    }
+
+    function actemmpusersupport(type, id) {
+        if (type == 'remove') {
+            removeA(memberListUUID, id);
+            removeA(temppNewMemberuudi, id);
+
+            if (temppNewAdminuudi.indexOf(id) > -1) {
+                removeA(temppNewAdminuudi, id);
+
+            } else if (temppNewSPuudi.indexOf(id) > -1) {
+                removeA(temppNewSPuudi, id);
+            }
+            $('#temppaddedMember_' + id).remove();
+        } else if (type == 'member') {
+            removeA(temppNewAdminuudi, id);
+            removeA(temppNewSPuudi, id);
+            $('#temppaddedMember_' + id).removeClass('SP');
+            $('#temppaddedMember_' + id).removeClass('MEMBER');
+            $('#temppaddedMember_' + id).removeClass('ADMIN');
+
+            $('#temppaddedMember_' + id).addClass('MEMBER');
+            $('#temppaddedMember_' + id).find('.designation-name').text('[MEMBER]');
+        } else if (type == 'sp') {
+            removeA(temppNewAdminuudi, id);
+            removeA(temppNewSPuudi, id);
+            temppNewSPuudi.push(id);
+            $('#temppaddedMember_' + id).removeClass('SP');
+            $('#temppaddedMember_' + id).removeClass('MEMBER');
+            $('#temppaddedMember_' + id).removeClass('ADMIN');
+
+            $('#temppaddedMember_' + id).addClass('SP');
+            $('#temppaddedMember_' + id).find('.designation-name').text('[SP]');
+
+        } else if (type == 'admin') {
+            removeA(temppNewAdminuudi, id);
+            removeA(temppNewSPuudi, id);
+            temppNewAdminuudi.push(id);
+            $('#temppaddedMember_' + id).removeClass('SP');
+            $('#temppaddedMember_' + id).removeClass('MEMBER');
+            $('#temppaddedMember_' + id).removeClass('ADMIN');
+
+            $('#temppaddedMember_' + id).addClass('ADMIN');
+            $('#temppaddedMember_' + id).find('.designation-name').text('[ADMIN]');
+
+        }
+    }
+
+    function actionTemppUser(type, id) {
+        if (type == 'admin') {
+            $('#temppaddedMember_' + id).find('.mini-btn').remove();
+            $('#temppaddedMember_' + id).append('<span class="danger mini-btn" onclick="actionTemppUser(\'member\',\'' + id + '\');">Remove Admin</span>');
+            adminListUUID.push(id);
+            $('#temppaddedMember_' + id).find('.designation-name').text(' @ Admin');
+        } else if (type == 'member') {
+            $('#temppaddedMember_' + id).find('.mini-btn').remove();
+            removeA(adminListUUID, id);
+            $('#temppaddedMember_' + id).append('<span class="danger mini-btn" onclick="actionTemppUser(\'remove\',\'' + id + '\');">Remove</span>');
+            $('#temppaddedMember_' + id).append('<span class="primary mini-btn" onclick="actionTemppUser(\'admin\',\'' + id + '\');">Make Admin</span>');
+            $('#temppaddedMember_' + id).find('.designation-name').text(' @ Member');
+        } else {
+            removeA(memberListUUID, id);
+            $('#temppaddedMember_' + id).remove();
+        }
+    }
+
+    function submitAddTagPop() {
+        temTNA = temppcusTna;
+        readyTag = temppReadyTag;
+        $('#newConvTag').html("");
+
+        $.each(temTNA, function(k, v) {
+            $('#newConvTag').prepend('<div class="mini_item"><p class="mini_name">' + v + '</p></div>');
+        });
+        $.each(allUserTagList, function(k, v) {
+            console.log(v)
+            if (readyTag.indexOf(v.tag_id) > -1) {
+
+                $('#newConvTag').prepend('<div class="mini_item"><p class="mini_name">' + v.title + '</p></div>');
+            }
+        });
+        closeModal('addroomTagPopup');
+
+    }
+
+    function addConvTagFoucs() {
+        $('#addroomTagPopup').show();
+        temppReadyTag = [];
+        temTNA = [];
+        $('#temmpTagContainer').html('');
+
+        $('#newCovTagall').html("");
+
+        $.each(allUserTagList, function(k, v) {
+            if (v.visibility !== 'hidden') {
+                $('#newCovTagall').prepend('<div onclick="addReadytag(this)" class="tag tag_id_' + v.tag_id + '" data-id="' + v.tag_id + '">' + v.title + '</div>')
+            }
+        })
+        submitActiveClass('addroomTagPopup', temppReadyTag.length + temppcusTna.length);
+        $('#temmpTagContainer').next('input').focus();
+    }
+
+    function changeTagMode(type) {
+        $('#tagSearchAddInput').val('');
+        $('#updateMessageTag').removeClass('public_tab');
+        $('#updateMessageTag').removeClass('private_tab');
+        $('#updateMessageTag').removeClass('sharedtag_tab');
+        $('#updateMessageTag').removeClass('tagme_tab');
+        $('#updateMessageTag').removeClass('tagtome_tab');
+        $('#updateMessageTag').addClass(type + '_tab');
+        if (type == 'public') {
+            $('#tagSearchAddInput').attr('placeholder', 'Search tag');
+        } else {
+            $('#tagSearchAddInput').attr('placeholder', 'Search tag or add a new one');
+        }
+        $('#tagAddBtn').hide();
+        $('#updateMessageTag .sub_btn').show();
+        // $('#tagSearchAddInput').val('');
+        // $('#tagSearchAddInput').focus();
+        // $('.taggedList li').unhighlight();
+        // $('.taggedList li').show();
+        checkTagLength();
+        $('#tagSearchAddInput').focus();
+    }
+
+    // function add_temp_user(e){
+    // 	var code = e.keyCode || e.which;
+    // 	if(code == 13){
+    // 		var email = $(e.target).val();
+    // 		var type = $(e.target).attr("data-type");
+    // 		$(e.target).val("");
+    // 		var re = /\S+@\S+\.\S+/;
+    // 		if(re.test(email)){
+    // 			socket.emit('add_guest_user', {guest_member_emails: email, company_id: company_id}, (res)=>{
+    // 				console.log(936, res);
+    // 				if(res.status){
+    // 					var id = res.user.id;
+    // 					user_list.push(res.user);
+    // 					allUserdata[0].users.push(res.user);
+    // 					userlistWithname[id] = res.user.fullname;
+    // 					if(type == 'new'){
+    // 						temppNewMemberuudi.push(id);
+    // 						var html = '<li class="showEl temppaddedMember_ GUEST" id="temppaddedMember_'+id+'">';
+    // 						html += '<span class="offline online_'+id+'" style="top: 32px; left: 6px; position: absolute;"></span>';
+    // 						html +='<img src="'+file_server+'profile-pic/Photos/img.png" class="profile">'								
+    // 						html +='<span class="name s-l-def-clas" data-uuid="'+id+'" onclick="actionMentionUser(\''+id+'\')">'+res.user.fullname+'</span>'
+    // 						html +='<span class="designation-name">[Guest]</span>'
+    // 						html +='<div class="primary mini-btn more_option"><div class="more_options" ><span class="option_item acadmin" onclick="action_guest_invite(\'invite\',\''+id+'\',event)">Invite</span><span class="option_item cls_dg" onclick="action_guest_invite(\'remove\',\''+id+'\',event)">Remove</span></div></div>';
+    // 						html +='</li>';
+    // 						$('#guestlistAddedmember').append(html);
+    // 						// $('#listAddedmember').append(html);
+    // 					}
+    // 					else if(type == 'update'){
+    // 						var msg_body = res.user.fullname +' has been added to this Room';
+    // 						var data = {
+    // 							type:'add_conv_member',
+    // 							sender:user_id,
+    // 							sender_name:user_fullname,
+    // 							sender_img:user_img,
+    // 							conversation_id:conversation_id,
+    // 							msg_type:'notification',
+    // 							msg_body:msg_body
+    // 						}
+    // 						socket.emit("add_guest_into_room", {conversation_id, company_id, id}, (result)=>{
+    // 							console.log(965, result);
+    // 							sendNotificationMsg(data);
+    // 							call_toastr();
+
+    // 							var mldesign = '<div class="member-div" data-type="member" id="member' + id + '">';
+    // 							mldesign += '<span class="offline online_'+id+'" style="top: 32px; left: 6px; position: absolute;"></span>';
+    // 							mldesign += '          <img src="'+file_server +'profile-pic/Photos/img.png" class="member-img">';
+    // 							mldesign += '          <div class="member-name" onclick="actionMentionUser(\''+id+'\')">' + email + ' <span>[Guest]</span></div>';
+    // 							mldesign += '<span class="add-admin add2 GroupFlRight arfImg" onclick="action_guest_invite(\'invite\', \'' + id + '\',event)">Invite</span>';
+    // 							mldesign += '<span class="remove-it GroupFlRight" onclick = "removeMember(\'member\',\'' + id + '\',\'' + conversation_id + '\');">Remove</span>';
+    // 							mldesign += '</div>';
+    // 							// $("#ml-listHl").append(mldesign);
+    // 							$("#guestml-listHl").append(mldesign);
+    // 						});
+    // 					}
+    // 				}
+    // 			});
+    // 		}
+    // 	}
+    // }
+    function action_guest_invite(type, id, e) {
+        if (type == 'invite') {
+            $(e.target).text('Reinvite');
+            var room_name = $("#conv" + conversation_id).attr("data-name");
+            if (root_conv_id !== undefined && root_conv_id !== null && root_conv_id != '')
+                var root_room_name = $("#conv" + root_conv_id).attr("data-name");
+            socket.emit('send_invitation_to_join_room', {
+                conversation_id,
+                id,
+                room_name,
+                sender_name: user_fullname
+            }, (res) => {
+                if (res.status) {
+                    // setCookie('send_invitation_'+ id + conversation_id , 'yes');
+                    // $(e.target).attr('onclick', '');
+                    call_toastr("Re-invitation sent.");
+                    $("#guest_member_emails3").attr("data-value", Number($("#guest_member_emails3").attr("data-value")) - 1);
+                    if (Number($("#guest_member_emails3").attr("data-value")) > 0)
+                        $("#guest_member_emails3").html("Send Invitation (" + Number($("#guest_member_emails3").attr("data-value")) + ")").show();
+                    else
+                        $("#guest_member_emails3").hide();
+                }
+            });
+        } else if (type == 'remove') {
+            $('#temppaddedMember_' + id).remove();
+        }
+    }
+
+    function invite_all_guest() {
+        var room_name = $("#conv" + conversation_id).attr("data-name");
+        var sendmail = 0;
+        if (root_conv_id !== undefined && root_conv_id !== null && root_conv_id != '')
+            var root_room_name = $("#conv" + root_conv_id).attr("data-name");
+        $.each($('#guestml-listHl .member-div'), function(gk, gv) {
+            if ($(gv).find(".sendinvitebtn").attr("data-type") == 'invite') {
+                var gid = $(gv).attr('id').replace('member', '');
+                sendmail++;
+                socket.emit('send_invitation_to_join_room', {
+                    conversation_id,
+                    id: gid,
+                    room_name,
+                    sender_name: user_fullname,
+                    root_room_name
+                }, (res) => {
+                    if (res.status) {
+                        $(gv).find(".invitation_status").text('Invitation Sent');
+                        $(gv).find(".sendinvitebtn").text('Reinvite').attr("data-type", "").removeClass("sendinvitebtn").attr('onclick', '');
+                        // setCookie('send_invitation_'+ gid + conversation_id , 'yes');
+                        // $("#guest_member_emails3").attr("data-value", 0).html("Sent Invitation");
+                        $("#guest_member_emails3").hide();
+                        call_toastr("All invitation sent.");
+                    }
+                });
+            }
+        });
+        if (sendmail == 0) {
+            alert("All guests are already invited.");
+        }
+    }
+</script>
+
+
+
+<div class="backwrap" id="issue_service_providerPop" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <h1>Sending Request for</h1>
+            <div class="closeModal" onclick="closeModal('issue_service_providerPop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="input_hayven">
+                    <div class="mini_item_holder"> </div>
+                    <input type="text" autocomplete="off" onkeyup="findMemberForPopup(event,this)" onkeydown="memberForRoomDown(event)" placeholder="Search user">
+                </div>
+            </form>
+            <div class="sub_btn" onclick="submitIssueSP()">Submit</div>
+            <ul id="userListFornewServiceProvider" class="hayvenList" style="display:block; width:100%">
+
+            </ul>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+
+<div class="backwrap" id="issue_assign_req_Pop" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <h1>Assign Request</h1>
+            <div class="closeModal" onclick="closeModal('issue_assign_req_Pop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="input_hayven">
+                    <div class="mini_item_holder"> </div>
+                    <input type="text" autocomplete="off" onkeyup="findMemberForPopup(event,this)" onkeydown="memberForRoomDown(event)" placeholder="Search user">
+                </div>
+            </form>
+            <div class="sub_btn" onclick="submitAndAssign()">Submit</div>
+            <ul id="user_list_for_reqAssign" class="hayvenList" style="display:block; width:100%">
+
+            </ul>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+<div class="backwrap" id="add_new_guest_Pop" data-mute-id="" style="display: none">
+    <div class="hayven_Modal_Container">
+        <div class="hayven_Modal_heading">
+            <span class="drag_handlr"></span>
+            <h1>Add new guest user</h1>
+            <div class="closeModal" onclick="closeModal('add_new_guest_Pop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        </div>
+        <div class="hayven_Modal_Content">
+            <form autocomplete="off">
+                <div class="input_hayven">
+                    <div class="mini_item_holder"> </div>
+                    <input type="text" id="gufn1" style="width: 45%; float:left;" autocomplete="off" placeholder="First Name">
+                    <input type="text" id="gufn2" style="width: 45%; margin-left: 10%;" autocomplete="off" placeholder="Last Name">
+                </div>
+                <div class="input_hayven">
+                    <div class="mini_item_holder"> </div>
+                    <input type="email" id="guem" autocomplete="off" placeholder="Email">
+                </div>
+                <div class="input_hayven" style="display:flex;align-items: center;justify-content: flex-end">
+                    <div class="btn-cancel" onclick="closeModal('add_new_guest_Pop')">Cancel</div>
+                    <div class="sub_btn active" onclick="add_temp_guest_user()">Submit</div>
+                </div>
+            </form>
+        </div>
+        <div class="hayven_Modal_endSection">
+
+        </div>
+    </div>
+</div>
+<script>
+    function add_temp_guest_user() {
+        var email = $("#guem").val().trim();
+        var name1 = $("#gufn1").val().trim();
+        var name2 = $("#gufn2").val().trim();
+        var type = $("#updatechannelContainer").is(":visible") ? "update" : "new";
+        console.log(1086, {
+            email,
+            name1,
+            name2,
+            company_id: company_id
+        });
+        var re = /\S+@\S+\.\S+/;
+        if (re.test(email) && name1 != '' && name2 != '') {
+            socket.emit('add_guest_user', {
+                email,
+                name: name1 + ' ' + name2,
+                company_id: company_id,
+                created_by: user_id
+            }, (res) => {
+                console.log(936, res);
+                if (res.status) {
+                    var id = res.user.id;
+                    res.user.is_active = 1;
+                    res.user.is_delete = 0;
+                    user_list.push(res.user);
+                    allUserdata[0].users.push(res.user);
+                    userlistWithname[id] = res.user.fullname;
+                    closeModal('add_new_guest_Pop');
+                    if (type == 'new') {
+                        temppNewMemberuudi.push(id);
+                        $("#guest_member_emails1").trigger("click");
+                    } else if (type == 'update') {
+                        $("#guest_member_emails2").trigger("click");
+                    }
+                } else {
+                    if (res.user.id) {
+                        alert("This user already exists into this company.");
+                    } else {
+                        alert("Invalid email address.");
+                    }
+                }
+            });
+        } else {
+            alert("Name or email missing.");
+        }
+    }
+</script>

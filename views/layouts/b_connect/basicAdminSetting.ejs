@@ -1,0 +1,921 @@
+<section id="admin-setting-right-section" style="display:none">
+    <!-- User management section start here -->
+    <div id="userManageMent" class="adminSettingBody" style="display: block">
+        <div class="main-userManageMent" style="display:block">
+            <div class="input-div">
+            <li class="user-management-input"><input type="text" placeholder="Search users"></li>
+            <li class="user-management-input">
+                <select name="" id="">
+                    <option value="">Active Users</option>
+                </select>
+            </li>
+            <li class="user-management-input">
+                <select name="" id="">
+                    <option value="">All Access Levels</option>
+                </select>
+            </li>
+            <li class="user-management-input"><button onclick="showCreateUserPopup()">Create New User</button></li>
+            </div>
+            <div>
+            <table class="user-table">
+                <thead class="user-table-head">
+                    <tr>
+                        <th>Full Name</th>
+                        <th style="width:13%">User Name</th>
+                        <th style="width: 10%;">Role</th>
+                        <th>Email Address</th>
+                        <th style="width:12%">Last Active</th>
+                        <th style="width:13%">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="user-table-body">
+                    <tr class="user-table-row">
+                        <td class="fullName" onclick="ManageUserProfile()"> <img src="/images/users/nayeem.jpg" alt=""><span> Hallie Lambert </span></td>
+                        <td>HLamber</td>
+                        <td>Admin</td>
+                        <td>gottlieb_raegan@ivy.name</td>
+                        <td>03 Dec 2018</td>
+                        <td><span class="user-status">Active</span> <img src="/images/svg/MoreMenu.svg" alt=""></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        <div id="manage-user-profile" style="display:none">
+            <img class="back-main-userManageMent" onclick="backToManageMentDiv()" src="/images/basicAssets/arrow-circle-left.svg" alt="">
+            <img class="manage-profile-option" src="/images/basicAssets/ellipsis.svg" alt="">
+            <div class="change-profile-photo">
+                <img src="/images/users/nayeem.jpg" alt="">
+                <label for="changePhoto">Upload / Change
+                    <input type="file" name="" id="changePhoto" style="display:none">
+                </label>
+            </div>
+            <div class="profile-information">
+                <h2 class="profile-user-name">Hallie Lambert <span class="edit-value">Edit</span></h2>
+                <table id="userInfoTable">
+                    <tr>
+                        <td class="information-label">Email Address: </td>
+                        <td class="information-value">gottlieb_raegan@ivy.name <span class="edit-value">Edit</span></td>
+                    </tr>
+                    <tr>
+                        <td class="information-label">Username: </td>
+                        <td class="information-value">HLambert <span class="edit-value">Edit</span></td>
+                    </tr>
+                    <tr>
+                        <td class="information-label">Job Title:</td>
+                        <td class="information-value">Sr. Product Manager <span class="edit-value">Edit</span></td>
+                    </tr>
+                    <tr>
+                        <td class="information-label">Account Status: </td>
+                        <td class="information-value">Active <span class="edit-value">Deactive</span></td>
+                    </tr>
+                    <tr>
+                        <td class="information-label">Account Creation:</td>
+                        <td class="information-value">10 June 2018</td>
+                    </tr>
+                    <tr>
+                        <td class="information-label">Last Active:</td>
+                        <td class="information-value">12 June 2018, 3:56 PM</td>
+                    </tr>
+                    <tr>
+                        <td class="information-label">Role:</td>
+                        <td class="information-value">
+                            <label class="userRoleLabel">User
+                                <input type="radio" checked="checked" name="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="information-value">
+                            <label class="userRoleLabel">Member
+                                <input type="radio" checked="checked" name="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="information-value">
+                            <label class="userRoleLabel">Admin
+                                <input type="radio" checked="checked" name="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>   
+                    </tr>
+                </table>
+            </div>
+            <div class="channel-team-permission">
+                <div class="channel-team-permission-tab">
+                    <!-- <li id="controlChannel" onclick="channelTeamPermission('channel')" class="active">Channels</li> -->
+                    <li id="controlTeam" onclick="channelTeamPermission('team')" class="">Teams</li>
+                    <li id="controlPermission" onclick="channelTeamPermission('permission')" class="">Permissions</li>
+                </div>
+                <div id="channelMainTab" class="user-control-tabs" style="display:none">
+                    <table class="channel-table">
+                        <thead class="channel-table-head">
+                            <tr>
+                                <th>Name</td>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody  class="channel-table-body">
+                            <tr class="channel-body-row">
+                                <td class="channel-names">Everyone</td>
+                                <td>Company-wide announcements and work-based matters.</td>
+                                <td> <button>Remove</button> </td>
+                            </tr>
+                            <tr class="channel-body-row">
+                                <td class="channel-names">Random</td>
+                                <td>Non-work banter and water cooler conversation.</td>
+                                <td> <button>Remove</button> </td>
+                            </tr>
+                            <tr class="channel-body-row">
+                                <td class="channel-names">Hayven</td>
+                                <td>Hayven specific project announcements and updates.</td>
+                                <td> <button>Remove</button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="add-chennel-btn">+ Add Channel</button>
+                </div>
+                <div id="teamMainTab" class="user-control-tabs" style="display:block">
+                    <div class="teams-div">
+                        <p class="team-title">Design</p>
+                    </div>
+                    <div class="teams-div create-teams" id="createTeam">
+                        <p class="team-title create-teams-title">
+                            <span class="add-more-task">
+                                <!-- <img src="/images/svg/Add_Section.svg"> -->
+                            </span><br>
+                            Add Team
+                        </p>
+                    </div>
+                </div>
+                <div id="permissionMainTab" class="user-control-tabs" style="display:none">
+                    <div class="permission-wrapper">
+                        <div class="msgs-notifi">
+                            <h2>Messages</h2>
+                            <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Delete own messages</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Delete other user messages</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="channel-notifi">
+                            <h2>Channels</h2>
+                            <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Create a new channel</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Rename channel</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Delete channel</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Remove people from channels</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Change a public channel to private</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="workspace-notifi">
+                            <h2>Workspace</h2>
+                            <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Invite new guest users to channels</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Invite new guest users to project tasks</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Add apps and integrations</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="each-notifi-setting">
+                            <div class="notification-text"> 
+                                <p>Workspace billing and payment</p>
+                            </div>
+                            <div class="notification-active-inactive">
+                                <label class="switchNav">
+                                    <input type="checkbox">
+                                    <span class="sliderNav round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Workspace main section start here -->
+    <div id="workSpaceManagement" class="adminSettingBody" style="display:none">
+        <!-- Workspace tab section start here -->
+        <div id="workSpaceTabDiv">
+            <h2 class="workSpace-tab-title">Navigate Group <img onclick="showAdminpopup('wsColorPopUp')" src="/images/basicAssets/Settings.svg" alt=""></h2>
+            <div class="work-space-tabs active-ws" onclick="workSpaceTabs('team')" >
+                <p>
+                    <span class="teamCount">6</span>
+                    <span class="workspacetabTitle">Teams</span>
+                </p>
+            </div>
+            <div class="work-space-tabs" onclick="workSpaceTabs('members')">
+                <p>
+                    <span class="MemberCount">49</span>
+                    <span class="workspacetabTitle">Members</span>
+                </p>
+            </div>
+            <div class="work-space-tabs" onclick="workSpaceTabs('channel')">
+                <p>
+                    <span class="ChannelCount">4</span>
+                    <span class="workspacetabTitle">Rooms</span>
+                </p>
+            </div>
+        </div>
+        <!-- workspace Team sectin start here -->
+        <div class="workspace-tab-body" id="workSpaceTeamDiv" style="display:inline-block">
+            <h2>Teams <span>(6)</span></h2>
+            <div onclick="exploreTeam()" class="teams-div">
+                <p class="team-title">Business Strategy</p>
+            </div>
+            <div onclick="exploreTeam()" class="teams-div">
+                <p class="team-title">Design</p>
+            </div>
+            <div onclick="exploreTeam()" class="teams-div">
+                <p class="team-title">Engineering</p>
+            </div>
+            <div onclick="exploreTeam()" class="teams-div">
+                <p class="team-title">Legal & Finance</p>
+            </div>
+            <div onclick="exploreTeam()" class="teams-div">
+                <p class="team-title">Marketing</p>
+            </div>
+            <div onclick="exploreTeam()" class="teams-div">
+                <p class="team-title">Sales & Support</p>
+            </div>
+            <div class="teams-div create-teams" onclick="showAdminpopup('createteam')" id="wsCreateTeam">
+                <p class="team-title create-teams-title">
+                    <span class="add-more-task"></span><br>
+                    Create Team
+                </p>
+            </div>
+        </div>
+        <!-- workspace Team Explore sectin start here -->
+        <div id="workSpaceTeamExplore" style="display:none">
+            <div id="ws-team-details" style="display: block;" class="team_details">
+                <div class="Popup-back-Header">
+                    <span class="">
+                        <img src="/images/back_34px_200 @1x.png" onclick="backToWsTeamList()" id="ws-team-details-to-back-team"style="">
+                    </span>
+                    <span class="wsM-Team-name1">Business Strategy Team</span>
+                    <span style="margin-left: 8px" class="edit-ws-team-name">Edit</span>
+                </div>
+
+                <div id="ws-user-management-table">
+                    <div class="">
+                        <input type="search" class="ws-search" value="" placeholder="Search users">
+                    </div>
+                    <div class="">
+                        <select class="ws-select">
+                            <option value="">Active Users</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <select class="ws-select">
+                            <option value="">All Access Labels</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <button onclick="showAdminpopup('addUser')" id="" class="ws-add-user" >Add User</button>
+                        <button onclick="showAdminpopup('editTeam')" id="" class="ws-edit-team">Edit Permissions</button>
+                        <button onclick="showAdminpopup('deleteTeam')" id="" class="ws-delete-team">Delete Team</button>
+                    </div>
+                    <div class="ws-Custom_Table">
+                    <table class="user-table">
+                        <thead class="user-table-head">
+                            <tr>
+                                <th>Full Name</th>
+                                <th style="width:13%">User Name</th>
+                                <th style="width: 10%;">Role</th>
+                                <th>Email Address</th>
+                                <th style="width:12%">Last Active</th>
+                                <th style="width:13%;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="user-table-body">
+                            <tr class="user-table-row">
+                                <td class="fullName" onclick="ManageUserProfile()"> <img src="/images/users/nayeem.jpg" alt=""><span> Hallie Lambert </span></td>
+                                <td>HLamber</td>
+                                <td>Admin</td>
+                                <td>gottlieb_raegan@ivy.name</td>
+                                <td>03 Dec 2018</td>
+                                <td><span class="user-status">Active</span> <img src="/images/svg/MoreMenu.svg" alt=""></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Workspace member section start here -->
+        <div class="workspace-tab-body" id="workSpaceMemberDiv" style="display:none">
+            <h2>Members <span>(49)</span></h2>
+            <div class="members-input-div">
+                <div>
+                    <input type="text" class="ws-search" placeholder="Search Users">
+                </div>
+                <div>
+                    <select name="" id="" class="ws-select">
+                        <option value="">Active Users</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="" id="" class="ws-select">
+                        <option value="">All Access Lebels</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="wsCreateNewUser">Create New User</button>
+                </div>
+            </div>
+            <table class="user-table">
+                <thead class="user-table-head">
+                    <tr>
+                        <th>Full Name</th>
+                        <th style="width:13%">User Name</th>
+                        <th style="width: 10%;">Role</th>
+                        <th>Email Address</th>
+                        <th style="width:12%">Last Active</th>
+                        <th style="width:13%">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="user-table-body">
+                    <tr class="user-table-row">
+                        <td class="fullName" onclick="ManageUserProfile()"> <img src="/images/users/nayeem.jpg" alt=""><span> Hallie Lambert </span></td>
+                        <td>HLamber</td>
+                        <td>Admin</td>
+                        <td>gottlieb_raegan@ivy.name</td>
+                        <td>03 Dec 2018</td>
+                        <td><span class="user-status">Active</span> <img src="/images/svg/MoreMenu.svg" alt=""></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- workspace channel sectin start here -->
+        <div class="workspace-tab-body" id="workSpaceChannelDiv" style="display:none">
+            <h2>Rooms<span>(4)</span></h2>
+            <div class="wsChannelContainer">
+                <div class="channels-div" onclick="channelExplore()">
+                    <h3 class="channel-title">Everone @ Navigate Group</h3>
+                    <p>76 Members</p>
+                </div>
+                <div class="channels-div" onclick="channelExplore()">
+                    <h3 class="channel-title">Random</h3>
+                    <p>29 Members</p>
+                </div>
+                <div class="channels-div" onclick="channelExplore()">
+                    <h3 class="channel-title">Navigate Design</h3>
+                    <p>7 Members</p>
+                </div>
+                <div class="channels-div" onclick="channelExplore()">
+                    <h3 class="channel-title">Design Trends & News</h3>
+                    <p>42 Members</p>
+                </div>
+                <div class="channels-div" id="createChannelDiv">
+                    <p class="channel-title">
+                        <span></span><br>
+                        Create Room
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Workspace Channel explore section start here -->
+        <div id="wsChannelExplore" style="display:none">
+            <div id="ws-team-details" style="display: block;" class="team_details">
+                <div class="Popup-back-Header">
+                    <span class="">
+                        <img src="/images/back_34px_200 @1x.png" onclick="backToWsconversation_list_sidebar()" id="ws-team-details-to-back-team"style="">
+                    </span>
+                    <span class="wsM-Team-name">Everyone & Navigate Group</span>
+                    <span style="margin-left: 8px" class="edit-ws-team-name">Edit</span>
+                </div>
+
+                <div id="ws-user-management-table">
+                    <div class="">
+                        <input type="search" class="ws-search" value="" placeholder="Search users">
+                    </div>
+                    <div class="">
+                        <select class="ws-select">
+                            <option value="">Active Users</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <select class="ws-select">
+                            <option value="">All Access Labels</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <button id="" class="ws-add-user" >Add User</button>
+                        <button id="" class="ws-edit-team">Edit Permissions</button>
+                        <button id="" class="ws-delete-team">Delete Team</button>
+                    </div>
+                    <div class="ws-Custom_Table">
+                    <table class="user-table">
+                        <thead class="user-table-head">
+                            <tr>
+                                <th>Full Name</th>
+                                <th style="width:13%">User Name</th>
+                                <th style="width: 10%;">Role</th>
+                                <th>Email Address</th>
+                                <th style="width:12%">Last Active</th>
+                                <th style="width:13%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="user-table-body">
+                            <tr class="user-table-row">
+                                <td class="fullName" onclick="ManageUserProfile()"> <img src="/images/users/nayeem.jpg" alt=""><span> Hallie Lambert </span></td>
+                                <td>HLamber</td>
+                                <td>Admin</td>
+                                <td>gottlieb_raegan@ivy.name</td>
+                                <td>03 Dec 2018</td>
+                                <td><span class="user-status">Active</span> <img src="/images/svg/MoreMenu.svg" alt=""></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Workspace main section end here -->
+
+    <!-- Workspace main section start here -->
+    <div id="fileManagement" class="adminSettingBody" style="display:none">
+        <div class="file-management-status">
+            <div class="file-status-left">
+                <div class="hayven-basic">
+                    <h2>Hayven Basic</h2>
+                    <p>See other plans</p>
+                    <button>Upgrade</button>
+                </div>
+                <div class="storage-proggressbar">
+                    <p class="left-label">Used Storage</p>
+                    <p class="right-label">Using <span> 700 MB</span> of 5GB</p>
+                    <div class="progress-bar">
+                        <div class="proggress">14%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="file-status-middle">
+                <div id="chartContainer" style="height: 150px; width: 100%;"></div>
+            </div>
+            <div class="file-status-right">
+                <p class="keepDeleteFile">Keep deleted files up to <span class="deleteFileCount" contenteditable="true">120</span> day(s)</p>
+                <p class="dowmloadlabel">Download a files report</p>
+                <button class="dowmloadReport">Download Report</button>
+            </div>
+        </div>
+        <div class="allFilesDiv">
+            <h2>All Files <span>(753)</span></h2>
+            <div class="filesFilterdiv">
+                <div class="search-file">
+                    <input type="text" placeholder="Filter by users">
+                </div>
+                <div class="select-team">
+                    <select name="" id="">
+                        <option value="">Select a team</option>
+                    </select>
+                </div>
+                <div class="select-file-type">
+                    <select name="" id="">
+                        <option value="">All files types</option>
+                    </select>
+                </div>
+                <div class="create-on">
+                    <input type="text" placeholder="Created On">
+                </div>
+                <div class="last-modify">
+                    <input type="text" placeholder="Last Modified">
+                </div>
+                <div class="edit-permission">
+                   <button>Edit Permissions</button>
+                </div>
+            </div>
+            <button class="downloadFile">Download</button>
+            <button class="deleteFile">Delete</button>
+        </div>
+        <div class="file-table-div">
+            <table class="file-table">
+                <thead class="file-table-head">
+                    <tr class="file-table-head-row">
+                        <th class="checkth">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckAllFile"></span>
+                        </th>
+                        <th>File Name</th>
+                        <th style="width: 12%;">Type</th>
+                        <th style="width: 12%;">Size</th>
+                        <th>Upload On</th>
+                        <th>Owner</th>
+                        <th style="width:12%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="file-table-body">
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                    <tr class="file-table-row">
+                        <td class="checktd">
+                            <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckFile"></span>
+                        </td>
+                        <td>Chat_Connect_JD_034</td>
+                        <td>Sketch</td>
+                        <td>28.9 MB</td>
+                        <td>Today @ 3:34 PM</td>
+                        <td>Cordelia Campbell</td>
+                        <td style="width:12%"><img style="margin-left: 16px; width: 15px;" src="/images/basicAssets/ellipsis.svg" alt=""><img style="margin-left: 16px; width: 13px;" src="/images/basicAssets/delete-icon.svg" alt=""><img style="width: 15px;" src="/images/basicAssets/download-file.svg" alt=""></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Workspace main section start here -->
+</section>
+
+<!-- Popup section start here -->
+<div id="adminSettingBackWrap" style="display:none">
+    <div id="createNewUser" data-at="test popup" style="display:none">
+        <h2>Create New User </h2>
+        <img onclick="closeAdminSettingPop('createNewUser')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="user-f-name">
+            <label class="create-user-label" for="">First Name</label>
+            <input type="text" placeholder="John">
+        </div>
+        <div class="user-l-name">
+            <label class="create-user-label" for="">Last Name</label>
+            <input type="text" placeholder="Smith">
+        </div>
+        <div class="user-email">
+            <label class="create-user-label" for="">Email</label>
+            <input type="text" placeholder="Enter email address">
+            <p class="warning-text">Seperate multiple email addresses with a comma.</p>
+        </div>
+        <div class="user-role">
+            <label class="create-user-label" for="">Role</label>
+            <select name="" id="">
+                <option value="">Select a role</option>
+            </select>
+        </div>
+        <div class="user-msgs">
+            <label class="create-user-label" for="">Message</label>
+            <textarea name="" id=""></textarea>
+        </div>
+        <button class="create-user-btn">Send Invitation</button>
+    </div>
+
+    <div id="wsCreateTeamPopUp" style="display:none">
+        <h3 class="createTeamPopTitle">Create Team</h3>
+        <img onclick="closeAdminSettingPop('createTeam')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="team-data-input">
+            <label for="">Team Name</label>
+            <input type="text" placeholder="The design team">
+        </div>
+        <button class="createTeamBtn">Create Team</button>
+    </div>
+    <div id="wsAddUserPopUp" style="display:none">
+        <h3>Add User</h3>
+        <img onclick="closeAdminSettingPop('addUser')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="ws-user-data-input">
+            <label for="">Email Address</label>
+            <input type="text" placeholder="Enter email address">
+            <p>Seperate multiple email addresses with a comma.</p>
+        </div>
+        <button class="wsAddUser">Add User</button>
+    </div>
+    <!-- <div id="wsTeamPermission" style="display:none">
+        <h3>Team Permissions</h3>
+        <img onclick="closeAdminSettingPop('teamPermission')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="msgs-notifi">
+            <h2>Messages</h2>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Delete own messages</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Delete other user messages</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="channel-notifi">
+            <h2>Channels</h2>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Create a new channel</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Rename channel</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Delete channel</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Remove people from channels</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Change a public channel to private</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="workspace-notifi">
+            <h2>Workspace</h2>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Invite new guest users to channels</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Invite new guest users to project tasks</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Add apps and integrations</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="each-notifi-setting">
+                <div class="notification-text"> 
+                    <p>Workspace billing and payment</p>
+                </div>
+                <div class="notification-active-inactive">
+                    <label class="switchNav">
+                        <input type="checkbox">
+                        <span class="sliderNav round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div id="wsDeleteTeam" style="display:none">
+        <h3>Delete Team</h3>
+        <img onclick="closeAdminSettingPop('deleteTeam')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <p>Are you sure you want to delete this team?</p>
+        <p>This action will delete the business strategy team permanently.</p>
+        <button class="wsDeleteTeamBtn">Delete Team</button>
+        <button class="wsCancelBtn">Cancel</button>
+    </div>
+    <div id="wsColorPopUp" style="display:none">
+        <h2>Workspace color</h2>
+        <img onclick="closeAdminSettingPop('wsColorPopUp')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+        <div class="colorsDiv">
+            <div class="colors color1"></div>
+            <div class="colors color2"></div>
+            <div class="colors color3"></div>
+            <div class="colors color4"></div>
+            <div class="colors color5"></div>
+            <div class="colors color6"></div>
+            <div class="colors color7"></div>
+            <div class="colors color8"></div>
+            <div class="colors color9"></div>
+            <div class="colors color10"></div>
+        </div>
+        <button class="wsColorBtn">Save Changes</button>
+    </div>
+</div>

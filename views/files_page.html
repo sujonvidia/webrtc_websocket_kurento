@@ -1,0 +1,530 @@
+<%- include('layouts/basic_head') %>
+<script>
+	var session_id 			= '<%= session_id %>';
+	var user_id 			= '<%= user_id %>';
+	var company_id 			= '<%= company_id %>';
+	var user_email 			= '<%= user_email %>';
+	var user_fullname 		= '<%= user_fullname %>';
+	var user_img 			= '<%= user_img %>';
+	var file_server 		= '<%= file_server %>';
+	var allUserdata 		= <%- JSON.stringify(data) %>;
+    var access_user_list 	= allUserdata[0].users;
+    var user_list = _.orderBy(allUserdata[0].users, ["fullname"], ["asc"]);
+
+    function findObjForUser(value) {
+	for (var i = 0; i < user_list.length; i++) {
+		if (user_list[i]['id'] === value) {
+			if(user_list[i].login_total == null){
+				user_list[i].login_total = 0;
+			}
+			var userData ={
+				email: user_list[i].email,
+				fullname: user_list[i].fullname,
+				id: user_list[i].id,
+				img: user_list[i].img,
+				designation: user_list[i].designation,
+				dept: user_list[i].dept,
+				createdat: user_list[i].createdat,
+				conference_id:user_list[i].conference_id,
+				login_total:user_list[i].login_total
+
+			}
+			return userData;
+		}
+	}
+	return false;
+}
+</script>
+    <script src="/javascripts/vue/vue.js"></script>
+    <!-- Lastly add this package -->
+    <script src="/javascripts/vue/vue-toast-notification.js"></script>
+    <link href="/stylesheets/pluginCss/theme-sugar.css" rel="stylesheet">
+    <!-- Init the plugin -->
+
+    <script src="/javascripts/plugins/FileSaver.js"></script>
+    <script src="/javascripts/plugins/JSzip.js"></script>
+    <script src="/javascripts/plugins/jszip-utils.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/files_vue.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style_basic_connect.css" />
+        <div id="file_mainSec">
+            <div class="file_section">
+                <ul class="files_tab_sec">
+                    <li class="files_li" :class="activeTab == 'All Files' ? ' active':' inactive'" v-on:click="clicktabFun('All Files')"><span class="text">All Files <span class="counter" v-text="files_counter.all_files"></span></span></li>
+
+                    <li class="files_li" :class="activeTab == 'Images' ? ' active':' inactive'" v-on:click="clicktabFun('Images')"><span class="text">Images <span class="counter" v-text="files_counter.images"></span></span></li>
+
+                    <li class="files_li" :class="activeTab == 'Videos' ? ' active':' inactive'" v-on:click="clicktabFun('Videos')"><span class="text">Videos <span class="counter" v-text="files_counter.videos"></span></span></li>
+
+                    <li class="files_li" :class="activeTab == 'Audios' ? ' active':' inactive'" v-on:click="clicktabFun('Audios')"><span class="text">Audios <span class="counter" v-text="files_counter.audios"></span></span></li>
+
+                    <li class="files_li" :class="activeTab == 'Docs' ? ' active':' inactive'" v-on:click="clicktabFun('Docs')"><span class="text">Docs <span class="counter" v-text="files_counter.docs"></span></span></li>
+
+                    <li class="files_li" :class="activeTab == 'All Links' ? ' active':' inactive'" v-on:click="clicktabFun('All Links')"><span class="text">All Links <span class="counter" v-text="files_counter.all_links"></span></span></li>
+
+                    <li class="files_li" :class="activeTab == 'Personal Files' ? ' active':' inactive'" v-on:click="clicktabFun('Personal Files')"><span class="text">Personal Files <span class="counter" v-text="files_counter.personal_files"></span></span></li>
+                </ul>
+                <div class="files_pagination">
+                    <div class="group_btn">
+                        <div class="showingSelect">
+                            <span>Show records</span>
+                            <select name="show_more" v-on:change="optionShowing($event)" value="20">
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <span class="tiny_btn Prev" :class="pagination_data.current_page == 1 ? 'inactive':''" v-on:click="prevPage">Prev</span>
+                        <span class="totalSize" v-text="pagination_data.pagitext" @click.stop="showPages"></span>
+                        <ul class="show_all-page"  v-click-outside="hidePages" v-if="dropdown.isActiveForPages == true">
+                            <li class="without_hover">
+                                <input ref="go_btn_input" type="number" class="jump" min="1" v-bind:max="pagination_data.total_page" v-bind:value="pagination_data.go_input == 0? '':pagination_data.go_input" v-on:keyup="goKeyupfun($event,$event.target.value)" v-on:change="goKeyupfun($event,$event.target.value)">
+                        
+                                <!-- <span class="goBtn" v-on:click="goPage">Go</span> -->
+                            </li>
+                            <li v-for="page in pagination_data.total_page" v-text="page" :key="page" :class="page == pagination_data.current_page ? 'active':'inactive'" v-on:click="changePage(page)"></li>
+                        </ul>
+                        <span class="tiny_btn next" style="float: right;" :class="pagination_data.current_page == pagination_data.total_page? 'inactive':''" v-on:click="nextPage">Next</span>
+
+                        <!-- <input type="number" class="jump" min="1" v-bind:max="pagination_data.total_page" v-bind:value="pagination_data.go_input == 0? '':pagination_data.go_input" v-on:keyup="goKeyupfun($event,$event.target.value)" v-on:change="goKeyupfun($event,$event.target.value)">
+                        
+                        <span class="goBtn" v-on:click="goPage">Go</span> -->
+                    </div>    
+                </div>
+            </div>
+            <div class="file_section">
+                <div class="search_sec">
+                    <span class="input_icon"></span>
+
+                    <input v-if="filtering_data.filtered_text == ''" v-bind:value="main_input_val" type="text" v-bind:placeholder="files_placeholder" v-on:keyup="mainSearInput($event,$event.target.value)" ref="main_search_in">
+                    <input v-else="filtering_data.filtered_text !== ''" v-bind:value="filtering_data.filtered_text" type="text" v-bind:placeholder="files_placeholder" v-on:keyup="mainSearInputFiltered($event,$event.target.value)" ref="main_search_in">
+                    <span class="closeBtn" v-show="main_input_val.length > 0 || filtering_data.filtered_text.length > 0" v-on:click="resetAdvanceSearch"></span>
+                    <span class="search_btn"  v-show="main_input_val.length > 0 || filtering_data.filtered_text.length > 0" v-on:click="FilesFilterFun">Search</span>
+                    <span class="inputArrow" :class="advance_filer == 'active'? ' active':' inactive'"  @click.stop="showAdvanceFilter"></span>
+                </div>
+
+                <div class="show_dropdown_search" v-if="dropdown_search == 'active1'" :class="main_input_val.length > 0 ? 'active':'inactive'">
+                    <!-- <span v-if="filter_dropdown.length == 0"> Nothing Found.</span> -->
+                    <ul v-if="filter_dropdown.length > 0 && table_view_cate == 'files'">
+                    
+                        <li v-for="f in filter_dropdown" v-on:click="FilesFilterFun">
+                            <span class="search_icon"></span>
+                            <span class="search_text" v-text="f.view_originalname"></span>
+                        </li>
+                    </ul>
+
+                    <ul v-if="filter_dropdown.length > 0 && table_view_cate == 'links'">
+                    
+                        <li v-for="l in filter_dropdown" v-on:click="FilesFilterFun">
+                            <span class="search_icon"></span>
+                            <span class="search_text" v-text="l.title"></span>
+                        </li>
+                    </ul>
+
+                    <li class="last_li_forDropdown" :class="filter_dropdown.length == 0 ? 'border_none':''" v-on:click="FilesFilterFun">
+                        <span class="search_icon"></span>
+                        <span class="search_text">More search results for "{{main_input_val}}"</span>
+                        <span class="for_enter" >Press ENTER</span>
+                    </li>
+                </div>
+                <div class="backwrap" v-show="advance_filer == 'active'" style="display: none;">
+
+                    <div  class="advance_file_filter"  v-click-outside="hideAdvanceFilter" >
+                        <h2 class="popheader">Filter your search:</h2>
+                        <div class="seaction_filter" v-if="table_view_cate == 'files'">
+                            <div class="group_sec group_70">
+                                <h3>Search for:</h3>
+                                <input type="text" placeholder="File name contains..." v-bind:value="main_input_val" v-on:keyup="mainSearInput($event,$event.target.value)" ref="popupsearch" required>
+                            </div>
+                            <div class="group_sec group_30" >
+                                <h3>File type: <span v-if="filtering_data.search_file_type.length > 0" class="selectedLengthcounter">({{filtering_data.search_file_type.length}}) Selected</span></h3>
+                                <input ref="file_type_input" type="text"  @click.stop="showFileType" placeholder="Pick one or file types" v-bind:value="filtering_data.searchFileTypeText" v-on:keyup="searFileTypeKeyup($event,$event.target.value)" required>
+                                <ul v-if="dropdown.isActiveForFileTypes == true" class="dropdownlist file_type_drop" v-click-outside="hideFileType" >
+                                    <!-- <li v-on:click="selectFileType($event)" data-value="all" :class="filtering_data.search_file_type.indexOf('all') > -1? 'active':'inactive'">All</li> -->
+                                    <li v-on:click="selectFileType($event)" v-for="type in filter_file_types" :key="type.id" v-text="type" v-bind:data-value="type" :class="filtering_data.search_file_type.indexOf(type) > -1? 'active':'inactive'"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="seaction_filter">
+                            <div class="group_sec"  data-value="teammates">
+                                <h3><span class="normal_text">Shared between you and any of the following teammate(s):</span> <span class="mini_div" v-for="user in users" :class="filtering_data.search_teammates.indexOf(user.id) == -1? 'hidden_li':''"><span class="name" v-text="user.fullname"></span><span class="removeClass" v-on:click="selectTemmates($event)" v-bind:data-value="user.id"></span></h3>
+                                <input ref="teammate_input" type="text" @click.stop="showTeammates" placeholder="Pick one or many teammates" v-bind:value="filtering_data.searchTeammatesText" v-on:keyup="searTeamKeyup($event,$event.target.value)" required>
+                                <ul v-if="dropdown.isActiveForTeammates == true" class="dropdownlist teammates_dropdown" v-click-outside="hideTeammates" data-value="teammates">
+                                    <!-- <li v-on:click="selectTemmates($event)" data-value="all" :class="filtering_data.search_teammates.indexOf('all') > -1? 'active':'inactive'">All</li> -->
+                                    <li v-on:click="selectTemmates($event)" v-for="user in filter_teammates" :key="user.id" v-text="user.fullname" v-bind:data-value="user.id" :class="filtering_data.search_teammates.indexOf(user.id) > -1? 'hidden_li':'inactive'"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="seaction_filter" v-if="table_view_cate == 'files'">
+                            <div class="group_sec" >
+                                <h3><span class="normal_text">Tagged with:</span> <span class="mini_div" v-for="tag in all_tags" :class="filtering_data.search_tags.indexOf(tag.tag_id) == -1? 'hidden_li':''"><span class="name" v-text="tag.title"></span><span class="removeClass" v-on:click="selectTagFilter($event)" v-bind:data-value="tag.tag_id"></span></h3>
+                                <input ref="tags_search_input" type="text" @click.stop="showTagsDrop" placeholder="Pick one or many tags" v-bind:value="filtering_data.searchTagsText" v-on:keyup="searTagsKeyup($event,$event.target.value)" required>
+                                <ul v-if="dropdown.isActiveForTags == true" class="dropdownlist tags_dropdown" v-click-outside="hideTagsDrop" >
+                                    <!-- <li v-on:click="selectTagFilter($event)" data-value="all" :class="filtering_data.search_tags.indexOf('all') > -1? 'active':'inactive'">All</li> -->
+                                    <li v-on:click="selectTagFilter($event)" v-for="tag in filter_tags" :key="tag.tag_id" v-text="tag.title" v-bind:data-value="tag.tag_id" :class="filtering_data.search_tags.indexOf(tag.tag_id) > -1? 'hidden_li':'inactive'"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="seaction_filter">
+                            <div class="group_sec only_for_date">
+                                <h3>Date Shared between:</h3>
+                                <span class="date_input">
+                                    <input ref="filter_startDate" v-bind:value="filtering_data.start_date" v-on:change="filterStartDate($event,$event.target.value)" type="text" id="filter_startDate" placeholder="start date" required :class="filtering_data.start_date == '' ? 'cal_btn':''">
+                                    <span class="clear_input_date inactive" v-if="filtering_data.start_date == ''" v-on:click="triggerFun('filter_startDate')"></span>
+                                    <span class="clear_input_date active" v-else="filtering_data.start_date == ''" v-on:click="cleardate('start')"></span>
+     
+                                </span>
+                                <h3>and</h3>
+                                <span class="date_input">
+                                    <input ref="filter_endDate" v-bind:value="filtering_data.end_date" v-on:change="filterEndDate($event,$event.target.value)" type="text" id="filter_endDate" placeholder="end date" required :class="filtering_data.end_date == '' ? 'cal_btn':''">
+                                    <span class="clear_input_date inactive" v-if="filtering_data.end_date == ''" v-on:click="triggerFun('filter_endDate')"></span>
+                                    <span class="clear_input_date active" v-else="filtering_data.end_date == ''" v-on:click="cleardate('end')"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="seaction_filter">
+                            <div class="button_ active" v-on:click="FilesFilterFun">Search</div>
+                            <div class="button_" v-on:click="resetAdvanceSearch">Reset</div>
+                            <!-- <div class="button_" v-on:click="showAdvanceFilter">Close</div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="file_section section_table" >
+                <div v-if="files_loader == true" class="files_loader"></div>
+                <table class="file_view_table">
+                    <thead v-if="show_tlb_data.length > 0">
+                        <tr v-if="table_view_cate === 'files' ">
+                            <th style="width: 70px;" class="flex_class"><span class="hvSelect" :class="selected_filesAll == true ? 'active':''" v-on:click="selectfileFun('all')" style="display: block; opacity: 1;"></span></th>
+                            <th style="width: calc(50% - 70px);" class="sorting_style" v-on:click="vueSorting('file_name')"  data-type="file_name" :class="sorting_active == 'file_name' ? 'active':'' " :class="sorting_active_red == 'file_name'? 'red_ico':''">File Name <span v-bind:red-icon="sorting_active_red == 'file_name'? 'red_ico':''"></span></th>
+                            <!-- <th style="width: 12%;" class="sorting_style" v-on:click="vueSorting('file_extension')"  data-type="file_extension" :class="sorting_active == 'file_extension' ? 'active':'' ">Extension <span v-bind:red-icon="sorting_active_red == 'file_extension'? 'red_ico':''"></span></th> -->
+                            <th style="width: 10%;" class="sorting_style" v-on:click="vueSorting('file_size')"  data-type="file_size" :class="sorting_active == 'file_size' ? 'active':'' ">File Size <span v-bind:red-icon="sorting_active_red == 'file_size'? 'red_ico':''"></span></th>
+                            <th style="width: 10%;" class="sorting_style" v-on:click="vueSorting('date')" data-type="date"  v-bind:red-icon="sorting_active_red == 'date'? 'red_ico':''" :class="sorting_active == 'date' ? 'active':'' ">Date <span v-bind:red-icon="sorting_active_red == 'date'? 'red_ico':''"></span></th>
+                            <th style="width: 14%;" class="sorting_style" v-on:click="vueSorting('uploaded_by')" data-type="uploaded_by"  :class="sorting_active == 'uploaded_by' ? 'active':'' ">Uploaded by <span v-bind:red-icon="sorting_active_red == 'uploaded_by'? 'red_ico':''"></span></th>
+                            <th style="width: 16%;" class="sorting_style" v-on:click="vueSorting('room_name')" data-type="room_name" v-bind:red-icon="sorting_active_red == 'room_name'? 'red_ico':''" :class="sorting_active == 'room_name' ? 'active':'' ">Room Name <span v-bind:red-icon="sorting_active_red == 'room_name'? 'red_ico':''"></span></th>
+                        </tr>
+                        <tr v-if="table_view_cate === 'links'">
+                            <!-- <th style="width: 6%;"><span class="hvSelect"  style="display: block; opacity: 0;"></span></th> -->
+                            <th  style="width: 32%;" class="sorting_style" v-on:click="vueSorting('link_title')" data-type="link_title" :class="sorting_active == 'link_title' ? 'active':'' ">Link Title <span v-bind:red-icon="sorting_active_red == 'link_title'? 'red_ico':''"></span></th>
+                            <th  style="width: 30%;" class="sorting_style" v-on:click="vueSorting('url')" data-type="url"  :class="sorting_active == 'url' ? 'active':'' ">Url <span v-bind:red-icon="sorting_active_red == 'url'? 'red_ico':''"></span></th>
+                            <th  style="width: 10%;" class="sorting_style" v-on:click="vueSorting('date')" data-type="date"  :class="sorting_active == 'date' ? 'active':'' ">Date <span v-bind:red-icon="sorting_active_red == 'date'? 'red_ico':''"></span></th>
+                            <th  style="width: 14%;" class="sorting_style" v-on:click="vueSorting('uploaded_by')" data-type="uploaded_by"  :class="sorting_active == 'uploaded_by' ? 'active':'' ">Uploaded by <span v-bind:red-icon="sorting_active_red == 'uploaded_by'? 'red_ico':''"></span></th>
+                            <th  style="width: 14%;" class="sorting_style" v-on:click="vueSorting('room_name')" data-type="room_name"  :class="sorting_active == 'room_name' ? 'active':'' ">Room Name <span v-bind:red-icon="sorting_active_red == 'room_name'? 'red_ico':''"></span></th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody v-if="show_tlb_data.length > 0">
+                        <tr class="body_tab_val" v-if="table_view_cate === 'files' " v-for="file in show_tlb_data" :key="file.id">
+                            <td style="width: 70px;" >
+                                <span class="hvSelect" :class="selected_files.indexOf(file.id) > -1 ? 'active':''" v-on:click="selectfileFun($event)" v-bind:data-id="file.id" v-bind:full_url="file.full_url"></span>
+                                <p class="img_action share_ico" :class="shared_files.indexOf(file.key) > -1 ? 'active':''"></p>
+                            </td>
+                            <td style="width: calc(50% - 70px);" v-on:click="showFiles(file.id)">
+                                <span class="file_name_tooltip" v-bind:data-balloon="file.view_originalname" data-balloon-pos="up">
+                                    <span class="file_icon"  ><img v-bind:src="file.icon" alt=""></span>
+                                    <span class="ellipsis_text" v-bind:data-original="file.originalname" v-text="file.view_originalname"></span>
+                                </span>
+                            </td>
+                            <!-- <td style="width: 12%;" v-on:click="showFiles(file.id)">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_file_type" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_file_type"></span></span>
+                            </td> -->
+                            <td style="width: 10%;" data-val="154932" v-on:click="showFiles(file.id)">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_file_size" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_file_size" v-bind:file_size="file.file_size"></span></span>
+                            </td>
+                            <td style="width: 10%;" v-on:click="showFiles(file.id)">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_created_at" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_created_at" v-bind:file_size="file.created_at"></span></span>
+                            </td>
+                            <td style="width: 14%;" v-on:click="showFiles(file.id)">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_sender_name" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_sender_name"></span></span>
+                            </td>
+                            <td style="width: 16%;">
+                                <span v-on:click="showFiles(file.id)" class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_conv_name" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_conv_name"></span></span>
+                                <div class="hover_for_file">
+                                    <p class="img_action view_ico"  data-balloon="Preview" data-balloon-pos="left" data-originalname="Screenshot from 2021-03-22 16-00-54.png"></p>
+                                    <p class="img_action forward_icon"  data-balloon="Forward File" data-balloon-pos="down"></p>
+                                    <p
+                                        class="img_action download_ico"
+                                        v-bind:file-name="file.view_full_original_name"
+                                        v-bind:data-href="file.full_url"
+                                        data-balloon="Download"
+                                        data-balloon-pos="left"
+                                        v-on:click="singleFileDownload($event)"
+
+                                    ></p>
+                                    <p
+                                        class="img_action edit_ico"
+                                        v-bind:originalname="file.originalname"
+                                        v-bind:data-id="file.id" v-bind:custom-title="file.view_custom_title" v-on:click="showPop($event,'custom_title')"
+                                        data-balloon="Add a nick name"
+                                        data-balloon-pos="left"
+                                        data-value="https://wfss001.freeli.io/dalimchyjony-gmail-com/Photos/Screenshot_from_2021-03-22_16-00-54@1616407376489.png"
+                                    ></p>
+                                    <p
+                                        class="img_action share_ico"
+                                        data-balloon="Forward"
+                                        data-balloon-pos="left"
+                                        v-bind:data-id="file.id"
+                                        v-bind:full_url="file.full_url"
+                                        v-on:click="forwardSingleFile" style="background-size: 15px; background-image: url(/images/basicAssets/shareHayven_white.svg)"
+                                    ></p>
+                                    <p
+                                        class="img_action share_ico"
+                                        data-balloon="Share by Link"
+                                        data-balloon-pos="left"
+                                        v-bind:file-id="file.key"
+                                        v-on:click="showPop($event,'share_link')"
+                                        :class="shared_files.indexOf(file.key) > -1 ? 'active':''"
+                                    ></p>
+                                    
+
+                                    <p
+                                        class="img_action deleteitem delete_ico"
+                                        data-balloon="Delete"
+                                        data-balloon-pos="left"
+                                        v-bind:file-id="file.id"
+                                        v-on:click="showPop($event,'delete_file')"
+                                        v-if="file.user_id == user_id"
+                                    ></p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr v-if="table_view_cate === 'links' " v-for="file in show_tlb_data" :key="file.url_id"  class="body_tab_val">
+                            <!-- <td style="width: 6%;">
+                                <span class="hvSelect"  style="opacity: 0; display: none;"></span>
+                                <p class="img_action share_ico" data-balloon="Share by Link" data-balloon-pos="right"></p>
+                            </td> -->
+                            <td style="width: 32%;">
+                                <span class="file_name_tooltip" v-bind:data-balloon="file.title" data-balloon-pos="up"><span class="ellipsis_text " data-original="null" v-text="file.title"></span></span>
+                            </td>
+                            <td style="width: 30%;">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.url" data-balloon-pos="up"><a class="ellipsis_text" v-text="file.url" v-bind:href="file.url" target="_blank"></a></span>
+                            </td>
+                            <td style="width: 10%;">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_created_at" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_created_at" v-bind:file_size="file.created_at"></span></span>
+                            </td>
+                            <td style="width: 14%;">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_sender_name" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_sender_name"></span></span>
+                            </td>
+                            <td style="width: 14%;">
+                                <span class="file_name_tooltip" data-balloon-length="fit" v-bind:data-balloon="file.view_conv_name" data-balloon-pos="up"><span class="ellipsis_text" v-text="file.view_conv_name"></span></span>
+
+                                <div class="hover_for_file">
+                                    <p class="img_action share_ico" v-bind:file-id="file.url" 
+                                    v-on:click="showPop($event,'share_link')"
+                                    :class="shared_files.indexOf(file.key) > -1 ? 'active':''" data-balloon="Share" data-balloon-pos="left" onclick="viewShreImgPop(event,this)" data-value="https://twitter.com/home"></p>
+                                    <p class="img_action edit_ico" v-bind:originalname="file.originalname" v-bind:data-id="file.url_id" v-bind:custom-title="file.view_custom_title" v-on:click="showPop($event,'custom_title')" data-balloon="Add a nick name" data-balloon-pos="left" onclick="editCustomTitle(event, 'link','5b826171-48d4-11eb-a9f4-f351013d076a','null')" data-value="https://twitter.com/home"></p>
+                                    <!-- <p class="img_action delete_ico" data-balloon="Delete" data-balloon-pos="left" ></p> -->
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead v-if="show_tlb_data.length == 0">
+                        <tr class="body_tab_val no_files_found" v-if="show_tlb_data.length == 0">
+                            <th style="width: 100%;">
+                                <span class="search_icon"></span>No search result found.<span  v-on:click="selectAllSearch" class="clickeable_span">Click here to start a new search again.</span>
+                            </th>
+                        </tr>
+                        
+                    </thead>
+                </table>
+            </div>
+            <ul class="mediaAction_item" v-if="selected_files.length > 0">
+                <li class="download forward_files" v-on:click="forwardFiles">Forward</li>
+                <li class="download" v-on:click="downloadFiles">Download</li>
+                <li class="delete" v-on:click="clearVueFun('selected_files')">Close</li>
+            </ul>
+            <div class="backwrap" style="display: none;" :style="show_backwrap == true ? 'display: flex':'display:none'" v-if="show_backwrap == true">
+
+                <div class="delete_msg_div" v-if="backwrap_type == 'delete_file'">
+                    <img v-on:click="closePop($event,'delete_file')" src="/images/basicAssets/close_button.svg" alt="">
+                    <div class="body">
+                        <p class="del_msg_title">Delete file</p>
+                        <p class="delete_msg_sec_title">Are you sure you want to delete this file? This cannot be <span class="undone">undone</span>.</p>
+                        <!-- <div class="main-deleted-msg"></div> -->
+                        <p class="btn_div">
+                            <br style="display: none;"/>
+                            <button type="button" class="btn-cancel btn-cancel-margin" v-on:click="closePop($event,'delete_file')">Cancel</button>
+                            <button type="button" class="btn-msg-del" v-on:click="deleteFile" >Ok</button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="hayven_Modal_Container" v-if="backwrap_type == 'share_link'">
+                    <div class="hayven_Modal_heading">
+                        <span class="drag_handlr"></span>
+                        <h1>Share</h1>
+                        <div class="closeModal" v-on:click="closePop($event,'share_link')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                    </div>
+                    <div class="hayven_Modal_Content">
+                        <!-- <h6 id="warningMessage"> message</h6> -->
+                        <div class="from_group" >
+                            <p class="from_label" style="color:#000">Create a sharable URL/Link and simply paste the link in any channel to share the file with anyone. You can always disable sharable link anytime.</p>
+                            <input v-if="no_link_found == false" contenteditable="true"  class="input_text"  style="border: 1px solid rgb(225, 228, 232);" placeholder="Share link"  spellcheck="false" ref="shareable_link" v-bind:value="created_link" />
+                        </div>
+                    </div>
+                    <div class="hayven_Modal_endSection">
+                        <div class="btn_group" >
+                            <button class="buttonAction" style="background: var(--PrimaryC);margin-right: 8px;" v-if="no_link_found == true" v-on:click="createNewLink">Create link</button>
+                            <button class="buttonAction UnsharedClass" style="background: var(--PrimaryC);margin-right: 8px;" autocomplete="off" v-if="no_link_found == false && activeTab !== 'All Links'" v-on:click="removeLink">Remove link</button>
+                            <button class="buttonAction" style="background: var(--PrimaryC);margin-right: 8px;"  id="actionShareBtn" autocomplete="off" v-if="no_link_found == false" v-on:click="copyLink">Copy link</button>
+                            <button class="buttonCancel" v-on:click="closePop($event,'share_link')">Close</button>
+                        </div>
+                        <label class="green_label" id="sharelinkGreenMsg" style="display: none">Link has been created and copied to your clipboard.</label>
+                    </div>
+                </div>
+                <div class="hayven_Modal_Container"  v-if="backwrap_type == 'custom_title'">
+                    <div class="hayven_Modal_heading">
+                        <span class="drag_handlr"></span>
+                        <h1 id="set_your_own_title">Set your own title</h1>
+                        <div class="closeModal" v-on:click="closePop($event,'custom_title')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                    </div>
+                    <div class="hayven_Modal_Content">
+                        <div class="channel-name" style="float: left;width: 100% ;">
+                            <p id="editCutomActionId">Custom Title</p>
+                            <input style="width: 100%;" autocomplete="off" type="text" class="team-name"  v-bind:value="for_custom_title.custom_title" placeholder="Custom Title" ref="custom_title">
+                        </div>
+                    </div>
+                    <div class="hayven_Modal_endSection">
+                            <div class="btn_group">
+                                <button class="buttonCancel" v-on:click="closePop($event,'custom_title')" style="margin-right: 8px;">Cancel</button>
+                                <div id="titleResetActionBtn" data-original=""  v-on:click="saveCustomTitle('reset')" v-if="for_custom_title.custom_title != ''">Reset</div>
+                                <button id="customTitleSavebtn" class="buttonAction" v-on:click="saveCustomTitle('save')">Save</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="backwrap" id="shareMessagePopUp" style="display: none;" :style="backwrap_type == 'forward_files' ? 'display: flex' : 'display:none' " v-if="backwrap_type == 'forward_files'">
+                <div class="hayven_Modal_Container">
+                    <div class="hayven_Modal_heading">
+                        <span class="drag_handlr"></span>
+                        <h1>Forward to</h1>
+                        <div v-if="forward.next !== true" class="closeModal" v-on:click="closePop($event,'forward_files')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                        <div v-if="forward.next == true" class="closeModal" v-on:click="closeNextForward" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                        <!-- <div class="searchInput" id="searchInputForShare" contenteditable="true" onkeyup="filter_user_list(event)" spellcheck="false" placeholder="Search by name"></div>
+                        <input type="button" class="shareButton" value="Share" onclick="share_this_msg_with(event)"> -->
+                        <form autocomplete="off">
+                            <div class="mini_item_holder" id="shareMsgminiHolder">
+                                <div class="mini_item" v-for="c in forward.li" :key="c.id" v-if="forward.mini.indexOf(c.conversation_id) > -1"><p class="mini_name" v-text="c.title"></p><span v-if="forward.next !== true" class="mini_remove_ico" v-on:click="clickRemoveForMini" v-bind:data-val="c.conversation_id"></span></div>
+                            </div>
+                            <div class="input_hayven" v-if="forward.next !== true">
+                                <input type="text" autocomplete="off" v-on:keyup="searchBackwrapLi" placeholder="Search by name" spellcheck="false" ref="searchForward">
+                            </div>
+                        </form>
+                        <div v-if="forward.next !== true" class="sub_btn" value="Share" :style="forward.mini.length > 0 ? 'opacity:1':'opacity:0.5' " :class="forward.mini.length > 0 ? 'active':'' " v-on:click="forwardNext">Next</div>
+                        <div class="no_of_user_left_to_add" v-if="forward.next !== true"><span>{{forward.limit}}</span> members left</div>
+                    </div>
+                    <div class="hayven_Modal_Content">
+                        <div class="allMemberList overlayScrollbars">
+                            <textarea v-if="forward.next == true" name="" id="" cols="30" rows="10" placeholder="Write comments/notes for forwarded file(s) or submit with no comments." ref="textareaForForward"></textarea>
+                            <div v-if="forward.next == true" class="sub_btn active" v-on:click="forwardFilesSubmit">Forward</div>
+                            <ul class="suggested-list" id="shareSuggestedList" v-if="forward.next !== true">
+                                <li :class="forward.limit > 0 ? 'clickable_li' : 'inactive_li' " v-on:click="clickForMini" v-bind:data-val="c.conversation_id" v-for="c in forward.li" class="memberContainer showEl" :key="c.id" v-if="c.conversation_id != user_id && forward.mini.indexOf(c.conversation_id) == -1 && forward.li_search.indexOf(c.conversation_id) == -1"><img v-bind:src="c.img" class="profile" v-bind:data-val="c.conversation_id"><span class="userFullName s-l-def-clas" v-text="c.title" v-bind:data-val="c.conversation_id"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="createZip" id="createZipHolder" >
+            <div class="creHead"><h3>Downloading...</h3> <div onclick="cancelCreateZip()"></div></div>
+        
+        </div>
+        <!-- Media panel start  -->
+        <div class="fileSliderBackWrap" id="mediaFilePreview" style="display: none; width: 100%;" >
+            <div class="image-popup-slider" style="display:block">
+                <div class="image-popup-header">
+                    <div class="media-back-tooltip"  onclick="$('#mediaFilePreview').hide()" data-balloon="Back" data-balloon-pos="up">
+                        <!-- <img class="back-media-popup" onclick="backToMediaTab()" src="/images/basicAssets/BackArrow.svg" alt=""> -->
+                    </div>
+                    <h2 onclick="$('#mediaFilePreview').hide()" style="cursor:pointer">Images</h2>
+                    <div class="current-slide-image-details">
+                        <div class="shared-by-user-photo"><img src="/images/users/nayeem.jpg" alt=""></div>
+                        <div class="shared-by-user-details">
+                            <h3>Dean Alvarado</h3>
+                            <p>August 23rd, 2017 @ 12:10pm</p>
+                        </div>
+                    </div>
+                    <div class="slide-image-download" onclick="downloadAnyFile(event, this)"></div>
+                    <div class="slide-image-share" onclick="viewShreImgPop(event,this)"></div>
+
+                    <span class="close-img-popup-tooltip" onclick="$('#mediaFilePreview').hide()" data-balloon="Esc to close" data-balloon-pos="left">
+                        <!-- <img class="close-image-popup-slider" onclick="backToMediaTab()" src="/images/basicAssets/close_button.svg" alt=""> -->
+                    </span>
+                </div>
+                <div class="images-slide-body">
+                    <div class="slider-left-arrow" onclick="slaclick()" data-balloon="Previous" data-balloon-pos="up">
+                        <!-- <img src="/images/basicAssets/Chevron_Left_for_img_slider.svg" alt=""> -->
+                    </div>
+                    <div class="slider-right-arrow" onclick="sraclick()" data-balloon="Next" data-balloon-pos="up">
+                        <!-- <img src="/images/basicAssets/Chevron_right_for_img_slider.svg" alt=""> -->
+                    </div>
+                    <img class="currentimg" id="panzoom" data-zoomtype="max" onclick="zoom_in_out()" src="" alt="">
+                </div>
+                <div class="images-slider-footer">
+                    <!-- <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+                    <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+                    <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+                    <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+                    <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+                    <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div> -->
+                </div>
+                <div class="show-picture-comment">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio expedita, fugit, .</p>
+                </div>
+                <div style="text-align: center;position: relative;">
+                    <!-- <div class="rangeMin" onclick="changeZoomerVal('min')"></div>
+                    <input type="range" min="1" max="4" value="1" step="0.1" id="zoomer" oninput="deepdive()">
+                    <div class="rangeMax" onclick="changeZoomerVal('max')"></div>
+                    <div class="reset hidden" onclick="reset_zoom()" title="Reset"></div> -->
+                    <div id="zoom-out" class="rangeMin"></div>
+                    <input type="range" id="zoomer">
+                    <div id="zoom-in" class="rangeMax"></div>
+                    <div id="reset" class="reset"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Media panel end  -->
+
+        <div class="backwrap" id="shareLinkPop" data-type="" style="display: none">
+            <div class="hayven_Modal_Container" style="width: 522px">
+                <div class="hayven_Modal_heading">
+                    <span class="drag_handlr"></span>
+                    <h1>Share</h1>
+                    <div class="closeModal" onclick="closeModal('shareLinkPop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div class="hayven_Modal_Content">
+                    <!-- <h6 id="warningMessage"> message</h6> -->
+                    <div class="from_group">
+                        <p class="from_label" style="color:#000">Create a sharable URL/Link and simply paste the link in any channel to share the file with anyone. You can always disable sharable link anytime.</p>
+                        <div contenteditable="true" onfocus="document.execCommand('selectAll',false,null)" class="input_text" id="shareLink"  style="border: 1px solid rgb(225, 228, 232);" placeholder="Share link"></div>
+                    </div>
+                </div>
+                <div class="hayven_Modal_endSection">
+                    <div class="btn_group">
+                        <button class="buttonAction" style="background: var(--PrimaryC);margin-right: 8px;" onclick="copyShareLink(this)" id="actionShareBtn">Copy</button>
+                        <button class="buttonCancel" onclick="closeModal('shareLinkPop')">Close</button>
+                    </div>
+                    <label class="green_label" id="sharelinkGreenMsg" style="display: none">Link has been created and copied to your clipboard.</label>
+                </div>
+            </div>
+        </div>
+
+        
+
+    <script src="/javascripts/socket-client-side.js"></script>
+    <script src="/javascripts/vue/app.js"></script>
+    <script src="/javascripts/plugins/jquery.panzoom.js"></script>
+    <script src="/javascripts/plugins/flatpickr"></script>
+    <script>
+        var flatpickr_options = {
+            maxDate: "today",
+            dateFormat: "d-m-Y"
+        }
+        $('#filter_startDate').flatpickr(flatpickr_options);
+        $('#filter_endDate').flatpickr(flatpickr_options);
+    </script>
+
+<%- include('layouts/basic_foot') %>

@@ -1,0 +1,19 @@
+<div id="img_container">
+
+</div>
+<script>
+    var id = '<%= id %>';
+    var file_server = '<%= file_server %>';
+    var allmsgs = <%- JSON.stringify(msg) %>;
+    console.log(id);
+    console.log(allmsgs);
+    for(var i=0; i<allmsgs.length; i++){
+        if(allmsgs[i].attch_imgfile != null){
+            for(var j=0; j<allmsgs[i].attch_imgfile.length; j++){
+                var html = '<div style="width:200px; height:150px; float:left;"><img src="' + file_server + allmsgs[i].attch_imgfile[j] + '" style="max-width:200px; max-height:150px"></div>';
+                var d = document.getElementById('img_container');
+                d.insertAdjacentHTML('beforeend', html);
+            }
+        }
+    }
+</script>

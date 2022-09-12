@@ -1,0 +1,56 @@
+<%- include('layouts/head') %>
+    <link href="/stylesheets/singup.css" rel="stylesheet">
+    <div class="logo_icon">
+        <a href="/"> <img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="" style="border-radius: 4px;"></a>
+        <span class="workfreeli_text">Workfreeli</span>
+    </div>
+    <div class="activition_header">
+        <div class="indictor">
+            <img src="/images/signup_icons/tick.png" alt="" style="border-radius: 4px;">
+        </div>
+
+        <div class="complete_text"><span class="email_bold">Registration complete</span>
+        </div>
+
+    </div>
+
+    <form class="frm_activition" id="frm_activition" action="/signup_invite" method="POST">
+        <div class="centered_form_area">
+            <div class="complete_head_text">
+                Thank you for joining Workfreeli!
+
+            </div>
+            <div class="people_image">
+                <img src="/images/signup_icons/group.png" alt="">
+
+            </div>
+            <div class="invite_area">
+                <button type="submit" class="inviteBtn " id="inviteBtn">Invite Teammates</button>
+                <button class="skipBtn " id="skipBtn">Skip & Go to Workfreeli</button>
+            </div>
+
+            <div class="bottom-margin"></div>
+
+
+
+            <% if (error) { %>
+                <div class="form-field">
+                    <ul class="error-msg">
+                        <% for(var i=0; i < error.length; i++) { %>
+                            <li>
+                                <%= error[i].msg %>
+                            </li>
+                            <% } %>
+                    </ul>
+                </div>
+                <% } %>
+        </div>
+
+
+
+    </form>
+
+
+
+
+    <%- include('layouts/foot') %>

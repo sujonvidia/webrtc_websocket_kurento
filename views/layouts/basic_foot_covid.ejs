@@ -1,0 +1,1261 @@
+</div>
+<!-- Calling Modal -->
+<div id="call_ring_container"></div>
+
+<div id="updateUserProfile" class="create-channel connect_right_section updateProfile_popup" style="display: none;">
+	<h2 class="create-topic-heading"><%= user_fullname %></h2>
+	<!-- <img class="dir-msg-close back" onclick="closeRightSection()" src="/images/basicAssets/BackArrow.svg" alt="">
+	<img class="dir-msg-close" onclick="closeRightSection()" src="/images/basicAssets/close_button.svg" alt=""> -->
+	<div class="dir-msg-close back" onclick="closeRightSection()"></div>
+	<div class="dir-msg-close closeModal" onclick="closeRightSection()"></div>
+	<div class="name_and_profile" style="width: 50%;display: inline-block;margin-top: 65px;">
+		<form autocomplete="off">
+			<div class="channel-name" style="float: left;width: 100% ;">
+				<p>Display Name (<span class="red_star">*</span>)</p>
+				<input autocomplete="off" type="text" id="editUserProfileName" placeholder="<%= user_fullname %>" value="<%= user_fullname %>" onkeyup="changeUsernamekey(event)" onblur="check_and_update()" class="team-name" >
+			</div>
+			<div class="channel-name" style="float: left;width: 100% ;">
+				<p>User Name</p>
+				<input style="background-color: #FAFAFA;" autocomplete="off" type="text" disabled placeholder="<%= user_email %>" value="<%= user_email %>" class="team-name" >
+			</div>
+			<div class="channel-name" style="float: left;width: 100% ;">
+				<p>Email Address</p>
+				<input style="background-color: #FAFAFA;" autocomplete="off" type="text" disabled placeholder="<%= user_email %>" value="<%= user_email %>" class="team-name" >
+			</div>
+		</form>
+	</div>
+	<div class="name_and_profile" style="width:50%;float:right;margin-top: 63px;">
+		<div class="upload-channel-photo" style="width: 100%;float: left;">
+			<div class="channel-name" style="float: left;width: 100% ;">
+				<input type="hidden" id="useronchangeimgvalue">
+				<p>Set an Avatar</p>
+				<img src="" alt="" id="changeUserImage">
+				<div class="actionDiv"><div class="change_btn" onclick="$('#changeInputUserimg').trigger('click')">Change</div><div onclick="editProfileAction('removeImg')" class="close_btn bg_danger" id="removeProfileimgbtn">Remove</div></div>
+				<input type="file" onchange="changeUserImage(event,this.files)" style="display: none;" id="changeInputUserimg" accept="image/*" >
+			</div>
+			<div class="caller-url" style="float: left;">
+				<p style="display: flex; align-items: center;">Caller ID <span class="create_room_info tooltip_target" onclick="info_tooltip('caller_id','top',this, event)"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="15px" height="15px"></span></p>
+				<input type="text" id="callerid_url_personal" onclick="this.select();" readonly="">
+				<label  class="bg_danger" id="presonal_callerIdreset" onclick="call_reset_url('profile')" style="margin-left: 8px; visibility: visible; width: 132px;display: block;float: right;">Reset URL</label>
+				<label id="call_copyurl_btn_personal" style="visibility: visible; width: 132px; display: block; float: right;">Copy URL</label>
+			</div>
+		</div>
+	</div>
+	<div class="submitBtn"  style="display: block">
+		<!-- <button class="cancel" onclick="closeRightSection()">Cancel</button> -->
+		<button class="create" onclick="closeRightSection()">Close</button>
+	</div>
+</div>
+
+<div id="changePaymentPopupNew" class="upgradeModal_wrapper">
+	<div class="upgradeModal">
+		<div class="pricing-component">
+			<div class="payments-dialog-header-component">
+				<img onclick="closeUpgradeModal()" class="closeUpgradeModal" src="/images/basicAssets/close_button.svg" alt="">
+			</div>
+			<div class="pricing-content">
+				<div class="payments-pricing-periods">
+					<div class="period-item selected">Yearly SAVE 18%</div>
+					<div class="period-item">Two Yearly SAVE 32%</div>
+					<div class="period-item">Monthly</div>
+				</div>
+
+				<div class="payments-pricing-users-options">
+					<div id="2userPricing" onclick="pricingUserOpt('2user', this)" class="users-options-item selected">2 Users</div>
+					<div onclick="pricingUserOpt('5user', this)" class="users-options-item">5 Users</div>
+					<div onclick="pricingUserOpt('10user', this)" class="users-options-item">10 Users</div>
+					<div onclick="pricingUserOpt('15user', this)" class="users-options-item">15 Users</div>
+					<div onclick="pricingUserOpt('25user', this)" class="users-options-item">25 Users</div>
+					<div onclick="pricingUserOpt('50user', this)" class="users-options-item">50 Users</div>
+					<div onclick="pricingUserOpt('100user', this)" class="users-options-item">100 Users</div>
+					<div onclick="pricingUserOpt('200user', this)" class="users-options-item">200 Users</div>
+					<div onclick="pricingUserOpt('200+user', this)" class="users-options-item">200+ Users</div>
+				</div>
+
+				<div class="payments-pricing-plans" style="display:flex">
+					<div class="plan-item basic" onclick="pricingPlan('basic')">
+						<div class="plan-item-radio-container">
+							<div class="system-input-radio red"></div>
+						</div>
+						<div class="plan-item-header">basic</div>
+						<div class="plan-item-content">
+							<div class="most-popular trial-tier-indication">
+							</div>
+							<div class="plan-per-user-small-item-price">
+								<div class="line-breaker"></div>
+								<div class="amount" id="basicA">
+									<div class="currency">
+									</div>$17
+								</div>
+								<div class="billing-message">billed annually</div>
+							</div>
+							<div class="plan-item-features">
+								<div class="plan-item-features-title">Basic includes</div>
+								<div class="plan-item-features-subtitle"></div>
+								<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Unlimited free viewers</div>
+								<div class="features-list">
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Over 20 column types</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Kanban view</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Embedded forms</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Basic activity log</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>5 automations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>1 dashboard</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>iOS and Android apps</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Two-factor authentication</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>24/7 support</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>5 GB of storage</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="plan-item standard selected" onclick="pricingPlan('standard')">
+						<div class="plan-item-radio-container">
+							<div class="system-input-radio yellow checked">
+
+							</div>
+						</div>
+						<div class="plan-item-header">standard</div>
+						<div class="plan-item-content">
+							<div class="most-popular trial-tier-indication">MOST POPULAR</div>
+							<div class="plan-per-user-small-item-price">
+								<div class="line-breaker"></div>
+								<div class="amount" id="standardA">
+									<div class="currency"></div>$26
+								</div>
+								<div class="billing-message">billed annually</div>
+							</div>
+							<div class="plan-item-features">
+								<div class="plan-item-features-title">Standard includes</div>
+								<div class="plan-item-features-subtitle">everything in Basic plus:</div>
+								<div class="features-list">
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Timeline view</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Calendar view</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Map view</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>5 integrations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>15 automations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>5 dashboards</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Unlimited activity log</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Share boards with guests</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Forms customization</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Advanced search</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Create templates</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Email integration</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>External integrations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Full API</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>50 GB of storage</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="plan-item pro" onclick="pricingPlan('pro')">
+						<div class="plan-item-radio-container">
+							<div class="system-input-radio green"></div>
+						</div>
+						<div class="plan-item-header">pro</div>
+						<div class="plan-item-content">
+							<div class="most-popular trial-tier-indication"></div>
+							<div class="plan-per-user-small-item-price">
+								<div class="line-breaker"></div>
+								<div class="amount" id="proA">
+									<div class="currency"></div>$39
+								</div>
+								<div class="billing-message">billed annually</div>
+							</div>
+							<div class="plan-item-features">
+								<div class="plan-item-features-title">Pro includes</div>
+								<div class="plan-item-features-subtitle">everything in Standard plus:</div>
+								<div class="features-list">
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Formula column</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Time tracking</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Chart view</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>20 integrations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>60 automations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>20 dashboards</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Custom tags</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Unlimited guests</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Private boards</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Google authentication</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Unlimited storage</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Advanced Board Permissions</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="plan-item enterprise" onclick="pricingPlan('enterprise')">
+						<div class="plan-item-radio-container">
+							<div class="system-input-radio purpol"></div>
+						</div>
+						<div class="plan-item-header">enterprise</div>
+						<div class="plan-item-content">
+							<div class="most-popular trial-tier-indication"></div>
+							<div class="plan-per-user-small-item-price">
+								<div class="line-breaker"></div>
+								<div class="amount" id="enterpriseA">
+									<div class="currency"></div>$79
+								</div>
+								<div class="billing-message">billed annually</div>
+							</div>
+							<div class="plan-item-features">
+								<div class="plan-item-features-title">Enterprise includes</div>
+								<div class="plan-item-features-subtitle">everything in Pro plus:</div>
+								<div class="features-list">
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Higher API rate limit</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>VIP support</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>One-on-one training</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>50 integrations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>150 automations</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Unlimited dashboards</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Session management</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Audit log</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>99.9% uptime SLA</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>Single Sign On (Okta, One login, Custom
+										SAML)</div>
+									<div class="feature-item"><i class="icon-dapulse-pricing-check"></i>24/7 Priority support with &lt;30 min.
+										response time</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="contact-seller-component" style="display:none">
+					<div class="title-container">
+						<h1 class="title">Need an even bigger team or have a special request?</h1>
+						<h2 class="secondary-title">Leave your details here and our sales team will contact you as soon as possible.</h2>
+					</div>
+					<form class="form-container">
+						<div class="inputs-container">
+							<div class="input-and-label-container">
+								<label class="input-label">Name</label>
+								<input name="name" class="input-element" type="text" placeholder="Type your name here">
+								<span class="error-message">What's your name?</span>
+							</div>
+							<div class="input-and-label-container">
+								<label class="input-label">Phone</label>
+								<input name="phone" class="input-element" type="tel" placeholder="(555) 555-5555" value="">
+								<span class="error-message">Oops! This phone is wrong</span>
+							</div>
+							<div class="input-and-label-container">
+								<label class="input-label">Email</label>
+								<input name="email" class="input-element" type="email" placeholder="name@company.com">
+								<span class="error-message">Oops! This email is wrong</span>
+							</div>
+							<div class="send-message-button">
+								<div class="button-container">
+									<button onclick="sendContact()" type="button" class="contact-seller-button ds-btn ds-btn-primary ds-btn-lg">Send
+										Message</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="form-sent-successfully-container" style="display:none">
+					<h1 class="title-successfully-sent">Thank you, we will contact you shortly.</h1>
+					<img class="done-gif" src="/images/basic_view/form-sent-successfully.gif">
+				</div>
+
+			</div>
+			<div class="payments-pricing-footer">
+				<div class="security-icons-container" style="visibility: hidden;">
+					<i class="security-icon icon-dapulse-pricing-refund"></i>
+					<i class="security-icon icon-dapulse-pricing-visa"></i>
+					<i class="security-icon icon-dapulse-pricing-mastercard"></i>
+					<i class="security-icon icon-dapulse-pricing-norton"></i>
+					<i class="security-icon icon-dapulse-pricing-mcafee"></i>
+					<i class="security-icon icon-dapulse-pricing-ssl"></i>
+				</div>
+				<div class="button-wrapper">
+					<label class="form-error-label "></label>
+					<div>
+						<div class="button-container">
+							<button onclick="continuePurces()" class="ds-btn ds-btn-success ds-btn-lg">Continue</button></div>
+							<!-- <form action="/call/payment_post" method="POST"> 
+								<script id="paymentWidget"
+										src="//checkout.stripe.com/v2/checkout.js"
+										class="stripe-button"
+										data-key="pk_test_51INpljDocUNtxmyiARVnQ0d4Pg8zjY5IBDOAUV4VUOPRMKM3vLeg5yNLvMfW56y4OYjAocIqDCOmu4FvyadZyhWD00x6VmU4rq" 
+										data-amount="500"
+										data-currency="usd" 
+										data-name="Md. Mahfuz Hosain" 
+										data-description="Freeli test payment" 
+										data-locale="auto"
+										data-address="" > 
+										</script> 
+								</form>  -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="paymentModal">
+		<div class="payments-dialog-version-two-container">
+			<div class="payment-form-dialog-call-to-action-above-the-fold"><i onclick="closeUpgradeModal()" class="icon-dapulse-x-slim payments-window-version-two-exit-button"></i>
+				<div class="payment-form-container">
+					<form id="checkout-form" role="form" class="payment-form">
+						<div class="payment-form-layout">
+							<div>
+								<h1 class="payment-form-title"><b>Purchase Standard Plan</b> for navigate</h1>
+								<div class="payment-type-picker-component">
+									<div onclick="selectCard('visa', this)" class="credit-card-option-wrapper payment-type-option">
+										<div class="radio-button-component  color-undefined size-sm selected">
+											<div class="radio-button-circle color-undefined"></div>
+										</div><img class="credit-cards-image" src="/images/basic_view/credit_cards.png">
+									</div>
+									<div class="credit-card-option-container">
+										<div onclick="selectCard('paypal', this)" class="paypal-option-wrapper payment-type-option">
+											<div class="radio-button-component  color-undefined size-sm">
+												<div class="radio-button-circle color-undefined"></div>
+											</div>
+											<img class="paypal-image" src="/images/basic_view/paypal.png">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="hideFields1" class="form-field-row">
+								<div class="form-credit-card-input">
+									<div class="form-field-version-two form-field-left fs-hide">
+										<input id="card-number" tabindex="1" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="Card Number" data-bluesnap="" value="">
+										<label class="input-description" for="first-name">Card Number</label>
+									</div>
+								</div>
+								<div class="form-select-with-label form-field-right fs-hide hint-option">
+									<select tabindex="2" id="card-type" class="">
+										<option class="form-control" value="">Credit card type</option>
+										<option class="form-control" value="VISA">Visa</option>
+										<option class="form-control" value="MASTERCARD">Master Card</option>
+										<option class="form-control" value="AMEX">American Express</option>
+										<option class="form-control" value="DISCOVER">Discover</option>
+										<option class="form-control" value="DINERS">Diners Club</option>
+										<option class="form-control" value="JCB">JCB</option>
+										<option class="form-control" value="CHINA_UNION_PAY">China Union Pay</option>
+										<option class="form-control" value="CARTE_BLEUE">Carte Bleue</option>
+									</select>
+								</div>
+							</div>
+							<div id="hideFields2" class="form-field-row">
+								<div class="expiration-date-container">
+									<label for="expiration-date-month">Expiration</label>
+									<div class="form-select-with-label expiration-date fs-hide hint-option">
+										<select tabindex="3" id="expiration-date-month" class="">
+											<option class="form-control" value="">Month</option>
+											<option class="form-control" value="1">01</option>
+											<option class="form-control" value="2">02</option>
+											<option class="form-control" value="3">03</option>
+											<option class="form-control" value="4">04</option>
+											<option class="form-control" value="5">05</option>
+											<option class="form-control" value="6">06</option>
+											<option class="form-control" value="7">07</option>
+											<option class="form-control" value="8">08</option>
+											<option class="form-control" value="9">09</option>
+											<option class="form-control" value="10">10</option>
+											<option class="form-control" value="11">11</option>
+											<option class="form-control" value="12">12</option>
+										</select>
+									</div>
+									<div class="form-select-with-label expiration-date fs-hide hint-option">
+										<select tabindex="4" id="expiration-date-year" class="">
+											<option class="form-control" value="">Year</option>
+											<option class="form-control" value="0">2019</option>
+											<option class="form-control" value="1">2020</option>
+											<option class="form-control" value="2">2021</option>
+											<option class="form-control" value="3">2022</option>
+											<option class="form-control" value="4">2023</option>
+											<option class="form-control" value="5">2024</option>
+											<option class="form-control" value="6">2025</option>
+											<option class="form-control" value="7">2026</option>
+											<option class="form-control" value="8">2027</option>
+											<option class="form-control" value="9">2028</option>
+											<option class="form-control" value="10">2029</option>
+											<option class="form-control" value="11">2030</option>
+											<option class="form-control" value="12">2031</option>
+											<option class="form-control" value="13">2032</option>
+											<option class="form-control" value="14">2033</option>
+											<option class="form-control" value="15">2034</option>
+											<option class="form-control" value="16">2035</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-field-version-two form-field-right fs-hide">
+									<input id="security-code" tabindex="5" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="Security Code" data-bluesnap="" value="">
+									<label class="input-description" for="first-name">Security Code</label>
+									<img class="tooltip-inside-input" src="/images/basic_view/tooltip-question-mark.png">
+								</div>
+							</div>
+							<div id="moveUp" class="form-field-row">
+								<div class="form-field-version-two form-field-left fs-hide">
+									<input id="first-name" tabindex="6" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="First Name">
+									<label class="input-description" for="first-name">First Name</label>
+								</div>
+								<div class="form-field-version-two form-field-right fs-hide">
+									<input id="last-name" tabindex="7" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="Last Name">
+									<label class="input-description" for="first-name">Last Name</label>
+								</div>
+							</div>
+							<div class="form-field-row">
+								<div class="form-field-version-two form-field-left fs-hide">
+									<input id="company-name" tabindex="8" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="Company Name" value="navigate">
+									<label class="input-description" for="first-name">Company Name</label>
+								</div>
+								<div class="form-field-version-two form-field-right fs-hide">
+									<input id="address" tabindex="10" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="Address" inputclassname="pricing-location-text-input-component" containerid="checkout-form" address="" hidetriggerevents="clickoutside" showtriggerevents="mousedown" value="">
+									<label class="input-description" for="first-name">Address</label>
+								</div>
+							</div>
+							<div class="form-field-row">
+								<div class="form-field-version-two form-field-left fs-hide">
+									<input id="city" tabindex="11" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="City" value="">
+									<label class="input-description" for="first-name">City</label>
+								</div>
+								<div class="form-field-version-two form-field-right fs-hide">
+									<input id="zip-code" tabindex="12" class="form-input" type="text" spellcheck="false" dir="auto" placeholder="Postal Code" value="">
+									<label class="input-description" for="first-name">Postal Code</label>
+								</div>
+							</div>
+							<div class="form-field-row end-of-form">
+								<div class="form-select-with-label form-field-left fs-hide">
+									<select tabindex="13" id="country" class="">
+										<option class="form-control" value="al">Albania</option>
+										<option class="form-control" value="dz">Algeria</option>
+										<option class="form-control" value="as">American Samoa </option>
+										<option class="form-control" value="ad">Andorra</option>
+										<option class="form-control" value="ao">Angola</option>
+										<option class="form-control" value="ai">Anguilla</option>
+										<option class="form-control" value="aq">Antarctica</option>
+										<option class="form-control" value="ag">Antigua</option>
+										<option class="form-control" value="ar">Argentina</option>
+										<option class="form-control" value="am">Armenia</option>
+										<option class="form-control" value="aw">Aruba</option>
+										<option class="form-control" value="au">Australia</option>
+										<option class="form-control" value="at">Austria</option>
+										<option class="form-control" value="az">Azerbaijan</option>
+										<option class="form-control" value="bs">Bahamas</option>
+										<option class="form-control" value="bh">Bahrain</option>
+										<option class="form-control" value="bd">Bangladesh</option>
+										<option class="form-control" value="bb">Barbados</option>
+										<option class="form-control" value="by">Belarus</option>
+										<option class="form-control" value="be">Belgium</option>
+										<option class="form-control" value="bz">Belize</option>
+										<option class="form-control" value="bj">Benin</option>
+										<option class="form-control" value="bm">Bermuda</option>
+										<option class="form-control" value="bt">Bhutan</option>
+										<option class="form-control" value="bo">Bolivia</option>
+										<option class="form-control" value="ba">Bosnia &amp; Herzegowina</option>
+										<option class="form-control" value="bw">Botswana</option>
+										<option class="form-control" value="bv">Bouvet Island</option>
+										<option class="form-control" value="br">Brazil</option>
+										<option class="form-control" value="io">British Indian Ocean Territory</option>
+										<option class="form-control" value="vg">British Virgin Islands</option>
+										<option class="form-control" value="bn">Brunei</option>
+										<option class="form-control" value="bg">Bulgaria</option>
+										<option class="form-control" value="bf">Burkina Faso</option>
+										<option class="form-control" value="bi">Burundi</option>
+										<option class="form-control" value="kh">Cambodia</option>
+										<option class="form-control" value="cm">Cameroon</option>
+										<option class="form-control" value="ca">Canada</option>
+										<option class="form-control" value="cv">Cape Verde</option>
+										<option class="form-control" value="ky">Cayman Islands</option>
+										<option class="form-control" value="cf">Central African Republic</option>
+										<option class="form-control" value="td">Chad</option>
+										<option class="form-control" value="cl">Chile</option>
+										<option class="form-control" value="cn">China</option>
+										<option class="form-control" value="cx">Christmas Island</option>
+										<option class="form-control" value="cc">Cocos (Keeling) Islands</option>
+										<option class="form-control" value="co">Colombia</option>
+										<option class="form-control" value="km">Comoros</option>
+										<option class="form-control" value="cd">Congo, Democratic Republic of</option>
+										<option class="form-control" value="cg">Congo, Peoples Republic of</option>
+										<option class="form-control" value="ck">Cook Islands</option>
+										<option class="form-control" value="cr">Costa Rica</option>
+										<option class="form-control" value="ci">Cote D''Ivoire</option>
+										<option class="form-control" value="hr">Croatia</option>
+										<option class="form-control" value="cw">Curacao</option>
+										<option class="form-control" value="cy">Cyprus</option>
+										<option class="form-control" value="cz">Czech Republic</option>
+										<option class="form-control" value="dk">Denmark</option>
+										<option class="form-control" value="dj">Djibouti</option>
+										<option class="form-control" value="dm">Dominica</option>
+										<option class="form-control" value="do">Dominican Republic</option>
+										<option class="form-control" value="tp">East Timor</option>
+										<option class="form-control" value="ec">Ecuador</option>
+										<option class="form-control" value="eg">Egypt</option>
+										<option class="form-control" value="sv">El Salvador</option>
+										<option class="form-control" value="gq">Equatorial Guinea</option>
+										<option class="form-control" value="er">Eritrea</option>
+										<option class="form-control" value="ee">Estonia</option>
+										<option class="form-control" value="et">Ethiopia</option>
+										<option class="form-control" value="fk">Falkland Islands</option>
+										<option class="form-control" value="fo">Faroe Islands</option>
+										<option class="form-control" value="fj">Fiji</option>
+										<option class="form-control" value="fi">Finland</option>
+										<option class="form-control" value="su">Former USSR</option>
+										<option class="form-control" value="fr">France</option>
+										<option class="form-control" value="fx">France (European Territory) </option>
+										<option class="form-control" value="gf">French Guiana</option>
+										<option class="form-control" value="pf">French Polynesia</option>
+										<option class="form-control" value="tf">French Southern Territories</option>
+										<option class="form-control" value="ga">Gabon</option>
+										<option class="form-control" value="gm">Gambia</option>
+										<option class="form-control" value="ge">Georgia</option>
+										<option class="form-control" value="de">Germany</option>
+										<option class="form-control" value="gh">Ghana</option>
+										<option class="form-control" value="gi">Gibraltar</option>
+										<option class="form-control" value="gr">Greece</option>
+										<option class="form-control" value="gl">Greenland</option>
+										<option class="form-control" value="gd">Grenada</option>
+										<option class="form-control" value="gp">Guadeloupe</option>
+										<option class="form-control" value="gu">Guam</option>
+										<option class="form-control" value="gt">Guatemala</option>
+										<option class="form-control" value="gg">Guernsey </option>
+										<option class="form-control" value="gn">Guinea</option>
+										<option class="form-control" value="gw">Guinea Bissau</option>
+										<option class="form-control" value="gy">Guyana</option>
+										<option class="form-control" value="ht">Haiti</option>
+										<option class="form-control" value="hm">Heard and McDonald Islands</option>
+										<option class="form-control" value="hn">Honduras</option>
+										<option class="form-control" value="hk">Hong Kong</option>
+										<option class="form-control" value="hu">Hungary</option>
+										<option class="form-control" value="is">Iceland</option>
+										<option class="form-control" value="in">India</option>
+										<option class="form-control" value="id">Indonesia</option>
+										<option class="form-control" value="ie">Ireland</option>
+										<option class="form-control" value="im">Isle of Man </option>
+										<option class="form-control" value="il">Israel</option>
+										<option class="form-control" value="it">Italy</option>
+										<option class="form-control" value="jm">Jamaica</option>
+										<option class="form-control" value="jp">Japan</option>
+										<option class="form-control" value="je">Jersey </option>
+										<option class="form-control" value="jo">Jordan</option>
+										<option class="form-control" value="kz">Kazakhstan</option>
+										<option class="form-control" value="ke">Kenya</option>
+										<option class="form-control" value="ki">Kiribati</option>
+										<option class="form-control" value="kw">Kuwait</option>
+										<option class="form-control" value="kg">Kyrgyzstan</option>
+										<option class="form-control" value="la">Laos</option>
+										<option class="form-control" value="lv">Latvia</option>
+										<option class="form-control" value="ls">Lesotho</option>
+										<option class="form-control" value="lr">Liberia</option>
+										<option class="form-control" value="li">Liechtenstein</option>
+										<option class="form-control" value="lt">Lithuania</option>
+										<option class="form-control" value="lu">Luxembourg</option>
+										<option class="form-control" value="mo">Macau</option>
+										<option class="form-control" value="mk">Macedonia</option>
+										<option class="form-control" value="mg">Madagascar</option>
+										<option class="form-control" value="mw">Malawi</option>
+										<option class="form-control" value="my">Malaysia</option>
+										<option class="form-control" value="mv">Maldives</option>
+										<option class="form-control" value="ml">Mali</option>
+										<option class="form-control" value="mt">Malta</option>
+										<option class="form-control" value="mh">Marshall Islands</option>
+										<option class="form-control" value="mq">Martinique</option>
+										<option class="form-control" value="mr">Mauritania</option>
+										<option class="form-control" value="mu">Mauritius</option>
+										<option class="form-control" value="yt">Mayotte</option>
+										<option class="form-control" value="mx">Mexico</option>
+										<option class="form-control" value="fm">Micronesia</option>
+										<option class="form-control" value="md">Moldova</option>
+										<option class="form-control" value="mc">Monaco</option>
+										<option class="form-control" value="mn">Mongolia</option>
+										<option class="form-control" value="me">Montenegro</option>
+										<option class="form-control" value="ms">Montserrat</option>
+										<option class="form-control" value="ma">Morocco</option>
+										<option class="form-control" value="mz">Mozambique</option>
+										<option class="form-control" value="mm">Myanmar</option>
+										<option class="form-control" value="na">Namibia</option>
+										<option class="form-control" value="nr">Nauru</option>
+										<option class="form-control" value="np">Nepal</option>
+										<option class="form-control" value="nl">Netherlands</option>
+										<option class="form-control" value="an">Netherlands Antilles</option>
+										<option class="form-control" value="nt">Neutral Zone</option>
+										<option class="form-control" value="nc">New Caledonia</option>
+										<option class="form-control" value="nz">New Zealand</option>
+										<option class="form-control" value="ni">Nicaragua</option>
+										<option class="form-control" value="ne">Niger</option>
+										<option class="form-control" value="ng">Nigeria</option>
+										<option class="form-control" value="nu">Niue</option>
+										<option class="form-control" value="nf">Norfolk Island </option>
+										<option class="form-control" value="mp">Northern Mariana Islands </option>
+										<option class="form-control" value="no">Norway</option>
+										<option class="form-control" value="om">Oman</option>
+										<option class="form-control" value="pk">Pakistan</option>
+										<option class="form-control" value="pw">Palau </option>
+										<option class="form-control" value="pa">Panama</option>
+										<option class="form-control" value="pg">Papua New Guinea</option>
+										<option class="form-control" value="py">Paraguay</option>
+										<option class="form-control" value="pe">Peru</option>
+										<option class="form-control" value="ph">Philippines</option>
+										<option class="form-control" value="pn">Pitcairn</option>
+										<option class="form-control" value="pl">Poland</option>
+										<option class="form-control" value="pt">Portugal</option>
+										<option class="form-control" value="pr">Puerto Rico</option>
+										<option class="form-control" value="qa">Qatar</option>
+										<option class="form-control" value="re">Reunion</option>
+										<option class="form-control" value="ro">Romania</option>
+										<option class="form-control" value="ru">Russia</option>
+										<option class="form-control" value="rw">Rwanda</option>
+										<option class="form-control" value="gs">S. Georgia &amp; S. Sandwich Isls.</option>
+										<option class="form-control" value="kn">Saint Kitts and Nevis</option>
+										<option class="form-control" value="lc">Saint Lucia</option>
+										<option class="form-control" value="mf">Saint Martin</option>
+										<option class="form-control" value="vc">Saint Vincent and the Grenadines</option>
+										<option class="form-control" value="ws">Samoa</option>
+										<option class="form-control" value="sm">San Marino</option>
+										<option class="form-control" value="st">Sao Tome and Principe</option>
+										<option class="form-control" value="sa">Saudi Arabia</option>
+										<option class="form-control" value="sn">Senegal</option>
+										<option class="form-control" value="rs">Serbia</option>
+										<option class="form-control" value="sc">Seychelles</option>
+										<option class="form-control" value="sl">Sierra Leone</option>
+										<option class="form-control" value="sg">Singapore</option>
+										<option class="form-control" value="sx">Sint Maarten</option>
+										<option class="form-control" value="sk">Slovakia</option>
+										<option class="form-control" value="si">Slovenia</option>
+										<option class="form-control" value="sb">Solomon Islands</option>
+										<option class="form-control" value="so">Somalia</option>
+										<option class="form-control" value="za">South Africa</option>
+										<option class="form-control" value="kr">South Korea</option>
+										<option class="form-control" value="es">Spain</option>
+										<option class="form-control" value="lk">Sri Lanka</option>
+										<option class="form-control" value="sh">St Helena</option>
+										<option class="form-control" value="pm">St Pierre and Miquelon</option>
+										<option class="form-control" value="sr">Suriname</option>
+										<option class="form-control" value="sj">Svalbard and Jan Mayen Islands</option>
+										<option class="form-control" value="sz">Swaziland</option>
+										<option class="form-control" value="se">Sweden</option>
+										<option class="form-control" value="ch">Switzerland</option>
+										<option class="form-control" value="tw">Taiwan</option>
+										<option class="form-control" value="tj">Tajikistan</option>
+										<option class="form-control" value="tz">Tanzania</option>
+										<option class="form-control" value="th">Thailand</option>
+										<option class="form-control" value="tg">Togo</option>
+										<option class="form-control" value="tk">Tokelau</option>
+										<option class="form-control" value="to">Tonga</option>
+										<option class="form-control" value="tt">Trinidad and Tobago</option>
+										<option class="form-control" value="tn">Tunisia</option>
+										<option class="form-control" value="tr">Turkey</option>
+										<option class="form-control" value="tm">Turkmenistan</option>
+										<option class="form-control" value="tc">Turks and Caicos Islands</option>
+										<option class="form-control" value="tv">Tuvalu</option>
+										<option class="form-control" value="ug">Uganda</option>
+										<option class="form-control" value="ua">Ukraine</option>
+										<option class="form-control" value="ae">United Arab Emirates</option>
+										<option class="form-control" value="uk">United Kingdom</option>
+										<option class="form-control" value="uy">Uruguay</option>
+										<option class="form-control" value="us">USA</option>
+										<option class="form-control" value="um">USA Minor Outlying Islands</option>
+										<option class="form-control" value="uz">Uzbekistan</option>
+										<option class="form-control" value="vu">Vanuatu</option>
+										<option class="form-control" value="va">Vatican</option>
+										<option class="form-control" value="ve">Venezuela</option>
+										<option class="form-control" value="vn">Vietnam</option>
+										<option class="form-control" value="vi">Virgin Islands (USA)</option>
+										<option class="form-control" value="wf">Wallis and Futuna Islands</option>
+										<option class="form-control" value="eh">Western Sahara</option>
+										<option class="form-control" value="zm">Zambia</option>
+										<option class="form-control" value="zw">Zimbabwe</option>
+									</select>
+								</div>
+							</div>
+							<div class="privacy-policy-statement">Your privacy is super important to us – we'll only use your information as
+								described in our <a href="#">terms of use</a> and <a href="#">Privacy Policy</a>.
+							</div>
+						</div>
+					</form>
+					<div class="order-information-summary-container">
+						<img class="order-information-money-back-guarantee" src="/images/basic_view/30_days_green.png">
+						<div class="payment-order-information-container-call-to-action-above-the-fold">
+							<div class="row-container">
+								<span class="left-label">Standard Plan 5 Users</span>
+								<span class="right-label">($39 x 12 months) $468</span>
+							</div>
+							<div class="row-container">
+								<span class="discount-explanation">*You saved $108 (18%) with the yearly plan</span>
+							</div>
+							<div class="row-container payment-discount-code-container">
+								<div class="left-label">
+									<span><span class="call-to-action-text" tabindex="19">Enter promo code</span> </span>
+								</div>
+								<span class="right-label"></span>
+							</div>
+							<div class="row-container total-price-summary">
+								<span class="left-label">Total</span><span class="right-label">$468</span>
+							</div>
+						</div>
+						<div class="footer-container">
+							<div class="secure-and-button-container">
+								<div class="secure-shopping-container">
+									<img class="secure-icon" src="/images/basic_view/secure-shape.svg">
+									<span>Safe &amp; secure payment</span>
+								</div>
+								<div class="submit-button-container">
+									<button id="submit-button" type="submit" tabindex="23" class="ds-btn ds-btn-primary ds-btn-lg">
+										<span><span class="ds-i left icon-submit-lock-icon"></span> <span>Submit Purchase</span></span>
+									</button>
+								</div>
+							</div>
+							<div class="payments-dialog-submit-error-message form-error-message payments-dialog-submit-hide-error-message"></div>
+						</div>
+					</div>
+					<div>
+						<iframe visibility:hidden="" scrolling="no" src="" width="1" height="1" frameborder="0">
+							<img width='1' height='1' src=''>
+						</iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="warningPopup" id="warningsPopup">
+	<div class="warningPopupBody">
+		<div class="closeModal" onclick="closeModal('warningsPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Warning !</h2>
+		<div class="warningPopupContent">
+			<p class="warningMsg" id="warnignMsgText"></p>
+		</div>
+		<div class="warningPopupFooter">
+			<button class="closeWarningPopup" onclick="$('#warningsPopup').hide()">Close</button>
+		</div>
+	</div>
+</div>
+<div class="warningPopup" id="successPopup">
+	<div class="warningPopupBody">
+		<div class="closeModal" onclick="closeModal('successPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Success !</h2>
+		<div class="warningPopupContent">
+			<p class="warningMsg" id="warnignMsgText"></p>
+		</div>
+		<div class="warningPopupFooter">
+			<button class="closeWarningPopup" onclick="$('#successPopup').hide()">Close</button>
+		</div>
+	</div>
+</div>
+<div class="warningPopup" id="warningsPopupConversation">
+	<div class="warningPopupBody">
+		<div class="closeModal" onclick="closeModal('warningsPopupConversation')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Conversation</h2>
+		<div class="warningPopupContent">
+			<div class="btn single_" onclick="createDirMsg()" >Direct Message</div>
+			<div class="btn" onclick="createChannel()" >Work Room</div>
+			<div class="btn" onclick="createChannel('project')" >Project Room</div>
+			<div class="btn" onclick="createChannel('project')" style="pointer-events: none; opacity: 0.6;" >Support Room <span class="for_inactive">Coming soon</span></div>
+		</div>
+		<!-- onclick="changeNextBtnPop(this,'direct')" -->
+		<div class="warningPopupFooter">
+			<div class="btn_group">
+				<!-- <button class="buttonCancel" onclick="closeModal('warningsPopupConversation')" style="margin-right: 5px;">Cancel</button> -->
+				<!-- <button class="buttonAction" onclick="" id="converPopNextBtn">Next</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="warningPopup" id="warningsPopupCall">
+	<div class="warningPopupBody">
+		<div class="closeModal" onclick="closeModal('warningsPopupCall')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Rejected !</h2>
+		<div class="warningPopupContent">
+			<p class="warningMsg"></p>
+		</div>
+		<div class="warningPopupFooter">
+			<button class="closeWarningPopup" onclick="$('#warningsPopupCall').hide()">Close</button>
+		</div>
+	</div>
+</div>
+
+
+<div class="warningPopup" id="downloadPreviewPopup" style="z-index: 999999999;">
+	<div class="downloadPreviewBody">
+		<div class="closeModal" onclick="closeModal('downloadPreviewPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title" style="padding-top: 15px;width: 100%;text-align:center;line-height: 33px;font-size: 20px;">Sorry! This file cannot be previewed, would you like to download the file instead?</h2>
+		<div class="downloadPreviewContent">
+			<p class="file_namee"></p>
+			<p class="file_sizee"></p>
+		</div>
+		<div class="warningPopupFooter">
+			<button class="closeWarningPopup" style="margin-right: 15px;" onclick="closeModal('downloadPreviewPopup')">Cancel</button>
+			<a download id="download_link" href="" style="display: none;">Download</a>
+			<button id="download_link_btn" data-clicktype="" data-filename="" class="closeWarningPopup" style="background-color: var(--PrimaryC);text-decoration: none" onclick="downloadAnyFile(event, this) //open_download(event)" data-href="">Download</button>
+		</div>
+	</div>
+</div>
+
+<div class="changePwdPopup" id="changePwdPopup">
+	<div class="changePwdPopupBody">
+		<div class="close_popup" onclick="closeModal('changePwdPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Change Password</h2>
+		<form autocomplete="off">
+			<div class="input_row">
+				<label for="" class="input_lable">Current Password</label>
+				<input type="password" autocomplete="new-password" id="old_password" class="input_field" placeholder="********">
+				<div id="errCurPasMsg"></div>
+			</div>
+			<div class="input_row">
+				<label for="" class="input_lable">New Password</label>
+				<input type="password" autocomplete="new-password" id="new_password" class="input_field" placeholder="********">
+				<div id="errNewPasMsg"></div>
+			</div>
+			<div class="input_row">
+				<label for="" class="input_lable">Confirm Password</label>
+				<input type="password" autocomplete="new-password" id="con_password" class="input_field" placeholder="********">
+				<div id="errConPasMsg"></div>
+			</div>
+		</form>
+		<div class="pwd_btn_group">
+			<button class="cancel_pwd" onclick="closeModal('changePwdPopup')">Cancel</button>
+			<button class="update_pwd" onclick="change_user_password()">Update</button>
+		</div>
+	</div>
+</div>
+<div class="changePwdPopup" id="changePasSucMsg">
+	<div class="changePwdPopupBody">
+		<div class="close_popup" onclick="$('#changePasSucMsg').hide()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title" id="sucMsgTitle">Change Password</h2>
+		<p class="sucMsgGreen" id="sucMsgGreen">Password changed successfully.</p>
+		<div class="pwd_btn_group">
+			<button class="cancel_pwd" onclick="$('#changePasSucMsg').hide()">Close</button>
+		</div>
+	</div>
+</div>
+
+<div class="changePwdPopup" id="resetPasSucMsg">
+	<div class="changePwdPopupBody">
+		<div class="close_popup" onclick="$('#resetPasSucMsg').hide()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title" id="sucMsgRstTitle">Reset Password</h2>
+		<p class="sucMsgGreen" id="sucMsgRstGreen"></p>
+		<div class="pwd_btn_group">
+			<button class="cancel_pwd" onclick="$('#resetPasSucMsg').hide()">Cancel</button>
+			<button class="update_pwd" id="confirm_reset">Yes</button>
+		</div>
+	</div>
+</div>
+
+<div class="changeRolePopUp" id="chageRolePopUpId">
+	<div class="changeRolePopupBody">
+    <h2 class="chg_popup_title">Change Role</h2>
+    <img onclick="$('#chageRolePopUpId').hide()" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="Close">
+    <!-- <img onclick="" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="Close" data-balloon="Press Esc to close" data-balloon-pos="up"> -->
+		
+		<div class="chg-role-data-input">
+        <div class="role-msg-con">
+					<p>Are you sure, you want to save changes the role of xxx to xxx?</p>
+				</div>
+        <div class="chg-role-err-msg" id="chgRoleErrMsg"></div>
+        <div class="chg-role-btn-con">
+            <button class="chg-role-btn" onclick="">Save Changes</button>
+            <button class="cancel-role-btn" onclick="">Cancel</button>            
+        </div>
+    </div>		
+	</div>
+</div>
+
+<div class="changeRolePopUp" id="removeTeamMemberWarningId">
+	<div class="changeRolePopupBody">
+    <h2 class="chg_popup_title">Remove Team Member</h2>
+    <img onclick="$('#removeTeamMemberWarningId').hide()" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="Close">
+    <!-- <img onclick="" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="Close" data-balloon="Press Esc to close" data-balloon-pos="up"> -->
+		
+		<div class="chg-role-data-input">
+        <div class="remove-team-msg-con">
+					<p>Are you sure, you want to save changes the team?</p>
+				</div>
+        <div class="chg-role-err-msg" id="rmvTeamMemErrMsg"></div>
+        <div class="chg-role-btn-con">
+            <button class="rmv-team-member-btn">Yes</button>
+            <button class="cancel-role-btn" onclick="$('#removeTeamMemberWarningId').hide()">Cancel</button>            
+        </div>
+    </div>		
+	</div>
+</div>
+
+<div class="changePwdPopup" id="reset_password">
+	<div class="changePwdPopupBody">
+		<div class="close_popup" onclick="closeModal('reset_password')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Change Password</h2>
+		<form autocomplete="off">
+			<div class="input_row">
+				<label for="" class="input_lable">New Password</label>
+				<input type="password" autocomplete="off" id="pass1" class="input_field" placeholder="********">
+				<div id="errResetNewPass"></div>
+			</div>
+			<div class="input_row">
+				<label for="" class="input_lable">Confirm Password</label>
+				<input type="password" autocomplete="off" id="pass2" class="input_field" placeholder="********">
+				<div id="errResetConPass"></div>
+			</div>
+		</form>
+		<div class="pwd_btn_group">
+			<button class="cancel_pwd" onclick="$('#reset_password').hide()">Cancel</button>
+			<button class="update_pwd" onclick="reset_user_password()">Update</button>
+		</div>
+	</div>
+</div>
+
+<div class="backwrapCall" id="rejectmsgListBackWrap" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container" style="position:fixed;margin:0px;top: 63px;right: 0;width:350px;height: calc(100% - 63px);background-color: #F0F0F0;">
+		<div class="hayven_Modal_heading">
+			<h1>Reject Messages</h1>
+			<div class="closeModal" onclick="closeAllPopUpMsgReject()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h6>Please select one of the reject messages.</h6>
+			<ul class="notification_mute_time">
+				<li data-status="" onclick="callRejectBtn(1)">
+					<label class="radioItem showEl">
+						<span style="font-size:14px" class="radioItemName">I'll call you later.</span>
+
+					</label>
+				</li>
+				<li data-status="" onclick="callRejectBtn(2)">
+					<label class="radioItem showEl">
+						<span style="font-size:14px" class="radioItemName">Can't talk now. Call me later?</span>
+
+					</label>
+				</li>
+				<li data-status="" onclick="callRejectBtn(3)">
+					<label class="radioItem showEl">
+						<span style="font-size:14px" class="radioItemName">I'm in a meeting. I'll call you back.</span>
+
+					</label>
+				</li>
+			</ul>
+
+		</div>
+
+	</div>
+</div>
+<!-- Payment Popup -->
+<div class="changePaymentPopup" id="changePaymentPopup">
+	<div class="changePaymentPopupBody">
+		<div class="close_popup" onclick="closeModal('changePaymentPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title_pay">Payment Options</h2>
+		<form autocomplete="off">
+			<div class="input_row_pay">
+				<label for="" class="payment_label">Free</label>
+				
+			</div>
+			<div class="input_row_pay">
+				<label for="" class="payment_label">Pro</label>
+				
+			</div>
+			<div class="input_row_pay">
+				<label for="" class="payment_label">Advanced</label>
+				
+			</div>
+		</form>
+		<div class="pay_btn_group">
+			<button class="cancel_pay" onclick="closeModal('changePaymentPopup')">Cancel</button>
+			<button id="checkout-button" class="update_pay" onclick="window.open('/call/payment_get')">Checkout</button>
+		</div>
+	</div>
+</div>
+<!-- Notification Sound -->
+
+<div id="notifyAudioContainer">
+	<audio id="notifyAudio" style="display:none">
+	  <source src="ringtones/short_tone.mp3" type="audio/mp3">
+	  Your browser does not support the audio element.
+	</audio>
+<div>
+
+
+<link rel="stylesheet" href="/javascripts/jquery-confirm/jquery-confirm.min.css">
+<script src="/javascripts/jquery-confirm/jquery-confirm.min.js"></script>
+<style type="text/css">
+	.jconfirm .jconfirm-scrollpane{
+		width: 40% !important;
+		position: fixed !important;
+		left: 50% !important;
+		top: 50% !important;
+	  transform: translate(-50%,-50%) !important;
+
+	}
+	.jconfirm-content-pane.no-scroll{
+
+		padding-bottom: 20px !important;
+	}
+</style>
+<link rel="stylesheet" href="/javascripts/jquery-confirm/jquery-confirm.min.css">
+<script src="/javascripts/jquery-confirm/jquery-confirm.min.js"></script>
+</body>
+<% if(title !== 'Freeli | Sign In'){%>
+	<!-- <script src="/javascripts/custom-basic.js"></script> -->
+	<script src="/javascripts/plugins/OverlayScrollbars.js"></script>
+	<script src="/javascripts/jQuery/jquery-ui.min.js"></script>
+	<script src="/javascripts/responsive_basic.js"></script>
+	<% } %>
+	<script src="/javascripts/plugins/jquery.fileDownload.js"></script>
+	<script src="/javascripts/plugins/download.js"></script>
+<script>
+	function pricingPlan(type) {
+		$('.system-input-radio').removeClass('checked');
+		$('.plan-item').removeClass('selected');
+		if (type == 'basic') {
+			$('.system-input-radio.red').addClass('checked');
+			$('.plan-item.basic').addClass('selected');
+		} else if (type == 'standard') {
+			$('.system-input-radio.yellow').addClass('checked');
+			$('.plan-item.standard').addClass('selected');
+		} else if (type == 'pro') {
+			$('.system-input-radio.green').addClass('checked');
+			$('.plan-item.pro').addClass('selected');
+		} else if (type == 'enterprise') {
+			$('.system-input-radio.purpol').addClass('checked');
+			$('.plan-item.enterprise').addClass('selected');
+		}
+	}
+
+	function pricingUserOpt(type, elm) {
+		$('.users-options-item').removeClass('selected');
+		$(elm).addClass('selected');
+		$('.form-sent-successfully-container').hide();
+		if (type == '2user') {
+			$('#basicA').text('$17');
+			$('#standardA').text('$26');
+			$('#proA').text('$39');
+			$('#enterpriseA').text('$79');
+		} else if (type == '5user') {
+			$('#basicA').text('$25');
+			$('#standardA').text('$39');
+			$('#proA').text('$59');
+			$('#enterpriseA').text('$118');
+		} else if (type == '10user') {
+			$('#basicA').text('$49');
+			$('#standardA').text('$79');
+			$('#proA').text('$119');
+			$('#enterpriseA').text('$238');
+		} else if (type == '15user') {
+			$('#basicA').text('$75');
+			$('#standardA').text('$119');
+			$('#proA').text('$179');
+			$('#enterpriseA').text('$358');
+		} else if (type == '25user') {
+			$('#basicA').text('$125');
+			$('#standardA').text('$195');
+			$('#proA').text('$289');
+			$('#enterpriseA').text('$578');
+		} else if (type == '50user') {
+			$('#basicA').text('$250');
+			$('#standardA').text('$399');
+			$('#proA').text('$599');
+			$('#enterpriseA').text('$1198');
+		} else if (type == '100user') {
+			$('#basicA').text('$500');
+			$('#standardA').text('$799');
+			$('#proA').text('$1199');
+			$('#enterpriseA').text('$2398');
+		} else if (type == '200user') {
+			$('#basicA').text('$1000');
+			$('#standardA').text('$1599');
+			$('#proA').text('$2399');
+			$('#enterpriseA').text('$4798');
+		}
+
+		if (type == '200+user') {
+			$('.payments-pricing-plans').hide();
+			$('.contact-seller-component').show();
+			$('.payments-pricing-footer .button-wrapper').hide();
+		} else {
+			$('.payments-pricing-plans').css('display', 'flex');
+			$('.contact-seller-component').hide();
+			$('.payments-pricing-footer .button-wrapper').show();
+		}
+	}
+
+	function sendContact() {
+		$('.payments-pricing-plans').hide();
+		$('.contact-seller-component').hide();
+		$('.form-sent-successfully-container').show();
+	}
+
+	function UpgradeApplication() {
+		$('.upgradeModal_wrapper').show();
+		$('#2userPricing').trigger('click');
+		$('.paymentModal').hide();
+	}
+
+	function closeUpgradeModal() {
+		$('.upgradeModal_wrapper').hide();
+		$('.paymentModal').hide();
+	}
+
+	function selectCard(type, elm){
+		$('.radio-button-component').removeClass('selected');
+		$(elm).find('.radio-button-component').addClass('selected');
+		if(type == 'visa'){
+			$('#hideFields1').removeClass('hide-fields');
+			$('#hideFields2').removeClass('hide-fields');
+			$('#moveUp').removeClass('move-up');
+		}else if(type == 'paypal'){
+			$('#hideFields1').addClass('hide-fields');
+			$('#hideFields2').addClass('hide-fields');
+			$('#moveUp').addClass('move-up');
+		}
+	}
+
+	stripeHandler = StripeCheckout.configure({
+    key: 'pk_test_51INpljDocUNtxmyiARVnQ0d4Pg8zjY5IBDOAUV4VUOPRMKM3vLeg5yNLvMfW56y4OYjAocIqDCOmu4FvyadZyhWD00x6VmU4rq',
+    locale: 'en',
+    token: function(token) {
+        console.log('StripeCheckout',token)
+        fetch('/call/purchase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                stripeTokenId: token.id,
+                // items: items
+            })
+        }).then(function(res) {
+            return res.json()
+        }).then(function(data) {
+						$('#changePaymentPopupNew').hide();
+            $('#successPopup .warningMsg').text(data.message);
+						$('#successPopup').css('display', 'flex');
+            
+        }).catch(function(error) {
+            console.error(error);
+						$('#warningsPopup .warningMsg').text(String(error));
+						$('#warningsPopup').css('display', 'flex');
+        })
+    }
+})
+	function continuePurces(){
+		// $('.paymentModal').show();
+		// Create a new Checkout Session using the server-side endpoint you
+        // created in step 3.
+        // fetch('/call/create-checkout-session', {
+        //   method: 'POST',
+        // })
+        // .then(function(response) {
+        //   return response.json();
+        // })
+        // .then(function(session) {
+        //   return stripe.redirectToCheckout({ sessionId: session.id });
+        // })
+        // .then(function(result) {
+        //   // If `redirectToCheckout` fails due to a browser or network
+        //   // error, you should display the localized error message to your
+        //   // customer using `error.message`.
+        //   if (result.error) {
+        //     alert(result.error.message);
+        //   }
+        // })
+        // .catch(function(error) {
+        //   console.error('Error:', error);
+        // });
+				stripeHandler.open({
+					email: $('#user_email_address').text(),
+					name: 'WORKFREELI INC.',
+					description: 'test payment',
+					currency: 'usd',
+					locale: 'auto',
+					amount: 500,
+					zipCode: true,
+					billingAddress:true,
+					shippingAddress:true
+    })
+	}
+
+	function downloadFilePopup(e, elm,type) {
+		e.stopImmediatePropagation();
+		e.preventDefault();
+		if($('#threadReplyPopUp').is(':visible')){
+			$('#downloadPreviewPopup').attr('thread-view',true);
+			// if(window.name !='calling')
+			if (typeof callCleanupLogic !== 'function' && window.name !== 'calling') {
+				$('#threadReplyPopUp').hide();
+			}
+		}else{
+			$('#downloadPreviewPopup').attr('thread-view',false);
+		}
+		var file_size = '';
+		var file_name = $(elm).attr('file-name');
+		var file_link = $(elm).attr('data-href');
+		if (type == 'frmMsg') {
+			file_size = $(elm).parents('.per_img_hover_opt').siblings('.file-name').find('.fileSize').text();
+		} else {
+			file_size = $(elm).parents('.per_img_hover_opt').siblings('.img-name').find('.for_list_view .fileSize').text();
+		}
+		$('#downloadPreviewPopup').css('display','flex');
+		$('.file_namee').text('File : '+ file_name);
+		$('.file_sizee').text('size : '+ file_size);
+		$('#download_link_btn').attr('file-name', file_name);
+		$('#download_link_btn').attr('data-clicktype', $(elm).attr('data-type') != undefined ? $(elm).attr('data-type') : "");
+		$('#download_link_btn').attr('data-href', file_link);
+		$('#download_link').attr('href',file_link);
+	}
+
+	function open_download(e){
+		var url = $(e.target).attr('data-href');
+		var filename = $(e.target).attr('file-name');
+		if($(e.target).attr('data-clicktype') == 'downloadAnyFile'){
+			console.log(1082);
+			custom_download_fun(url, filename);
+		}else{
+			console.log(1088)
+			window.open(url, "_blank");
+		}
+		$('#downloadPreviewPopup').hide();
+	}
+
+
+	$(document).on('focus', ':input', function(){
+		$(this).attr('autocomplete', 'off');
+	});
+
+	function tempdownloadAnyFile(e, elm){
+		if($('#hayvenFilePage').hasClass('active')){
+			var url = file_server+file_view_data.location;
+			var filename = file_view_data.originalname;
+			window.open(url, "_blank");
+		}else{
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			var url = $(elm).attr('data-href');
+			var filename = $(elm).attr('file-name');
+			window.open(url, "_blank");
+		}
+	}
+
+	function downloadAnyFile(e,elm) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		var url = $(elm).attr('data-href');
+		var filename = $(elm).attr('file-name');
+		custom_download_fun(url, filename);
+		// var type;
+		// var xhttp = new XMLHttpRequest();
+		// xhttp.open('HEAD', url);
+		// xhttp.onreadystatechange = function () {
+		// 	if (this.readyState == this.DONE) {
+		// 		type = this.getResponseHeader("Content-Type");
+		// 		d_file(url,type);
+		// 		console.log(1091, url, fileName, type);
+		// 		// mimetype
+		// 	}
+		// };
+		// xhttp.send();
+		$('#downloadPreviewPopup').hide();
+	}
+
+	function custom_download_fun(url, filename){
+		$("#fixedzipdlid").remove();
+		$('#createZipHolder').show();
+		var design = '<div id="fixedzipdlid" class="filesZipcon" par="0%"><div class="fileName">'+filename+'</div></div>';
+		$('#createZipHolder').append(design);
+		saveAs(url, filename);
+	}
+
+	function d_file(url, fileName, type) {
+		console.log(1098, url, fileName, type);
+		download(url, type);
+	}
+
+</script>
+<!-- <script src="/push_client.js"></script> -->
+
+</html>

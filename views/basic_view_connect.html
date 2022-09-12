@@ -1,0 +1,3192 @@
+<%- include('layouts/basic_head') %>
+<link rel="stylesheet" type="text/css" href="/stylesheets/style-popup.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/style_basic_connect.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/OverlayScrollbars.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/os-theme-round-light.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/hover.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/pagination.css">
+<!-- <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/quill.snow.css"> -->
+<link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.css">
+<style>
+	#containerDragable{
+		width: 100%;
+		height: 100%;
+		background-color: rgb(227, 227, 227);
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		position: relative;
+	}
+	.custitlenop{
+		margin-top: 0px !important;
+	}
+	.custitlenod {
+		top: 24px !important;
+	}
+	.grid_view .msg_per_img_div.is-loading{
+		background-image: url('/images/loader.gif');
+    	background-position: center;
+		background-repeat: no-repeat;
+	}
+	.grid_view .msg_per_img_div.is-loading img{
+		opacity: 0.75;
+	}
+	.info_tip_ico{
+		width: 15px;
+		height: 15px;
+		border: 2px solid var(--PrimaryC);
+		border-radius: 50%;
+		position: relative;
+    	top: 3px;
+	}
+	.decline_btn_sec{
+		border: 1px solid var(--PrimaryC);
+		background: var(--PrimaryC);
+		color: #FFF;
+	}
+
+	.sp_popup{
+		display: none;
+		position: absolute;
+		margin: auto;
+		background: #5f5f5f66;
+		z-index: 99999;
+		width: 100%;
+		height: 100%;
+	}
+	.sp_popup div{
+		background: #FFF;
+		width: 25%;
+		position: relative;
+		margin: auto;
+		top: 30%;
+		text-align: center;
+		padding: 20px;
+		border-radius: 10px;
+	}
+	.sp_popup div img{
+		width: 50px;
+		float: left;
+		position: absolute;
+		left: 90px;
+		top: 5px;
+	}
+	#reloading_page.sp_popup div{
+		width: 33%;
+	}
+	#reloading_page.sp_popup div img{
+		left: 0px;
+	}
+	.conv_hide{
+		display: none !important;
+	}
+	.addnewguest{
+		position: relative;
+		float: right;
+		right: 35px;
+		cursor: pointer;
+	}
+	body.mainconvlock4you .back_to_main_conv{
+		display: none;
+	}
+	body.mainconvlock4you .for_exit_sub_room{
+		display: none;
+	}
+	.filter_thread_open{
+		display: block !important;
+	}
+	ul#chk_task_pagination{
+		margin: 10px 0px;
+		text-align: center;
+		position: fixed;
+	    right: 20px;
+	    top: 78px;
+	}
+
+	ul#chk_task_pagination li {
+		display: inline;
+		padding: 0px 5px;
+		border: 1px solid #ddd;
+		cursor: pointer;
+
+		min-width: 30px;
+	    height: 28px;
+	    line-height: 28px;
+	    display: block;
+	    background: #fff;
+	    font-size: 14px;
+	    color: #333;
+	    text-align: center;
+
+	    float: left;
+    	border: 1px solid #aaa;
+    	border-right: none;
+	}
+
+	ul#chk_task_pagination li:hover{
+		background: #DDD;
+	}
+	ul#chk_task_pagination li.active{
+		color: #FFF;
+		background: #aaa;
+		border: 1px solid #aaa;
+	}
+	ul#chk_task_pagination li:first-child{
+		border-radius: 3px 0 0 3px;
+	}
+	ul#chk_task_pagination li:last-child{
+		border-radius: 0 3px 3px 0;
+		border-right: 1px solid #aaa;
+	}
+	.ctppno{
+		disable: none;
+	}
+	#groupChatContainer .ctppno{
+		disable: block;
+		position: fixed;
+		right: 40px;
+	}
+</style>
+<script src="/javascripts/plugins/select2.min.js"></script>
+<script src="/javascripts/pagination.js"></script>
+<script src="/javascripts/plugins/FileSaver.js"></script>
+
+<script>
+	var session_id 			= '<%= session_id %>';
+	var user_id 			= '<%= user_id %>'; 
+	var company_id 			= '<%= company_id %>';
+	var user_email 			= '<%= user_email %>';
+	var user_fullname 		= '<%= user_fullname %>';
+	var user_img 			= '<%= user_img %>';
+	var file_server 		= '<%= file_server %>';
+	var cpa 				= '<%= cpa %>';
+	var cpmsg 				= '<%= cpmsg %>';
+	var typing 				= false; //Global typing variable, for storing typing status
+	var timeout 			= undefined; //Global timeout variable, for storing when typing timeout
+	var allUserdata 		= <%- JSON.stringify(data) %>; // bitwarden issue
+	var all_unread_data 	= <%- JSON.stringify(all_unread_data) %>;
+	var access_user_list 	= allUserdata[0].users;
+	var dept 				= [];
+	var memberList 			= [];
+	var adminList 			= [];
+	var adminListUUID 		= [];
+	var memberListUUID 		= [];
+	var unread_replay_data 	= [];
+	var allteams 			= <%- JSON.stringify(allteams) %>;
+
+	console.log(114, allteams);
+	
+</script>
+<script src="/javascripts/service_worker_update.js"></script>
+<%- include('templates/sideBar') %>
+<div class="menuBarRigthClick" style="display: none;position: fixed;"><span onclick="$('.slide-image-download').click()">Download</span><span id="saveImageas" onclick="saveAsImgFun()" >Save image as</span></div>
+<section class="right-section" id="right-section-area-connect">
+
+	<%- include('layouts/b_connect/groupChatContainer') %>
+
+	<%- include('layouts/b_connect/info_for_sub_conv') %>
+	<%- include('layouts/b_connect/createChannelContainer') %>
+	<!-- join chat right panel start  -->
+	<%- include('layouts/b_connect/joinChannelPanel') %>
+	<!-- join chat right panel end  -->
+	<!-- Media panel start  -->
+	<div class="fileSliderBackWrap" id="mediaFilePreview" style="display:none">
+		<div id="files_loader_div"></div>
+		<div class="media-file-popup new_tab_design" style="display:block; overflow: hidden;">
+			<div class="media-tab-header">
+				<!-- <span class="dir-msg-close back">
+					<img class="back-media-popup" onclick="closeMediaPopup()" src="/images/basicAssets/BackArrow.svg" alt="">
+				</span> -->
+				<!-- <img class="dir-msg-close back" onclick="closeMediaPopup()" src="/images/basicAssets/BackArrow.svg" alt=""> -->
+				<div class="dir-msg-close back" data-balloon="Back to chat"  data-balloon-pos="right" onclick="closeMediaPopup()"></div>
+
+				<!-- <span class="media-back-tooltip" data-balloon="Click to back" data-balloon-pos="right">
+					<img class="back-media-popup" onclick="closeMediaPopup()" src="/images/basicAssets/BackArrow.svg" alt="">
+				</span> -->
+				<span class="media-close-tooltip"  onclick="closeMediaPopup()" data-balloon="Close" data-balloon-pos="down">
+					<!-- <img class="close-media-popup" onclick="closeMediaPopup()" src="/images/basicAssets/close_button.svg" alt=""> -->
+				</span>
+				<ul class="media-tabs">
+					<li class="active mediaimgTab" id="allFilesMediaDiv" onclick="viewAllFilesDivFun(this)" data-balloon="All Files" data-balloon-pos="right"><a class="">All Files (0)</a></li>
+					<li  id="mediaImgsTab" onclick="viewImgDiv(this)" data-balloon="View Images" data-balloon-pos="right"><a class="">Images (0)</a></li>
+					<li onclick="viewvideoDiv(this)" id="mediaViedeosTab" data-balloon="View Videos" data-balloon-pos="right"><a>Videos (0)</a></li>
+					<li onclick="viewaudiosDiv(this)" id="mediaAudiosTab" data-balloon="View Audios" data-balloon-pos="right"><a>Audios (0)</a></li>
+					<li onclick="viewFilesDiv(this)" id="mediaFilesTab" data-balloon="View Docs" data-balloon-pos="right"><a>Docs (0)</a></li>
+					<li onclick="viewLinksDiv(this)" id="mediaLinksTab" data-balloon="View Links" data-balloon-pos="left"><a>links (0)</a></li>
+					<li onclick="viewTagsDiv(this)" id="mediaTagDivHead" data-balloon="View By Tag(s)" data-balloon-pos="right"><a>View By Tag(s) (0)</a></li> 
+					<li onclick="viewPersonalDiv(this)" id="mediaPersonalDivHead" data-balloon="All Personal Files" data-balloon-pos="left"><a>Personal Files (0)</a> </li> 
+					<div class="addPersonalFiles" data-balloon="Click to upload your private files" data-balloon-pos="left" onclick="chatFileUploadFunc('msg')"></div>
+				</ul>
+				<ul class="mediaAction_item" id="media_Action_Div" style="display: none">
+					<!-- <li class="download share" onclick="shareSelectedMsg()">Forward</li> -->
+					<li class="share" onclick="shareSelectedMsg()" >Forward</li>
+					<li class="download" onclick="downloadFiles('mediaImages')">Download</li>
+					<!-- <li class="share" onclick="multipleFileShare()" >Share</li> -->
+					<!-- <li class="share" onclick="shareSelectedMsg()" >Share</li> -->
+					<li class="delete" onclick="closeMediaPopup()">Close</li>
+				</ul>
+				<input id="searchMediaFilter" onclick="$('.clear_text').show()" class="Search-img" value="" onkeyup="searchMedia(event)" onkeydown="searchMediaDown(event)" type="text" placeholder="Search Images">
+				<span class="clear_text" onclick="clear_inputText()"></span>
+			</div>
+			<div class="media-tab-body list_view">
+				<div class="individual-tab-seach-con">
+					<div class="galleryFilterOption">
+						<span class="fileSearch" onclick="actionNewFilterOption('file')"></span>
+						<!-- <span class="tag_search" onclick="actionNewFilterOption('tag')"></span> -->
+					</div>
+					<!-- <div class="seach_box_all" id="search_different_tab" contenteditable="true" placeholder="Search Images"></div> -->
+					<div class="dropbtn_search" style="display: none;"></div>
+					<span class="TextDrop" onclick="triggerFunfilter(event,'filesearch')" style="display: none;" >File Search</span>
+					<button class="dropbtn" style="display: none;"><img class="nav_ico" src="/images/basicAssets/Down_Chevron.svg"></button>
+					<div class="src_total_msg_content" style="display: none;">
+						<div class="itm">Filter by tag(s)</div>		      
+						<div class="itm2" onclick="$('#allFilesMediaDiv').click()">All File(s)</div>
+						<div class="itm2" onclick="$('#mediaImgsTab').click()">Image(s)</div>
+						<div class="itm2" onclick="$('#mediaViedeosTab').click()">Video(s)</div>
+						<div class="itm2" onclick="$('#mediaAudiosTab').click()">Audio(s)</div>
+						<div class="itm2" onclick="$('#mediaFilesTab').click()">File(s)</div>
+						<div class="itm2" onclick="$('#mediaLinksTab').click()">Link(s)</div>
+						<div class="itm2" onclick="$('#mediaTagDivHead').click()">View By Tag(s)</div>
+					</div>
+					<div class="taglisttag">
+							<div class="remove" ></div>
+		
+							<div>
+								
+								<div class="headTagIconAppend"></div>
+								<hr width='100%'>
+								<!-- <div id="filterTagOnlyBtndiv">
+									<div  id="filterTagOnlyBtn1" onclick="filterOnlyTagMsg(this)" tag-id="filteTagOnly">Filter tag(s) only</div>
+								</div> -->
+							</div>
+					</div>
+					
+					<input type="text" class="seach_box_all" id="search_different_tab" onkeyup="searchMedia(event)" onkeydown="searchMediaDown(event)" placeholder="Search Images" autocomplete="off" required/>
+					<div class="remove" onclick="clearSearchBtn(event)"></div>
+					<div onclick="searchFilterHalfFun()" class="oneTimeSearchButton"></div>
+					<!-- <div class="filterAllFiles" onclick="openFilesFilter()"><img src="/images/basicAssets/mobile/filter.svg" alt="i" style="margin-left: 8px;"></div> -->
+				</div>
+				<div class="media_view">
+					<span class="tooltip_target" onclick="info_tooltip('gallery','bottom',this, event)" style="cursor:pointer;position: absolute;left: -15px;bottom: 15px;border: 2px solid var(--PrimaryC); border-radius: 50%;height: 17px;  margin-right: 10px;"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="17px" height="17px" ></span>
+					<div data-balloon="Grid view" data-balloon-pos="down"><div class="grid_view" onclick="media_view_change('grid')"></div></div>
+					<div data-balloon="List view" data-balloon-pos="down"><div class="list_view" onclick="media_view_change('list')"></div></div>
+				</div>
+				<div class="checklistListFilter" id="filter_tab_for_all_files">
+					<div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:calc(20% - 1px)">Filter by File Name
+						<div class="checklistFilterPopup" style="width:100%">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allFileNameListForFilter" >
+								
+							</ul>
+							<div class="button_sec_filter">
+								<span onclick="clear_filter_popup('allFileNameListForFilter')" class="btn_cancel">Clear</span>
+								<span onclick="ok_filter_popup('allFileNameListForFilter')" class="btn_ok">Ok</span>
+							</div>
+						</div>
+					</div>
+					<div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:16%">Filter by Extension
+						<div class="checklistFilterPopup" style="width:100%">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allFileTypeListForFilter" >
+								
+							</ul>
+							<div class="button_sec_filter">
+								<span onclick="clear_filter_popup('allFileTypeListForFilter')" class="btn_cancel">Clear</span>
+								<span onclick="ok_filter_popup('allFileTypeListForFilter')" class="btn_ok">Ok</span>
+							</div>
+						</div>
+					</div>
+					<div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:16%">Filter by Date
+						<div class="checklistFilterPopup" style="width:100%">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allDateListForFilter" >
+							</ul>
+							<div class="button_sec_filter">
+								<span onclick="clear_filter_popup('allDateListForFilter')" class="btn_cancel">Clear</span>
+								<span onclick="ok_filter_popup('allDateListForFilter')" class="btn_ok">Ok</span>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:10%">Date
+						<div class="checklistFilterPopup">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allTagListForFilter">
+							</ul>
+						</div>
+					</div> -->
+					<div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:16%">Filter by Uploaded by
+						<div class="checklistFilterPopup" style="width:100%">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allPersonListForFilter" >
+							</ul>
+							<div class="button_sec_filter">
+								<span onclick="clear_filter_popup('allPersonListForFilter')" class="btn_cancel">Clear</span>
+								<span onclick="ok_filter_popup('allPersonListForFilter')" class="btn_ok">Ok</span>
+							</div>
+						</div>
+					</div>
+					<div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:16%">Filter by Channel
+						<div class="checklistFilterPopup" style="width:100%">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allRoomListForFilter" >
+							</ul>
+							<div class="button_sec_filter">
+								<span onclick="clear_filter_popup('allRoomListForFilter')" class="btn_cancel">Clear</span>
+								<span onclick="ok_filter_popup('allRoomListForFilter')" class="btn_ok">Ok</span>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="checklistfilter_item" onclick="viewFilterPopup(event,'type')" style="width:15%">Channel
+						<div class="checklistFilterPopup">
+							<div class="search_area">
+								<input type="" name="" onkeyup="searchFilterPopup(event)" placeholder="Search">
+							</div>
+							<ul class="filterItemList" id="allRoomCateListForFilter">
+							</ul>
+						</div>
+					</div> -->
+					<div class="filterApply" onclick="applyfilterAllFiles()">APPLY FILTER</div>
+				</div>
+				<div id="mediaImages" class="main-images-tab media_Tab_Content"> </div>
+				
+				<div id="mediaAllFiles" class="media_Tab_Content" style="display:none"> </div>
+				<div id="mediaVideos" class="media_Tab_Content" style="display:none"> </div>
+				<div id="mediaAudios" class="media_Tab_Content" style="display:none"> </div>
+				<div id="mediaFiles" class="media_Tab_Content" style="display:none"> </div>
+				<div id="mediaLinks" class="media_Tab_Content" style="display:none"> </div>
+				<div id="mediaPersonal" class="media_Tab_Content" style="display:none"> </div>
+				<div id="tagListFormediaView" class="tagListFormediaView" >
+					<div class="showingTag" id="visibleTagList">
+						<!-- <div id="viewAllTagActive" class="" onclick="changeTagViewOption()">View All</div> -->
+						<div id="visibleTagMedia"></div>
+					</div>
+				</div>
+				<div id="mediaTags" class="media_Tab_Content" style="display:none; "> </div>
+				<div id="mediaTagsDatabase" class="media_Tab_Content" style="display:none; margin-top:0px">
+					<div class="date-by-tags" id="tagsearchData">
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="image-popup-slider" style="display:none">
+			<div class="image-popup-header">
+				<div class="media-back-tooltip"  onclick="backToMediaTab()" data-balloon="Back" data-balloon-pos="up">
+					<!-- <img class="back-media-popup" onclick="backToMediaTab()" src="/images/basicAssets/BackArrow.svg" alt=""> -->
+				</div>
+				<h2 onclick="backToMediaTab()" style="cursor:pointer">Images</h2>
+				<div class="current-slide-image-details">
+					<div class="shared-by-user-photo"><img src="/images/users/nayeem.jpg" alt=""></div>
+					<div class="shared-by-user-details">
+						<h3>Dean Alvarado</h3>
+						<p>August 23rd, 2017 @ 12:10pm</p>
+					</div>
+				</div>
+				<div class="slide-image-download" onclick="downloadAnyFile(event, this)"></div>
+				<div class="slide-image-share" onclick="viewShreImgPop(event,this)"></div>
+
+				<span class="close-img-popup-tooltip" onclick="backToMediaTab()" data-balloon="Esc to close" data-balloon-pos="left">
+					<!-- <img class="close-image-popup-slider" onclick="backToMediaTab()" src="/images/basicAssets/close_button.svg" alt=""> -->
+				</span>
+			</div>
+			<div class="images-slide-body">
+				<div class="slider-left-arrow" onclick="slaclick()" data-balloon="Previous" data-balloon-pos="up">
+					<!-- <img src="/images/basicAssets/Chevron_Left_for_img_slider.svg" alt=""> -->
+				</div>
+				<div class="slider-right-arrow" onclick="sraclick()" data-balloon="Next" data-balloon-pos="up">
+					<!-- <img src="/images/basicAssets/Chevron_right_for_img_slider.svg" alt=""> -->
+				</div>
+				<img class="currentimg" id="panzoom" data-zoomtype="max" onclick="zoom_in_out()" src="" alt="">
+			</div>
+			<div class="images-slider-footer">
+				<!-- <div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+				<div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+				<div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+				<div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+				<div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div>
+				<div class="slider-footer-all-images"><img src="/images/basic_view/Slider-img.jpg" alt=""></div> -->
+			</div>
+			<div class="show-picture-comment">
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio expedita, fugit, .</p>
+			</div>
+			<div style="text-align: center;position: relative;">
+				<!-- <div class="rangeMin" onclick="changeZoomerVal('min')"></div>
+				<input type="range" min="1" max="4" value="1" step="0.1" id="zoomer" oninput="deepdive()">
+				<div class="rangeMax" onclick="changeZoomerVal('max')"></div>
+				<div class="reset hidden" onclick="reset_zoom()" title="Reset"></div> -->
+				<div id="zoom-out" class="rangeMin"></div>
+				<input type="range" id="zoomer">
+				<div id="zoom-in" class="rangeMax"></div>
+				<div id="reset" class="reset"></div>
+			</div>
+		</div>
+	</div>
+	<!-- Media panel end  -->
+  	<!-- For Checking Div -->
+  	<input type="hidden" id="divCheck" value="1" name="">
+	<input type="hidden" id="lastActive" value="1" name="">
+	<input type="hidden" id="searchAction" value="1" name="">
+	<input type="hidden" id="searchText" value="1" name="">
+	<div class="hiddenDiv" id="forTextModify"></div>
+
+</section>
+<%- include('templates/chat/rep-attach-send') %>
+<%- include('templates/chat/message-send-form') %>
+<%- include('layouts/b_connect/createDirMsgContainer') %>
+<div class="sp_popup" id="network_down"><div><span><img src="/images/loading-icon-red.gif"></span>No Internet</div></div>
+<div class="sp_popup" id="reloading_page">
+	<div style="">
+		<span><img src="/images/loading-icon-red.gif"></span>Updating live session, please wait for a moment...
+	</div>
+</div>
+<div class="backwrap" id="emojiContainer" style="display:none">
+	<div class="emojiContainer">
+		<div class="emoji-div-head">
+			<div class="emoji-div-label">Pick your reaction</div>
+			<img data-name="grinning-face" alt="😀" src="/images/emojiPacks/hv1.svg">
+			<img data-name="grimacing-face" alt="😬" src="/images/emojiPacks/hv2.svg">
+			<img data-name="face-with-tears-of-joy" alt="😂" src="/images/emojiPacks/hv3.svg">
+			<img data-name="grinning-face-with-big-eyes" alt="😃" src="/images/emojiPacks/hv4.svg">
+			<img data-name="grinning-face-with-smiling-eyes" alt="😄" src="/images/emojiPacks/hv5.svg">
+			<img data-name="grinning-face-with-sweat" alt="😅" src="/images/emojiPacks/hv6.svg">
+			<img data-name="grinning-squinting-face" alt="😆" src="/images/emojiPacks/hv7.svg">
+			<img data-name="smiling-face-with-halo" alt="😇" src="/images/emojiPacks/hv8.svg">
+			<img data-name="smiling-face-with-horns" alt="😈" src="/images/emojiPacks/hv9.svg">
+			<img data-name="winking-face" alt="😉" src="/images/emojiPacks/hv10.svg">
+			<img data-name="smiling-face-with-smiling-eyes" alt="😊" src="/images/emojiPacks/hv11.svg">
+			<img data-name="disappointed-face" alt="😞" src="/images/emojiPacks/hv12.svg">
+			<img data-name="smiling-face-with-heart-eyes" alt="😍" src="/images/emojiPacks/hv13.svg">
+		</div>
+	</div>
+</div>
+<!-- Thread reply popup  start-->
+<div  style="display: none" id="threadReplyPopUp" class="connect_page">
+	<div class="msgs-thread-popup">
+		<div class="msgs-thread-head">
+			<h3><!-- <img src="/images/basicAssets/BackArrow.svg" alt="" onclick="closeAllPopUp()">  -->
+				<span class="dir-msg-close-backs back" onclick="closeAllPopUp()"></span> 
+				<!-- <img src="/images/basicAssets/thread.svg" alt="">  -->
+				Reply Thread <!--<span class="_replayConv_name"> | Conversation Name</span>--><span class="viewFileThread" id="viewFileThreadId" onclick="viewThreadFiles(event,this)"> | Files</span> <span id="unreadthreadMsgCounter" data-counter="0" onclick="$(this).attr('data-counter',0);scrollToBottom('#repChatContainer', 0);"> New Reply</span></h3>
+			<span class="tooltipmsg" data-balloon="Press Esc to close" data-balloon-pos="left">
+				<!-- <img class="thread-close" src="/images/basicAssets/close_button.svg" alt="" onclick="closeAllPopUp()"> -->
+				<div class="thread-close closeModal" onclick="closeAllPopUp()"></div>
+			</span>
+		</div>
+		<div class="main-thread-msgs" id="old_main_msg"> <div class="thread-user-msg"> <p></p>	 </div></div>
+		<div class="msgs-thread-reply">
+			<div class="reply-separetor">
+				<p></p>
+			</div>
+			<!-- overlayScrollbars -->
+			<!-- ScrollTop -->
+			<div id="scrollThreadTop" onclick="scrolltoDownChat('thread')" class="" close-time=""></div>
+			<!-- ScrollTop -->
+			<div class="forScrollBar" id="repChatContainer">
+				<div class="replies-container"></div>
+			</div>
+		</div>
+		<div class="write-thread-msgs">
+			<!-- <div class="mention_user_list" id="mention_user_list_rep">
+
+			</div> -->
+			<div id="define_thread_text"></div>
+			<p class="rep-typing-indicator"></p>
+			<div id="replymention_user" class="mention_user_list"></div>
+			<div id="secretUserList_rep" class="secretUserList"></div>
+			<div contenteditable="true" id="msg_rep" class="write-msgs" onpaste="onpasteFun(event)" placeholder="" ></div>
+			<div class="add-attachment send-rep-attach" id="repAttachFconnect" onclick="chatFileUploadFunc('repmsg')" data-balloon="Attach files" data-balloon-pos="left"></div>
+			<div class="add-emoji" data-balloon="Insert emoji" data-balloon-pos="left" onclick="open_rep_emoji(event)"></div>
+			<div class="circle_up_arrow" onclick="rep_msg_send_fn()" data-balloon="Click to send or press Enter" data-balloon-pos="left"></div>
+
+		</div>
+		<div class="pevThread" onclick="open_another_rep(event)" data-ano_msg_id="">
+			<img src="/images/basicAssets/prevThreadicon.svg">
+		</div>
+		<div class="nextThread" onclick="open_another_rep(event)" data-ano_msg_id="">
+			<img src="/images/basicAssets/nextThreadicon.svg">
+		</div>
+	</div>
+</div>
+<!-- Thread reply popup  end-->
+
+
+<!-- for mute Notification -->
+
+<div class="backwrap" id="notificationPopup" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Mute Notifications</h1>
+                   <span class="tooltip_target" data-balloon="Select one of the mute options then click on mute button to set mute on notification" data-balloon-pos="left" style="cursor:pointer;bottom: 15px;float:right;left:-20px;border: 2px solid var(--PrimaryC); border-radius: 50%;height: 17px;  margin-top: 20px;"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" width="17px" height="17px" ></span>
+
+
+			<div class="closeModal" onclick="closeModal('notificationPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h6>Please select one of the mute options.</h6>
+			<div class="notification_mute_time">
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">Until I turn it back on</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="20Y" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">For 30 minutes</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="30M" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">For 1 Hour</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="1H" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">For 12 Hours</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="12H"/>
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">For 1 Day</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="1D"/>
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">For 1 Week</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="1W" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">For 1 Month</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="1M" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<!-- <li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">For 1 Year</span>
+						<input class="radioItemInput" name="muteNotification" type="radio" value="1Y" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li> -->
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">Set your own mute option</span>
+						<input id="customMuteOption" class="radioItemInput" name="muteNotification" type="radio" value="ownMuteOption" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<div id="mutedateTime" class="mute_date_time" style="display:none">
+					<div class="days_row">
+						<span class="days Sat" onclick="selectMuteDay(this)" data-name="Sat">Sat</span>
+						<span class="days Sun" onclick="selectMuteDay(this)" data-name="Sun">Sun</span>
+						<span class="days Mon" onclick="selectMuteDay(this)" data-name="Mon">Mon</span>
+						<span class="days Tue" onclick="selectMuteDay(this)" data-name="Tue">Tue</span>
+						<span class="days Wed" onclick="selectMuteDay(this)" data-name="Wed">Wed</span>
+						<span class="days Thu" onclick="selectMuteDay(this)" data-name="Thu">Thu</span>
+						<span class="days Fri" onclick="selectMuteDay(this)" data-name="Fri">Fri</span>
+					</div>
+					<div class="custom_time">
+						<div class="startDate_time">
+							<span class="label" for="muteCustomTime">Start Time</span>
+							<input type="text" id="muteCustomTime" class="muteInputDate" value="">
+						</div>
+						<div class="endDate_time">
+							<span class="label" for="muteCustomendTime"> End Time</span>
+							<input type="text" id="muteCustomendTime" class="muteInputendDate" value="">
+						</div>
+					</div>
+					<div class="custom_dateTime">
+						<div class="startDate_time">
+							<span class="label" for="muteCustomDate">Start Date & Time</span>
+							<input type="text" id="muteCustomDate" class="muteInputDate" value="">
+						</div>
+						<div class="endDate_time">
+							<span class="label" for="muteCustomendDate"> End Date & Time</span>
+							<input type="text" id="muteCustomendDate" class="muteInputendDate" value="">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button style="display: none" class="buttonAction" id="muteDeleteButton" onclick="unmuteNotification()">Unmute</button>
+				<button style="display: none" class="buttonAction" id="muteSubmitButton" onclick="muteSubmit()">Mute</button>
+				<button class="buttonCancel" onclick="closeModal('notificationPopup')">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- for clear Messages -->
+
+<div class="backwrap" id="clearMessages" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Clear Message(s)</h1>
+			<div class="closeModal" onclick="closeModal('clearMessages')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h3>Are you sure you want to clear all the following selected message(s) in this channel?</h3>
+			<div class="groupCheckbox">
+				<span data-cleartype="text" class="hyvenCheckboxBefore hyvenCheckbox clear_messages_option checked" onclick="addCheckedCls(this)" id="deletewithtext"></span>
+				<span class="labelCheckbox" >Text Message(s)</span>
+			</div>
+			<div class="groupCheckbox">
+				<span data-cleartype="media" class="hyvenCheckboxBefore hyvenCheckbox clear_messages_option" onclick="addCheckedCls(this)" id="deletewithmedia"></span>
+				<span class="labelCheckbox" >Media Message(s)</span>
+			</div>
+			<div class="groupCheckbox">
+				<span data-cleartype="flagged" class="hyvenCheckboxBefore hyvenCheckbox clear_messages_option" onclick="addCheckedCls(this)" id="deletewithflagged"></span>
+				<span class="labelCheckbox">Flagged Message(s)</span>
+			</div>
+			<div class="groupCheckbox">
+				<span data-cleartype="checklist" class="hyvenCheckboxBefore hyvenCheckbox clear_messages_option" onclick="addCheckedCls(this)" id="deletewithchecklist"></span>
+				<span class="labelCheckbox">Checklist(s)</span>
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('clearMessages')">Cancel</button>
+				<button class="buttonAction bg_danger" onclick="clearMessagesAction()">Clear</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- for due date checklist  -->
+
+<div class="backwrap" id="dueDatePickerChecklist" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Task Assignment</h1>
+			<div class="closeModal" onclick="closeTaskAssignModal('dueDatePickerChecklist')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<div class="_3coldiv managementOneSection deactive_sec" style="width: 50%">
+				<label>Due date</label>
+				<input type="text" name="" placeholder="Due Date" id="TaskDatePicker">
+			</div>
+			<div class="_3coldiv main_sec_tab managementOneSection deactive_sec" style="width: 50%" id="normalAssineeSec">
+				<label>Add/Edit Assignee</label>
+				<div class="user" id="TaskUserId"></div>
+				<input type="text" name="" placeholder="Search Assignee" onkeyup="searchAssignee(event)" onfocus="searchAssignee('focus')">
+				<div class="searchDivAction" onmousedown="searchDivActionDiv(event)" onmouseup="searchDivActionDiv(event)">
+				</div>
+			</div>
+			<div  style="width: 100%;display: none;" id="requestNewDateSec">
+				<div class="_3coldiv request_note_sec" style="width: 100%;">
+					<label class="statusCheck">Request note <span data-balloon="[Request note] field will only be enabled when you change or update [Due date] field." data-balloon-pos="up-right" data-balloon-length="medium"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" class="info_tip_ico"></span></label>
+					<textarea type="text" name="" placeholder="Change due date and mention reason here" style="width: 100%; float: left" id="requestNote"></textarea>
+					<span class="lastNote_by"></span>
+				</div>
+				<div class="_3coldiv decline_note_sec" style="display: none; width: 100%;">
+					<label class="statusCheck">Decline note <span data-balloon="Please write your details that, why you decline this." data-balloon-pos="up-right" data-balloon-length="medium"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" class="info_tip_ico"></span></label>
+					<textarea type="text" name="" placeholder="Note required" style="width: 100%; float: left" id="declineNote"></textarea>
+				</div>
+			</div>
+			<div  style="width: 100%;display: none;float: left;" class="main_sec_tab" id="alternatAssigneeSec">
+				<div class="_3coldiv" style="width: 100%;">
+					<label class="statusCheck">Assignee change reason <span data-balloon="[Assignee change reason] field will be enabled to update only when you change or update [Assign to] field." data-balloon-pos="up-right" data-balloon-length="medium"><img src="/images/basicAssets/conv-i-new-bb.png" alt="i" class="info_tip_ico"></span></label>
+					<textarea id="assigneeChangeResone" name="" placeholder="Assignee change reason" style="width: 100%; float: left"></textarea>
+				</div>
+			</div>
+			<!-- <div class="_3coldiv managementOneSection deactive_sec" style="width: 50%">
+				<label class="statusCheck">Make this private</label>
+				<label class="switchNav" >
+					<input type="checkbox" checked="checked" onchange="changeStatusTask(this)" id="TaskPrivacyStatus">
+					<span class="sliderNav round"></span>
+				</label>
+			</div> -->
+			
+			<div class="_3coldiv" style="width: 50%; display: none;">
+				<label class="statusCheck">Assign these tasks to all</label>
+				<label class="switchNav" >
+					<input type="checkbox" checked="" onchange="changeStatusTask(this)" id="TaskCheckForallStatus">
+					<span class="sliderNav round"></span>
+				</label>
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group" id="initialSubBtn" style="display: none">
+				<!-- <button class="buttonCancel" onclick="closeModal('dueDatePickerChecklist')">Close</button> -->
+				<!-- <button class="button_del" data-label="Delete" onclick="delete_item_div(this)" msg_id="" checklist-id="">Delete</button> -->
+				<!-- <button class="button_Unass" onclick="SubmitDueCheckList('unassign')">Unassign</button> -->
+				<button class="buttonAction" onclick="SubmitDueCheckList()">Submit</button>
+			</div>
+			<div class="btn_group" id="checklistRequestBtn" style="display: none">
+				<!-- <button class="buttonCancel" onclick="requesttlBtn(this)">Reject</button> -->
+				<!-- <button class="button_del" data-label="Delete" onclick="delete_item_div(this)" msg_id="" checklist-id="">Delete</button> -->
+				<!-- <button class="button_Unass" onclick="SubmitDueCheckList('unassign')">Unassign</button> -->
+				<button class="buttonAction" onclick="requesttlBtn(this)">Approve</button>
+			</div>
+			<div class="btn_group" id="decline_btn_sec" style="display: none">
+				<!-- <button class="buttonCancel" onclick="requesttlBtn(this)">Close</button> -->
+				<!-- <button class="button_del" data-label="Delete" onclick="delete_item_div(this)" msg_id="" checklist-id="">Delete</button> -->
+				<!-- <button class="button_Unass" onclick="SubmitDueCheckList('unassign')">Unassign</button> -->
+				<button class="decline_btn_sec" onclick="requesttlBtn(this)">Decline</button>
+			</div>
+			<div class="btn_group" id="declineApprove" style="display: none">
+				<button class="buttonAction" onclick="SubmitDueCheckList('decApprove')">Approve</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="roomExistPop" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>This Room already exists.</h1>
+			<div class="closeModal" onclick="closeModal('roomExistPop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+				<h4 id="existRoomPrivate">Please enter a different Title for the Room</h5>
+				<!-- <div class="added-channels pr" id="existRoomPublic" >
+					<h3 class="chanel-name" id="existRoomName" data-roomid="a684b1cb-2293-4b0b-acfa-5923e008f3b0" data-rfu="join" data-title="freeli" data-privecy="private" data-keyspace="Freelance" data-participants="49bb3e4c-735b-4dde-aa4c-71477c57939c,80220594-2ec5-43dd-acba-8db8ffa8dbeb,be8fa449-cb6c-49db-a6c5-dcdda261e555" data-admin="80220594-2ec5-43dd-acba-8db8ffa8dbeb,be8fa449-cb6c-49db-a6c5-dcdda261e555" ><span id="exitDataPrivacy" class=" lock"></span><span id="existDataTitle" class="roomDrawTitle" data-title="freeli">freeli<span></span></span></h3>
+					<p class="channel-members" id="existRoomPcount"></p>
+					<div class="customToolTip roomView" id="existRoomTooltip">A.H Nayeem
+						<br>Dipok Chakraborty
+						<br>Dalim</div>
+					<div class="channel-tags"> </div>
+					<div class="roomFoot" style="height: 60px" id="existRoomFoot">
+						<h3 class="click-to-leave width100"  onclick="leaveRoom('undefined','be8fa449-cb6c-49db-a6c5-dcdda261e555','private','Freelance','a684b1cb-2293-4b0b-acfa-5923e008f3b0','be8fa449-cb6c-49db-a6c5-dcdda261e555')">Leave this room</h3>
+						<h3 class="click-to-leave addlistHide"  onclick="addtoList('undefined','be8fa449-cb6c-49db-a6c5-dcdda261e555','private','Freelance','a684b1cb-2293-4b0b-acfa-5923e008f3b0','be8fa449-cb6c-49db-a6c5-dcdda261e555','freeli')" style="color:#5cd4ef">Show on left panel</h3></div>
+				</div> -->
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('roomExistPop')">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="removeWarning" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Warning</h1>
+			<div class="closeModal" onclick="closeModal('removeWarning')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h4 id="existRoomPrivate">Are you sure, you want to remove?</h5>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('removeWarning')">Cancel</button>
+				<button class="buttonAction" onclick="">Yes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="setTimerModel" data-set-id="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Auto delete will remove this message from everyone.</h1>
+			<div class="closeModal" onclick="closeModal('setTimerModel')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h6>Please select one of the timer options.</h6>
+			<ul class="notification_mute_time">
+				<li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">1 minute</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="01" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">5 minutes</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="05" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<!-- <li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">10 minutes</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="10" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">20 minutes</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="20" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li> -->
+				<li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">30 minutes</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="30" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<!-- <li>
+					<label class="radioItem showEl selected default">
+						<span class="radioItemName">45 minutes</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="45" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li> -->
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">60 minutes</span>
+						<input class="radioItemInput" name="removeTimer" type="radio" value="60" />
+						<span class="customRadioMark"></span>
+					</label>
+				</li>
+				<li>
+					<label class="radioItem showEl">
+						<span class="radioItemName">Set your own custom time (minutes)</span>
+						<input id="customTimerOption" class="radioItemInput" name="removeTimer" type="radio" value="ownTimerOption" />
+						<input type="number" class="setcusMinutes" id="customTimerMuinutes" autofocus placeholder="e.g:15" value="15" min="0">
+						<span class="customRadioMark"></span>
+
+					</label>
+				</li>
+			</ul>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('setTimerModel')" >Cancel</button>
+				<!-- <button class="buttonAction abtn-margin" id="changeNameMe" onclick="addTimerMsg(this)">Set timer for me</button> -->
+				<button class="buttonAction  abtn-margin" id="changeNameAll" onclick="addTimerMsg(this)" >Set timer for all</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="warningPopup" data-type="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1 id="warningTitle">Mute Notifications</h1>
+			<div class="closeModal" onclick="closeModal('warningPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h6 id="warningMessage"> message</h6>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('warningPopup')">No</button>
+				<button class="buttonAction"onclick="actionWarning($('#warningPopup').attr('data-type'))">Yes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="warningPopupCovid" data-type="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1 id="warningTitleCovid">Public COVID Survey Link</h1>
+			<div class="closeModal" onclick="closeModal('warningPopupCovid')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<input type="text" id="covid_url_company" onclick="this.select();" readonly="" autocomplete="off">
+			<script src="/javascripts/jquery.qrcode.min.js"></script>
+			<div id="image_qr_covid" style="display: none;"></div>
+		</div>
+		<div class="hayven_Modal_endSection" style="padding: 0;">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('warningPopupCovid')">Close</button>
+				<button class="buttonAction" onclick="covid_url_qr_image()">Download QR</button>
+				<button class="buttonAction" id="covid_copyurl_btn_personal">Copy URL</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="warningPopupReset" data-type="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1 id="warningTitleReset">Enter new url</h1>
+			<div class="closeModal" onclick="closeModal('warningPopupReset')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<!-- <h6 id="warningMessageReset"> Please choose your new url</h6> -->
+			<input id="input_reset_url_inp"></input>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('warningPopupReset')">No</button>
+				<button class="buttonAction" onclick="triggerCallResetUrl()">Yes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="msgDeleteLastTime" data-type="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 532px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Delete this Room</h1>
+			<div class="closeModal" onclick="closeModal('msgDeleteLastTime')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h3 style="font-weight: 600;"> Are you sure you want to <span class="action_red">delete</span> this Room?</h3>
+			<h3>Please note this action will permanently delete this room and all its contents – messages, images, files, links, etc.</h3>
+			<h3 class="action_red">This action cannot be undone!</h3>
+
+			<h3 style="text-align: center;margin-top: 8px;">To proceed with deleting this Room, Please enter this following 6 digits into the input box and click the Delete button:</h3>
+			<h2 id="deleteConvLastTimeVal">123456</h2>
+			<input type="number" value="" id="deleteConvLastTimeInput" onkeyup="confirmDelete(event)" onkeydown="confirmDelete(event)">
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('msgDeleteLastTime')" style="margin-right: 8px;">Cancel</button>
+				<button class="buttonAction action_red_inactive" id="deleteconvLasTimeAction" onclick="roomDeleteLastTime()">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="createIssueTagPop" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Create Issue Tag</h1>
+			<div class="closeModal" onclick="closeModal('createIssueTagPop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<div id="oldTaglist" class="mentionHolder"></div>
+			<form autocomplete="off">
+				<div class="input_hayven" style="width: 100%">
+					<input type="text" autocomplete="off" id="issueTagTitle" placeholder="Tag Title" style="width: 100%;">
+				</div>
+			</form>
+			<ul class="hayvenList" id="createIssueTagadminlist" style="display: block;width:100%;">
+
+			</ul>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonAction" onclick="createIssueTag()">Create</button>
+				<!-- <button class="buttonAction" onclick="closeModal('createIssueTagPop')">Create</button> -->
+				<button class="buttonCancel" onclick="closeModal('createIssueTagPop')">Cancel</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="imageDeleteWarning" data-type="" style="display: none" data-esc="false">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Delete image</h1>
+			<div class="closeModal" onclick="closeModal('imageDeleteWarning')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h6 style="line-height: 25px;font-size: 15px;color: #5A5A5A;"> Are you sure you want to delete this image?</h6>
+			<div class="imgDiv">
+				<img src="/images/users/joni.jpg">
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonAction" onclick="actionWarning($('#imageDeleteWarning').attr('data-type'))">Delete for all</button>
+				<button class="buttonAction" onclick="actionWarning($('#imageDeleteWarning').attr('data-type'))">Delete for me</button>
+				<button class="buttonCancel" onclick="closeModal('imageDeleteWarning')" style="float: left;">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="shareLinkPop" data-type="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Share</h1>
+			<div class="closeModal" onclick="closeModal('shareLinkPop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<!-- <h6 id="warningMessage"> message</h6> -->
+			<div class="from_group">
+				<p class="from_label" style="color:#000">Create a sharable URL/Link and simply paste the link in any channel to share the file with anyone. You can always disable sharable link anytime.</p>
+				<div contenteditable="true" onfocus="document.execCommand('selectAll',false,null)" class="input_text" id="shareLink"  style="border: 1px solid rgb(225, 228, 232);" placeholder="Share link"></div>
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonAction" style="background: var(--PrimaryC);margin-right: 8px;" onclick="copyShareLink(this)" id="actionShareBtn">Copy</button>
+				<button class="buttonCancel" onclick="closeModal('shareLinkPop')">Close</button>
+			</div>
+			<label class="green_label" id="sharelinkGreenMsg" style="display: none">Link has been created and copied to your clipboard.</label>
+		</div>
+	</div>
+</div>
+
+<div class="backwrap" id="warningPopupForCallMsg" data-type="" style="display: none">
+	<div class="hayven_Modal_Container" style="height: 250px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1 id="warningTitleForCallMsg" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Mute Notifications</h1>
+			<div class="closeModal" onclick="closeModal('warningPopupForCallMsg')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<h6 id="warningMessageForCallMsg" style="line-height: 25px;font-size: 15px;color: #5A5A5A;"> message</h6>
+			<input id="messageForCalOff" class="msgSendBox" type="text" placeholder="Write message...." onkeydown="submitOffCallMsWithkey(event)">
+
+		</div>
+		<div class="hayven_Modal_endSection">
+			<div class="btn_group">
+				<button class="buttonCancel" onclick="closeModal('warningPopupForCallMsg')">Cancel</button>
+				<button class="buttonAction" style="margin-left: 15px" onclick="submitOffCallMs()">Send</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="backwrap" id="filter_conversaiton_pop2" style="display: none;">
+	<div class="newpop_design hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<div class="closeModal" onclick="closeModal('filter_conversaiton_pop2')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			<div class="section_popup">
+				<input type="text" placeholder="Search Filters" onkeyup="findMyFilterItems(event)">
+			</div>
+			<span class="border_1px"></span>
+		</div>
+		
+		<div class="section_popup mid-sec-forfilter">
+			<div class="item_section">
+				<span class="label_item inactive" id="room_category_filter_lable" >Room Category 
+					<!-- <span class="freeli_new_check_design" onclick="selectForAllFilterConv('room_category_filter_lable')"><div class="check_whiteItem"></div>
+					</span> -->
+				</span>
+				
+				<div id="room_category_for_filter" class="filter_item_holder"></div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="work_category_filter_lable" >Work Category <span class="freeli_new_check_design" onclick="selectForAllFilterConv('work_category_filter_lable')"><div class="check_whiteItem" ></div></span></span>
+				<div id="work_category_for_filter" class="filter_item_holder"></div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="team_category_filter_lable" >Team <span class="freeli_new_check_design" onclick="selectForAllFilterConv('team_category_filter_lable')"><div class="check_whiteItem"></div></span></span>
+				<div id="team_for_filter" class="filter_item_holder">
+					
+				</div>
+				<!-- <div class="item_per inactive">
+					<span class="freeli_new_check_name">test</span>
+					<span class="freeli_new_check_design"><div class="check_whiteItem"></div></span>
+				</div>
+				<div class="item_per inactive">
+					<span class="freeli_new_check_name">test</span>
+					<span class="freeli_new_check_design"><div class="check_whiteItem"></div></span>
+				</div>
+				<div class="item_per inactive">
+					<span class="freeli_new_check_name">Freeli</span>
+					<span class="freeli_new_check_design"><div class="check_whiteItem"></div></span>
+				</div> -->
+				<!-- <div class="item_per active" onclick="filterNewDesignClick(this,event)">
+					<span class="freeli_new_check_name">Test One </span>
+					<span class="freeli_new_check_design"><div class="check_whiteItem"></div></span>
+				</div> -->
+			</div>
+		</div>
+		<div class="section_popup">
+			<div class="button_sec_new">
+				<div class="float_left_div">
+					<div class="new_button border_less" onclick="closeModal('filter_conversaiton_pop2')">Cancel</div>
+				</div>
+				<div class="float_right_div">
+					<div class="new_button active" onclick="filter_conversation_newAction(event)">Apply Filters</div>
+					<div class="new_button inactive" onclick="reset_filter_conv()">Clear Filters</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="backwrap" id="shareMessagePopUp" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Forward to</h1>
+			<div class="closeModal" onclick="closeModal('shareMessagePopUp')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			<!-- <div class="searchInput" id="searchInputForShare" contenteditable="true" onkeyup="filter_user_list(event)" spellcheck="false" placeholder="Search by name"></div>
+			<input type="button" class="shareButton" value="Share" onclick="share_this_msg_with(event)"> -->
+			<form autocomplete="off">
+				<div class="mini_item_holder" id="shareMsgminiHolder"> </div>
+				<div class="input_hayven">
+					<input type="text" autocomplete="off" onkeyup="findforShareMember(event,this)" onkeydown="memberForRoomDown(event)" placeholder="Search by name" spellcheck="false">
+				</div>
+			</form>
+			<div class="sub_btn" value="Share" onclick="share_this_msg_with(event)">Forward</div>
+			<div class="no_of_user_left_to_add"><span>10</span> members left</div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<div class="allMemberList overlayScrollbars">
+				<ul class="suggested-list" id="shareSuggestedList">
+
+				</ul>
+			</div>
+			<div class="singleFile_link" style="height: 100px;padding: 10px 5px;box-sizing: border-box">
+				<div class="from_group">
+					<p class="from_label">Share link</p>
+					<textarea readonly onfocus="document.execCommand('selectAll',false,null)" class="input_text" id="shareLink2" style="border: 1px solid rgb(225, 228, 232);"></textarea>
+					<button class="copyLink" onclick="copyLinkData()">Copy link</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="show_full_forward" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Forward to</h1>
+			<div class="closeModal" onclick="backShare()" data-balloon="Press Esc to back" data-balloon-pos="up"></div>
+			<!-- <div class="searchInput" id="searchInputForShare" contenteditable="true" onkeyup="filter_user_list(event)" spellcheck="false" placeholder="Search by name"></div>
+			<input type="button" class="shareButton" value="Share" onclick="share_this_msg_with(event)"> -->
+			<form autocomplete="off">
+				<div class="mini_item_holder" id="shareMsgminiHolderA"> </div>
+			</form>
+		</div>
+		<div class="hayven_Modal_Content">
+			<div class="allMemberList overlayScrollbars">
+				<textarea name="" cols="30" rows="10" placeholder="Write comments/notes for forwarded file(s) or submit with no comments." autocomplete="off" id="show_full_forward_textArea"></textarea>
+				<div class="sub_btn active" onclick="forwardFinal()">Forward</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="backwrap" id="groupAdminArea" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Members<span>(10)</span></h1>
+			<div class="closeModal" onclick="closeModal('groupAdminArea')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			<div class="searchInput" id="searchInForGroupUp" contenteditable="true" onkeyup="filter_user_list(event)" spellcheck="false" placeholder="Search by name"></div>
+			<input type="button" class="shareButton" value="Update" onclick="update_group_with(event)">
+		</div>
+		<div class="hayven_Modal_Content">
+			<div class="allMemberList overlayScrollbars">
+				<ul class="suggested-list" id="groupUpSuggestedList">
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- The Modal -->
+<div id="myModalImgview" class="modal" chat-text="false">
+	<!-- <div class="modalContainer">
+		<span class="closeMiniPopUp" onclick="closeModal('myModalImgview')">+</span>
+		<div class="img_sec">
+			<img src="" id="zoomImgView">
+		</div>
+		<div class="name_sec">
+			<h2 id="user_namePopupbox"></h2>
+		</div>
+		<div class="img_foot_action">
+			<div data-type="audio" onclick="openVideoCall(this)" class="voice-call off_G_C"></div>
+			<div data-type="video" onclick="openVideoCall(this)" class="video-call off_G_C"></div>
+			<div data-type="message" onclick="findConversation()" class="conversation"></div>
+		</div>
+	</div> -->
+	<div class="modalContainer">
+		<div class="closeModal" onclick="closeModal('myModalImgview')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Profile</h2>
+		<div class="warningPopupContent">
+			<div class="section1">
+				<img id="zoomImgView" src="" alt="" onclick="expandMyimg($(this).attr('src'))">
+			</div>
+
+			<div class="section2">
+				<div class="P_user_name" id="user_namePopupbox"></div>
+				<div onclick="$('#user_namePopupbox').click()" class="edit_pencil_ico" data-balloon="Set a custom nickname for this member" data-balloon-pos="up"><div class="ico_pencil"></div></div>
+				<div class="user_designation" id="dataOrigianl_name"></div>
+				<div class="user_designation" id="user_emailPopupbox"></div>
+				<div class="caller-url-profile" id="user_calleridPopupbox">
+					<p id="callerid_url_profile"></p>
+					<label id="call_copyurl_profilebtn">Copy URL</label>
+					<label id="call_reseturl_profilebtn" class="bg_danger" onclick="call_reset_url('profile')" style=" margin-left: 8px;">Reset URL</label>
+				</div>
+				<div class="img_foot_action">
+						<div data-type="audio" onclick="openVideoCall(this)" class="voice-call off_G_C"></div>
+						<div data-type="video" onclick="openVideoCall(this)" class="video-call off_G_C"></div>
+						<div data-type="message" onclick="findConversation()" class="conversation"></div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="section3">
+			<div class="audio_call"></div>
+			<div class="video_call"></div>
+			<div class="chat"></div>
+		</div> -->
+	</div>
+</div>
+
+
+<div class="backwrap" id="addTagforImg" data-type="" data-msg-id="" style="display: none">
+	<div class="hayven_Modal_Container" style="width: 522px">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1 id="addTagforImgTitle">Tag(s)</h1>
+			<div class="closeModal" onclick="closeModal('addTagforImg')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<span class="tagItemList" id="popupTagList"></span>
+			<div class="taglistHolder">
+					<input type="" name="" id="createConvTagPop" class="createConvTag" onkeyup="adOrSerTag(event)" placeholder="Create or Search Tag(s)" >
+					<ul class="taggedList" id="popupTagListDraw"></ul>
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+		</div>
+	</div>
+</div>
+
+<div class="backwrap" id="memberListBackWrap" style="display: none;">
+	<div class="adminContainer">
+		<div class="closeBackwrap" onclick="closeAllPopUp()"  data-balloon="Close" data-balloon-pos="up">
+			<img src="/images/basicAssets/close_button.svg">
+		</div>
+		<div class="label"><h1 class="label_Title">Members </h1><h1 class="list_Count">(<span>7</span>)</h1></div>
+		<input type="text" class="searchMember" placeholder="Search by name" onkeyup="searchMember(event,$(this).val());">
+		<span class="remove searchClear"></span>
+		<div class="suggest_Container">
+			<ul class="suggested-list">
+
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="createDirConv" data-mute-id="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Create Direct Message</h1>
+			<div class="closeModal" onclick="closeModal('createDirConv')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<form autocomplete="off">
+				<div class="groupHvIn" style="width:calc(100% - 80px)">
+					<div style="float: left;" class="container" id="temppdconvM"> </div>
+					<input type="text" autocomplete="off" placeholder="Search a user" name=""  onkeyup="findMemberForPopup(event,this)" onkeydown="memberForRoomDown(event)" required>
+				</div>
+			</form>
+			<div class="sub_btn" onclick="submitnewSingleConv()">Start</div>
+			<span class="tinytext">Select only one member at a time</span>
+			<!-- <span class="tinytext">Only select one member at a time</span> -->
+			<ul class="hayvenList" id="dconvUsers" style="display: block;width:100%">
+
+			</ul>
+		</div>
+		<div class="hayven_Modal_endSection">
+
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="editProfile" data-type="change_profile" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1>Edit Profile</h1>
+			<div class="closeModal" onclick="closeModal('editProfile')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+
+			<!-- <div class="channel-name" style="float: left;width: 100% ;">
+				<input type="hidden" id="useronchangeimgvalue">
+				<p>Set an Avatar</p>
+				<img src="" alt="" id="changeUserImage">
+				<div class="actionDiv"><div class="change_btn" onclick="$('#changeInputUserimg').trigger('click')">Change</div><div onclick="editProfileAction('removeImg')" class="close_btn bg_danger" id="removeProfileimgbtn">Remove</div></div>
+				<input type="file" onchange="changeUserImage(event,this.files)" style="display: none;" id="changeInputUserimg" accept="image/x-png,image/jpeg,image/jpg/png" >
+			</div> -->
+			<div class="channel-name" style="float: left;width: 100% ;">
+				<p>Display Name (<span class="red_star">*</span>)</p>
+				<!-- <input style="width: 100%;" autocomplete="off" type="text" id="editUserProfileName" class="team-name" placeholder="<%= user_fullname %>" value="<%= user_fullname %>" onkeyup="changeUsernamekey(event)"> -->
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+				<div class="btn_group">
+					<button class="buttonCancel" onclick="closeModal('editProfile')" style="margin-right: 8px;">Cancel</button>
+					<button class="buttonAction" onclick="actionWarning($('#editProfile').attr('data-type'))">Save</button>
+				</div>
+		</div>
+	</div>
+</div>
+
+<div class="backwrap" id="editCustomTitle" data-type="" style="display: none">
+	<div class="hayven_Modal_Container">
+		<div class="hayven_Modal_heading">
+			<span class="drag_handlr"></span>
+			<h1 id="set_your_own_title">Set your own title</h1>
+			<div class="closeModal" onclick="closeModal('editCustomTitle')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		</div>
+		<div class="hayven_Modal_Content">
+			<div class="channel-name" style="float: left;width: 100% ;">
+				<p id="editCutomActionId"></p>
+				<input style="width: 100%;" autocomplete="off" type="text"  class="team-name" id="editCustomActionVal" onkeyup="actionCustomTitlekeyup(event,$('#editCustomTitle').attr('data-type'))">
+			</div>
+		</div>
+		<div class="hayven_Modal_endSection">
+				<div class="btn_group">
+					<button class="buttonCancel" onclick="closeModal('editCustomTitle')" style="margin-right: 8px;">Cancel</button>
+					<div id="titleResetActionBtn" data-original="" onclick="editTitleResetFun($('#editCustomTitle').attr('data-type'))">Reset</div>
+					<button id="customTitleSavebtn" class="buttonAction" onclick="actionCustomTitle($('#editCustomTitle').attr('data-type'))">Save</button>
+				</div>
+		</div>
+	</div>
+</div>
+
+<div class="backwrap" id="delete_msg_div">
+	<div class="delete_msg_div">
+		<div onclick="closeAllPopUp()" class="closeModal"></div>
+		<div class="body">
+			<p class="del_msg_title">Delete message</p>
+			<p class="delete_msg_sec_title">Are you sure you want to delete this message? This cannot be <span class="undone">undone</span>.</p>
+			<!-- <div class="main-deleted-msg"></div> -->
+			<p class="btn_div">
+				<br style="display: none;"/>
+				<button type="button" class="btn-cancel btn-cancel-margin" onclick="closeAllPopUp()">Cancel</button>
+				<button type="button" id="deleteForMe" class="btn-msg-del" onclick="deleteMessage(this,'for_me')">Delete for me</button>
+				<button type="button" id="deleteForAll" class="btn-msg-del" onclick="deleteMessage(this,'for_all')" >Delete for all</button>
+			</p>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="delete_item_div">
+	<div class="delete_msg_div">
+		<div onclick="closePopUp('delete_item_div')" class="closeModal"></div>
+		<div class="body">
+			<p class="del_msg_title">Delete Task</p>
+			<p class="delete_msg_sec_title">Do you want to delete this task? This cannot be <span class="undone">undone</span></p>
+			<!-- <div class="main-deleted-msg"></div> -->
+			<p class="btn_div">
+				<br style="display: none;"/>
+				<button type="button" class="btn-cancel btn-cancel-margin" onclick="closePopUp('delete_item_div')">No</button>
+				<button type="button" id="" class="btn-msg-del" data-label="Delete" onclick="requesttlBtn(this)">Yes</button>
+			</p>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="unmute_rooms">
+	<div class="delete_msg_div">
+		<div onclick="closePopUp('unmute_rooms')" class="closeModal"></div>
+		<div class="body">
+			<p class="del_msg_title">Unmute Rooms</p>
+			<p class="delete_msg_sec_title">Do you want to unmute notification sound for all conversations? </p>
+			<!-- <div class="main-deleted-msg"></div> -->
+			<p class="btn_div">
+				<br style="display: none;"/>
+				<button type="button" class="btn-cancel btn-cancel-margin" onclick="closePopUp('unmute_rooms')">No</button>
+				<button type="button" id="" class="btn-msg-del" data-label="Delete" onclick="unMuteAllConv('yes')">Yes</button>
+			</p>
+		</div>
+	</div>
+</div>
+<div class="backwrap" id="filter_files_all_pop" style="display: none;">
+	<div class="newpop_design hayven_Modal_Container ui-draggable ui-draggable-handle">
+		<div class="hayven_Modal_heading">
+			<div class="closeModal" onclick="closeModal('filter_files_all_pop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			<div class="section_popup">
+				<input type="text" placeholder="Search Filters" onkeyup="findMyFilterItems(event)">
+			</div>
+			<span class="border_1px"></span>
+		</div>
+		
+		<div class="section_popup mid-sec-forfilter">
+			<div class="item_section">
+				<span class="label_item inactive" id="filterByPerson_files">Filter by person 
+					<span class="arrow_down" onclick="showFilterData('filterByPerson_files')"></span></span>
+				</span>
+				
+				<div id="filterByPerson_files_holder" class="filter_item_holder">
+
+				</div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="filterByfile_types">Filter by file type <span class="arrow_down" onclick="showFilterData('filterByfile_types')"></span></span>
+				<div id="filterByfile_types_holder" class="filter_item_holder"></div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="filterByDate_range">Filter by date range <span class="arrow_down" onclick="showFilterData('filterByDate_range')"></span></span>
+				<div id="filterByDate_range_holder" class="filter_item_holder"></div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="filterBytag_files">Filter by tag <span class="arrow_down" onclick="showFilterData('filterBytag_files')"></span></span>
+				<div id="filterBytag_files_holder" class="filter_item_holder"></div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="filterBy_room_files">Filter by room <span class="arrow_down" onclick="showFilterData('filterBy_room_files')"></span></span>
+				<div id="filterBy_room_files_holder" class="filter_item_holder"></div>
+				
+			</div>
+			<div class="item_section">
+				<span class="label_item inactive" id="filterBy_room_category">Filter by room category <span class="arrow_down" onclick="showFilterData('filterBy_room_category')"></span></span>
+				<div id="filterBy_room_category_holder" class="filter_item_holder"></div>
+				
+			</div>
+		</div>
+		<div class="section_popup">
+			<div class="button_sec_new">
+				<div class="float_left_div">
+					<div class="new_button border_less" onclick="closeModal('filter_conversaiton_pop2')">Cancel</div>
+				</div>
+				<div class="float_right_div">
+					<div class="new_button active" onclick="filter_conversation_newAction(event)">Apply Filters</div>
+					<div class="new_button inactive" onclick="reset_filter_conv()">Clear Filters</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="backwrap" style="display: none;" id="save_warning">
+	<div class="delete_msg_div">
+		<div onclick="closePopUp('save_warning')" class="closeModal"></div>
+		<div class="body">
+			<p class="del_msg_title">Warning!</p>
+			<p class="delete_msg_sec_title"> You have some unsaved data. Do you want to save?</p>
+			<p class="btn_div">
+				<br style="display: none;"/>
+				<button type="button" class="btn-cancel btn-cancel-margin" onclick="">No</button>
+				<button type="button" id="save_unsaved" class="btn-msg-del" style="background-color: var(--PrimaryC)" onclick="">Yes</button>
+			</p>
+		</div>
+	</div>
+</div>
+
+<div id="customToastContainer" class="customToastContainer"></div>
+<div class="backwrap" id="delete_attach" style="display: none;">
+	<div class="delete_msg_div">
+		<img onclick="close_delete_attach()" src="/images/basicAssets/close_button.svg" alt="">
+		<div class="body">
+			<p class="del_msg_title">Delete file</p>
+			<p class="delete_msg_sec_title">Are you sure you want to delete this file? This cannot be <span class="undone">undone</span>.</p>
+			<!-- <div class="main-deleted-msg"></div> -->
+			<p class="btn_div">
+				<br style="display: none;"/>
+				<button type="button" class="btn-cancel btn-cancel-margin" onclick="close_delete_attach()">Cancel</button>
+				<button type="button" class="btn-msg-del" onclick="delete_attach()" >Ok</button>
+			</p>
+		</div>
+	</div>
+</div>
+<div class="createZip" id="prepar_download" >
+	<div class="creHead"><h3>Preparing download</h3> <span></span></div>
+</div>
+<div class="createZip" id="createZipHolder" >
+	<div class="creHead"><h3>Downloading...</h3> <div onclick="cancelCreateZip()"></div></div>
+
+</div>
+
+
+<!-- Flag Panel -->
+
+<div class="flagPanelContainer" id="flagPanelContainer">
+	<div class="flagPanelHeader">
+		<div class="flagPanel_inC">
+			<div class="flagPanel_icon"></div>
+			<div class="action_list">
+				<div class="notiActions">Flagged</div>
+			</div>
+		</div>
+		<div class="searchMsgSection">
+			<div class="allSearchSection">
+                <div class="searchPartsContainer">
+                    <div class="searchSelectionSection">
+                        <span>Conversation</span>
+                        <img src="/images/basicAssets/Down_Chevron.svg" alt=""/>
+                    </div>
+                    <input class="allSearchInput" id="allSearchInput" onkeyup="searchFlagMsgs(event)" type="text" placeholder="Type and enter to search message(s) in conversation" autofocus>
+                    <div class="searchCount">
+                        <p id="currentHighlight">0</p>
+                        <p>/</p>
+                        <p id="totalHighlight">0</p>
+                        <div class="searchPrev" onclick="prevSearch()"></div>
+                        <div class="searchNext" onclick="nextSearch()"></div>
+                    </div>
+                    <div class="srcClearSection">
+                        <span class="clearAllSrcTest" onclick="allSearchInputClear()"></span>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="closeFlagPanel" onclick="backToChat()"></div>
+	</div>
+	<div class="flagMsgContainer" id="flagMsgContainer">
+		<!-- <div class="convMsgGroup">
+			<div class="convSeparetor">
+				<span class="convSeparetor_name">AH Nayeem</span>
+			</div>
+			<div class="convMsgContainer">
+				
+			</div>
+		</div> -->
+	</div>
+</div>
+
+<!-- Flag Panel -->
+<!-- Activity Panel -->
+
+<div class="activityPanelContainer" id="activityPanelContainer">
+	<div class="activityPanelHeader">
+		<div class="activityPanel_inC">
+			<!-- <div class="activityPanel_icon"></div> -->
+			<div class="action_list">
+				<div class="notiActions">Activity</div>
+			</div>
+		</div>
+		<div class="closeFlagPanel" onclick="backToChat()"></div>
+	</div>
+	<div class="activityMsgContainer" id="activityMsgContainer">
+		<div class="msgs-form-users " onmouseenter="removeUnreadNoti(this)">
+			<div class="msg-user-photo">
+				<img class="" src="https://wfss001.freeli.io/profile-pic/Photos/img.png" alt="communication2@1579613569165.png">
+			</div>
+			<div class="user-msg">
+				<h4>
+					<span style="cursor:pointer" class="">Mr. George</span>
+					<span class="msg-time" data-balloon="" data-balloon-pos="up"> @ 11-07-2021 12:18 PM</span>
+				</h4>
+				<div class="plain_text">Welcome to "abc" Team! You have been added as a "Member".   <a href="/">Click here to refresh your account.</a>
+				</div>
+			</div>
+			<div class="msgs-form-users-options">
+				<div data-balloon="Remove this notification" data-balloon-pos="left">
+					<div class="delete_noti" onclick="notiRemoveForMe(this)"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Activity Panel -->
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="new_modal">
+
+	<!-- The Close Button -->
+	<span class="close_myimg" onclick="closeMyImgViewer()">&times;</span>
+  
+	<!-- Modal Content (The Image) -->
+	<img class="modal-content" id="img01">
+  </div>
+<input style="display: none !important" id="changeProfilePic" type="file" name="updateProfilePic" onchange="changeProfilePic(this.files)" accept="image/x-png,image/jpeg,image/jpg">
+<!-- popup for member list -->
+<style>
+	#onscrollloading{
+		background: #FFF;
+		width: calc(100% - 309px);
+		height: calc(100% - 220px);
+		position: absolute;
+		display: none;
+		right: 0;
+		top: 140px;
+		z-index: 999;
+	}
+	 body.task_assignment #onscrollloading{
+	    height: calc(100% - 140px);
+	 }
+	#scrollingsvg {
+		background-image: url(/images/basicAssets/loading_msg.gif);
+		background-size: 150px;
+		height: calc(100vh - 220px);
+	    background-position: center;
+	    background-repeat: no-repeat;
+	    transform-origin: center center;
+		/*animation: spin .7s linear infinite;*/
+	}
+	@-moz-keyframes spin {
+	 100% {
+	  -moz-transform:rotate(360deg)
+	 }
+	}
+	@-webkit-keyframes spin {
+	 100% {
+	  -webkit-transform:rotate(360deg)
+	 }
+	}
+	@keyframes spin {
+	 100% {
+	  -webkit-transform:rotate(360deg);
+	  transform:rotate(360deg)
+	 }
+	}
+</style>
+	<div id="onscrollloading">
+		<div id="scrollingsvg"></div>
+	</div>
+<script>
+	if(user_email == 'msrkhokoncse@gmail.com' 
+	|| user_email == 'anwar@ohs.global'
+	|| user_email == 'maher@ohs.global'
+	|| user_email == 'mahfuzak08@gmail.com'
+	|| user_email == 'ahn.nayeem@gmail.com'
+	|| user_email == 'mahfuz.citi@gmail.com'
+	|| user_email == 'george.jsons@gmail.com'
+	|| user_email == 'himel62270@gmail.com'
+	){
+	// 	$("#hayvenFilePage").show();
+		$("#task_assignment").show();
+	}
+	function extendImage() {
+		$('.image-popup-slider').hide();
+		$('.image-extend-popup-slider').show();
+	}
+
+	function shrinkImage() {
+		$('.image-extend-popup-slider').hide();
+		$('.image-popup-slider').show();
+	}
+
+	function closeExtendSlider() {
+		$('.image-extend-popup-slider').hide();
+		$('.image-popup-slider').show();
+	}
+</script>
+<script>
+
+	/* Unread messages notification */
+	var total_unread_count = 0;
+	var display_show_hide_unread_bar = (total_unread_count) =>{
+		var totalUnreadCount = 0;
+		$.each($('.side_bar_list_item .unreadMsgCount'),function(k,v){
+			if($(v).html() !== ''){
+				totalUnreadCount = totalUnreadCount + Number($(v).html())
+			}
+
+		})
+
+		if(totalUnreadCount>0){
+			$(".scroll_unreadMsg").show();
+			if(totalUnreadCount==1){
+				$(".scroll_unreadMsg>h5").html('<span>'+ totalUnreadCount +'</span> new message');
+			}else{
+				$(".scroll_unreadMsg>h5").html('<span>'+ totalUnreadCount +'</span> new messages');
+			}
+		}if(totalUnreadCount == NaN){
+			$(".scroll_unreadMsg>h5>span").html("");
+			$(".scroll_unreadMsg").hide();
+		}
+		if(totalUnreadCount == 0){
+			$(".scroll_unreadMsg>h5>span").html("");
+			$(".scroll_unreadMsg").hide();
+		}
+		// if(total_unread_count>0){
+		// 	$(".scroll_unreadMsg").show();
+		// 	if(total_unread_count==1){
+		// 		$(".scroll_unreadMsg>h5").html('<span>'+ total_unread_count +'</span> new message');
+		// 	}else{
+		// 		$(".scroll_unreadMsg>h5").html('<span>'+ total_unread_count +'</span> new messages');
+		// 	}
+		// }if(total_unread_count == NaN){
+		// 	$(".scroll_unreadMsg>h5>span").html("");
+		// 	$(".scroll_unreadMsg").hide();
+		// }
+		// if(total_unread_count == 0){
+		// 	$(".scroll_unreadMsg>h5>span").html("");
+		// 	$(".scroll_unreadMsg").hide();
+		// }
+	};
+	/* End Unread messages notification */
+</script>
+
+<script src="/javascripts/socket-client-side.js"></script>
+<script src="/javascripts/socket-calling.js"></script>
+<script src="/javascripts/localstorage_fun.js"></script>
+<script src="/javascripts/plugins/JSzip.js"></script>
+<script src="/javascripts/plugins/jszip-utils.js"></script>
+<!-- <script src="/javascripts/plugins/quill.js"></script> -->
+<script src="/javascripts/basic_connect.js"></script>
+<script src="/javascripts/socket_basic_connect.js"></script>
+<script src="/javascripts/basic_connect_f_d.js"></script>
+<script src="/javascripts/jQuery/jquery-ui.min.js"></script>
+<script src="/javascripts/timepicki.js"></script>
+<script src="/javascripts/plugins/in-view.min.js"></script>
+<script>
+	if(getCookie("reloading_page") == "1"){
+		$('body').addClass('sp_popup_open'); 
+		$("#reloading_page").show();
+		setCookie("reloading_page", "0");
+	}
+	var login_total = '<%= login_total %>';
+	//console.log(874,login_total)
+	if(parseInt(login_total) == 0 && ! has_permission(user_id, GUEST)){
+		start_conversation('notification');
+	}else{
+		start_conversation_onload('<%= conv_id %>', <%- JSON.stringify(conv_history) %>);
+	}
+	if(has_permission(user_id, COVID) || has_permission(user_id, COVID_ADMIN) || has_permission(user_id, COVID_STUFF)){
+		$('#covidClickItem').show();
+	}else{
+		$('#covidClickItem').hide();
+	}
+
+	/*
+		File server certificate was not allowed yet,
+		then it fire a new popup window, and show the certificate for allowing it.
+	*/
+	$.get('/s3Local/listOfBuckets', function(rep){
+		if(rep.status !== true){
+			console.log("Bucket not found: ", rep);
+		}else{
+			console.log(760, rep);
+		}
+	});
+
+	function inviewfun(){
+		inView('.msg_per_img_div').on( 'enter', function( figure ) {
+			var img = figure.querySelector( '.blazy' );
+			// console.log(1123,img)
+			if(img !== null){
+				if (  'undefined' !== typeof img.dataset.src ) {
+					figure.classList.add( 'is-loading' );
+					newImg = new Image();
+					newImg.src = img.dataset.src;
+					newImg.dataset.src = img.dataset.src;
+					var v = img.dataset.src;
+					var namespl = img.dataset.src.split('/');
+					var fileName = namespl[namespl.length - 1];
+					var extspl = fileName.split('.');
+					var f_ext = extspl[extspl.length - 1];
+					var org_namespl = fileName.split('@');
+					var org_name = img.dataset.originalname;
+					var filesize = img.dataset.filesize;
+					var id = img.dataset.fileid;
+					newImg.dataset.msg = img.dataset.msg;
+					newImg.dataset.sender_name = img.dataset.sender_name;
+					var show_delete_btn = img.dataset.sender_name == user_fullname;
+					newImg.dataset.sender_img = img.dataset.sender_img;
+					newImg.setAttribute('onclick', 'showImageSlider(event, this, \''+filesize+'\')');
+					newImg.setAttribute('data-originalname', org_name);
+					newImg.setAttribute('class', 'img_attach _only_img');
+					newImg.setAttribute('view_type','for_msg');
+					newImg.style.cssText = 'width:100%;';
+					newImg.addEventListener( 'load', function() {
+						// var w = this.width;
+						// var h = this.height;
+						// var r = gcd (w, h);
+						// if(this.height <= 200){
+
+						// 	$(this).css({'width':this.width+'px','height':'100%'});
+						// }
+						if($('#mediaFilePreview').is(':visible')){
+							var maxWidth = 250; // Max width for the image
+							var maxHeight = 200;    // Max height for the image
+						}else{
+							var maxWidth = 350; // Max width for the image
+							var maxHeight = 250;    // Max height for the image
+						}
+						var ratio = 0;  // Used for aspect ratio
+						var width = this.width;    // Current image width
+						var height = this.height;  // Current image height
+
+
+						if(width < 150){
+							$(this).attr('smallerImg', width);
+							$(figure).attr('smallerImg', width);
+						}
+						// Check if the current width is larger than the max
+						if(width > maxWidth || height > maxHeight){
+							if(height > width){
+								if(maxWidth > width){
+									//$(this).css({'width':this.width+'px','height':this.height+'px'});
+									//$(this).css({'transform': 'unset','top':'unset'});
+								}else{
+									//ratio = maxWidth / width;
+									//$(this).css("width", maxWidth);
+									//$(this).css("height", height * ratio);
+									//$(this).css({'transform': 'unset','top':'unset'});
+								}
+							}else{
+								if(width > maxWidth && height > maxHeight){
+									ratio = maxHeight / height;   // get ratio for scaling image
+									//$(this).css("width", width * ratio); // Set new width
+									//$(this).css("height", maxHeight);  // Scale height based on ratio
+								}else if(height > maxHeight){
+									// $(this).css({'width':this.width+'px','height':this.height+'px'});
+								}else if(width > maxWidth){
+									// $(this).css({'width':this.width+'px','height':this.height+'px'});
+								}
+							}
+
+							// // Check if current height is larger than max
+							// if(height >= maxHeight){
+							// 	ratio = maxHeight / height; // get ratio for scaling image
+							// 	$(this).css("height", maxHeight);   // Set new height
+							// 	$(this).css("width", width * ratio);    // Scale width based on ratio
+							// 	width = width * ratio;    // Reset width to match scaled image
+							// 	height = height * ratio;    // Reset height to match scaled image
+							// }
+							height = height * ratio;    // Reset height to match scaled image
+							width = width * ratio;    // Reset width to match scaled image
+						}else{
+							$(this).css({'width':this.width+'px','height':this.height+'px'});
+						}
+						var child = this;
+						var xxx = org_name + Date.now();
+						var classN = xxx.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');
+						var areaVal = 100;
+						$(figure).find( '.meter' ).css('width',areaVal+'%').attr('data-value',areaVal);
+
+
+						setTimeout( function() {
+							figure.classList.remove( 'progressImg' );
+							$(figure).find( '.meter' ).remove();
+							figure.innerHTML = '';
+							figure.appendChild( child );
+							figure.classList.remove( 'is-loading' );
+							figure.classList.add( 'is-loaded' );
+							// var html  = '<div class="file-name"><span class="name_span">'+org_name+'</span><span class="fileSize">'+ filesize +'</span></div>';
+							var fileTag = [];
+							var tagDesign = '';
+							var file_tbl_id = img.dataset.id;
+							var tooltipcount = 0;
+							var useLength = 0;
+							if(img.dataset.list != ""){
+								fileTag = img.dataset.list.split(',');
+								file_tbl_id = img.dataset.id;
+								var file_dataAll = {};
+								for(file_data of per_conv_all_files){
+									if(file_data.id == file_tbl_id){
+										file_dataAll = file_data;
+									}
+								}
+								tagDesign = gethtmlForFileTag(file_tbl_id,fileTag,file_dataAll);
+								// $.each(allUserTagList,function(k,v){
+								// 	if(fileTag.indexOf(v.tag_id) > -1){
+								// 		// if(useLength < 3){
+								// 			// tagDesign += '<div class="tag_design">'+v.title+'</div>';
+											
+								// 			// tagDesign = '<div class="img_action tag_ico active" onclick="viewOnlyFileTag(event,this,\''+fileName+'\')">('+(useLength + 1)+')</div>';
+								// 			useLength++;
+								// 		// }else{
+								// 			tooltipcount ++;
+								// 		// }
+								// 	}
+								// })
+							}
+							// if(useLength > 0){
+							// 	// tagDesign += '<span class="moreTooltipBtn">+'+tooltipcount+' more</span>'
+							// 	tagDesign += '<div class="tag_toolTip for_tag" data-pos="top">'
+							// 	// html += 	'<span class="tooltip_close" onclick="tooltip_close()"></span>'
+							// 	tagDesign += 	'<div class="tooltip_body">'
+							// 	useLength = 0;
+							// 	$.each(allUserTagList,function(k,v){
+							// 		if(fileTag.indexOf(v.tag_id) > -1){
+							// 			// if(useLength > 2){
+							// 				tagDesign += '<li >'+v.title+(v.tag_type == 'public' ? '(public)':'')+' </li>';
+							// 			// }
+							// 			useLength++;
+							// 		}
+							// 	});
+							// 	tagDesign += 	'</div>'
+							// 	tagDesign += '</div>'
+							// }
+							var html  = '';
+							if(file_tbl_id != ""){
+								// console.log(1264,file_tbl_id)
+								html += '<div class="tag_container" id="oneFileTag'+file_tbl_id+'">'+tagDesign+'</div>';
+							}
+							html  += '<div class="per_img_hover_opt">';
+							html += 		'<p class="img_action view_ico" onclick="viewImgHov(this,\'message\')" data-balloon="Preview" data-balloon-pos="left"><img src="/images/basicAssets/view.svg" alt=""/></p>';
+							// html += 		'<p class="img_action download_ico" data-balloon="Download" data-balloon-pos="left">';
+							// html +=         	'<a download="'+ org_name +'" href="/alpha2/download/' + id +'" target="_blank" href="' + v + '">';
+							// html +=             '<img src="/images/basicAssets/Download.svg" alt=""/>';
+							// html +=             '</a>';
+							// html +=         '</p>';
+							html += 		'<p class="img_action download_ico" onclick="downloadAnyFile(event, this)" data-href="' + v + '" file-name="'+org_name +'" data-balloon="Download" data-balloon-pos="left">';
+							html += 		'		<img src="/images/basicAssets/Download.svg" alt=""/>';
+							html += 		'</p>';
+							html += 		'<p class="img_action tag_ico" data-balloon="Tag" data-balloon-pos="left"  onclick="viewOnlyFileTag(event,this,\''+file_tbl_id+'\',true)"><img style="width:16px;" src="/images/basicAssets/custom_not_tag.svg" alt=""/></p>';
+							html += 		'<p class="img_action forward_ico" data-balloon="forward" data-balloon-pos="up"  onclick="forwardOneFileFun(event,this)" data-id="'+file_tbl_id+'"><img style="width:16px;" src="/images/basicAssets/shareHayven_white.svg" alt=""/></p>';
+							html += 		'<p class="img_action shareimg share_ico" data-balloon="Share" data-balloon-pos="left" onclick="viewShreImgPop(event,this)" data-value="'+v+'"><img src="/images/basicAssets/ShareIco.svg" alt=""/></p>';
+							if(show_delete_btn)
+								html += 		'<p class="img_action deleteitem delete_ico" data-balloon="Delete" data-balloon-pos="left" onclick="deleteItem(event, \'img\')" data-value="'+ v +'"></p>';
+							// html += 	'<p class="img_action" data-balloon="Delete" data-balloon-pos="up"  onclick="confirm_delete(this)"><img style="width:16px;" src="/images/basicAssets/delete-icon.svg" alt=""/></p>';
+							html += 	'</div>';
+							html += 	'<div class="name_span single_imgName" data-original="'+org_name+'" title="'+org_name+' ('+filesize+')">'+org_name+' ('+filesize+')</div>';
+							$(figure).append(html);
+							// getFileSize(v,classN);
+						}, 300 );
+					} );
+				}
+			}
+		});
+	}
+
+	function gcd (a, b) {
+		return (b == 0) ? a : gcd (b, a%b);
+	}
+	function getFileSize(url,classN) {
+		var fileSize = '';
+		var http = new XMLHttpRequest();
+		http.open('HEAD', url, false); // false = Synchronous
+		http.send(null); // it will stop here until this http request is complete
+		if (http.status === 200) {
+			fileSize = http.getResponseHeader('content-length');
+			bytesToSize(fileSize,classN);
+		}
+		// return fileSize;
+	}
+
+	function bytesToSize(bytes,classN) {
+		var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+		if (bytes == 0) return '0 Byte';
+		var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+		$('.'+classN).text('( '+Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]+' )');
+	}
+
+	var temp_img_msgid = [];
+	function confirm_delete(ele){
+		temp_img_msgid = [];
+		temp_img_msgid.push($(ele).closest(".msgs-form-users").attr("data-msgid"));
+		temp_img_msgid.push($(ele).closest('.msg_per_img_div').find('.img_attach').attr('data-src'));
+
+
+		// $('#warningPopup').show();
+		// $('#warningPopup').attr('data-type', 'confirm_delete_image');
+		// $('#warningPopup').attr('data-type', 'confirm_delete_image');
+		// $('#warningTitle').text("Delete");
+		// $('#warningMessage').text('Are you sure you want to delete this image?');
+		// $('.buttonCancel').text('No');
+		// $('.buttonAction').text('Yes');
+		// $('.buttonAction').css('border','none');
+
+		$('#imageDeleteWarning').show();
+		$('#imageDeleteWarning').attr('data-type', 'confirm_delete_image');
+		$('#imageDeleteWarning').attr('data-src',true);
+
+		$('#imageDeleteWarning .imgDiv img').attr('src',$(ele).closest('.msg_per_img_div').find('.img_attach').attr('data-src'));
+
+	}
+</script>
+
+<script>
+	$('.dueDate-input').click(function () {
+		$('#dueDatePickerDiv').show();
+	});
+
+	$('#dueDatePickerDiv').datepicker({
+		monthNamesShort: $.datepicker.regional["en"].monthNames,
+		inline: true,
+		altField: '.dueDate-input',
+		dateFormat: "dd-mm-yy",
+		changeMonth: true,
+		// changeYear: true,
+		dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+		onSelect: function() {
+            if (!$('#n_ToDo_item').is(':visible')) {
+                if (coowner.indexOf(user_id) > -1 || $('#actCre').val() == user_id) {
+                    if ($('#updateAction').val() !== '') {
+                        const activity = new Activity();
+                        activity.activityId = $('#updateAction').val();
+                        activity.clusteringKey = $('#actCre').val();
+                        activity.activityUpdateData = $("#dueDatePicker").val();
+                        activity.activityType = 'Task';
+                        activity.activityUpdateType = 'duedate';
+
+                        activity.activityUpdate((response) => {
+                            // console.log(response);
+                        });
+                    }
+                }
+            }
+        }
+	});
+
+	var allMouseUp = () => {
+		$(document).mouseup(function (e) {
+			var dueDatePickerDiv = $('#dueDatePickerDiv');
+			if (dueDatePickerDiv.is(':visible')) {
+				if (!dueDatePickerDiv.is(e.target) && dueDatePickerDiv.has(e.target).length === 0) {
+					dueDatePickerDiv.hide();
+					$('#dueDatePicker').css('pointer-events','auto');
+				}
+			}
+
+		});
+	}
+	allMouseUp();
+
+	var checklistiTEM = [];
+	var sharedMemberList = [];
+	var currentMemberList = [];
+	var viewMemberImg = [];
+	var checkedList = {};
+
+
+
+$('.share_textbox').on('click', function() {
+	var value = $(this).val();
+	if(value == 0){
+		$('.suggested-type-list').show();
+		$('#createChannelContainer .submitBtn').hide();
+		$(".inputGroup2 .suggested-list li.showEl").removeClass('selected');
+		$(".inputGroup2 .suggested-list li.showEl:first").addClass('selected default');
+		$('.suggested-type-list .os-viewport').animate({ scrollTop: 0 }, 1);
+	}
+	$('.suggested-list').html("");
+    suggestedUserList();
+    popupMouseEnter();
+});
+
+function typeCheck(type) {
+	switch (type) {
+		case 'jpeg':
+		case 'jpg':
+		case 'png':
+		case 'gif':
+		case 'svg':
+			return 'img';
+			break;
+		case 'mp3':
+			return 'ado';
+			break;
+		case 'm4v':
+		case 'mpg':
+		case 'avi':
+		case 'mp4':
+			return 'vdo';
+			break;
+		default:
+			return 'other';
+			break;
+	}
+}
+
+
+var shareThisMember = (dataID, imSrc) => {
+    if (sharedMemberList.indexOf(dataID) == -1) {
+        sharedMemberList.push(dataID);
+        $('#toDoMember' + dataID + '').remove();
+        clearMemberSearch();
+        $('#sharePeopleList').show();
+        if (sharedMemberList.length < 5) {
+            viewMemberImg.push(dataID);
+            $('#sharePeopleList .ownerThisToDo').after('<img onclick="viewShareList(event)" src="'+ file_server +'profile-pic/Photos/' + imSrc + '" data-uuid="' + dataID + '" class="sharedIMG memberImg' + dataID + '">');
+        }
+
+        if (sharedMemberList.length > 4) {
+            $('#sharePeopleList span').show();
+            $('#sharePeopleList span').text('+' + (sharedMemberList.length - 4));
+        }
+    }
+}
+
+var viewShareList = (event) => {
+	var totalMember = sharedMemberList.length;
+	$('#memberListBackWrap').show();
+	$('#memberListBackWrap').html("");
+	var html = '<div class="adminContainer">';
+			html += '<div class="closeBackwrap" onclick="closeAllPopUp()" data-balloon="Close" data-balloon-pos="up"><img src="/images/basicAssets/close_button.svg"></div>';
+			html += '<div class="label">';
+				html += '<h1 class="label_Title">Members </h1>';
+				html += '<h1 class="list_Count">(<span>' + totalMember + '</span>)</h1>';
+			html += '</div>';
+			html += '<input type="text" class="searchMember" placeholder="Search by name" onkeyup="searchMember(event,$(this).val());">';
+			html += '<span class="remove searchClear"></span>';
+			html += '<div class="suggest_Container overlayScrollbars " style="display: block;">';
+				html += '<ul class="suggested-list">';
+				var user_list = _.orderBy(allUserdata[0].users, ["fullname"], ["asc"]);
+				$.each(user_list, function (ky, va) {
+					if (sharedMemberList.indexOf(va.id) !== -1) {
+						if(user_id == va.id){
+							html += '<li class="showEl creatorThisTodo">';
+								html += '<div class="list" id="member' + va.id + '">';
+									html += '<img src="'+ file_server + 'profile-pic/Photos/' + va.img + '">';
+									html += '<span class="online_' + va.id + ' ' + (onlineUserList.indexOf(va.id) === -1 ? "offline" : "online") + '"></span>';
+									html += '<h1 class="memberName">' + va.fullname + '</h1>';
+									html += '<span class="creator">Owner</span>';
+								html += '</div>';
+							html += '</li>';
+						}
+					}
+				});
+				$.each(user_list, function (ky, va) {
+					if (sharedMemberList.indexOf(va.id) !== -1) {
+						if(user_id !== va.id){
+							html += '<li class="showEl toDoMemberC'+va.id+'" onclick="removeMemberConnectTodo(uuID = \'' + va.id + '\', img = \''+va.img+'\', fullName = \''+va.fullname+'\')">';
+								html += '<div class="list" id="member' + va.id + '">';
+									html += '<img src="'+ file_server + 'profile-pic/Photos/' + va.img + '">';
+									html += '<span class="online_' + va.id + ' ' + (onlineUserList.indexOf(va.id) === -1 ? "offline" : "online") + '"></span>';
+									html += '<h1 class="memberName" data-uuid="' + va.id + '">' + va.fullname + '</h1>';
+									html += '<span class="tagcheck forActive" onclick="removeMemberConnectTodo(uuID = \'' + va.id + '\', img = \''+va.img+'\', fullName = \''+va.fullname+'\')"></span>';
+								html += '</div>';
+							html += '</li>';
+						}
+					}
+				});
+				$.each(user_list, function (ky, va) {
+					if (sharedMemberList.indexOf(va.id) == -1) {
+						if(user_id !== va.id){
+							html += '<li class="toDoMemberC'+va.id+' showEl" onclick="addMemberConnectTodo(uuID = \'' + va.id + '\', img = \''+va.img+'\', fullName = \''+va.fullname+'\')"">';
+								html += '<div class="list" id="member' + va.id + '">';
+									html += '<img src="'+ file_server + 'profile-pic/Photos/' + va.img + '">';
+									html += '<span class="online_' + va.id + ' ' + (onlineUserList.indexOf(va.id) === -1 ? "offline" : "online") + '"></span>';
+									html += '<h1 class="memberName" data-uuid="' + va.id + '">' + va.fullname + '</h1>';
+								html += '</div>';
+							html += '</li>';
+						}
+					}
+				});
+				html += '</ul>';
+			html += '</div>';
+		html += '</div>';
+	overlayScrollbars();
+	$('#memberListBackWrap').append(html);
+	$('#memberListBackWrap .suggested-list li:first').addClass('selected default');
+	$('.searchMember').focus();
+	$('.remove.searchClear').on('click', function () {
+		$('.searchMember').val('');
+		$('.adminContainer li').show();
+		$(this).hide();
+	});
+	tooltipForBackWrap();
+	popupMouseEnter();
+}
+
+var addMemberConnectTodo = (uuID,img,fullName)=>{
+	$('.toDoMemberC'+uuID).remove();
+	var html = '<li class="showEl toDoMemberC'+uuID+'" onclick="removeMemberConnectTodo(uuID = \'' + uuID + '\', img = \''+img+'\', fullName = \''+fullName+'\')">';
+		html += 	'<div class="list" id="member' + uuID + '">';
+			html += 		'<img src="'+ file_server + 'profile-pic/Photos/' + img + '">';
+		html += 		'<span class="online_' + uuID + ' ' + (onlineUserList.indexOf(uuID) === -1 ? "offline" : "online") + '"></span>';
+		html += 		'<h1 class="memberName" data-uuid="' + uuID + '">' + fullName + '</h1>';
+		html += 		'<span class="tagcheck forActive" onclick="removeMemberConnectTodo(uuID = \'' + uuID + '\', img = \''+img+'\', fullName = \''+fullName+'\')"></span>';
+		html += 	'</div>';
+		html += '</li>';
+	$('.suggested-list .creatorThisTodo').after(html);
+
+	sharedMemberList.push(uuID);
+	if (sharedMemberList.length < 5) {
+        viewMemberImg.push(uuID);
+        $('#sharePeopleList .ownerThisToDo').after('<img onclick="viewShareList(event)" src="'+ file_server + 'profile-pic/Photos/' + img + '" data-uuid="' + uuID + '" class="sharedIMG memberImg' + uuID + '">');
+    }
+
+    if (sharedMemberList.length > 4) {
+        $('#sharePeopleList span').show();
+        $('#sharePeopleList span').text('+' + (sharedMemberList.length - 4));
+    }
+    popupMouseEnter();
+}
+
+var removeMemberConnectTodo = (uuID,img,fullName)=>{
+	removeA(sharedMemberList, uuID);
+	$('.toDoMemberC'+uuID).remove();
+	var html  = '<li class="toDoMemberC'+uuID+' showEl" onclick="addMemberConnectTodo(uuID = \'' + uuID + '\', img = \''+img+'\', fullName = \''+fullName+'\')"">';
+		html += 	'<div class="list" id="member' + uuID+ '">';
+			html += 		'<img src="'+ file_server + 'profile-pic/Photos/' + img + '">';
+		html += 		'<span class="online_' + uuID + ' ' + (onlineUserList.indexOf(uuID) === -1 ? "offline" : "online") + '"></span>';
+		html += 		'<h1 class="memberName" data-uuid="' + uuID+ '">' + fullName+ '</h1>';
+		html += 	'</div>';
+		html += '</li>';
+
+	if(viewMemberImg.indexOf(uuID) !== -1){
+        removeA(viewMemberImg, uuID);
+        $('.memberImg' + uuID + '').remove();
+        var newMember = '';
+        $.each(sharedMemberList, function(k,v){
+            if(viewMemberImg.indexOf(v) == -1){
+                if(viewMemberImg.length < 4){
+                    viewMemberImg.push(v);
+                    newMember = v;
+                }
+            }
+        });
+        var user_list = _.orderBy(allUserdata[0].users, ["fullname"], ["asc"]);
+        $.each(user_list, function (ky, va) {
+            if (newMember == va.id && newMember !== user_id) {
+                $('#sharePeopleList .ownerThisToDo').after('<img onclick="viewShareList(event)" src="'+ file_server + 'profile-pic/Photos/' + va.img + '" data-uuid="' + va.id + '" class="sharedIMG memberImg' + va.id + '">');
+            }
+        });
+    }
+    $('#viewMember' + uuID + '').remove();
+    $('#memberListBackWrap .list_Count').text('(' + sharedMemberList.length + ')');
+    $('#sharePeopleList span').text('+' + (sharedMemberList.length - 4));
+
+    if (sharedMemberList.length < 5) {
+        $('#sharePeopleList span').hide();
+    }
+	$('#memberListBackWrap .suggested-list').append(html);
+	popupMouseEnter();
+
+}
+
+function messageSetTimer(ele){
+	var msg_id = $(ele).attr('data-msg-id');
+	$('#setTimerModel').css('display','flex');
+	$('#setTimerModel').attr('data-set-id',msg_id);
+	$("#setTimerModel [name='removeTimer']").prop('checked', false);
+
+	$("#changeNameMe").html('Set timer for me');
+	$("#changeNameAll").html('Set timer for all');
+	$('#setTimerModel').removeClass('active');
+
+	// if($(ele).hasClass('active')){
+	// 	var time = $(ele).attr('data-time');
+	// 	$("#setTimerModel [name='removeTimer'][value='"+time+"']").closest('label').trigger('click');
+	// }else{
+	// 	$("#setTimerModel [name='removeTimer']").prop('checked', false);
+	// }
+}
+
+function addTimerMsg(ele){
+	var msg_id = $('#setTimerModel').attr('data-set-id');
+	var value =  $("#setTimerModel .radioItemInput[name='removeTimer']:checked").val();
+		if(value == 'ownTimerOption'){
+			value = $('#customTimerMuinutes').val()
+		}
+	if(msg_id !== ' '){
+		var newTime = moment(new Date().getTime()).add(value, 'minutes').valueOf();
+		socket.emit('updateMsgTimer',{conv_id:$('#roomIdDiv').attr('data-roomid'),msg_id:msg_id,unixTime:newTime.toString(),type:'add'},function(res){
+			
+			if(res.msg == 'success'){
+				$('.msg_id_'+msg_id).find('.user-msg .msg-timer.timer_msg').remove();
+				$('.msg_id_'+msg_id).find('.user-msg .remove-timer').remove();
+				// var design = '&nbsp;<span class="msg-timer timer_msg active" data-value="'+newTime+'" onclick="removeMsgTimer(this)" data-msg-id="'+msg_id+'" data-balloon="Remove Timer" data-balloon-pos="up"></span>';
+				var design = '&nbsp;<span class="msg-timer timer_msg active" data-value="'+newTime+'" data-msg-id="'+msg_id+'"></span>&nbsp;<span class="remove-timer" data-msg-id="'+msg_id+'"  onclick="removeMsgTimer(this)" data-balloon="Remove Timer" data-balloon-pos="up">Remove timer</span>';
+				$('.msg_id_'+msg_id).find('.user-msg .msg-time').after(design);
+				// $('.msg_id_'+msg_id).find('._msg_set_timer').removeClass('active');
+				// $('.msg_id_'+msg_id).find('._msg_set_timer').addClass('active');
+				// $('.msg_id_'+msg_id).find('._msg_set_timer').attr('data-time',value);
+				closeModal('setTimerModel');
+			}
+		});
+	}
+}
+
+function removeMsgTimer(ele){
+	var msg_id = $(ele).attr('data-msg-id');
+	if(msg_id !== ' '){
+		socket.emit('updateMsgTimer',{conv_id:$('#roomIdDiv').attr('data-roomid'),msg_id:msg_id,type:'remove'},function(res){
+			if(res.msg == 'success'){
+				$('.msg_id_'+msg_id).find('.user-msg .msg-timer.timer_msg').remove();
+				// $('.msg_id_'+msg_id).find('.user-msg .remove-timer').remove();
+			}
+		});
+	}
+}
+var user_list = _.orderBy(allUserdata[0].users, ["fullname"], ["asc"]);
+
+
+var allAddedUserid = [];
+
+$.each($('#pintul li'),function(k,v){
+	allAddedUserid.push($(v).attr('data-id'));
+})
+$.each($('#conversation_list_sidebar li'),function(k,v){
+	allAddedUserid.push($(v).attr('data-id'));
+})
+
+$.each(user_list,function(k,v){
+	if(allAddedUserid.indexOf(v.id) == -1){
+		var design = '<li data-id="'+v.id+'" onclick="createNewConv(this)" data-name="'+v.fullname+'" data-img="'+v.img+'"><span class=" offline online_'+v.id+' " style="left: 12px;"></span><span class=" usersName">'+v.fullname+'</span></li>';
+
+		$('#contactListItem').append(design);
+	}
+})
+
+socket.emit('getBUnit',{user_id:user_id},function(res){
+
+	if(res.status){
+	  allUnit = res.data;
+	  $('#business_unit').html("");
+	  $('#business_unitUpdate').html("");
+	  $('#business_unit').prepend('<option value="">Select a work category</option>');
+	  $('#business_unitUpdate').prepend('<option value="">Select a work category</option>');
+	  $.each(allUnit,function(k,v){
+	    $('#business_unit').append('<option value="'+v.unit_id+'">'+v.unit_name+'</option>');
+			$('#business_unitUpdate').append('<option value="'+v.unit_id+'">'+v.unit_name+'</option>');
+			if(v.unit_id == $("#roomIdDiv").attr('topic-unit')){
+				$('#topicTypeName').text(v.unit_name);
+			}
+		});
+		$('#business_unit').select2();
+		$('#business_unitUpdate').select2();
+	}
+});
+
+socket.emit('get_all_team', {user_id}, (rep)=>{
+	if(rep.status){
+		console.log(2224,rep.teams)
+		var ksid = $("#roomIdDiv").attr("data-keyspace");
+		allteams = rep.teams;
+		$("#allmyteamlist").find(".group_input").remove();
+		$.each(rep.teams, function(k, v){
+			if(v.participants.indexOf(user_id)>-1){
+				$('._subTitle_'+v.team_id).text(' @  '+v.team_title);
+				var html = '<div class="group_input">'+
+								'<label class="switchNav">'+
+									'<input onclick="onoffteam(event)" type="checkbox" id="myteamid'+ v.team_id +'" checked="checked">'+
+									'<span class="sliderNav round"></span>'+
+									'<span class="switchFor">'+ v.team_title +'</span>'+
+								'</label>'+
+							'</div>';
+				$("#allmyteamlist").append(html);
+				var html = '<div class="group_input">'+
+                            '<label class="switchNav">'+
+                                '<input onclick="$(\'#myteamid'+ v.team_id +'\').trigger(\'click\')" type="checkbox" id="myteamid_2nd'+ v.team_id +'" checked="checked">'+
+                                '<span class="sliderNav round"></span>'+
+                                '<span class="switchFor">'+ v.team_title +'</span>'+
+                            '</label>'+
+                        '</div>';
+					$("#myTeamAction").append(html);
+					
+				if(ksid == v.team_id) $("#conv_key").text('@ '+v.team_title);
+			}
+		});
+	}
+});
+</script>
+<script src="/javascripts/plugins/jquery.panzoom.js"></script>
+<script src="/javascripts/plugins/crypto-js.min.js"></script>
+<script>
+var mouse_click_start = "";
+var mouse_click_end = "";
+function call_panzoom(){
+	$(".image-popup-slider").css({"left":0, "top":0});
+	$(".fileSliderBackWrap .images-slide-body").css({"display":"block"});
+	var parentdiv = $(".images-slide-body");
+	var $pan = $("#panzoom").panzoom({
+		zoom: Number($("#zoomer").val()),
+		$zoomIn: $("#zoom-in"),
+		$zoomOut: $("#zoom-out"),
+		$zoomRange: $("#zoomer"),
+		$reset: $("#reset"),
+		startTransform: 'scale(1)',
+		maxScale: 2,
+		minScale: 1,
+		increment: 0.1,
+		contain: 'inside',
+		cursor: 'zoom-in',
+		animate: true
+	});
+
+	$pan.parent().on('mousewheel.focal DOMMouseScroll.focal onmousewheel.focal', function( e ) {
+		e.preventDefault();
+		var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+		// var delta = e.delta || e.originalEvent.wheelDelta;
+		var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+		$pan.panzoom('zoom', zoomOut, {
+			increment: 0.1,
+			focal: e
+		});
+	});
+
+	$pan.on("mousedown pointerdown MSPointerDown", function(e){
+		mouse_click_start = Number(new Date());
+		$(".images-slide-body>img").css("cursor", "grab");
+	});
+
+	$pan.on("touchend pointerup MSPointerUp", function(e){
+		mouse_click_end = Number(new Date());
+	});
+	$("#zoomer").css("pointer-events", "none");
+	reset_panzoom();
+}
+function reset_panzoom()
+{
+	$("#reset").trigger("click");
+}
+
+function zoom_in_out(){
+	// console.log(mouse_click_end - mouse_click_start);
+	if(mouse_click_end - mouse_click_start < 200){
+		if($('body').hasClass('altKey')){
+			$("#zoom-out").trigger("click");
+			$(".images-slide-body>img").css("cursor", "zoom-out");
+		}
+		else{
+			$("#zoom-in").trigger("click");
+			$(".images-slide-body>img").css("cursor", "zoom-in");
+		}
+	}
+	$(".images-slide-body>img").css("cursor", "zoom-in");
+}
+// var myitem = document.getElementById("panzoom");
+// if (myitem.addEventListener)
+// {
+//     // IE9, Chrome, Safari, Opera
+//     myitem.addEventListener("mousewheel", MouseWheelHandler, false);
+//     // Firefox
+// 	myitem.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+// }
+// // IE 6/7/8
+// else
+// {
+//     myitem.attachEvent("onmousewheel", MouseWheelHandler);
+// }
+
+// function MouseWheelHandler(e)
+// {
+//     // cross-browser wheel delta
+//     var e = window.event || e; // old IE support
+//     var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+// 	if(delta < 0){
+// 		$('body').addClass('altKey');
+// 	}
+// 	zoom_in_out();
+// 	$('body').removeClass('altKey');
+//     return false;
+// }
+
+// function deepdive(){
+// 	zoomlevel = zoomer.valueAsNumber;
+// 	hubblepic.css('transform','scale('+zoomlevel+')');
+// 	if(zoomlevel>1)
+// 		$(".reset").show();
+// 	else
+// 		$(".reset").hide();
+// 	var con_w = $(".images-slide-body").width();
+// 	var con_h = $(".images-slide-body").height();
+// 	$('.currentimg').draggable({
+// 		cursor: "grab",
+// 		scroll: false,
+// 		drag: function(event, ui){
+// 			logn_click = true;
+// 			$(".images-slide-body>img").css("cursor", "grab");
+// 			var Stoppos = $(this).position();
+// 			var l = Math.round(Stoppos.left);
+// 			var t = Math.round(Stoppos.top);
+// 			var w = Math.round($('.currentimg')[0].getBoundingClientRect().width);
+// 			var h = Math.round($('.currentimg')[0].getBoundingClientRect().height);
+// 			// Item drag into x axis
+// 			if(ui.originalPosition.left > ui.position.left){
+// 				// console.log("Go left", t, l);
+// 				if(w < con_w){
+// 					if(l<5) {return false;}
+// 				}
+// 				else{
+// 					if(l+w+5 < con_w) {return false;}
+// 				}
+// 			}
+// 			else{
+// 				// console.log("Go right", t, l);
+// 				if(w < con_w){
+// 					if(w+l+5 > con_w) {return false;}
+// 				}
+// 				else{
+// 					if(l > 5) {return false;}
+// 				}
+// 			}
+// 			// Item drag into y axis
+// 			if(ui.originalPosition.top > ui.position.top){
+// 				// console.log("Go up", t, l);
+// 				if(h > con_h){
+// 					if(con_h-h > t) {return false;}
+// 				}else{
+// 					if(t < 5) {return false;}
+// 				}
+// 			}
+// 			else{
+// 				// console.log("Go down", t, l);
+// 				if(h > con_h){
+// 					// if(con_h-h > t) {return false;}
+// 					if(t > 5) {return false;}
+// 				}
+// 				else{
+// 					// console.log(h, t, con_h)
+// 					if(t+h+5 > con_h) {
+// 						return false;
+// 					}
+// 				}
+// 			}
+// 		},
+// 		// stop: function(event, ui) {
+// 		// 	setTimeout(function(){logn_click=false;}, 2000);
+// 		// }
+//     });
+// }
+
+function deleteItem(event, type)
+{
+	$("#delete_attach").css('display','flex');
+	var location = $(event.target).attr("data-value").replace(file_server, "");
+	var msgid = $(event.target).closest(".msgs-form-users").attr("data-msgid");
+	if(typeof msgid === 'undefined'){
+		var msgid = $(event.target).attr("msg-id");
+	}
+	if(typeof msgid === 'undefined'){
+		var msgid = $(event.target).closest('.main-thread-msgs').attr("data-msgid");
+	}
+	// console.log(1628, msgid, type, location);
+	$("#delete_attach").attr("data-msgid", msgid);
+	$("#delete_attach").attr("data-location", location);
+	$("#delete_attach").attr("data-type", type);
+}
+function delete_attach(){
+	var msgid = $("#delete_attach").attr("data-msgid");
+	var location = [$("#delete_attach").attr("data-location")];
+	var type = $("#delete_attach").attr("data-type");
+	switch(type){
+		case "img":
+			var files = {"imgfile": location};
+			break;
+		case "video":
+			var files = {"videofile": location};
+			break;
+		case "audio":
+			var files = {"audiofile": location};
+			break;
+		case "other":
+			var files = {"otherfile": location};
+			break;
+	}
+	
+	socket.emit("delete_attach", {msgid, attach_files: files, need_id: true, type: type}, (res)=>{
+		// console.log(1615, res);
+		if(res.status){
+			// drawDeleteText(msgid);
+			close_delete_attach();
+			var filename_for_unlink = location[0];
+			var bucket_name = filename_for_unlink.substring(0, filename_for_unlink.indexOf("/"));
+            var attch_list = JSON.stringify([filename_for_unlink.substring(filename_for_unlink.indexOf("/") + 1)]);
+            $.ajax({
+                url: "/s3Local/deleteObjects",
+                type: "POST",
+                data: {bucket_name, attch_list},
+                dataType: 'json',
+                beforeSend: function(){
+                    // console.log(1815, per_conv_all_files);
+                    // console.log(1683, bucket_name, attch_list);
+                },
+                success: function(res){
+					// console.log(1819, per_conv_all_files);
+					for(var i=0; i<per_conv_all_files.length; i++){
+						if(per_conv_all_files[i].location == filename_for_unlink){
+							per_conv_all_files.splice(i, 1);
+							break;
+						}
+					}
+					$('.fil_attach[data-file_name="'+filename_for_unlink+'"]').replaceWith('<div class="deleted_class " placeholder="Item already deleted" data-status="deleted"></div>' );
+					// console.log(1826, per_conv_all_files);
+					// console.log(location[0],$('tr[data-location="'+location[0]+'"]'))
+					$('tr[data-location="'+location[0]+'"]').remove();
+					// alert('dd');
+                    // console.log("Unlink successfully", res);
+                },
+                error: function(e){
+                    // console.log("Error in unlink: ", e);
+                }
+            });
+			// if(type == 'img'){
+			// 	$.each($(".msg_id_"+msgid).find(".msg_per_img_div .img_attach"), function(k, v){
+			// 		// console.log(1641, v);
+			// 		// console.log(1642, file_server + location[0]);
+			// 		if($(v).attr('src') == file_server + location[0]){
+			// 			$(this).closest(".msg_per_img_div").attr("data-status", "deleted").html('<img class="img_attach" style="width:100%; max-height:200px" src="'+ file_server +'common/file-removed-message.png">');
+			// 		}
+			// 	});
+			// 	if($("#mediaFilePreview").css("display") == 'block'){
+			// 		$.each($(".all-images"), function(k,v){
+			// 			if($(v).attr("data-src") == file_server + location[0]){
+			// 				if($(this).closest('.date-by-images').children().length == 2){
+			// 					$(this).closest('.date-by-images').remove();
+			// 				}else{
+			// 					$(this).remove();
+			// 				}
+			// 			}
+			// 		});
+			// 		reduce_counter("mediaImgsTab", "Images");
+			// 	}
+			// }
+			// else if(type == 'video'){
+			// 	$.each($(".msg_id_"+msgid).find(".video_container .lightbox "), function(k, v){
+			// 		if($(v).attr('data-src') == file_server + location[0]){
+			// 			$(this).closest(".video_container").addClass("msg_per_img_div").removeClass("video_container").attr("data-status", "deleted").html('<img class="img_attach" style="width:100%; max-height:200px" src="'+ file_server +'common/file-removed-message.png">');
+			// 		}
+			// 	});
+			// 	if($("#mediaFilePreview").css("display") == 'block'){
+			// 		$.each($(".all-videos"), function(k,v){
+			// 			if($(v).find(".hyvenCheckbox").attr("data") == file_server + location[0]){
+			// 				if($(this).closest('.date-by-videos').children().length == 2){
+			// 					$(this).closest('.date-by-videos').remove();
+			// 				}else{
+			// 					$(this).remove();
+			// 				}
+			// 			}
+			// 		});
+			// 		reduce_counter("mediaViedeosTab", "Videos");
+			// 	}
+			// }
+			// else if(type == 'other' || type == 'audio'){
+			// 	$.each($(".msg_id_"+msgid).find(".fil_attach"), function(k, v){
+			// 		if($(v).attr('data-src') == file_server + location[0]){
+			// 			$(this).closest(".fil_attach").addClass("msg_per_img_div").removeClass("fil_attach").attr("data-status", "deleted").html('<img class="img_attach" style="width:100%; max-height:200px" src="'+ file_server +'common/file-removed-message.png">');
+			// 		}
+			// 	});
+			// 	if($("#mediaFilePreview").css("display") == 'block'){
+			// 		if(type == 'audio'){
+			// 			$.each($(".all-audios"), function(k,v){
+			// 				if($(v).find(".hyvenCheckbox").attr("data") == file_server + location[0]){
+			// 					if($(this).closest('.date-by-audios').children().length == 2){
+			// 						$(this).closest('.date-by-audios').remove();
+			// 					}else{
+			// 						$(this).remove();
+			// 					}
+			// 				}
+			// 			});
+			// 			reduce_counter("mediaAudiosTab", "Audios");
+			// 		}else{
+			// 			$.each($(".all-files"), function(k,v){
+			// 				if($(v).attr("data-src") == file_server + location[0]){
+			// 					if($(this).closest('.date-by-files').children().length == 2){
+			// 						$(this).closest('.date-by-files').remove();
+			// 					}else{
+			// 						$(this).remove();
+			// 					}
+			// 				}
+			// 			});
+			// 			reduce_counter("mediaFilesTab", "Files");
+			// 		}
+			// 	}
+			// }
+			// else{
+			// 	window.location.reload();
+			// }
+		}
+	});
+}
+function reduce_counter(id, t){
+	var a = $("#"+id).text();
+	var b = Number(a.replace(/[a-zA-Z()]/g, "")) - 1;
+	$("#"+id).html("<a>"+ t +" ("+ b +")</a>");
+}
+socket.on('attachment_delete', function(data){
+	console.log(2569,data);
+	drawDeleteText(data.msgid);
+	if(data.type == 'img'){
+		$.each($(".msg_id_"+data.msgid).find(".msg_per_img_div .img_attach"), function(k, v){
+			// console.log(1641, v);
+			// console.log(1642, file_server + location[0]);
+			if($(v).attr('src') == file_server + data.location){
+				$(this).closest(".msg_per_img_div").remove();
+				// $(this).closest(".msg_per_img_div").attr("data-status", "deleted").html('<img class="img_attach" style="width:100%; max-height:200px" src="'+ file_server +'common/file-removed-message.png">');
+			}
+		});
+		if($("#mediaFilePreview").css("display") == 'block'){
+			$.each($(".all-images"), function(k,v){
+				if($(v).attr("data-src") == file_server + data.location){
+					if($(this).closest('.date-by-images').children().length == 2){
+						$(this).closest('.date-by-images').remove();
+					}else{
+						$(this).remove();
+					}
+				}
+			});
+			reduce_counter("mediaImgsTab", "Images");
+		}
+	}
+	else if(data.type == 'video'){
+		$.each($(".msg_id_"+data.msgid).find(".video_container .lightbox "), function(k, v){
+			if($(v).attr('data-src') == file_server + data.location){
+
+				$(this).closest(".video_container").remove();
+				//$(this).closest(".video_container").addClass("msg_per_img_div").removeClass("video_container").attr("data-status", "deleted").html('<img class="img_attach" style="width:100%; max-height:200px" src="'+ file_server +'common/file-removed-message.png">');
+			}
+		});
+		if($("#mediaFilePreview").css("display") == 'block'){
+			$.each($(".all-videos"), function(k,v){
+				if($(v).find(".hyvenCheckbox").attr("data") == file_server + data.location){
+					if($(this).closest('.date-by-videos').children().length == 2){
+						$(this).closest('.date-by-videos').remove();
+					}else{
+						$(this).remove();
+					}
+				}
+			});
+			reduce_counter("mediaViedeosTab", "Videos");
+		}
+	}
+	else if(data.type == 'other' || data.type == 'audio'){
+		$.each($(".msg_id_"+data.msgid).find(".fil_attach"), function(k, v){
+			if($(v).attr('data-src') == file_server + data.location){
+				$(this).closest(".fil_attach").remove();
+				// $(this).closest(".fil_attach").addClass("msg_per_img_div").removeClass("fil_attach").attr("data-status", "deleted").html('<img class="img_attach" style="width:100%; max-height:200px" src="'+ file_server +'common/file-removed-message.png">');
+			}
+		});
+		if($("#mediaFilePreview").css("display") == 'block'){
+			if(type == 'audio'){
+				$.each($(".all-audios"), function(k,v){
+					if($(v).find(".hyvenCheckbox").attr("data") == file_server + data.location){
+						if($(this).closest('.date-by-audios').children().length == 2){
+							$(this).closest('.date-by-audios').remove();
+						}else{
+							$(this).remove();
+						}
+					}
+				});
+				reduce_counter("mediaAudiosTab", "Audios");
+			}else{
+				$.each($(".all-files"), function(k,v){
+					if($(v).attr("data-src") == file_server + data.location){
+						if($(this).closest('.date-by-files').children().length == 2){
+							$(this).closest('.date-by-files').remove();
+						}else{
+							$(this).remove();
+						}
+					}
+				});
+				reduce_counter("mediaFilesTab", "Files");
+			}
+		}
+	}
+	else{
+		window.location.reload();
+	}
+});
+function close_delete_attach(){
+	$("#delete_attach").hide();
+	$('.delete_msg_div').removeAttr('style').removeClass('ui-draggable').removeClass('ui-draggable-handle');
+}
+if(cpa == "true" && login_total > 0){
+	setTimeout(function(){
+		$('#changePwdPopup').css('display','flex');
+		reset_change_password_form();
+		$('#changePwdPopup').find("form").prepend("<p class='defpass' style='color:#900'>Please change your default password and make it strong.</p>");
+	}, 2000);
+}
+if(cpmsg != ''){
+	alert(cpmsg);
+}
+</script>
+<a href="" id="triggerElement" style="display: none"></a>
+<div id="callnotificationCloseLabel" class="chat_foot_msg">
+<!--Showing <span id="counterCallhistory">23</span> call record(s) from this channel. Click the close button to go back.--> 
+	Showing call record(s) from this channel. Click the close button to go back.
+	<span class="closehistoryCall" onclick="$('#callNotifications').trigger('click')"></span>
+</div>
+<div id="workFreeliToaster">
+	<div class="msg_toaster"></div>
+	<div class="close_toaster" onclick="showFreeliToaster(false)"> </div>
+	<div class="close_checklist_toaster" onclick="$('#conv'+conversation_id).click()"> </div>
+</div>
+
+<%- include('layouts/basic_foot') %>
+
+
+<div class="intercom-composer-popover intercom-composer-emoji-popover">
+    <div class="intercom-emoji-picker">
+    	<div class="remove" onclick="hide_emoji()" style="width: 18px; height: 18px;background-position: 50%; top: 11px; position: absolute; right: 4px;"> </div>
+        <div class="intercom-composer-popover-header"><input class="intercom-composer-popover-input" placeholder="Search" value="" /></div>
+        <div class="intercom-composer-popover-body-container">
+            <div class="intercom-composer-popover-body">
+                <div class="intercom-emoji-picker-groups">
+                    <div class="intercom-emoji-picker-group">
+                        <div class="intercom-emoji-picker-group-title">Frequently used</div>
+                        <div id="AllrecentEmoji"></div>
+                    </div>
+                    <div class="intercom-emoji-picker-group">
+                        <div class="intercom-emoji-picker-group-title">People</div>
+                        <span class="intercom-emoji-picker-emoji" title="smile">😄</span><span class="intercom-emoji-picker-emoji" title="smiley">😃</span><span class="intercom-emoji-picker-emoji" title="grinning">😀</span>
+                        <span class="intercom-emoji-picker-emoji" title="blush">😊</span><span class="intercom-emoji-picker-emoji" title="wink">😉</span><span class="intercom-emoji-picker-emoji" title="heart_eyes">😍</span>
+                        <span class="intercom-emoji-picker-emoji" title="kissing_heart">😘</span><span class="intercom-emoji-picker-emoji" title="kissing_closed_eyes">😚</span>
+                        <span class="intercom-emoji-picker-emoji" title="kissing">😗</span><span class="intercom-emoji-picker-emoji" title="kissing_smiling_eyes">😙</span>
+                        <span class="intercom-emoji-picker-emoji" title="stuck_out_tongue_winking_eye">😜</span><span class="intercom-emoji-picker-emoji" title="stuck_out_tongue_closed_eyes">😝</span>
+                        <span class="intercom-emoji-picker-emoji" title="stuck_out_tongue">😛</span><span class="intercom-emoji-picker-emoji" title="flushed">😳</span><span class="intercom-emoji-picker-emoji" title="grin">😁</span>
+                        <span class="intercom-emoji-picker-emoji" title="pensive">😔</span><span class="intercom-emoji-picker-emoji" title="relieved">😌</span><span class="intercom-emoji-picker-emoji" title="unamused">😒</span>
+                        <span class="intercom-emoji-picker-emoji" title="disappointed">😞</span><span class="intercom-emoji-picker-emoji" title="persevere">😣</span><span class="intercom-emoji-picker-emoji" title="cry">😢</span>
+                        <span class="intercom-emoji-picker-emoji" title="joy">😂</span><span class="intercom-emoji-picker-emoji" title="sob">😭</span><span class="intercom-emoji-picker-emoji" title="sleepy">😪</span>
+                        <span class="intercom-emoji-picker-emoji" title="disappointed_relieved">😥</span><span class="intercom-emoji-picker-emoji" title="cold_sweat">😰</span>
+                        <span class="intercom-emoji-picker-emoji" title="sweat_smile">😅</span><span class="intercom-emoji-picker-emoji" title="sweat">😓</span><span class="intercom-emoji-picker-emoji" title="weary">😩</span>
+                        <span class="intercom-emoji-picker-emoji" title="tired_face">😫</span><span class="intercom-emoji-picker-emoji" title="fearful">😨</span><span class="intercom-emoji-picker-emoji" title="scream">😱</span>
+                        <span class="intercom-emoji-picker-emoji" title="angry">😠</span><span class="intercom-emoji-picker-emoji" title="rage">😡</span><span class="intercom-emoji-picker-emoji" title="triumph">😤</span>
+                        <span class="intercom-emoji-picker-emoji" title="confounded">😖</span><span class="intercom-emoji-picker-emoji" title="laughing">😆</span><span class="intercom-emoji-picker-emoji" title="yum">😋</span>
+                        <span class="intercom-emoji-picker-emoji" title="mask">😷</span><span class="intercom-emoji-picker-emoji" title="sunglasses">😎</span><span class="intercom-emoji-picker-emoji" title="sleeping">😴</span>
+                        <span class="intercom-emoji-picker-emoji" title="dizzy_face">😵</span><span class="intercom-emoji-picker-emoji" title="astonished">😲</span><span class="intercom-emoji-picker-emoji" title="worried">😟</span>
+                        <span class="intercom-emoji-picker-emoji" title="frowning">😦</span><span class="intercom-emoji-picker-emoji" title="anguished">😧</span><span class="intercom-emoji-picker-emoji" title="imp">👿</span>
+                        <span class="intercom-emoji-picker-emoji" title="open_mouth">😮</span><span class="intercom-emoji-picker-emoji" title="grimacing">😬</span><span class="intercom-emoji-picker-emoji" title="neutral_face">😐</span>
+                        <span class="intercom-emoji-picker-emoji" title="confused">😕</span><span class="intercom-emoji-picker-emoji" title="hushed">😯</span><span class="intercom-emoji-picker-emoji" title="smirk">😏</span>
+                        <span class="intercom-emoji-picker-emoji" title="expressionless">😑</span><span class="intercom-emoji-picker-emoji" title="man_with_gua_pi_mao">👲</span>
+                        <span class="intercom-emoji-picker-emoji" title="man_with_turban">👳</span><span class="intercom-emoji-picker-emoji" title="cop">👮</span>
+                        <span class="intercom-emoji-picker-emoji" title="construction_worker">👷</span><span class="intercom-emoji-picker-emoji" title="guardsman">💂</span><span class="intercom-emoji-picker-emoji" title="baby">👶</span>
+                        <span class="intercom-emoji-picker-emoji" title="boy">👦</span><span class="intercom-emoji-picker-emoji" title="girl">👧</span><span class="intercom-emoji-picker-emoji" title="man">👨</span>
+                        <span class="intercom-emoji-picker-emoji" title="woman">👩</span><span class="intercom-emoji-picker-emoji" title="older_man">👴</span><span class="intercom-emoji-picker-emoji" title="older_woman">👵</span>
+                        <span class="intercom-emoji-picker-emoji" title="person_with_blond_hair">👱</span><span class="intercom-emoji-picker-emoji" title="angel">👼</span><span class="intercom-emoji-picker-emoji" title="princess">👸</span>
+                        <span class="intercom-emoji-picker-emoji" title="smiley_cat">😺</span><span class="intercom-emoji-picker-emoji" title="smile_cat">😸</span><span class="intercom-emoji-picker-emoji" title="heart_eyes_cat">😻</span>
+                        <span class="intercom-emoji-picker-emoji" title="kissing_cat">😽</span><span class="intercom-emoji-picker-emoji" title="smirk_cat">😼</span><span class="intercom-emoji-picker-emoji" title="scream_cat">🙀</span>
+                        <span class="intercom-emoji-picker-emoji" title="crying_cat_face">😿</span><span class="intercom-emoji-picker-emoji" title="joy_cat">😹</span><span class="intercom-emoji-picker-emoji" title="pouting_cat">😾</span>
+                        <span class="intercom-emoji-picker-emoji" title="japanese_ogre">👹</span><span class="intercom-emoji-picker-emoji" title="japanese_goblin">👺</span>
+                        <span class="intercom-emoji-picker-emoji" title="see_no_evil">🙈</span><span class="intercom-emoji-picker-emoji" title="hear_no_evil">🙉</span><span class="intercom-emoji-picker-emoji" title="speak_no_evil">🙊</span>
+                        <span class="intercom-emoji-picker-emoji" title="skull">💀</span><span class="intercom-emoji-picker-emoji" title="alien">👽</span><span class="intercom-emoji-picker-emoji" title="hankey">💩</span>
+                        <span class="intercom-emoji-picker-emoji" title="fire">🔥</span><span class="intercom-emoji-picker-emoji" title="sparkles">✨</span><span class="intercom-emoji-picker-emoji" title="star2">🌟</span>
+                        <span class="intercom-emoji-picker-emoji" title="dizzy">💫</span><span class="intercom-emoji-picker-emoji" title="boom">💥</span><span class="intercom-emoji-picker-emoji" title="anger">💢</span>
+                        <span class="intercom-emoji-picker-emoji" title="sweat_drops">💦</span><span class="intercom-emoji-picker-emoji" title="droplet">💧</span><span class="intercom-emoji-picker-emoji" title="zzz">💤</span>
+                        <span class="intercom-emoji-picker-emoji" title="dash">💨</span><span class="intercom-emoji-picker-emoji" title="ear">👂</span><span class="intercom-emoji-picker-emoji" title="eyes">👀</span>
+                        <span class="intercom-emoji-picker-emoji" title="nose">👃</span><span class="intercom-emoji-picker-emoji" title="tongue">👅</span><span class="intercom-emoji-picker-emoji" title="lips">👄</span>
+                        <span class="intercom-emoji-picker-emoji" title="thumbs_up">👍</span><span class="intercom-emoji-picker-emoji" title="-1">👎</span><span class="intercom-emoji-picker-emoji" title="ok_hand">👌</span>
+                        <span class="intercom-emoji-picker-emoji" title="facepunch">👊</span><span class="intercom-emoji-picker-emoji" title="fist">✊</span><span class="intercom-emoji-picker-emoji" title="wave">👋</span>
+                        <span class="intercom-emoji-picker-emoji" title="hand">✋</span><span class="intercom-emoji-picker-emoji" title="open_hands">👐</span><span class="intercom-emoji-picker-emoji" title="point_up_2">👆</span>
+                        <span class="intercom-emoji-picker-emoji" title="point_down">👇</span><span class="intercom-emoji-picker-emoji" title="point_right">👉</span><span class="intercom-emoji-picker-emoji" title="point_left">👈</span>
+                        <span class="intercom-emoji-picker-emoji" title="raised_hands">🙌</span><span class="intercom-emoji-picker-emoji" title="pray">🙏</span><span class="intercom-emoji-picker-emoji" title="clap">👏</span>
+                        <span class="intercom-emoji-picker-emoji" title="muscle">💪</span><span class="intercom-emoji-picker-emoji" title="walking">🚶</span><span class="intercom-emoji-picker-emoji" title="runner">🏃</span>
+                        <span class="intercom-emoji-picker-emoji" title="dancer">💃</span><span class="intercom-emoji-picker-emoji" title="couple">👫</span><span class="intercom-emoji-picker-emoji" title="family">👪</span>
+                        <span class="intercom-emoji-picker-emoji" title="couplekiss">💏</span><span class="intercom-emoji-picker-emoji" title="couple_with_heart">💑</span><span class="intercom-emoji-picker-emoji" title="dancers">👯</span>
+                        <span class="intercom-emoji-picker-emoji" title="ok_woman">🙆</span><span class="intercom-emoji-picker-emoji" title="no_good">🙅</span>
+                        <span class="intercom-emoji-picker-emoji" title="information_desk_person">💁</span><span class="intercom-emoji-picker-emoji" title="raising_hand">🙋</span>
+                        <span class="intercom-emoji-picker-emoji" title="massage">💆</span><span class="intercom-emoji-picker-emoji" title="haircut">💇</span><span class="intercom-emoji-picker-emoji" title="nail_care">💅</span>
+                        <span class="intercom-emoji-picker-emoji" title="bride_with_veil">👰</span><span class="intercom-emoji-picker-emoji" title="person_with_pouting_face">🙎</span>
+                        <span class="intercom-emoji-picker-emoji" title="person_frowning">🙍</span><span class="intercom-emoji-picker-emoji" title="bow">🙇</span><span class="intercom-emoji-picker-emoji" title="tophat">🎩</span>
+                        <span class="intercom-emoji-picker-emoji" title="crown">👑</span><span class="intercom-emoji-picker-emoji" title="womans_hat">👒</span><span class="intercom-emoji-picker-emoji" title="athletic_shoe">👟</span>
+                        <span class="intercom-emoji-picker-emoji" title="mans_shoe">👞</span><span class="intercom-emoji-picker-emoji" title="sandal">👡</span><span class="intercom-emoji-picker-emoji" title="high_heel">👠</span>
+                        <span class="intercom-emoji-picker-emoji" title="boot">👢</span><span class="intercom-emoji-picker-emoji" title="shirt">👕</span><span class="intercom-emoji-picker-emoji" title="necktie">👔</span>
+                        <span class="intercom-emoji-picker-emoji" title="womans_clothes">👚</span><span class="intercom-emoji-picker-emoji" title="dress">👗</span>
+                        <span class="intercom-emoji-picker-emoji" title="running_shirt_with_sash">🎽</span><span class="intercom-emoji-picker-emoji" title="jeans">👖</span><span class="intercom-emoji-picker-emoji" title="kimono">👘</span>
+                        <span class="intercom-emoji-picker-emoji" title="bikini">👙</span><span class="intercom-emoji-picker-emoji" title="briefcase">💼</span><span class="intercom-emoji-picker-emoji" title="handbag">👜</span>
+                        <span class="intercom-emoji-picker-emoji" title="pouch">👝</span><span class="intercom-emoji-picker-emoji" title="purse">👛</span><span class="intercom-emoji-picker-emoji" title="eyeglasses">👓</span>
+                        <span class="intercom-emoji-picker-emoji" title="ribbon">🎀</span><span class="intercom-emoji-picker-emoji" title="closed_umbrella">🌂</span><span class="intercom-emoji-picker-emoji" title="lipstick">💄</span>
+                        <span class="intercom-emoji-picker-emoji" title="yellow_heart">💛</span><span class="intercom-emoji-picker-emoji" title="blue_heart">💙</span><span class="intercom-emoji-picker-emoji" title="purple_heart">💜</span>
+                        <span class="intercom-emoji-picker-emoji" title="green_heart">💚</span><span class="intercom-emoji-picker-emoji" title="broken_heart">💔</span><span class="intercom-emoji-picker-emoji" title="heartpulse">💗</span>
+                        <span class="intercom-emoji-picker-emoji" title="heartbeat">💓</span><span class="intercom-emoji-picker-emoji" title="two_hearts">💕</span><span class="intercom-emoji-picker-emoji" title="sparkling_heart">💖</span>
+                        <span class="intercom-emoji-picker-emoji" title="revolving_hearts">💞</span><span class="intercom-emoji-picker-emoji" title="cupid">💘</span><span class="intercom-emoji-picker-emoji" title="love_letter">💌</span>
+                        <span class="intercom-emoji-picker-emoji" title="kiss">💋</span><span class="intercom-emoji-picker-emoji" title="ring">💍</span><span class="intercom-emoji-picker-emoji" title="gem">💎</span>
+                        <span class="intercom-emoji-picker-emoji" title="bust_in_silhouette">👤</span><span class="intercom-emoji-picker-emoji" title="speech_balloon">💬</span>
+                        <span class="intercom-emoji-picker-emoji" title="footprints">👣</span>
+                    </div>
+                    <div class="intercom-emoji-picker-group">
+                        <div class="intercom-emoji-picker-group-title">Nature</div>
+                        <span class="intercom-emoji-picker-emoji" title="dog">🐶</span><span class="intercom-emoji-picker-emoji" title="wolf">🐺</span><span class="intercom-emoji-picker-emoji" title="cat">🐱</span>
+                        <span class="intercom-emoji-picker-emoji" title="mouse">🐭</span><span class="intercom-emoji-picker-emoji" title="hamster">🐹</span><span class="intercom-emoji-picker-emoji" title="rabbit">🐰</span>
+                        <span class="intercom-emoji-picker-emoji" title="frog">🐸</span><span class="intercom-emoji-picker-emoji" title="tiger">🐯</span><span class="intercom-emoji-picker-emoji" title="koala">🐨</span>
+                        <span class="intercom-emoji-picker-emoji" title="bear">🐻</span><span class="intercom-emoji-picker-emoji" title="pig">🐷</span><span class="intercom-emoji-picker-emoji" title="pig_nose">🐽</span>
+                        <span class="intercom-emoji-picker-emoji" title="cow">🐮</span><span class="intercom-emoji-picker-emoji" title="boar">🐗</span><span class="intercom-emoji-picker-emoji" title="monkey_face">🐵</span>
+                        <span class="intercom-emoji-picker-emoji" title="monkey">🐒</span><span class="intercom-emoji-picker-emoji" title="horse">🐴</span><span class="intercom-emoji-picker-emoji" title="sheep">🐑</span>
+                        <span class="intercom-emoji-picker-emoji" title="elephant">🐘</span><span class="intercom-emoji-picker-emoji" title="panda_face">🐼</span><span class="intercom-emoji-picker-emoji" title="penguin">🐧</span>
+                        <span class="intercom-emoji-picker-emoji" title="bird">🐦</span><span class="intercom-emoji-picker-emoji" title="baby_chick">🐤</span><span class="intercom-emoji-picker-emoji" title="hatched_chick">🐥</span>
+                        <span class="intercom-emoji-picker-emoji" title="hatching_chick">🐣</span><span class="intercom-emoji-picker-emoji" title="chicken">🐔</span><span class="intercom-emoji-picker-emoji" title="snake">🐍</span>
+                        <span class="intercom-emoji-picker-emoji" title="turtle">🐢</span><span class="intercom-emoji-picker-emoji" title="bug">🐛</span><span class="intercom-emoji-picker-emoji" title="bee">🐝</span>
+                        <span class="intercom-emoji-picker-emoji" title="ant">🐜</span><span class="intercom-emoji-picker-emoji" title="beetle">🐞</span><span class="intercom-emoji-picker-emoji" title="snail">🐌</span>
+                        <span class="intercom-emoji-picker-emoji" title="octopus">🐙</span><span class="intercom-emoji-picker-emoji" title="shell">🐚</span><span class="intercom-emoji-picker-emoji" title="tropical_fish">🐠</span>
+                        <span class="intercom-emoji-picker-emoji" title="fish">🐟</span><span class="intercom-emoji-picker-emoji" title="dolphin">🐬</span><span class="intercom-emoji-picker-emoji" title="whale">🐳</span>
+                        <span class="intercom-emoji-picker-emoji" title="racehorse">🐎</span><span class="intercom-emoji-picker-emoji" title="dragon_face">🐲</span><span class="intercom-emoji-picker-emoji" title="blowfish">🐡</span>
+                        <span class="intercom-emoji-picker-emoji" title="camel">🐫</span><span class="intercom-emoji-picker-emoji" title="poodle">🐩</span><span class="intercom-emoji-picker-emoji" title="feet">🐾</span>
+                        <span class="intercom-emoji-picker-emoji" title="bouquet">💐</span><span class="intercom-emoji-picker-emoji" title="cherry_blossom">🌸</span><span class="intercom-emoji-picker-emoji" title="tulip">🌷</span>
+                        <span class="intercom-emoji-picker-emoji" title="four_leaf_clover">🍀</span><span class="intercom-emoji-picker-emoji" title="rose">🌹</span><span class="intercom-emoji-picker-emoji" title="sunflower">🌻</span>
+                        <span class="intercom-emoji-picker-emoji" title="hibiscus">🌺</span><span class="intercom-emoji-picker-emoji" title="maple_leaf">🍁</span><span class="intercom-emoji-picker-emoji" title="leaves">🍃</span>
+                        <span class="intercom-emoji-picker-emoji" title="fallen_leaf">🍂</span><span class="intercom-emoji-picker-emoji" title="herb">🌿</span><span class="intercom-emoji-picker-emoji" title="ear_of_rice">🌾</span>
+                        <span class="intercom-emoji-picker-emoji" title="mushroom">🍄</span><span class="intercom-emoji-picker-emoji" title="cactus">🌵</span><span class="intercom-emoji-picker-emoji" title="palm_tree">🌴</span>
+                        <span class="intercom-emoji-picker-emoji" title="chestnut">🌰</span><span class="intercom-emoji-picker-emoji" title="seedling">🌱</span><span class="intercom-emoji-picker-emoji" title="blossom">🌼</span>
+                        <span class="intercom-emoji-picker-emoji" title="new_moon">🌑</span><span class="intercom-emoji-picker-emoji" title="first_quarter_moon">🌓</span><span class="intercom-emoji-picker-emoji" title="moon">🌔</span>
+                        <span class="intercom-emoji-picker-emoji" title="full_moon">🌕</span><span class="intercom-emoji-picker-emoji" title="first_quarter_moon_with_face">🌛</span>
+                        <span class="intercom-emoji-picker-emoji" title="crescent_moon">🌙</span><span class="intercom-emoji-picker-emoji" title="earth_asia">🌏</span><span class="intercom-emoji-picker-emoji" title="volcano">🌋</span>
+                        <span class="intercom-emoji-picker-emoji" title="milky_way">🌌</span><span class="intercom-emoji-picker-emoji" title="stars">🌠</span><span class="intercom-emoji-picker-emoji" title="partly_sunny">⛅</span>
+                        <span class="intercom-emoji-picker-emoji" title="snowman">⛄</span><span class="intercom-emoji-picker-emoji" title="cyclone">🌀</span><span class="intercom-emoji-picker-emoji" title="foggy">🌁</span>
+                        <span class="intercom-emoji-picker-emoji" title="rainbow">🌈</span><span class="intercom-emoji-picker-emoji" title="ocean">🌊</span>
+                    </div>
+                    <div class="intercom-emoji-picker-group">
+                        <div class="intercom-emoji-picker-group-title">Objects</div>
+                        <span class="intercom-emoji-picker-emoji" title="bamboo">🎍</span><span class="intercom-emoji-picker-emoji" title="gift_heart">💝</span><span class="intercom-emoji-picker-emoji" title="dolls">🎎</span>
+                        <span class="intercom-emoji-picker-emoji" title="school_satchel">🎒</span><span class="intercom-emoji-picker-emoji" title="mortar_board">🎓</span><span class="intercom-emoji-picker-emoji" title="flags">🎏</span>
+                        <span class="intercom-emoji-picker-emoji" title="fireworks">🎆</span><span class="intercom-emoji-picker-emoji" title="sparkler">🎇</span><span class="intercom-emoji-picker-emoji" title="wind_chime">🎐</span>
+                        <span class="intercom-emoji-picker-emoji" title="rice_scene">🎑</span><span class="intercom-emoji-picker-emoji" title="jack_o_lantern">🎃</span><span class="intercom-emoji-picker-emoji" title="ghost">👻</span>
+                        <span class="intercom-emoji-picker-emoji" title="santa">🎅</span><span class="intercom-emoji-picker-emoji" title="christmas_tree">🎄</span><span class="intercom-emoji-picker-emoji" title="gift">🎁</span>
+                        <span class="intercom-emoji-picker-emoji" title="tanabata_tree">🎋</span><span class="intercom-emoji-picker-emoji" title="tada">🎉</span><span class="intercom-emoji-picker-emoji" title="confetti_ball">🎊</span>
+                        <span class="intercom-emoji-picker-emoji" title="balloon">🎈</span><span class="intercom-emoji-picker-emoji" title="crossed_flags">🎌</span><span class="intercom-emoji-picker-emoji" title="crystal_ball">🔮</span>
+                        <span class="intercom-emoji-picker-emoji" title="movie_camera">🎥</span><span class="intercom-emoji-picker-emoji" title="camera">📷</span><span class="intercom-emoji-picker-emoji" title="video_camera">📹</span>
+                        <span class="intercom-emoji-picker-emoji" title="vhs">📼</span><span class="intercom-emoji-picker-emoji" title="cd">💿</span><span class="intercom-emoji-picker-emoji" title="dvd">📀</span>
+                        <span class="intercom-emoji-picker-emoji" title="minidisc">💽</span><span class="intercom-emoji-picker-emoji" title="floppy_disk">💾</span><span class="intercom-emoji-picker-emoji" title="computer">💻</span>
+                        <span class="intercom-emoji-picker-emoji" title="iphone">📱</span><span class="intercom-emoji-picker-emoji" title="telephone_receiver">📞</span><span class="intercom-emoji-picker-emoji" title="pager">📟</span>
+                        <span class="intercom-emoji-picker-emoji" title="fax">📠</span><span class="intercom-emoji-picker-emoji" title="satellite">📡</span><span class="intercom-emoji-picker-emoji" title="tv">📺</span>
+                        <span class="intercom-emoji-picker-emoji" title="radio">📻</span><span class="intercom-emoji-picker-emoji" title="loud_sound">🔊</span><span class="intercom-emoji-picker-emoji" title="bell">🔔</span>
+                        <span class="intercom-emoji-picker-emoji" title="loudspeaker">📢</span><span class="intercom-emoji-picker-emoji" title="mega">📣</span>
+                        <span class="intercom-emoji-picker-emoji" title="hourglass_flowing_sand">⏳</span><span class="intercom-emoji-picker-emoji" title="hourglass">⌛</span>
+                        <span class="intercom-emoji-picker-emoji" title="alarm_clock">⏰</span><span class="intercom-emoji-picker-emoji" title="watch">⌚</span><span class="intercom-emoji-picker-emoji" title="unlock">🔓</span>
+                        <span class="intercom-emoji-picker-emoji" title="lock">🔒</span><span class="intercom-emoji-picker-emoji" title="lock_with_ink_pen">🔏</span>
+                        <span class="intercom-emoji-picker-emoji" title="closed_lock_with_key">🔐</span><span class="intercom-emoji-picker-emoji" title="key">🔑</span><span class="intercom-emoji-picker-emoji" title="mag_right">🔎</span>
+                        <span class="intercom-emoji-picker-emoji" title="bulb">💡</span><span class="intercom-emoji-picker-emoji" title="flashlight">🔦</span><span class="intercom-emoji-picker-emoji" title="electric_plug">🔌</span>
+                        <span class="intercom-emoji-picker-emoji" title="battery">🔋</span><span class="intercom-emoji-picker-emoji" title="mag">🔍</span><span class="intercom-emoji-picker-emoji" title="bath">🛀</span>
+                        <span class="intercom-emoji-picker-emoji" title="toilet">🚽</span><span class="intercom-emoji-picker-emoji" title="wrench">🔧</span><span class="intercom-emoji-picker-emoji" title="nut_and_bolt">🔩</span>
+                        <span class="intercom-emoji-picker-emoji" title="hammer">🔨</span><span class="intercom-emoji-picker-emoji" title="door">🚪</span><span class="intercom-emoji-picker-emoji" title="smoking">🚬</span>
+                        <span class="intercom-emoji-picker-emoji" title="bomb">💣</span><span class="intercom-emoji-picker-emoji" title="gun">🔫</span><span class="intercom-emoji-picker-emoji" title="hocho">🔪</span>
+                        <span class="intercom-emoji-picker-emoji" title="pill">💊</span><span class="intercom-emoji-picker-emoji" title="syringe">💉</span><span class="intercom-emoji-picker-emoji" title="moneybag">💰</span>
+                        <span class="intercom-emoji-picker-emoji" title="yen">💴</span><span class="intercom-emoji-picker-emoji" title="dollar">💵</span><span class="intercom-emoji-picker-emoji" title="credit_card">💳</span>
+                        <span class="intercom-emoji-picker-emoji" title="money_with_wings">💸</span><span class="intercom-emoji-picker-emoji" title="calling">📲</span><span class="intercom-emoji-picker-emoji" title="e-mail">📧</span>
+                        <span class="intercom-emoji-picker-emoji" title="inbox_tray">📥</span><span class="intercom-emoji-picker-emoji" title="outbox_tray">📤</span>
+                        <span class="intercom-emoji-picker-emoji" title="envelope_with_arrow">📩</span><span class="intercom-emoji-picker-emoji" title="incoming_envelope">📨</span>
+                        <span class="intercom-emoji-picker-emoji" title="mailbox">📫</span><span class="intercom-emoji-picker-emoji" title="mailbox_closed">📪</span><span class="intercom-emoji-picker-emoji" title="postbox">📮</span>
+                        <span class="intercom-emoji-picker-emoji" title="package">📦</span><span class="intercom-emoji-picker-emoji" title="memo">📝</span><span class="intercom-emoji-picker-emoji" title="page_facing_up">📄</span>
+                        <span class="intercom-emoji-picker-emoji" title="page_with_curl">📃</span><span class="intercom-emoji-picker-emoji" title="bookmark_tabs">📑</span><span class="intercom-emoji-picker-emoji" title="bar_chart">📊</span>
+                        <span class="intercom-emoji-picker-emoji" title="chart_with_upwards_trend">📈</span><span class="intercom-emoji-picker-emoji" title="chart_with_downwards_trend">📉</span>
+                        <span class="intercom-emoji-picker-emoji" title="scroll">📜</span><span class="intercom-emoji-picker-emoji" title="clipboard">📋</span><span class="intercom-emoji-picker-emoji" title="date">📅</span>
+                        <span class="intercom-emoji-picker-emoji" title="calendar">📆</span><span class="intercom-emoji-picker-emoji" title="card_index">📇</span><span class="intercom-emoji-picker-emoji" title="file_folder">📁</span>
+                        <span class="intercom-emoji-picker-emoji" title="open_file_folder">📂</span><span class="intercom-emoji-picker-emoji" title="pushpin">📌</span><span class="intercom-emoji-picker-emoji" title="paperclip">📎</span>
+                        <span class="intercom-emoji-picker-emoji" title="straight_ruler">📏</span><span class="intercom-emoji-picker-emoji" title="triangular_ruler">📐</span>
+                        <span class="intercom-emoji-picker-emoji" title="closed_book">📕</span><span class="intercom-emoji-picker-emoji" title="green_book">📗</span><span class="intercom-emoji-picker-emoji" title="blue_book">📘</span>
+                        <span class="intercom-emoji-picker-emoji" title="orange_book">📙</span><span class="intercom-emoji-picker-emoji" title="notebook">📓</span>
+                        <span class="intercom-emoji-picker-emoji" title="notebook_with_decorative_cover">📔</span><span class="intercom-emoji-picker-emoji" title="ledger">📒</span>
+                        <span class="intercom-emoji-picker-emoji" title="books">📚</span><span class="intercom-emoji-picker-emoji" title="book">📖</span><span class="intercom-emoji-picker-emoji" title="bookmark">🔖</span>
+                        <span class="intercom-emoji-picker-emoji" title="name_badge">📛</span><span class="intercom-emoji-picker-emoji" title="newspaper">📰</span><span class="intercom-emoji-picker-emoji" title="art">🎨</span>
+                        <span class="intercom-emoji-picker-emoji" title="clapper">🎬</span><span class="intercom-emoji-picker-emoji" title="microphone">🎤</span><span class="intercom-emoji-picker-emoji" title="headphones">🎧</span>
+                        <span class="intercom-emoji-picker-emoji" title="musical_score">🎼</span><span class="intercom-emoji-picker-emoji" title="musical_note">🎵</span><span class="intercom-emoji-picker-emoji" title="notes">🎶</span>
+                        <span class="intercom-emoji-picker-emoji" title="musical_keyboard">🎹</span><span class="intercom-emoji-picker-emoji" title="violin">🎻</span><span class="intercom-emoji-picker-emoji" title="trumpet">🎺</span>
+                        <span class="intercom-emoji-picker-emoji" title="saxophone">🎷</span><span class="intercom-emoji-picker-emoji" title="guitar">🎸</span><span class="intercom-emoji-picker-emoji" title="space_invader">👾</span>
+                        <span class="intercom-emoji-picker-emoji" title="video_game">🎮</span><span class="intercom-emoji-picker-emoji" title="black_joker">🃏</span>
+                        <span class="intercom-emoji-picker-emoji" title="flower_playing_cards">🎴</span><span class="intercom-emoji-picker-emoji" title="mahjong">🀄</span><span class="intercom-emoji-picker-emoji" title="game_die">🎲</span>
+                        <span class="intercom-emoji-picker-emoji" title="dart">🎯</span><span class="intercom-emoji-picker-emoji" title="football">🏈</span><span class="intercom-emoji-picker-emoji" title="basketball">🏀</span>
+                        <span class="intercom-emoji-picker-emoji" title="soccer">⚽</span><span class="intercom-emoji-picker-emoji" title="baseball">⚾</span><span class="intercom-emoji-picker-emoji" title="tennis">🎾</span>
+                        <span class="intercom-emoji-picker-emoji" title="8ball">🎱</span><span class="intercom-emoji-picker-emoji" title="bowling">🎳</span><span class="intercom-emoji-picker-emoji" title="golf">⛳</span>
+                        <span class="intercom-emoji-picker-emoji" title="checkered_flag">🏁</span><span class="intercom-emoji-picker-emoji" title="trophy">🏆</span><span class="intercom-emoji-picker-emoji" title="ski">🎿</span>
+                        <span class="intercom-emoji-picker-emoji" title="snowboarder">🏂</span><span class="intercom-emoji-picker-emoji" title="swimmer">🏊</span><span class="intercom-emoji-picker-emoji" title="surfer">🏄</span>
+                        <span class="intercom-emoji-picker-emoji" title="fishing_pole_and_fish">🎣</span><span class="intercom-emoji-picker-emoji" title="tea">🍵</span><span class="intercom-emoji-picker-emoji" title="sake">🍶</span>
+                        <span class="intercom-emoji-picker-emoji" title="beer">🍺</span><span class="intercom-emoji-picker-emoji" title="beers">🍻</span><span class="intercom-emoji-picker-emoji" title="cocktail">🍸</span>
+                        <span class="intercom-emoji-picker-emoji" title="tropical_drink">🍹</span><span class="intercom-emoji-picker-emoji" title="wine_glass">🍷</span>
+                        <span class="intercom-emoji-picker-emoji" title="fork_and_knife">🍴</span><span class="intercom-emoji-picker-emoji" title="pizza">🍕</span><span class="intercom-emoji-picker-emoji" title="hamburger">🍔</span>
+                        <span class="intercom-emoji-picker-emoji" title="fries">🍟</span><span class="intercom-emoji-picker-emoji" title="poultry_leg">🍗</span><span class="intercom-emoji-picker-emoji" title="meat_on_bone">🍖</span>
+                        <span class="intercom-emoji-picker-emoji" title="spaghetti">🍝</span><span class="intercom-emoji-picker-emoji" title="curry">🍛</span><span class="intercom-emoji-picker-emoji" title="fried_shrimp">🍤</span>
+                        <span class="intercom-emoji-picker-emoji" title="bento">🍱</span><span class="intercom-emoji-picker-emoji" title="sushi">🍣</span><span class="intercom-emoji-picker-emoji" title="fish_cake">🍥</span>
+                        <span class="intercom-emoji-picker-emoji" title="rice_ball">🍙</span><span class="intercom-emoji-picker-emoji" title="rice_cracker">🍘</span><span class="intercom-emoji-picker-emoji" title="rice">🍚</span>
+                        <span class="intercom-emoji-picker-emoji" title="ramen">🍜</span><span class="intercom-emoji-picker-emoji" title="stew">🍲</span><span class="intercom-emoji-picker-emoji" title="oden">🍢</span>
+                        <span class="intercom-emoji-picker-emoji" title="dango">🍡</span><span class="intercom-emoji-picker-emoji" title="egg">🍳</span><span class="intercom-emoji-picker-emoji" title="bread">🍞</span>
+                        <span class="intercom-emoji-picker-emoji" title="doughnut">🍩</span><span class="intercom-emoji-picker-emoji" title="custard">🍮</span><span class="intercom-emoji-picker-emoji" title="icecream">🍦</span>
+                        <span class="intercom-emoji-picker-emoji" title="ice_cream">🍨</span><span class="intercom-emoji-picker-emoji" title="shaved_ice">🍧</span><span class="intercom-emoji-picker-emoji" title="birthday">🎂</span>
+                        <span class="intercom-emoji-picker-emoji" title="cake">🍰</span><span class="intercom-emoji-picker-emoji" title="cookie">🍪</span><span class="intercom-emoji-picker-emoji" title="chocolate_bar">🍫</span>
+                        <span class="intercom-emoji-picker-emoji" title="candy">🍬</span><span class="intercom-emoji-picker-emoji" title="lollipop">🍭</span><span class="intercom-emoji-picker-emoji" title="honey_pot">🍯</span>
+                        <span class="intercom-emoji-picker-emoji" title="apple">🍎</span><span class="intercom-emoji-picker-emoji" title="green_apple">🍏</span><span class="intercom-emoji-picker-emoji" title="tangerine">🍊</span>
+                        <span class="intercom-emoji-picker-emoji" title="cherries">🍒</span><span class="intercom-emoji-picker-emoji" title="grapes">🍇</span><span class="intercom-emoji-picker-emoji" title="watermelon">🍉</span>
+                        <span class="intercom-emoji-picker-emoji" title="strawberry">🍓</span><span class="intercom-emoji-picker-emoji" title="peach">🍑</span><span class="intercom-emoji-picker-emoji" title="melon">🍈</span>
+                        <span class="intercom-emoji-picker-emoji" title="banana">🍌</span><span class="intercom-emoji-picker-emoji" title="pineapple">🍍</span><span class="intercom-emoji-picker-emoji" title="sweet_potato">🍠</span>
+                        <span class="intercom-emoji-picker-emoji" title="eggplant">🍆</span><span class="intercom-emoji-picker-emoji" title="tomato">🍅</span><span class="intercom-emoji-picker-emoji" title="corn">🌽</span>
+                    </div>
+                    <div class="intercom-emoji-picker-group">
+                        <div class="intercom-emoji-picker-group-title">Places</div>
+                        <span class="intercom-emoji-picker-emoji" title="house">🏠</span><span class="intercom-emoji-picker-emoji" title="house_with_garden">🏡</span><span class="intercom-emoji-picker-emoji" title="school">🏫</span>
+                        <span class="intercom-emoji-picker-emoji" title="office">🏢</span><span class="intercom-emoji-picker-emoji" title="post_office">🏣</span><span class="intercom-emoji-picker-emoji" title="hospital">🏥</span>
+                        <span class="intercom-emoji-picker-emoji" title="bank">🏦</span><span class="intercom-emoji-picker-emoji" title="convenience_store">🏪</span><span class="intercom-emoji-picker-emoji" title="love_hotel">🏩</span>
+                        <span class="intercom-emoji-picker-emoji" title="hotel">🏨</span><span class="intercom-emoji-picker-emoji" title="wedding">💒</span><span class="intercom-emoji-picker-emoji" title="church">⛪</span>
+                        <span class="intercom-emoji-picker-emoji" title="department_store">🏬</span><span class="intercom-emoji-picker-emoji" title="city_sunrise">🌇</span>
+                        <span class="intercom-emoji-picker-emoji" title="city_sunset">🌆</span><span class="intercom-emoji-picker-emoji" title="japanese_castle">🏯</span>
+                        <span class="intercom-emoji-picker-emoji" title="european_castle">🏰</span><span class="intercom-emoji-picker-emoji" title="tent">⛺</span><span class="intercom-emoji-picker-emoji" title="factory">🏭</span>
+                        <span class="intercom-emoji-picker-emoji" title="tokyo_tower">🗼</span><span class="intercom-emoji-picker-emoji" title="japan">🗾</span><span class="intercom-emoji-picker-emoji" title="mount_fuji">🗻</span>
+                        <span class="intercom-emoji-picker-emoji" title="sunrise_over_mountains">🌄</span><span class="intercom-emoji-picker-emoji" title="sunrise">🌅</span>
+                        <span class="intercom-emoji-picker-emoji" title="night_with_stars">🌃</span><span class="intercom-emoji-picker-emoji" title="statue_of_liberty">🗽</span>
+                        <span class="intercom-emoji-picker-emoji" title="bridge_at_night">🌉</span><span class="intercom-emoji-picker-emoji" title="carousel_horse">🎠</span>
+                        <span class="intercom-emoji-picker-emoji" title="ferris_wheel">🎡</span><span class="intercom-emoji-picker-emoji" title="fountain">⛲</span><span class="intercom-emoji-picker-emoji" title="roller_coaster">🎢</span>
+                        <span class="intercom-emoji-picker-emoji" title="ship">🚢</span><span class="intercom-emoji-picker-emoji" title="boat">⛵</span><span class="intercom-emoji-picker-emoji" title="speedboat">🚤</span>
+                        <span class="intercom-emoji-picker-emoji" title="rocket">🚀</span><span class="intercom-emoji-picker-emoji" title="seat">💺</span><span class="intercom-emoji-picker-emoji" title="station">🚉</span>
+                        <span class="intercom-emoji-picker-emoji" title="bullettrain_side">🚄</span><span class="intercom-emoji-picker-emoji" title="bullettrain_front">🚅</span>
+                        <span class="intercom-emoji-picker-emoji" title="metro">🚇</span><span class="intercom-emoji-picker-emoji" title="railway_car">🚃</span><span class="intercom-emoji-picker-emoji" title="bus">🚌</span>
+                        <span class="intercom-emoji-picker-emoji" title="blue_car">🚙</span><span class="intercom-emoji-picker-emoji" title="car">🚗</span><span class="intercom-emoji-picker-emoji" title="taxi">🚕</span>
+                        <span class="intercom-emoji-picker-emoji" title="truck">🚚</span><span class="intercom-emoji-picker-emoji" title="rotating_light">🚨</span><span class="intercom-emoji-picker-emoji" title="police_car">🚓</span>
+                        <span class="intercom-emoji-picker-emoji" title="fire_engine">🚒</span><span class="intercom-emoji-picker-emoji" title="ambulance">🚑</span><span class="intercom-emoji-picker-emoji" title="bike">🚲</span>
+                        <span class="intercom-emoji-picker-emoji" title="barber">💈</span><span class="intercom-emoji-picker-emoji" title="busstop">🚏</span><span class="intercom-emoji-picker-emoji" title="ticket">🎫</span>
+                        <span class="intercom-emoji-picker-emoji" title="traffic_light">🚥</span><span class="intercom-emoji-picker-emoji" title="construction">🚧</span><span class="intercom-emoji-picker-emoji" title="beginner">🔰</span>
+                        <span class="intercom-emoji-picker-emoji" title="fuelpump">⛽</span><span class="intercom-emoji-picker-emoji" title="izakaya_lantern">🏮</span><span class="intercom-emoji-picker-emoji" title="slot_machine">🎰</span>
+                        <span class="intercom-emoji-picker-emoji" title="moyai">🗿</span><span class="intercom-emoji-picker-emoji" title="circus_tent">🎪</span><span class="intercom-emoji-picker-emoji" title="performing_arts">🎭</span>
+                        <span class="intercom-emoji-picker-emoji" title="round_pushpin">📍</span><span class="intercom-emoji-picker-emoji" title="triangular_flag_on_post">🚩</span>
+                    </div>
+                    <div class="intercom-emoji-picker-group">
+                        <div class="intercom-emoji-picker-group-title">Symbols</div>
+                        <span class="intercom-emoji-picker-emoji" title="keycap_ten">🔟</span><span class="intercom-emoji-picker-emoji" title="1234">🔢</span><span class="intercom-emoji-picker-emoji" title="symbols">🔣</span>
+                        <span class="intercom-emoji-picker-emoji" title="capital_abcd">🔠</span><span class="intercom-emoji-picker-emoji" title="abcd">🔡</span><span class="intercom-emoji-picker-emoji" title="abc">🔤</span>
+                        <span class="intercom-emoji-picker-emoji" title="arrow_up_small">🔼</span><span class="intercom-emoji-picker-emoji" title="arrow_down_small">🔽</span><span class="intercom-emoji-picker-emoji" title="rewind">⏪</span>
+                        <span class="intercom-emoji-picker-emoji" title="fast_forward">⏩</span><span class="intercom-emoji-picker-emoji" title="arrow_double_up">⏫</span>
+                        <span class="intercom-emoji-picker-emoji" title="arrow_double_down">⏬</span><span class="intercom-emoji-picker-emoji" title="ok">🆗</span><span class="intercom-emoji-picker-emoji" title="new">🆕</span>
+                        <span class="intercom-emoji-picker-emoji" title="up">🆙</span><span class="intercom-emoji-picker-emoji" title="cool">🆒</span><span class="intercom-emoji-picker-emoji" title="free">🆓</span>
+                        <span class="intercom-emoji-picker-emoji" title="ng">🆖</span><span class="intercom-emoji-picker-emoji" title="signal_strength">📶</span><span class="intercom-emoji-picker-emoji" title="cinema">🎦</span>
+                        <span class="intercom-emoji-picker-emoji" title="koko">🈁</span><span class="intercom-emoji-picker-emoji" title="u6307">🈯</span><span class="intercom-emoji-picker-emoji" title="u7a7a">🈳</span>
+                        <span class="intercom-emoji-picker-emoji" title="u6e80">🈵</span><span class="intercom-emoji-picker-emoji" title="u5408">🈴</span><span class="intercom-emoji-picker-emoji" title="u7981">🈲</span>
+                        <span class="intercom-emoji-picker-emoji" title="ideograph_advantage">🉐</span><span class="intercom-emoji-picker-emoji" title="u5272">🈹</span><span class="intercom-emoji-picker-emoji" title="u55b6">🈺</span>
+                        <span class="intercom-emoji-picker-emoji" title="u6709">🈶</span><span class="intercom-emoji-picker-emoji" title="u7121">🈚</span><span class="intercom-emoji-picker-emoji" title="restroom">🚻</span>
+                        <span class="intercom-emoji-picker-emoji" title="mens">🚹</span><span class="intercom-emoji-picker-emoji" title="womens">🚺</span><span class="intercom-emoji-picker-emoji" title="baby_symbol">🚼</span>
+                        <span class="intercom-emoji-picker-emoji" title="wc">🚾</span><span class="intercom-emoji-picker-emoji" title="no_smoking">🚭</span><span class="intercom-emoji-picker-emoji" title="u7533">🈸</span>
+                        <span class="intercom-emoji-picker-emoji" title="accept">🉑</span><span class="intercom-emoji-picker-emoji" title="cl">🆑</span><span class="intercom-emoji-picker-emoji" title="sos">🆘</span>
+                        <span class="intercom-emoji-picker-emoji" title="id">🆔</span><span class="intercom-emoji-picker-emoji" title="no_entry_sign">🚫</span><span class="intercom-emoji-picker-emoji" title="underage">🔞</span>
+                        <span class="intercom-emoji-picker-emoji" title="no_entry">⛔</span><span class="intercom-emoji-picker-emoji" title="negative_squared_cross_mark">❎</span>
+                        <span class="intercom-emoji-picker-emoji" title="white_check_mark">✅</span><span class="intercom-emoji-picker-emoji" title="heart_decoration">💟</span><span class="intercom-emoji-picker-emoji" title="vs">🆚</span>
+                        <span class="intercom-emoji-picker-emoji" title="vibration_mode">📳</span><span class="intercom-emoji-picker-emoji" title="mobile_phone_off">📴</span><span class="intercom-emoji-picker-emoji" title="ab">🆎</span>
+                        <span class="intercom-emoji-picker-emoji" title="diamond_shape_with_a_dot_inside">💠</span><span class="intercom-emoji-picker-emoji" title="ophiuchus">⛎</span>
+                        <span class="intercom-emoji-picker-emoji" title="six_pointed_star">🔯</span><span class="intercom-emoji-picker-emoji" title="atm">🏧</span><span class="intercom-emoji-picker-emoji" title="chart">💹</span>
+                        <span class="intercom-emoji-picker-emoji" title="heavy_dollar_sign">💲</span><span class="intercom-emoji-picker-emoji" title="currency_exchange">💱</span><span class="intercom-emoji-picker-emoji" title="x">❌</span>
+                        <span class="intercom-emoji-picker-emoji" title="exclamation">❗</span><span class="intercom-emoji-picker-emoji" title="question">❓</span><span class="intercom-emoji-picker-emoji" title="grey_exclamation">❕</span>
+                        <span class="intercom-emoji-picker-emoji" title="grey_question">❔</span><span class="intercom-emoji-picker-emoji" title="o">⭕</span><span class="intercom-emoji-picker-emoji" title="top">🔝</span>
+                        <span class="intercom-emoji-picker-emoji" title="end">🔚</span><span class="intercom-emoji-picker-emoji" title="back">🔙</span><span class="intercom-emoji-picker-emoji" title="on">🔛</span>
+                        <span class="intercom-emoji-picker-emoji" title="soon">🔜</span><span class="intercom-emoji-picker-emoji" title="arrows_clockwise">🔃</span><span class="intercom-emoji-picker-emoji" title="clock12">🕛</span>
+                        <span class="intercom-emoji-picker-emoji" title="clock1">🕐</span><span class="intercom-emoji-picker-emoji" title="clock2">🕑</span><span class="intercom-emoji-picker-emoji" title="clock3">🕒</span>
+                        <span class="intercom-emoji-picker-emoji" title="clock4">🕓</span><span class="intercom-emoji-picker-emoji" title="clock5">🕔</span><span class="intercom-emoji-picker-emoji" title="clock6">🕕</span>
+                        <span class="intercom-emoji-picker-emoji" title="clock7">🕖</span><span class="intercom-emoji-picker-emoji" title="clock8">🕗</span><span class="intercom-emoji-picker-emoji" title="clock9">🕘</span>
+                        <span class="intercom-emoji-picker-emoji" title="clock10">🕙</span><span class="intercom-emoji-picker-emoji" title="clock11">🕚</span><span class="intercom-emoji-picker-emoji" title="heavy_plus_sign">➕</span>
+                        <span class="intercom-emoji-picker-emoji" title="heavy_minus_sign">➖</span><span class="intercom-emoji-picker-emoji" title="heavy_division_sign">➗</span>
+                        <span class="intercom-emoji-picker-emoji" title="white_flower">💮</span><span class="intercom-emoji-picker-emoji" title="100">💯</span><span class="intercom-emoji-picker-emoji" title="radio_button">🔘</span>
+                        <span class="intercom-emoji-picker-emoji" title="link">🔗</span><span class="intercom-emoji-picker-emoji" title="curly_loop">➰</span><span class="intercom-emoji-picker-emoji" title="trident">🔱</span>
+                        <span class="intercom-emoji-picker-emoji" title="small_red_triangle">🔺</span><span class="intercom-emoji-picker-emoji" title="black_square_button">🔲</span>
+                        <span class="intercom-emoji-picker-emoji" title="white_square_button">🔳</span><span class="intercom-emoji-picker-emoji" title="red_circle">🔴</span>
+                        <span class="intercom-emoji-picker-emoji" title="large_blue_circle">🔵</span><span class="intercom-emoji-picker-emoji" title="small_red_triangle_down">🔻</span>
+                        <span class="intercom-emoji-picker-emoji" title="white_large_square">⬜</span><span class="intercom-emoji-picker-emoji" title="black_large_square">⬛</span>
+                        <span class="intercom-emoji-picker-emoji" title="large_orange_diamond">🔶</span><span class="intercom-emoji-picker-emoji" title="large_blue_diamond">🔷</span>
+                        <span class="intercom-emoji-picker-emoji" title="small_orange_diamond">🔸</span><span class="intercom-emoji-picker-emoji" title="small_blue_diamond">🔹</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="intercom-composer-popover-caret"></div>
+</div>
+<div class="fixedMsg" id="FixedMsgBody">No pending task here! <span class="link_url" onclick="$('#completeChecklist').trigger('click')">Click to view all completed task(s).</span></div>
+
+<script type="text/javascript">
+	window.addEventListener('online', () => { 
+		// console.log("Online again"); 
+		update_conv_counter(); 
+		$('body').removeClass('sp_popup_open'); 
+		$("#network_down").hide();
+	});
+	window.addEventListener('offline', () => { 
+		// console.log('came offline'); 
+		$('body').addClass('sp_popup_open'); 
+		$("#network_down").show(); 
+	});
+
+	var lastUsedEmoji = [];
+	function set_cookie(cookiename, cookievalue, hours) {
+	    var date = new Date();
+	    date.setTime(date.getTime() + Number(hours) * 3600 * 1000);
+	    document.cookie = cookiename + "=" + cookievalue + "; path=/;expires = " + date.toGMTString();
+
+	}
+	function drawUsedEmoji(){
+		var json_str = getCookie('usedEmoji');
+		if(json_str == ''){
+			json_str = '[]';
+		}
+		lastUsedEmoji = JSON.parse(json_str);
+		$('#AllrecentEmoji').html('');
+		if(lastUsedEmoji.length > 0){
+			$('#AllrecentEmoji').parent('.intercom-emoji-picker-group').show();
+			$.each(lastUsedEmoji,function(k,v){
+				$('#AllrecentEmoji').append('<span class="intercom-emoji-picker-emoji" title="'+v.name+'">'+v.unicode+'</span>');
+			})
+		}else{
+			$('#AllrecentEmoji').parent('.intercom-emoji-picker-group').hide();
+		}
+	}
+
+	$(document).on("click",".send-emoji",function(e){
+	   e.stopPropagation();
+	    $('.intercom-composer-emoji-popover').removeClass("re_msg");
+	   	$('.intercom-composer-emoji-popover').addClass("or_msg");
+	    $('.intercom-composer-emoji-popover').toggleClass("active");
+	    drawUsedEmoji();
+	});
+	$(document).on("click",".add-emoji",function(e){
+	   e.stopPropagation();
+	    $('.intercom-composer-emoji-popover').removeClass("or_msg");
+	    $('.intercom-composer-emoji-popover').addClass("re_msg");
+	    $('.intercom-composer-emoji-popover').toggleClass("active");
+	});
+
+$(document).click(function (e) {
+    if ($(e.target).attr('class') != '.intercom-composer-emoji-popover' && $(e.target).parents(".intercom-composer-emoji-popover").length == 0) {
+        $(".intercom-composer-emoji-popover").removeClass("active");
+    }
+});
+
+$(document).on("click",".intercom-emoji-picker-emoji",function(e){
+	if($('.intercom-composer-emoji-popover').hasClass('re_msg')){
+		$('#msg_rep').append($(this).html())
+	}else{
+		$('#msg').append($(this).html())
+	}
+
+	var data ={
+			name:$(this).attr('title'),
+			unicode:$(this).html()
+		}
+
+	var allTitle = [];
+	$.each(lastUsedEmoji,function(k,v){
+		allTitle.push(v.name);
+	});
+	if(allTitle.indexOf($(this).attr('title')) == -1){
+		if(lastUsedEmoji.length > 11){
+			lastUsedEmoji.pop();
+		}
+		lastUsedEmoji.unshift(data);
+	}
+	// console.log(lastUsedEmoji);
+	var json_str = JSON.stringify(lastUsedEmoji);
+	set_cookie('usedEmoji', json_str,24);
+});
+
+$('.intercom-composer-popover-input').on('input', function() {
+    var query = this.value;
+    if(query != ""){
+      $(".intercom-emoji-picker-emoji:not([title*='"+query+"'])").hide();
+    }
+    else{
+      $(".intercom-emoji-picker-emoji").show();
+    }
+});
+
+function hide_emoji(){
+	$(".intercom-composer-emoji-popover").removeClass("active");
+}
+
+function read_all_msgs(){
+	console.log(3090)
+	$.ajax({
+		url: "/alpha2/read_all_msgs",
+		type: "POST",
+		data: {user_id, conversation_id, is_thread: $("body").hasClass("filter_thread_msg")},
+		dataType: 'json',
+		success: function(res){
+			// moreMenuPopup();
+			$('.moreMenuPopup').hide();
+
+			if(res.status){
+				if(res.reply_read !== undefined && $("body").hasClass("filter_thread_msg")){
+					$("#conv"+conversation_id).attr('data-nor', '');
+					reply_msg_counter();//unreadOn
+					$.each($('.msgs-form-users'), function(k,v){
+						var rep = $(v).find('.readunreadreply');
+						if(rep.length > 0){
+							var rep_c = rep.attr('data-count');
+							$(v).find('.countReply').removeClass('unreadOn');
+							$(v).find('.no-of-replies').html(rep_c);
+						}
+					})
+				}
+			}
+			// console.log(res);
+		},
+		error: function(e){
+			console.log("Error in read_all_msgs: ", e);
+		}
+	});
+}
+if(user_id=='896c2fc4-deb9-4dcf-b64f-9b59c349ec54' || user_id=='cb52366f-a191-47f5-9035-a3c4e41b6a4b'){
+		// alert('show');
+		$('#freeliMeetItem').show();
+	}
+
+</script>
+

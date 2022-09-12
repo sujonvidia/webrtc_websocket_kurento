@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <filter id="shape-a" width="110.4%" height="118.8%" x="-5.2%" y="-5.9%" filterUnits="objectBoundingBox">
+      <feOffset dy="8" in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="12"/>
+      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.4 0"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path fill="#333" d="M245,50.000073 C244.886,50.000073 244.771,49.961073 244.677,49.882073 L239.177,44.382073 C239.0645,44.286573 239,44.147073 239,44.000073 C239,43.853073 239.0645,43.713573 239.177,43.618073 L244.677,38.118073 C244.888,37.940573 245.2035,37.965573 245.3815,38.177073 C245.56,38.387573 245.5335,38.703073 245.323,38.881573 L240.274,44.000073 L245.323,49.118073 C245.5335,49.296573 245.56,49.612073 245.3815,49.822573 C245.2825,49.940073 245.142,50.000073 245,50.000073 Z" filter="url(#shape-a)" transform="rotate(-90 119.25 139)"/>
+</svg>

@@ -1,0 +1,368 @@
+<%- include('layouts/head') %>
+    <style>
+        * {
+            font-family: "Source Sans Pro" !important
+        }
+        
+        body {
+            background: white !important;
+        }
+        
+        .submit_area {
+            margin-top: 15px !important;
+            margin-bottom: 50px !important;
+        }
+        
+        .border-err {
+            border: 2px solid #900 !important;
+        }
+        
+        .submitDisable {
+            pointer-events: none !important;
+            background: gray !important;
+            cursor: no-drop !important;
+        }
+        
+        .hayven-logo {
+            position: absolute;
+            top: 0;
+        }
+        
+        .centered_form_area {
+            width: unset !important;
+        }
+        
+        .centered-form {
+            display: block !important;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #form_addparent * {
+            box-sizing: border-box
+        }
+        /* Full-width input fields */
+        
+        #form_addparent input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        
+        #form_addparent input[type=text]:focus,
+        input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+        
+        #form_addparent hr {
+            border: 1px solid #f1f1f1;
+            margin-bottom: 25px;
+        }
+        /* Set a style for all buttons */
+        
+        #form_addparent button {
+            background-color: #023d67;
+            color: white;
+            padding: 14px 20px;
+            margin: 15px 0;
+            border: none;
+            cursor: pointer;
+            width: 40%;
+            font-size: 1rem;
+            border-radius: 5px;
+            opacity: 0.9;
+        }
+        
+        #form_addparent button:hover {
+            opacity: 1;
+        }
+        /* Extra styles for the cancel button */
+        
+        #form_addparent .cancelbtn {
+            padding: 14px 20px;
+            background-color: #f44336;
+        }
+        /* Float cancel and signup buttons and add an equal width */
+        
+        #form_addparent .cancelbtn,
+        .signupbtn {
+            float: left;
+            width: 30%;
+        }
+        /* Add padding to container elements */
+        
+        #form_addparent .container {
+            padding: 16px;
+        }
+        /* Clear floats */
+        
+        #form_addparent .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        
+        .submitDisable {
+            pointer-events: none !important;
+            background: gray !important;
+            cursor: no-drop !important;
+        }
+        
+        #form_addparent .border-err {
+            border: 2px solid #900 !important;
+        }
+        
+        #form_newaccount_parent {
+            /* border: 1px solid #ccc; */
+            border-radius: 5px;
+        }
+        /* Change styles for cancel button and signup button on extra small screens */
+        
+        @media screen and (max-width: 300px) {
+            #form_addparent .cancelbtn,
+            .signupbtn {
+                width: 100%;
+            }
+        }
+        
+        .back_ico {
+            width: 30px;
+            height: 30px;
+            background-image: url(/images/basicAssets/back.svg);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: 25px;
+            display: inline-block;
+            position: relative;
+            top: 8px;
+        }
+    </style>
+    <link href="/stylesheets/singup_parent.css" rel="stylesheet">
+
+
+    <div class="new_parentaccount_form">
+        <div style="text-align: center;margin-bottom: 10px;">
+            <div class="back_ico" onclick="parent.back_covid_parent()"></div>
+            <div class="new_parentaccount_text">Add Parent(s) / Guardian(s)</div>
+
+        </div>
+        <hr>
+        <form id="form_newaccount_parent" method="POST">
+            <div class="centered_form_area" style="padding: 15px;">
+                <div class="input_area">
+                    <label class="form_label" for="fname">First Name</label>
+                    <input onkeyup="serveyValidationCheck()" type="text" class="full_width" id="fname" name="first_name" placeholder="First Name">
+
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="lname">Last Name</label>
+                    <input onkeyup="serveyValidationCheck()" type="text" class="full_width" id="lname" name="last_name" placeholder="Last Name">
+                </div>
+
+                <div class="input_area">
+                    <label class="form_label" for="phone">Relationship with student</label>
+                    <input onkeyup="serveyValidationCheck()" type="text" class="full_width" id="relationship" name="relationship" placeholder="Relationship">
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="email">Email Address</label>
+                    <% if(email !="" ) { %>
+                        <input onkeyup="serveyValidationCheck()" type="email" class="full_width" disabled id="email" value="<%= email %>">
+                        <input onkeyup="serveyValidationCheck()" type="hidden" name="email" value="<%= email %>">
+                        <% } else { %>
+                            <input onkeyup="serveyValidationCheck()" type="email" class="full_width" id="email" name="email" placeholder="Email Address">
+                            <% } %>
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="phone">Phone Number (Optional)</label>
+                    <input onkeyup="serveyValidationCheck()" pattern="^[0-9-+\s()]*$" minlength="5" type="text" class="full_width" id="phone" name="phone" placeholder="Phone Number">
+                    <p class="discribe_text">This is for verification and security purposes only. We will never share your phone number with anyone.</p>
+                </div>
+            </div>
+            <div class="checkboxdiv">
+                <input type="checkbox" name="agreement" id="agreement">
+                <span class="agreement_text">
+                    I agree to the <a
+                        href="#"> Workfreeli agreement</a>, <a href="#">terms of service</a> and <a href="#">privacy
+                        policy</a>
+                    </span>
+            </div>
+            <div class="submit_area">
+                <button type="submit" class="submitBtn submitDisable" id="submitBtn">Sign-up</button>
+                <input type="hidden" name="student_id" value="<%= student_id %>">
+                <input type="hidden" name="account_type" value="School">
+                <input type="hidden" name="campus" value="<%= campus %>">
+            </div>
+            <br>
+            <br>
+            <br>
+        </form>
+
+
+    </div>
+
+    <script type="text/javascript">
+        // $(function () {
+        //     if (error_list) {
+        //         for (let err of error_list) {
+        //             console.log(1092, err.param);
+        //             $('input[name="' + err.param + '"]').addClass('border-err');
+        //         }
+        //     }
+
+        // });
+        function serveyValidationCheck() {
+            if ($('#agreement').is(':checked') && $('#fname').val() && $('#lname').val() && $('#relationship').val() && $('#email').val()) {
+                $('#submitBtn').removeClass('submitDisable')
+            } else {
+                $('#submitBtn').addClass('submitDisable')
+            }
+        }
+
+
+
+        function skipContinuePage(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/covid/skip_login',
+                type: "POST",
+                data: {},
+                dataType: "JSON",
+                // beforeSend: function(){
+                //     // console.log(456, data);
+                // },
+                success: function(res) {
+                    if (res.status) window.location.href = res.url;
+                    else alert("Something error");
+                },
+                error: function(err) {
+                    console.log(462, err);
+                }
+            });
+
+        }
+
+        function returnLoginPage(e) {
+            e.preventDefault();
+            window.location.href = '/';
+            // $.ajax({
+            //     url: '/covid/return_login',
+            //     type: "POST",
+            //     data: {},
+            //     dataType: "JSON",
+            //     // beforeSend: function(){
+            //     //     // console.log(456, data);
+            //     // },
+            //     success:function(res){
+            //         // //debugger
+            //         // if(res.status) window.location.reload();
+            //         if(res.status) window.location.href='/'; 
+            //         else alert("Something error");
+            //     },
+            //     error: function(err){
+            //         console.log(462, err);
+            //     }
+            // });
+        }
+        // $("#email").blur(function(){
+        //     // alert("This input field has lost its focus.");
+        //     $('#login_id').val($('#email').val());
+        // });
+
+        $('#form_newaccount_parent').on('submit', function submitHandler(e) {
+            e.preventDefault()
+            $.ajax({
+                url: '/covid/newaccount',
+                type: "POST",
+                data: $('#form_newaccount_parent').serialize(),
+                success: function(data) {
+                    // //debugger
+
+                    if (data.status) {
+                        if (data.msg == 'exist') {
+                            alert('Phone or Email Already exists');
+                        } else if (data.msg == 'add') {
+                            parent.back_covid_parent();
+                            window.parent.$('#warnignMsgText').text('Parent added successfully.');
+                            window.parent.$('#warningsPopup').css('display', 'flex');
+                            $('#form_newaccount_parent').trigger("reset");
+                            $('#submitBtn').addClass('submitDisable');
+
+                            let survey_status_txt = '';
+                            if (data.parent_info.answer_result == 'yes') {
+                                survey_status_txt = 'Stay Home / Quarantine';
+                            } else if (data.parent_info.answer_result == 'no') {
+                                survey_status_txt = 'OK to Check-in';
+                            } else {
+                                survey_status_txt = 'Screening Required';
+                            }
+
+                            // if (data.parent_info.id == user_id) {
+                            //     var itsyu = " - ( yourself )"
+                            // } else {
+                            //     var itsyu = ""
+                            // }
+                            parent.drawCovidConv(data.parent_info, survey_status_txt, "");
+
+                        } else {
+                            parent.back_covid_parent();
+                            window.parent.$('#warnignMsgText').text('Parent added successfully. Please check mail for login password.');
+                            window.parent.$('#warningsPopup').css('display', 'flex');
+                            $('#form_newaccount_parent').trigger("reset");
+                            $('#submitBtn').addClass('submitDisable');
+
+                            let survey_status_txt = '';
+                            if (data.parent_info.answer_result == 'yes') {
+                                survey_status_txt = 'Stay Home / Quarantine';
+                            } else if (data.parent_info.answer_result == 'no') {
+                                survey_status_txt = 'OK to Check-in';
+                            } else {
+                                survey_status_txt = 'Screening Required';
+                            }
+
+                            // if (data.parent_info.id == user_id) {
+                            //     var itsyu = " - ( yourself )"
+                            // } else {
+                            //     var itsyu = ""
+                            // }
+                            parent.drawCovidConv(data.parent_info, survey_status_txt, "");
+                        }
+
+                    } else {
+                        if (data.msg) {
+                            for (let err of data.msg) {
+                                $('input[name="' + err.param + '"]').addClass('border-err');
+                            }
+                        }
+
+                    }
+
+
+
+
+                },
+                complete: function() {
+                    console.log('process complete');
+                },
+                error: function(err) {
+                    console.log('process error', err);
+                }
+            });
+        })
+
+        $("#agreement").change(function() {
+            // //debugger
+            if ($(this).is(':checked') && $('#fname').val() && $('#lname').val() && $('#relationship').val() && $('#email').val()) {
+                $('#submitBtn').removeClass('submitDisable')
+            } else {
+                $('#submitBtn').addClass('submitDisable')
+            }
+        });
+    </script>
+
+    <%- include('layouts/foot') %>

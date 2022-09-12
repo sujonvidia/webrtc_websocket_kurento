@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
+    <title>
+        <%= title %>
+    </title>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/stylesheets/mob_style_covid.css' />
+
+
+
+    <script src="/javascripts/fontawesome-all.js"></script>
+    <script src="/javascripts/jQuery/jquery-3.3.1.min.js"></script>
+    <script src="/javascripts/plugins/socket.io.js" charset="utf-8"></script>
+    <% if(page == 'call'){ %>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style-basic.css">
+        <% } %>
+            <link rel="stylesheet" type="text/css" href="/stylesheets/style-call.css">
+            <link rel="stylesheet" type="text/css" href="/stylesheets/toastr.min.css">
+            <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/balloon.min.css">
+            <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/flatpickr.min.css">
+            <script type="text/javascript">
+                let log = console.log;
+
+                function removeA(arr) {
+                    var what, a = arguments,
+                        L = a.length,
+                        ax;
+                    while (L > 1 && arr.length) {
+                        what = a[--L];
+                        while ((ax = arr.indexOf(what)) !== -1) {
+                            arr.splice(ax, 1);
+                        }
+                    }
+                    return arr;
+                }
+
+                function refresh_loc() {
+                    // localStorage.setItem('cache.refresh.button', 'hide');
+                    // if(sw_updated) 
+                    // window.location.reload(true);
+                    // else refresh_trigger = true;
+
+                    $("#reloading_page").show();
+                    if (sw_registration && sw_registration.waiting) {
+                        sw_registration.waiting.postMessage('SKIP_WAITING');
+                    } else {
+                        sw_refreshing = true;
+                        window.location.reload(true);
+                    }
+                    setTimeout(() => {
+                        // alert('time');
+                        sw_refreshing = true;
+                        window.location.reload(true);
+                    }, 60000);
+                }
+                var sw_registration;
+
+                function invokeServiceWorkerUpdateFlow(sw_registration) {
+                    // if (window.location.href.split('/').indexOf('alpha2') != -1) {
+                    // 	$('#refresh_popup,#refresh_blank').css('display', 'flex');
+
+                    // }else{
+                    // 	if (sw_registration.waiting) {
+                    // 			// let waiting Service Worker know it should became active
+                    // 			sw_registration.waiting.postMessage('SKIP_WAITING')
+                    // 	}
+
+                    // }
+                    if (sw_registration && sw_registration.waiting) {
+                        sw_registration.waiting.postMessage('SKIP_WAITING');
+                        //   window.location.reload(true);
+                    }
+                }
+
+                function updateServiceWorker() {
+                    if ('serviceWorker' in navigator) {
+
+                        fetch('/call/subscribe2', {
+                            method: 'post'
+                        }).then(function(response) {
+                            response.json().then(async function(data) {
+                                const sw_registration = await navigator.serviceWorker.register(`/service_worker.js?hash=${data.restart_time}`, {
+                                    scope: "/"
+                                });
+                                // ensure the case when the updatefound event was missed is also handled
+                                // by re-invoking the prompt when there's a waiting Service Worker
+                                if (sw_registration.waiting) {
+                                    invokeServiceWorkerUpdateFlow(sw_registration);
+                                }
+                                // detect Service Worker update available and wait for it to become installed
+                                sw_registration.addEventListener('updatefound', () => {
+                                    if (sw_registration.installing) {
+                                        // wait until the new Service worker is actually installed (ready to take over)
+                                        sw_registration.installing.addEventListener('statechange', () => {
+                                            if (sw_registration.waiting) {
+                                                // if there's an existing controller (previous Service Worker), show the prompt
+                                                if (navigator.serviceWorker.controller) {
+                                                    invokeServiceWorkerUpdateFlow(sw_registration)
+                                                } else {
+                                                    // otherwise it's the first install, nothing to do
+                                                    // invokeServiceWorkerUpdateFlow(sw_registration);
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+
+                            });
+                        });
+
+                        // navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                        // 	for (let sw_registration of registrations) {
+                        // 		sw_registration.unregister()
+                        // 	}
+                        // });
+                        // caches.keys().then(function(names) {
+                        //         console.log('caches',names);
+                        //         for (let name of names)
+                        //                 caches.delete(name);
+                        // });
+
+                    } else {
+                        console.log('sw:Service workers are not supported.');
+                    }
+                }
+                window.addEventListener('load', () => {
+                    updateServiceWorker();
+                });
+
+                function forActiveCallIcon(onlineUserList, participants, type, id) {
+
+                    var participantActive = _.intersection(onlineUserList, participants);
+                    $('.voice-call , .redial-audiocall').removeClass('onC');
+                    $('.video-call , .redial-videocall').removeClass('onC');
+                    $('.voice-call , .redial-audiocall').removeClass('off_G_C');
+                    $('.video-call , .redial-videocall').removeClass('off_G_C');
+                    $('.voice-call , .redial-audiocall').removeClass('off_P_C');
+                    $('.video-call , .redial-videocall').removeClass('off_P_C');
+                    if (type == 'single') {
+                        if (participantActive.length > 1) {
+                            $('.voice-call , .redial-audiocall').addClass('onC');
+                            $('.video-call , .redial-videocall').addClass('onC');
+                            $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/voice_call_for_active.svg');
+                            $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/video_call_for_active.svg');
+                            $('.mid_area .status').html('Online').addClass('onC');
+                        } else {
+                            $('.voice-call , .redial-audiocall').addClass('off_P_C');
+                            $('.video-call , .redial-videocall').addClass('off_P_C');
+                            $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/custom_voice_call.svg');
+                            $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/custom_video_call.svg');
+                            $('.mid_area .status').html('Offline');
+                        }
+                    } else if (type == 'group') {
+                        if (participantActive.length > 1) {
+                            $('.voice-call , .redial-audiocall').addClass('onC');
+                            $('.video-call , .redial-videocall').addClass('onC');
+                            $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/voice_call_for_active.svg');
+                            $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/video_call_for_active.svg');
+                            $('.mid_area .status').html('Online').addClass('onC');
+                        } else {
+                            $('.voice-call , .redial-audiocall').addClass('off_G_C');
+                            $('.video-call , .redial-videocall').addClass('off_G_C');
+                            $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/custom_voice_call.svg');
+                            $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/custom_video_call.svg');
+                            $('.mid_area .status').html('Offline');
+                        }
+                    }
+                }
+
+                function forActiveRedialIcon(onlineUserList, participants, type, id) {
+                    var participantActive = _.intersection(onlineUserList, participants);
+                    $('.redial-audiocall').removeClass('onC');
+                    $('.redial-videocall').removeClass('onC');
+                    $('.redial-audiocall').removeClass('off_G_C');
+                    $('.redial-videocall').removeClass('off_G_C');
+                    $('.redial-audiocall').removeClass('off_P_C');
+                    $('.redial-videocall').removeClass('off_P_C');
+
+                    if (type == 'single') {
+                        if (onlineUserList.indexOf(id) !== -1) {
+                            $('.redial-audiocall').addClass('onC');
+                            $('.redial-videocall').addClass('onC');
+                        } else {
+                            $('.redial-audiocall').addClass('off_P_C');
+                            $('.redial-videocall').addClass('off_P_C');
+                        }
+                    } else if (type == 'group') {
+                        if (participantActive.length > 1) {
+                            $('.redial-audiocall').addClass('onC');
+                            $('.redial-videocall').addClass('onC');
+                        } else {
+                            $('.redial-audiocall').addClass('off_G_C');
+                            $('.redial-videocall').addClass('off_G_C');
+                        }
+                    }
+                }
+
+                function delete_cookie(name) {
+                    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                }
+
+                var setCookie = (cname, cvalue, exdays) => {
+                    var d = new Date();
+                    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                    var expires = "expires=" + d.toUTCString();
+                    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
+
+                var getCookie = (cname) => {
+                    var name = cname + "=";
+                    var decodedCookie = decodeURIComponent(document.cookie);
+                    var ca = decodedCookie.split(';');
+                    for (var i = 0; i < ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+                }
+
+                var setCookieCall = (cname, cvalue, exdays = 1) => {
+                    var d = new Date();
+                    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                    var expires = "expires=" + d.toUTCString();
+                    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
+
+                var getCookieCall = (cname) => {
+                    var name = cname + "=";
+                    var decodedCookie = decodeURIComponent(document.cookie);
+                    var ca = decodedCookie.split(';');
+                    for (var i = 0; i < ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+                }
+            </script>
+            <script src="/javascripts/lodash.js"></script>
+            <script src="/javascripts/moment.js"></script>
+            <script src="/javascripts/moment-timer.js"></script>
+            <script src="/javascripts/tooltipster.bundle.min.js"></script>
+            <script src="/javascripts/jquery.highlight.js"></script>
+            <script src="/javascripts/toastr.min.js"></script>
+            <script src="/push.js"></script>
+            <script src="/javascripts/masonry.pkgd.min.js"></script>
+            <script src="/javascripts/plugins/flatpickr"></script>
+            <script src="/javascripts/plugins/clipboard.min.js"></script>
+            <!-- <script src="/javascripts/socket-calling.js"></script> -->
+</head>
+
+<body>
+
+    <% if(page == 'connect'){ %>
+        <section class="head_container">
+            <div class="profile_img">
+                <img src="/images/Workfreeli_logo_full_connect.png">
+                <div id="screen_portal">Screening Portal</div>
+            </div>
+            <!-- <div class="b_label" onclick="window.location.href='/connect';">Workfreeli</div> -->
+            <!-- <img id="profile_video_call" onclick="focusVideoCall()" class="animate-flicker-call onC" src="/images/basicAssets/video_call_for_profile.svg"> -->
+            <!-- <img id="profile_audio_call" onclick="focusVideoCall()" class="animate-flicker-call onC" src="/images/basicAssets/voice_call_for_profile.svg"> -->
+            <!-- <div class="search_ico" onclick="open_search_input()" style="display: none;">
+          <input type="text" class="src_convUser" onkeyup="search_conv_list(event)" placeholder="Search users or rooms">
+          <i onclick="closeSearchBox(this,event)" class="fas fa-times-circle closeSearch"></i>
+        </div> -->
+            <div class="linkaccimg" data-comid="e2a660c0-7fee-11ea-9205-bbf3a8141976">
+                <img id="covid_company_pic" data-email="sujon@gmail.com" data-comid="e2a660c0-7fee-11ea-9205-bbf3a8141976" class="profilePic" title="Scholastica" src="https://wfss001.freeli.io/profile-pic/Photos/img.png">
+                <span class="socialMsgCount"></span>
+            </div>
+            <div class="down_arrow" onclick="showProfileNav(this)"></div>
+
+        </section>
+        <% } %>

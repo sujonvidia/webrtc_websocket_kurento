@@ -1,0 +1,139 @@
+<div id="updatechannelContainer" class="update_room connect_right_section" style="display: none">
+	<img class="dir-msg-close" onclick="closeUpdateRoomsec(this)" src="/images/basicAssets/close_button.svg" alt="">
+	<div class="name_and_profile">
+		<div class="upload-channel-photo">
+				<!-- viewRoomImg(this) -->
+			<div class="img-div" onclick="roomImgoptionView(this,'update')">
+				<img src="/images/basic_view/channel-photo.JPG" id="updateRoomImg" alt="">
+				<div class="RoomImgOptDiv" id="roomimgOptionDiv">
+					<li onclick="viewRoomImg(event,'updateContainer',this)" class="viewImg">View Image</li>
+					<li class="removeImg" onclick="removeRoomImg(this,'update')">Remove Image</li>
+					<li onclick="$('#updateImgInput').trigger('click')" class="uploadimg">Change Image</li>
+				</div>
+			</div>
+			<form name="roomImg" id="updateRoomImgForm" class="roomImg" method="post" enctype="multipart/form-data">
+				<div class="file-up-div">
+					<label for="updateImgInput" style="display: none">Upload</label>
+					<input type="file" id="updateImgInput" name="room_image" onchange="getInfo(event)" accept="image/x-png,image/jpeg,image/jpg">
+				</div>
+			</form>
+		</div>
+		<div class="channel-name" id="channelNameHead">
+			<input type="text"  name="team-name" class="team-name" id="updateRoomTitle" onkeydown="saveFUpdate(event)" placeholder="Marketing, product design, etc...">
+			<i class="far fa-edit edt_title"></i>
+		</div>
+	</div>
+	<div class="team_and_permission" style="margin-bottom: 0px;">
+		<!-- <div class="make_private" id="roomStatusUpdate" onclick="roomAccessControl(this,'private')"> -->
+		<div class="make_private" id="roomStatusUpdate" >
+			<!-- <div class="customToolTip permissionTool"> Only Room Admin Can Modify This Section </div> -->
+			<p class="label_head head" id="privacyTitle">Private Room</p>
+			<label class="switchNav" id="changePrivacy">
+				<input type="checkbox" id="grpPrivacyUpdate">
+				<span class="sliderNav round"></span>
+			</label>
+			<div class="accessControlDiv">
+				<p class="label_head">Make this room private</p><br>
+				<p class="label_for">Only invited members will have access to this Room.</p>
+			</div>
+		</div>
+		<!-- new design -->
+		<div class="name_and_profile" style="width: 50%;display: inline-block;">
+			<div class="channel-name" style="float: left; width: 100%">
+				<div class="redioGroup" style="float: left;">
+					<label class="radioItem showEl">
+						<span class="radioItemName">Work Room</span>
+						<input class="radioItemInput" name="room_type" type="radio" value="work" onchange="socialChange(this)" checked>
+						<span class="customRadioMark"></span>
+					</label>
+				</div>
+				<div class="redioGroup" style="float: left; margin-bottom: 22px;">
+					<label class="radioItem showEl">
+						<span class="radioItemName">Social</span>
+						<input class="radioItemInput" name="room_type" type="radio" value="social" onchange="socialChange(this)" >
+						<span class="customRadioMark"></span>
+					</label>
+				</div>
+				
+			</div>
+
+			<div class="workspace" id="upbusinessHolder" style="float: left;width: 100%;">
+				<p>Topic of Discussion</p>
+				<select onchange="business_unitChangeUp(this)" class="select-ecosystem" id="update_b_unit" required  style="width: calc(100% - 35px);">
+				</select>
+			</div>
+			<div class="workspace" style="margin-top: 22px;width:100%;">
+				<p>Team</p>
+				<select class="select-ecosystem" id="select-ecosystem" onchange="updateWorkspace(this.value)" required>
+					<option value="" disabled selected>Choose a workspace</option>
+					<option value="Navigate">Navigate</option>
+					<option value="Freelance">Freelance</option>
+					<option value="Personal">Personal</option>
+				</select>
+			</div>
+			<div class="workspace" style="width:calc(100% - 35px);margin-top: 22px;">
+				<p style="color: #53627C;
+				    font-family: hvAssistant;
+				    font-size: 12px;
+				    font-weight: 500;
+				    line-height: 16px;
+				    margin-bottom: 6px;">Create Tag</p>
+				<div class="groupHvIn">
+					<div style="float: left;" class="container" id="temmpTagContainerUpdate">
+						
+					</div>
+					<input type="text" placeholder="Create Tag" name="" onkeyup="addNewtagForConv(event)" onkeydown="createTemppTagD(event)">
+				</div>
+			</div>
+			
+		</div>
+		<!-- new design -->
+		
+	</div>
+	<div class="photo-upload-invite-member">
+		<div class="invite-member">
+			<p class="labelinputBox">Invite Member(s) for this Discussion</p>
+			<!-- <input type="text" class="add-team-member" name="add-team-member" onfocus="addTeamMemberfocus(event)"  placeholder="Search by name or email" onkeyup="searchsldefclas(event,$(this).val());"> -->
+			<div class="addbtn" id="memberAddBtn" onclick="updateTempoMember(this)">Update</div>
+			<div class="input_email" id="inviteMemberBox" onclick="$(this).find('.invitedMem').focus()">
+				<div class="customToolTip permissionTool"> Only Room Admin Can Modify This Section </div>
+				<input type="text" class="invitedMem" id="findUserForRoom" placeholder="Search Users" onkeydown="memberForRoomDown(event)" onkeyup="findMemberForRoom(event,this)" onfocus="fiMFROnfocus(this)" onblur="fimfronblur(this)">
+			</div>
+
+			<ul class=" hayvenList" id="updateRoomListMember">
+				
+			</ul>
+
+				<!-- <div class="adminList">
+						<div class="type-name" style="display:none;">Admin</div>
+						<div class="ml-listHA"></div>
+				</div>
+				<div class="member_list">
+						<div class="type-name" style="display:block;">Member</div>
+						<div class="ml-listHA">
+							<div class="member-div" id="member53819bb6-c0d1-4dd0-81c7-7099bde62ee3">          
+								<img src="/images/users/img.png" class="member-img">          
+								<div class="member-name">Rumi Rabbi+</div>          
+								<span class="remove-it GroupFlRight" onclick="removeMember('member','53819bb6-c0d1-4dd0-81c7-7099bde62ee3','0d362b13-9d64-4877-8fe8-70e5df31cc76');" style="display: none;">Remove</span>          
+								<img src="/images/admin-remove_12px @1x.png" class="remove-admin remove2 GroupFlRight arfImg" onclick="makeMember('img.png','Rumi Rabbi+','Test','53819bb6-c0d1-4dd0-81c7-7099bde62ee3','0d362b13-9d64-4877-8fe8-70e5df31cc76')">          
+								<img src="/images/admin-add_12px @1x.png" class="add-admin add2 GroupFlRight arfImg" onclick="makeAdmin('img.png','Rumi Rabbi+','Test','53819bb6-c0d1-4dd0-81c7-7099bde62ee3','0d362b13-9d64-4877-8fe8-70e5df31cc76')" style="display: none;">        
+							</div>
+						</div>
+				</div> -->
+
+				<div class="memberList" id="viewlistUpdateroom">
+
+					<div class="adminList">
+							<div class="type-name" id="ml-admintype" style="display:none;">Admin</div>
+							<div class="ml-listHA" id="ml-listHA"></div>
+					</div>
+					<div class="member_list">
+							<div class="type-name" id="ml-membertype" style="display:none;">Members</div>
+							<div class="ml-listHl" id="ml-listHl"></div>
+					</div>
+					
+					
+				</div>
+		</div>
+	</div>
+</div>

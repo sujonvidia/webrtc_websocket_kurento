@@ -1,0 +1,16 @@
+<%- include('layouts/head') %>    
+    <div class="centered-form__form" style="text-align: center;">
+            <div class="logo_icon">
+                <img src="/images/loading.gif">
+            </div>
+            <h4><%= loading_msg %></h4>
+            <h4>Loading WORKFREELI for you...</h4>
+    </div>
+<%- include('layouts/foot') %>
+<script>
+$(function(){
+    setTimeout(function(){
+        window.location.assign("/");
+    }, 3000);
+});
+</script>

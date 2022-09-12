@@ -1,0 +1,162 @@
+
+
+	
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+		<title>
+			<%= page_title %>
+		</title>
+		<link rel="stylesheet" href="/stylesheets/jquery.mobile-1.4.5.min.css" />
+		<script src="/javascripts/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="/javascripts/jQuery/jquery-ui.min.js"></script>
+		<script src="/javascripts/jQuery/jquery.mobile-1.4.5.js"></script>
+		<script src="/javascripts/bootstrap.min.js"></script>
+		<style>
+			.company_con {
+				box-sizing: border-box;
+				height: 100%;
+				width: 100%;
+				/* border: 1px solid red; */
+				position: relative;
+			}
+			.comnay_content {
+				box-sizing: border-box;
+				width: 65%;
+				margin: 100px auto;
+				border: 1px solid #003466;
+				padding: 30px 60px 45px;
+
+				
+				box-shadow: 3px 2px 8px -2px rgba(142, 142, 142, 0.73);
+				-webkit-box-shadow: 3px 2px 8px -2px rgba(142, 142, 142, 0.73);
+				-moz-box-shadow: 3px 2px 8px -2px rgba(142, 142, 142, 0.73);
+			}
+			.company_logo {
+				width: 100%;
+				text-align: center;
+			}
+			.company_logo img {
+				width: 260px;
+				border-radius: 4px;
+			}
+			.company_names_head {
+				text-align: center;
+				font-family: Verdana, sans-serif;
+				/* text-shadow: 4px 4px 2px rgba(150, 150, 150, 1); */
+				font-size: 20px;
+			}
+			.compnay_btns_con {
+				box-sizing: border-box;
+				/* border: 1px solid #717B8E; */
+				padding: 15px 0px;
+				min-height: 190px;
+			}
+			.compnay_btns_con .com_btn {
+				box-sizing: border-box;
+				display: inline-block;
+				text-decoration: none;
+				text-align: center;
+				float: left;
+				border: 1px solid #646783;
+				width: calc(50% - 30px);
+				border-radius: 4px;
+				color: rgba(0, 0, 0, 1);
+				font-size: 22px;
+				line-height: 26px;
+				font-weight: bold;
+				margin: 15px 0px;
+				padding: 10px 8px;
+				cursor: pointer;
+			}
+			.compnay_btns_con .com_btn:nth-child(2n+1) {
+				margin-right: 60px;
+			}
+			.compnay_btns_con .com_btn.selected{
+				border: 5px solid #646783;
+			}
+			.company_sign_in_con {
+				width: 100%;
+				text-align: center;
+				margin-top: 25px;
+				/* border: 1px solid red; */
+			}
+			.company_sign_in_con button {
+					width: 33.33%;
+					text-align: center;
+					font-size: 22px;
+					line-height: 27px;
+					border-radius: 4px;
+					background-color: #003466;
+					border: 1px solid #003466;
+					color: #FFF;
+					cursor: pointer;
+					padding: 7px;
+			}
+			#com_btn_submit{
+				display: none;
+			}
+			.com_btn{
+				position: relative;
+			}
+			.com_btn:hover:before{
+				width: 32px;
+				height: 32px;
+				content: " ";
+				background-image: url(/images/forward_32.svg);
+				position: absolute;
+				right: 5%;
+				top: 50%;
+				transform: translateY(-50%);
+
+			}
+		</style>
+	</head>
+	<body>
+		<div class="company_con">
+			<form action="/company" method="POST">
+			<div class="comnay_content">
+					<div class="company_logo">
+						<!-- <img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="Workfreeli"> -->
+						<img src="/images/workfreeli_final_logo.png" alt="Workfreeli">
+					</div>
+					<p class="company_names_head">Please select a business to continue...</p>
+					<div class="compnay_btns_con">
+							<div class="com_btn">OHS Global</div>
+							<div class="com_btn">Ascent Group</div>
+							<div class="com_btn">Demo Company</div>
+							<div class="com_btn">ABC Inc.</div>
+					</div>
+					<input type="hidden" name="company_name" id="company_name">
+					<div class="company_sign_in_con">
+						<!-- <button>Sign In</button> -->
+						<button id="com_btn_submit" type="submit">Continue</button>
+					</div>
+			</div>
+			</form>
+		</div>
+	</body>
+	<script type="text/javascript">
+        var all_company = <%- JSON.stringify(company) %>;
+        $(document).ready(function() {
+            $('.company_sign_in_con button').attr("disabled", true);
+            $(".compnay_btns_con").html("");
+            $.each(all_company, function(k, v){
+                var comname = v.company_name.split("@");
+                var html = '<div class="com_btn " onclick="setcomid(this)" data-id="'+ v.company_id +'">'+comname[0]+'</div>';
+                $(".compnay_btns_con").append(html);
+            });
+        });
+        function setcomid(e){
+			$('.company_sign_in_con button').attr("disabled", false);
+            $('.com_btn').removeClass('selected');
+            $('#company_name').val($(e).attr("data-id"));
+			$(e).addClass('selected');
+			$('#com_btn_submit').click();
+        }
+    </script>
+</html>
+

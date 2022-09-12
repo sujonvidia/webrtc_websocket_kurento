@@ -1,0 +1,76 @@
+<%- include('layouts/head') %>
+    <link href="/stylesheets/singup.css" rel="stylesheet">
+    <div class="logo_icon">
+        <a href="/"> <img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="" style="border-radius: 4px;"></a>
+        <span class="workfreeli_text">Workfreeli</span>
+    </div>
+
+
+
+    <form class="frm_activition" id="frm_activition" action="/" method="POST">
+        <div class="centered_form_area">
+            <div class="invitations_head">Invitations sent!</div>
+            <div class="invitations_head_img"> <img src="/images/signup_icons/indicator_large.png" alt=""> </div>
+
+            <div class="continue_submit_area">
+
+                <button class="go_inviteBtn " type="submit" id="go_inviteBtn">Go to Workfreeli</button>
+
+            </div>
+
+            <div class="bottom-margin"></div>
+
+
+
+            <% if (error) { %>
+                <div class="form-field">
+                    <ul class="error-msg">
+                        <% for(var i=0; i < error.length; i++) { %>
+                            <li>
+                                <%= error[i].msg %>
+                            </li>
+                            <% } %>
+                    </ul>
+                </div>
+                <% } %>
+        </div>
+
+
+
+    </form>
+
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var maxField = 10; //Input fields increment limitation
+            var addButton = $('.add_invite_box_area'); //Add button selector
+            var wrapper = $('.field_wrapper'); //Input field wrapper
+            var fieldHTML = '<div><div class="invite_box_area"><input type="email" class="invitebox " name="inviteEmail" id="inviteEmail" placeholder="Enter an email to invite"></div><a href="javascript:void(0);" class="remove_button">Remove</a><div>';
+
+
+            var x = 1; //Initial field counter is 1
+
+            //Once add button is clicked
+            $(addButton).click(function() {
+                //Check maximum number of input fields
+                if (x < maxField) {
+                    x++; //Increment field counter
+                    $(wrapper).append(fieldHTML); //Add field html
+                }
+            });
+
+            //Once remove button is clicked
+            $(wrapper).on('click', '.remove_button', function(e) {
+                e.preventDefault();
+                $(this).parent('div').remove(); //Remove field html
+                x--; //Decrement field counter
+            });
+        });
+    </script>
+
+    </script>
+
+
+    <%- include('layouts/foot') %>

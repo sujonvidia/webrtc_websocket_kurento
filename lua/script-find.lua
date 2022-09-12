@@ -1,0 +1,1 @@
+return redis.call('FT.SEARCH',unpack(KEYS));

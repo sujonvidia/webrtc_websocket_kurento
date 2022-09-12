@@ -1,0 +1,2547 @@
+<%- include('layouts/mob_head_covid') %>
+    <!-- <script type="module" src="/javascripts/jspdf.umd.min.js"></script> -->
+    <!-- <script type="text/javascript" src="/javascripts/html2canvas.js"></script>  -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script> -->
+    <script src="/javascripts/jspdf.umd.js"></script>
+    <script type="text/javascript" src="/javascripts/jspdf.plugin.autotable.js"></script>
+    <!-- <script type="module" src="/javascripts/tableToExcel.js"></script> -->
+    <!-- <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script> -->
+
+    <script type="module" src="/javascripts/jquery.dataTables.min.js"></script>
+    <script type="module" src="/javascripts/dataTables.buttons.min.js"></script>
+    <script type="module" src="/javascripts/jszip.min.js"></script>
+    <script type="module" src="/javascripts/pdfmake.min.js"></script>
+    <script type="module" src="/javascripts/vfs_fonts.js"></script>
+    <script type="module" src="/javascripts/buttons.html5.min.js"></script>
+    <script type="module" src="/javascripts/datetime-moment.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style_basic_covid.css">
+    <script src="/javascripts/instascan.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/select2.min.css">
+    <script src="/javascripts/plugins/select2.min.js"></script>
+    <script src="/javascripts/jquery.qrcode.min.js"></script>
+    <div class="loading_connect chatPage_loader"> <img src="/images/assets/loading_data.gif"></div>
+    <section class="chat_section" id="single_chat_section" room-status="">
+        <div id="msg_opt_div" class="msg_opt_div">
+            <div class="cancel_selection" onclick="cancel_selection()"></div>
+            <div class="msg_options" onclick="viewMsg_options(this)">
+
+                <div class="options select_msg" id="selectAllMsg" onclick="opt_selectAllMsg(this)"> <span> All</span>
+                </div>
+                <div class="options selected_msg">
+                    <p class="count_selected_msg">1</p>
+                </div>
+                <div class="options opt_emoji" onclick="opt_emojiView(this)">
+                </div>
+                <div class="options opt_flag" onclick="opt_flagView()">
+                </div>
+                <div class="options opt_reaply" onclick="opt_reaplyView()">
+                </div>
+                <div class="options opt_delete" onclick="opt_deleteView()">
+                </div>
+                <div class="options opt_more" onclick="opt_moreView(this)"></div>
+                <div class="msg_reactionsDiv">
+                    <div class="reactions"><img src="/images/emoji/grinning.svg" onclick="add_reac_into_replies('grinning',null)" alt="grinning"></div>
+                    <div class="reactions"><img src="/images/emoji/joy.svg" onclick="add_reac_into_replies('joy',null)" alt="joy">
+                    </div>
+                    <div class="reactions"><img src="/images/emoji/open_mouth.svg" onclick="add_reac_into_replies('open_mouth',null)" alt="open_mouth"></div>
+                    <div class="reactions"><img src="/images/emoji/disappointed_relieved.svg" onclick="add_reac_into_replies('disappointed_relieved',null)" alt="disappointed_relieved">
+                    </div>
+                    <div class="reactions"><img src="/images/emoji/rage.svg" onclick="add_reac_into_replies('rage',null)" alt="rage"></div>
+                    <div class="reactions"><img src="/images/emoji/thumbsup.svg" onclick="add_reac_into_replies('thumbsup',null)" alt="thumbsup"></div>
+                    <div class="reactions"><img src="/images/emoji/thumbsdown.svg" onclick="add_reac_into_replies('thumbsdown',null)" alt="thumbsdown"></div>
+                    <div class="reactions"><img src="/images/emoji/heart.svg" onclick="add_reac_into_replies('heart',null)" alt="heart"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="common_head head_container" id="user_head_id" conv-type="">
+            <div class="back_ico" onclick="back_covid_btn(event)"></div>
+            <div class="mid_area">
+                <div class="conv_img"><img onclick="profileSetting(event)" id="roomImage" class="cls_profile_img" src=""></div>
+                <div class="conv_title converstaion_name" onclick="profileSetting(event)"></div>
+                <div class="status"></div>
+                <div class="group_info"><span id="totalMember"></span> <span id="conv_key"></span></div>
+            </div>
+            <div class="linkaccimg" data-comid="e2a660c0-7fee-11ea-9205-bbf3a8141976">
+                <img id="covid_company_pic" data-email="sujon@gmail.com" data-comid="e2a660c0-7fee-11ea-9205-bbf3a8141976" class="profilePic" title="Scholastica" src="https://wfss001.freeli.io/profile-pic/Photos/img.png">
+                <span class="socialMsgCount"></span>
+            </div>
+            <div class="down_arrow" onclick="showProfileNav(this)" style="float:left"></div>
+            <div class="head_end_area">
+                <div data-type="audio" onclick="openVideoCall(this)" class="voice-call aud_ico onC" room-status="">
+                </div>
+                <div data-type="video" onclick="openVideoCall(this)" class="video-call vid_ico onC" room-status="">
+                </div>
+                <div data-type="video" onclick="openVideoCall(this)" class="join-call aud_ico onC animate-flicker-call" room-status=""></div>
+                <div class="more_ico2" onclick="moreActionBW(event,this,'more_options_chat')"></div>
+            </div>
+            <!-- <input type="text" class="src_convs" onkeyup="search_convs(event, this)" placeholder="Search"> -->
+            <!-- <i onclick="closeSearchBox(this,event)" class="fas fa-times-circle closeSearch"></i> -->
+            <div class="src_convs">
+                <span class="set_filter" onclick="set_filter(this)"></span>
+                <input type="text" id="search_conv_input" class="search_conv_input" placeholder="Search" onkeyup="search_convs(event, this)">
+                <!-- <span class="clr_search"></span> -->
+                <i onclick="closeSearchBox(this,event)" class="fas fa-times-circle closeSearch"></i>
+                <ul class="filter_div">
+                    <li onclick="search_filter('Images')">Image(s)</li>
+                    <li onclick="search_filter('Videos')">Video(s)</li>
+                    <li onclick="search_filter('Audios')">Audio(s)</li>
+                    <li onclick="search_filter('Files')">File(s)</li>
+                    <li onclick="search_filter('Tags')">Tag(s)</li>
+                    <li onclick="search_filter('Links')">Link(s)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="chat_container">
+            <div class="msg_separator"><span id="top-date"></span></div>
+            <img id="scroll_loader" src="/images/loader.gif" alt="loader.gif">
+            <div class="msg_container" id="msg-container" data-filter="false" data-search="false" room-status="">
+                <div id="form_addparent" style="display: none;">
+                    <iframe id="iframe_addparent" class="iframe_parent"></iframe>
+                </div>
+
+                <div id="survey_container">
+                    <div id="survey_container_gap">
+                        <div id="report" style="display:none">
+                            
+                            <div class="report_head">
+                                <div>
+                                    <div id="btn_scanner_admin" onclick="start_covid_form('qrcode')" class="dropbtn_search2 filter-btn-res">
+                                        QR Scanner
+                                    </div>
+                                    <div class="leftContent">
+                                        <span>Covid Report</span>
+                                        <span class="submit_inputBar" onclick="open_searchForm()"></span>
+                                    </div>
+
+                                    <div class="leftSearch">
+                                        <div id="filterdiv_campus" class="campus_name filter-input-res">
+                                            <select id="search_campus_input" class="js-example-basic-single" name="state">
+                                                <option value="">Location</option>
+                                                <!-- <option value="mirpur">Mirpur</option>
+                                                <option value="uttara">Uttara</option> -->
+                                            </select>
+                                        </div>
+                                        <div class="stu_name filter-input-res">
+                                            <input id="search_student_input" type="text" placeholder="Enter Name" onkeyup="keyupSearchReport()" />
+                                            <span id="clear_search_input" onclick="clearSearchReport()"></span>
+                                        </div>
+                                        <div id="filterdiv_startdate" class="startdate filter-input-res">
+                                            <input id="filter_start_date" class="flatpickr flatpickr-input active" type="text" placeholder="Start Date.." readonly="readonly">
+                                        </div>
+                                        <div id="filterdiv_enddate" class="enddate filter-input-res">
+                                            <input id="filter_end_date" class="flatpickr flatpickr-input active" type="text" placeholder="End Date.." readonly="readonly">
+                                        </div>
+                                        <div id="covid_search_header" class="btnSearch">
+                                            <div id="filter_btn_search" onclick="searchStudentsCampus(true)" class="dropbtn_search2 filter-btn-res">
+                                                Search
+                                            </div>
+                                            <div id="btn_scanner_stuff" onclick="start_covid_form('qrcode')" class="dropbtn_search2 filter-btn-res">
+                                                QR Scanner
+                                            </div>
+                                            <div id="filter_btn_pdf" onclick="start_covid_form('pdf_gen')" class="dropbtn_search2 filter-btn-res">
+                                                PDF
+                                            </div>
+                                            <div id="filter_btn_xls" onclick="start_covid_form('xls_gen')" class="dropbtn_search2 filter-btn-res">
+                                                Excel
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="box_nofound">Nothing found.</div>
+
+                            <!-- covid statistics daily start -->
+
+                            <div id="box_admin_counters" class="covid_stats option-box">
+                                <div id="div_idcard_all" onclick="view_idcard_all(this)" class="item item1">Total Screening Result:
+                                    <span id="report_count_total"></span>
+                                </div>
+                                <div onclick="view_idcard_green(this)" class="item item2">
+                                    <span id="report_count_green"></span>
+                                </div>
+                                <div onclick="view_idcard_yellow(this)" class="item item3">
+                                    <span id="report_count_yellow"></span>
+                                </div>
+                                <!-- <div class="item4">
+                                    <span id="report_count_red"></span>
+                                </div> -->
+                                <div onclick="view_idcard_checkin(this)" class="item item5">Checked-in:
+                                    <span id="report_count_checkin"></span>
+                                </div>
+                                <div onclick="view_idcard_deny(this)" class="item item6">Entry Denied:
+                                    <span id="report_count_deny"></span>
+                                </div>
+
+                            </div>
+                            <!-- <div id="box_scan_propic">
+                                <img>
+                            </div> -->
+                            <div id="box_idcard" class="report_table">
+
+                            </div>
+                            <!-- <div id="pdfcon">
+                                <h2>asdasasd</h2>
+                            </div> -->
+                            <div id="elementPdf"></div>
+                            <div id="elementXls"></div>
+
+                            <!-- covid statistics daily end -->
+
+
+                            <!-- <table class="report_table" style="display: none;">
+                                <thead>
+                                    <tr> -->
+                            <!-- <th class="">ID</th> -->
+                            <!-- <th class="report_name">Name</th> -->
+                            <!-- <th class="report_school stuff-off">School Name</th> -->
+                            <!-- <th class="name1">Campus</th> -->
+                            <!-- <th class="name1">Class</th> -->
+                            <!-- <th class="name1">Section</th> -->
+                            <!-- <th class="report_email" onclick="sortingReport(this,'school')">Email</th>
+                                        <th class="report_checkin" onclick="sortingReport(this,'last_modified_by')">Checkin</th>
+                                        <th class="report_checkout" onclick="sortingReport(this,'last_modified')">
+                                            Checkout</th>
+
+                                        <th class="report_status" onclick="sortingReport(this,'status')">COVID Status
+                                        </th>
+                                    </tr>
+                                </thead> -->
+                            <!-- <tbody id="report_table_body">
+
+                                </tbody> -->
+
+                            <!-- </table> -->
+
+
+                        </div>
+
+                        <div id="form_start">
+                            <div id="box_start_screening">
+                                <div id="box_survey_info" class="option-box">
+                                    <ul style="list-style-type: none;color:black">
+                                        <li class="content_text">You must complete the screening before visiting any of our locations. Please stay home if your screening result is not positive (Green).
+                                        </li>
+                                        <li class="content_text">This screening cannot diagnose you. If you have medical questions, consult a health care provider.
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="box_survey2" class="option-box" onclick="start_covid_form('survey')">
+                                    <!-- <div id="box_survey_status2" style="visibility: hidden;">ww </div> -->
+                                    <div id="box_survey_txt2">Start Screening</div>
+                                    <div id="box_survey_comment2"></div>
+                                </div>
+
+                            </div>
+
+                            <div id="box_survey_checkin" class="option-box">
+
+                            </div>
+                            <div id="box_survey_checkout" class="option-box">
+
+                            </div>
+                            <div id="box_survey_propic" class="option-box" onclick="covid_propic_public()">
+                                <img>
+                            </div>
+                            <div id="box_survey_qrcode" class="option-box">
+                                <div id="image_qr"></div>
+                                <div id="serial_qr"></div>
+                                <div id="text_qr">Based on your answers, you either have symptoms or may have been exposed to COVID-19 or are a "close contact" of someone who currently has COVID-19. We recommend that you stay home to protect the health and safety of others.
+                                    Follow the advice of public health if you have already been tested or cleared.</div>
+                            </div>
+
+
+
+                            <div id="box_survey_finish" class="option-box" style="margin:0 auto;display: none;border:none">
+                                <div class="box_row">
+                                    <!-- <div class="ico"><i class="fas fa-download"></i></div> -->
+                                    <!-- <div> -->
+                                    <!-- <div class="box5" onclick="openMailApp()">
+                                        <a id="survey_submit_mail">Email</a>
+                                        <i class="fas fa-envelope box_ico"></i>
+                                    </div> -->
+                                    <div class="box5" onclick="openPrintPdf()">
+                                        Print / PDF Screening Result
+                                        <i class="fas fa-download box_ico"></i>
+                                    </div>
+                                    <div class="box5" onclick="retakeScreening()">
+                                        RE-TAKE SCREENING
+                                        <i class="fas fa-undo box_ico"></i>
+                                    </div>
+
+                                </div>
+
+                                <div id="box_result_positive" class="box_row_text box_row">
+                                    <!-- <div class="ico"><i class="far fa-calendar"></i></div> -->
+                                    <div>
+                                        <ul style="list-style-type: none;color:black">
+                                            <li class="content_text">You must stay at home and quarantine and should consult a health care provider immediately.
+                                            </li>
+
+                                            <li class="Head_text">Health and safety tips</li>
+                                            <li class="content_text">Keep a distance of at least 2 metres (6 ft) from people you do not live with.</li>
+                                            <li class="content_text">Make sure you wear a face covering or mask while indoors (and outdoors when you cannot physically distance) and that it covers your mouth, nose, and chin. </li>
+                                            <li class="content_text">Wash or sanitize your hands often. </li>
+
+
+                                        </ul>
+
+
+
+                                    </div>
+                                </div>
+
+                                <div id="box_result_negative" class="box_row_text box_row">
+                                    <!-- <div class="ico"><i class="fas fa-download"></i></div> -->
+                                    <div>
+                                        <ul style="list-style-type: none;color:black">
+                                            <li class="content_text">This result is no longer valid if your situation changes during the day (for example, you start experiencing symptoms).
+                                            </li>
+                                            <li class="content_text">The people with you should also take this screening. You can take it on their behalf if they cannot do it themselves.
+                                            </li>
+                                            <li class="Head_text">
+                                                Health and safety tips
+                                            </li>
+                                            <li class="content_text">Keep a distance of at least 2 metres (6 ft) from people you do not live with.
+                                            </li>
+                                            <li class="content_text">Make sure you wear a face covering or mask while indoors (and outdoors when you cannot physically distance) and that it covers your mouth, nose, and chin.
+                                            </li>
+                                            <li class="content_text">Wash or sanitize your hands often.
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="box_row">
+                                    <div class="box5" onclick="openHomeScreen()">
+                                        Back To Home Screen
+                                    </div>
+                                    <br>
+                                    <br>
+                                </div>
+
+                            </div>
+
+
+                            <div id="box_qrcode" class="option-box" style="display: none;" onclick="start_covid_form('qrcode')">
+                                <div class="box_survey_status" style="visibility: hidden;">ww</div>
+                                <div class="box_survey_txt">QR Scanner</div>
+                                <div id="box_survey_comment4" style="visibility: hidden;">ww</div>
+                            </div>
+                            <div id="box_report" class="option-box" style="display: none;" onclick="start_covid_form('report')">
+                                <div class="box_survey_status" style="visibility: hidden;">ww</div>
+                                <div class="box_survey_txt">Report</div>
+                                <div id="box_survey_comment4" style="visibility: hidden;">ww</div>
+                            </div>
+                            <div id="box_search" class="option-box" style="display: none;" onclick="start_covid_form('search')">
+                                <div class="box_survey_status" style="visibility: hidden;">ww</div>
+                                <div class="box_survey_txt">Search</div>
+                                <div id="box_survey_comment4" style="visibility: hidden;">ww</div>
+                            </div>
+
+                        </div>
+
+                        <!-- <div> -->
+                        <form id="form_survey" style="display: none;">
+                            <main id="main" class="">
+                                <div class="covid-form">
+                                    <br>
+                                    <span id="survey_back_btn" class="" onclick="backSurveyPage()"></span>
+                                    <!-- head -->
+                                    <div class="divHead">
+                                        <div class="row2">
+                                            <div class="text3">COVID-19 Screening Questionnaire</div>
+                                        </div>
+                                    </div>
+                                    <section>
+                                        <!-- <h3 class="title">Screening Questions</h3> -->
+                                        <ol id="question_list" class="quelist">
+                                            <li data-chk="true" id="ques1" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="queHead start_survey_form">
+                                                        Are you currently experiencing any of these symptoms?
+                                                    </div>
+                                                    <div class="queHead_hint start_survey_form">
+                                                        Choose any/all that are new, worsening, and not related to other known causes or conditions they already have
+                                                    </div>
+                                                    <div class="queHead_hint review_survey_form">
+                                                        Please review your answers carefully before submission. Please click Re-take Screening button to change your answer(s).
+                                                    </div>
+                                                    <div class="queHead_hint review_survey_form">
+                                                        Experiencing symptoms:
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <div class="question">
+                                                        <div class="right-input">
+                                                            <label>
+                                                                <input data-status="true" type="checkbox" name="question11" value="yes" onchange="yesCheckedState(this)">
+                                                            </label>
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Fever and/or chills</span>
+                                                            <br>
+                                                            <span class="grey">
+                                                                Temperature of 37.8 degrees Celsius/100 degrees Fahrenheit or higher
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label>
+                                                                <input data-status="true" type="checkbox" name="question12" value="yes" onchange="yesCheckedState(this)">
+                                                            </label>
+
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head"> Cough or barking cough (croup)
+																</span>
+                                                            <br>
+                                                            <span class="grey"> Continuous, more than usual, making a whistling
+																	noise when breathing
+																	(not related to asthma, post-infectious reactive airways, or
+																	other
+																	known
+																	causes or conditions they already have)</span>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question13" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question53" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Shortness of breath
+																</span><br>
+                                                            <span class="grey"> Out of breath, unable to breathe deeply (not
+																	related
+																	to asthma
+																	or other known causes or conditions they already have) </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question14" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question55" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Sore throat 
+																</span><br>
+                                                            <span class="grey"> Not related to seasonal allergies, acid reflux, or other known causes or conditions you already have</span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question15" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question55" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head"><!-- Sore throat or difficulty swallowing -->
+																	Difficulty swallowing 
+																</span><br>
+                                                            <span class="grey"> Painful swallowing (not related to seasonal
+																	allergies, acid reflux,
+																	or other known causes or conditions they already have) </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question16" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question56" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Runny or stuffy/congested nose
+																</span><br>
+                                                            <span class="grey"> Not related to seasonal allergies, being outside
+																	in
+																	cold weather,
+																	or other known causes or conditions they already have </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question17" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question54" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Decrease or loss of taste or smell
+																</span><br>
+                                                            <span class="grey"> Not related to seasonal allergies, neurological
+																	disorders,
+																	or other known causes or conditions they already have </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question18" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question56" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Pink eye
+																</span><br>
+                                                            <span class="grey">Conjunctivitis (not related to reoccurring styes or other known causes or conditions you already have)</span>
+                                                        </div>
+
+                                                    </div>
+
+
+
+
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question19" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question57" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head"> Headache
+																</span><br>
+                                                            <span class="grey"> Unusual, long-lasting (not related to
+																	tension-type
+																	headaches, chronic migraines,
+																	or other known causes or conditions they already have) </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question110" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question57" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Digestive issues like nausea/vomiting, diarrhea, stomach pain
+																</span><br>
+                                                            <span class="grey"> Not related to irritable bowel syndrome, menstrual cramps, or other known causes or conditions you already have </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question111" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question57" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Muscle aches
+																</span><br>
+                                                            <span class="grey"> Unusual, long-lasting (not related to a sudden injury, fibromyalgia, or other known causes or conditions you already have)</span>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label>
+																	<input type="checkbox" name="question112" value="yes" onchange="yesCheckedState(this)">
+																</label>
+                                                            <!-- <label><input type="checkbox" name="question59" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Extreme tiredness or muscle aches</span>
+                                                            <br>
+                                                            <span class="grey">
+																	Unusual, fatigue, lack of energy, poor feeding in infants
+																	(not related to depression, insomnia, thyroid disfunction,
+																	sudden
+																	injury,
+																	or other known causes or conditions they already have)</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question113" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question58" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Nausea, vomiting and/or diarrhea
+																</span><br>
+                                                            <span class="grey">
+																	Not related to irritable bowel syndrome, anxiety, menstrual
+																	cramps,
+																	or other known causes or conditions they already have</span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label><input type="checkbox" name="question114" value="yes"
+																		onchange="yesCheckedState(this)"></label>
+                                                            <!-- <label><input type="checkbox" name="question57" value="no">No</label> -->
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">Falling down often
+																</span><br>
+                                                            <span class="grey"> For older people</span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question">
+                                                        <!-- <hr> -->
+                                                        <div class="right-input">
+                                                            <label>
+																	<input id="noneCheckedState1" onchange="noneCheckedState()" type="checkbox" value="yes">
+																</label>
+                                                        </div>
+                                                        <div class="left-input">
+                                                            <span class="question-head">None of the above</span>
+                                                            <br>
+                                                            <span class="grey">
+																Experiencing no symptoms
+															</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="" style="" class="btnAlign survey_action_btn">
+                                                    <!-- <div id="no_covid_div" style="display: inline-block;" class="covid_action_btn">
+                                                        <div id="no_covid_btn" class="" onclick="next_covid_btn(event)">SUBMIT</div>
+                                                    </div> -->
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div id="submit_covid_div" style="display: inline-block;" class="covid_action_btn">
+                                                        <div id="submit_covid_btn" class="action_covid_btn" onclick="next_covid_btn(event)">NEXT</div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </li>
+
+                                            <li data-chk="false" id="ques2" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label>
+                                                            <input type="checkbox" name="question2" value="yes">
+                                                        </label>
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead">
+                                                            Are you in any of these at-risk groups?
+														</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                    </div>
+
+                                                </div>
+
+                                                <div>
+                                                    <div class="question3">
+
+                                                        <div class="left-input bullet-list-covid">
+                                                            <!-- <div> -->
+                                                            <span class="question-head ">Getting treatment that compromises (weakens) your immune system</span>
+                                                            <br>
+                                                            <span class="grey">(for example, chemotherapy, medication for transplants, corticosteroids, TNF inhibitors)
+                                                                </span>
+
+                                                            <!-- </div> -->
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="question3">
+                                                        <!-- <div class="right-input">
+                                                            <label><input type="checkbox" name="question22" value="yes"
+                                                                        ></label>
+                                              
+                                                        </div> -->
+                                                        <div class="left-input bullet-list-covid">
+                                                            <span class="question-head "> Having a condition that compromises (weakens) your immune system 
+                                                                </span>
+                                                            <br>
+                                                            <span class="grey"> (for example, lupus, rheumatoid arthritis, immunodeciency disorder)</span>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="question3">
+
+                                                        <!-- <div class="right-input">
+                                                            <label><input type="checkbox" name="question23" value="yes"
+                                                                        ></label>
+                                        
+                                                        </div> -->
+                                                        <div class="left-input bullet-list-covid">
+                                                            <span class="question-head ">Having a chronic (long-lasting) health condition
+                                                                </span><br>
+                                                            <span class="grey"> (for example, diabetes, emphysema, asthma, heart condition, COPD)</span>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="question3">
+
+                                                        <!-- <div class="right-input">
+                                                            <label><input type="checkbox" name="question24" value="yes"
+                                                                        ></label>
+                                               
+                                                        </div> -->
+                                                        <div class="left-input bullet-list-covid">
+                                                            <span class="question-head">Regularly going to a hospital or health care setting for a treatment 
+                                                                </span><br>
+                                                            <span class="grey">(for example, dialysis, surgery, cancer treatment)</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">NEXT</div>
+                                                    </div>
+                    
+                                                </div> -->
+                                                <div class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+
+
+                                            <li data-chk="false" id="ques3" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label>
+                                                            <input type="checkbox" name="question3" value="yes">
+                                                        </label>
+                                                        <!-- <label><input type="checkbox" name="question3" value="no">No</label> -->
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead">
+                                                            	In the last 14 days, have you been identified as a “close contact” of someone who currently has COVID-19?
+														</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                    </div>
+
+                                                </div>
+                                                <div class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+
+                                            <li data-chk="false" id="ques4" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label><input type="checkbox" name="question4" value="yes"></label>
+                                                        <!-- <label><input type="checkbox" name="question6" value="no">No</label> -->
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead">
+                                                            Is anyone you live with currently experiencing any new COVID-19 symptoms and/or waiting for test results after experiencing symptoms?
+														</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                    </div>
+
+                                                </div>
+                                                <div id="" class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+
+                                            <li data-chk="false" id="ques5" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label><input type="checkbox" name="question5" value="yes"></label>
+                                                        <!-- <label><input type="checkbox" name="question1" value="no">No</label> -->
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead">
+                                                            <!-- In the last 14 days, has the student/child or anyone they live with travelled outside
+																of Canada? -->
+																	<!-- In the last 14 days, have you or anyone you live with travelled outside of Canada? -->
+                                                                    In the last 14 days, have you or anyone you live with travelled outside of your country?
+																</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                        <!-- <span class="grey"> 
+                                                            If exempt from quarantine requirements (for example, an essential worker
+																who crosses the Canada-US border regularly for work), select “No.”
+														</span> -->
+                                                    </div>
+
+                                                </div>
+                                                <div id="" class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+
+                                            <li data-chk="false" id="ques6" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label><input type="checkbox" name="question6" value="yes"></label>
+                                                        <!-- <label><input type="checkbox" name="question2" value="no">No</label> -->
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead ">
+                                                            <!-- Has a doctor, health care provider, or public health unit told you that
+																the student/child should currently be isolating (staying at home)? -->
+																Has a doctor, health care provider, or public health unit told you that you should currently be isolating (staying at home)?
+															</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                        <span class="grey"> This can be because of an outbreak or contact tracing.</span>
+                                                    </div>
+                                                </div>
+                                                <div id="" class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+
+                                            <li data-chk="false" id="ques7" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label><input type="checkbox" name="question7" value="yes"></label>
+                                                        <!-- <label><input type="checkbox" name="question4" value="no">No</label> -->
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead"><!-- In the last 14 days, has the student/child received a COVID Alert
+																exposure notification on their cell phone? -->
+																In the last 14 days, have you received a COVID Alert exposure notification on your cell phone?
+															</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                        <span class="grey"> If they already went for a test and got a negative result, select “No.” </span>
+                                                    </div>
+
+                                                </div>
+                                                <div class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+
+                                            <li data-chk="false" id="ques8" style="display: none;">
+                                                <div class="question2">
+                                                    <div class="right-input2">
+                                                        <label>
+                                                            <input type="checkbox" name="question8" value="yes">
+                                                        </label>
+                                                        <!-- <label><input type="checkbox" name="question3" value="no">No</label> -->
+                                                    </div>
+                                                    <div class="left-input">
+                                                        <span class="question-head queHead">
+                                                            Do you need a COVID-19 test for a specific reason?
+														</span>
+                                                        <span class="question-result"></span>
+                                                        <br>
+                                                    </div>
+
+                                                </div>
+
+                                                <div>
+                                                    <div class="question3">
+                                                        <!-- <div class="right-input">
+                                                            <label>
+                                                                <input type="checkbox" name="question81" value="yes">
+                                                            </label>
+                                                        </div> -->
+                                                        <div class="left-input bullet-list-covid">
+                                                            <span class="question-head">Visiting or working in a nursing or long-term care home</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="question3">
+                                                        <!-- <div class="right-input">
+                                                            <label><input type="checkbox" name="question82" value="yes"
+                                                                       ></label>
+                                                        </div> -->
+                                                        <div class="left-input bullet-list-covid">
+                                                            <span class="question-head">Working or living in a homeless shelter or other congregate setting
+                                                                </span>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <div class="question3">
+                                                        <!-- <div class="right-input">
+                                                            <label><input type="checkbox" name="question83" value="yes"
+                                                                        ></label>
+                                                        </div> -->
+                                                        <div class="left-input bullet-list-covid">
+                                                            <span class="question-head">Being an international student or farm worker
+                                                                </span>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="btnAlign survey_action_btn">
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="no_covid_btn" onclick="next_covid_btn(event)">NO</div>
+                                                    </div>
+                                                    <div style="display: inline-block;width: 15px;"></div>
+                                                    <div style="display: inline-block;" class="covid_action_btn">
+                                                        <div class="submit_covid_btn action_covid_btn" onclick="next_covid_btn(event)">YES</div>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+
+                                        </ol>
+                                    </section>
+
+                                </div>
+                            </main>
+                            <input type="hidden" id="student_id_form" name="student_id_form">
+                            <input type="hidden" id="company_id_form" name="company_id_form">
+                            <input type="hidden" id="student_name_form" name="student_name_form">
+                            <input type="hidden" id="user_id_form" name="user_id_form">
+                            <input type="hidden" id="date_of_form" name="date_of_form">
+                            <input type="hidden" id="user_role_form" name="user_role_form">
+                            <input type="hidden" id="row_id_form" name="row_id_form">
+
+                            <div id="survey_action_btn" class="btnAlign ">
+                                <div style="display: inline-block;" class="covid_action_btn">
+                                    <div class="no_covid_btn action_covid_btn" onclick="next_covid_btn(event)">SUBMIT</div>
+                                </div>
+                                <div style="display: inline-block;width: 15px;"></div>
+                                <div style="display: inline-block;" class="covid_action_btn">
+                                    <div class="submit_covid_btn" onclick="next_covid_btn(event)">RE-TAKE SCREENING</div>
+                                </div>
+
+                            </div>
+
+                            <!-- <div id="survey_action_btn" style="" class="btnAlign">
+                                <div id="no_covid_div" style="display: inline-block;" class="covid_action_btn">
+                                    <div id="no_covid_btn" class="" onclick="next_covid_btn(event)">No</div>
+                                </div>
+                                <div style="display: inline-block;width: 15px;"></div>
+                                <div id="submit_covid_div" style="display: inline-block;" class="covid_action_btn">
+                                    <div id="submit_covid_btn" onclick="next_covid_btn(event)"></div>
+                                </div>
+
+                            </div> -->
+                            <br>
+                            <br>
+
+
+                        </form>
+                        <!-- </div> -->
+                        <div id="form_review" style="display: none;">
+                            <h1 class="status-head">Child may go to school/child care because they seem to be healthy and have not been exposed to COVID-19. Follow your school/child care provider’s established process for letting staff know about this result (if applicable).</h1>
+                            <div class="status-body">
+                                <ul id="form_report_list" class="status-list">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="form_report" style="display: none;">
+                            <h1 class="status-head">Child may go to school/child care because they seem to be healthy and have not been exposed to COVID-19. Follow your school/child care provider’s established process for letting staff know about this result (if applicable).</h1>
+                            <div class="status-body">
+                                <ul id="form_report_list" class="status-list">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="form_qrcode" style="display: none;">
+                            <video id="preview" autoplay></video>
+                        </div>
+                        <div id="form_id" style="display: none;">
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="chat_foot_container" room-status="" user-type="">
+                    <div class="mention_user_list" id="mention_user_list"></div>
+                    <div id="secretUserList"></div>
+                    <p class="typing-indicator"></p>
+                    <div class="plus_ico" id="add_more_opt" onclick="moreActionBW(event,this,'more_options_msg')"></div>
+                    <div contenteditable="true" data-checklist="false" type="text" name="msg" class="msg_box" id="msg" placeholder="">
+
+                    </div>
+
+                    <div class="emoji_ico" onclick="showEmojiIcons('msg')"></div>
+                    <div class="close_ico" data-checklist="false" onclick="addMsgCheckList()"></div>
+                    <div class="send_ico" data-checklist="false" onclick="msg_form_submit()"></div>
+
+                    <div class="divFor_closeRoom">
+                        <button id="reopenRoom_btn" onclick="$('#reopenRoomPopup').css('display','flex')" style="width: 46%;margin:0 2%;font-size: 14px;" class="hv_btn">Re-open this Room</button class="btn">
+						<button id="hideRoom_btn" onclick="$('#hideRoomPopup').css('display','flex')"
+							style="width: 46%;margin:0 2%;font-size: 14px;" class="hv_btn">Hide this Room</button>
+                    </div>
+                </div>
+
+                <div id="attachmentPopup" class="attachmentPopup" style="display: none">
+                    <form method="POST" encType="multipart/form-data">
+                        <p class="upload_lable">UPLOAD FILE <img src="/images/basicAssets/close_button-white.svg" onclick="closeUploadPopup()"></p>
+                        <div class="uploadSelction">
+                            <input type="file" name="file_upload" onchange="uploadAttachFileServer(this.files)" id="UploadFiles" multiple hidden>
+                            <label for="UploadFiles">Click here to upload file(s) from your device.</label>
+                        </div>
+                    </form>
+                    <div class="filePreviewSection">
+
+                    </div>
+                    <div class="comentSection">
+                        <p class="comentLable">Comments</p>
+                        <div contenteditable="true" id="fileComments" class="fileComments inactive" placeholder="Add a Comment ..">
+                        </div>
+                        <div class="mention_user_list" id="mention_user_list_file" style="display: none;"></div>
+                    </div>
+                    <div class="upldPopupFooter">
+                        <!--<input class="file_tags" id="search_CreateMsgTag_att" readonly onkeyup="create_search_atttag(event)" placeholder="Tag upload(s) to be more organized.." onclick="viewfileTagsPopup(this)">-->
+                        <!--<div id="fileTagsPopup" class="fileTagsPopup"></div>-->
+                        <button class="send-attachment" onclick="submit_attachment()">Upload</button>
+                    </div>
+                </div>
+
+                <div id="filesGallery" class="attachmentPopup" style="display: none">
+                    <h2 class="upload_lable" style="margin-bottom:unset">Files Gallery <img src="/images/basicAssets/close_button-white.svg" onclick="$('#filesGallery').hide()"></h2>
+                    <ul class="tab_head">
+                        <li class="tab_list active" id="mediaImgsTab" onclick="activeGalleryTab(this)">Images</li>
+                        <li class="tab_list" id="mediaViedeosTab" onclick="activeGalleryTab(this)">Videos</li>
+                        <li class="tab_list" id="mediaAudiosTab" onclick="activeGalleryTab(this)">Audios</li>
+                        <li class="tab_list" id="mediaFilesTab" onclick="activeGalleryTab(this)">Docs</li>
+                        <li class="tab_list" id="mediaLinksTab" onclick="activeGalleryTab(this)">Links</li>
+                        <li class="tab_list" id="mediaTagDivHead" onclick="activeGalleryTab(this)">Tag</li>
+                        <ul class="media_view">
+                            <li class="search_view">
+                                <input type="text" autocomplete="off" placeholder="Search images" id="gallery_search" onkeyup="gallery_search(event,this)">
+                                <i onclick="clr_gSearch(this,event)" class="fas fa-times-circle closeSearch"></i>
+                            </li>
+                            <li class="view_grid active" onclick="media_view_change(this, 'grid')"><span></span></li>
+                            <li class="view_list" onclick="media_view_change(this, 'list')"><span></span></li>
+                        </ul>
+                    </ul>
+                    <div class="files_container" view-type="grid" id="g_Image_container" style="display: block;"> </div>
+                    <div class="files_container" view-type="grid" id="g_video_container"> </div>
+                    <div class="files_container" view-type="grid" id="g_audio_container"> </div>
+                    <div class="files_container" view-type="grid" id="g_file_container"> </div>
+                    <div class="files_container" id="g_link_container"> </div>
+
+                    <div class="files_container" id="g_tag_container">
+
+                    </div>
+                </div>
+
+                <div id="emojiPopup" class="emojiPopup" style="display: none">
+                    <p class="emoji_lable">Pick your reaction</p>
+                    <div id="emoji_container" class="emoji-container overlayScrollbars">
+
+                    </div>
+                </div>
+
+
+                <div class="intercom-composer-popover intercom-composer-emoji-popover">
+                    <div class="intercom-emoji-picker">
+                        <div class="remove" onclick="hide_emoji()" style="width: 18px; height: 18px;background-position: 50%; top: 11px; position: absolute; right: 4px;">
+                        </div>
+                        <div class="intercom-composer-popover-header"><input class="intercom-composer-popover-input" placeholder="Search" value="" /></div>
+                        <div class="intercom-composer-popover-body-container">
+                            <div class="intercom-composer-popover-body">
+                                <div class="intercom-emoji-picker-groups">
+                                    <div class="intercom-emoji-picker-group">
+                                        <div class="intercom-emoji-picker-group-title">Frequently used</div>
+                                        <div id="AllrecentEmoji"></div>
+                                    </div>
+                                    <div class="intercom-emoji-picker-group">
+                                        <div class="intercom-emoji-picker-group-title">People</div>
+                                        <span class="intercom-emoji-picker-emoji" title="smile">😄</span><span class="intercom-emoji-picker-emoji" title="smiley">😃</span><span class="intercom-emoji-picker-emoji" title="grinning">😀</span>
+                                        <span class="intercom-emoji-picker-emoji" title="blush">😊</span><span class="intercom-emoji-picker-emoji" title="wink">😉</span><span class="intercom-emoji-picker-emoji" title="heart_eyes">😍</span>
+                                        <span class="intercom-emoji-picker-emoji" title="kissing_heart">😘</span><span class="intercom-emoji-picker-emoji" title="kissing_closed_eyes">😚</span>
+                                        <span class="intercom-emoji-picker-emoji" title="kissing">😗</span><span class="intercom-emoji-picker-emoji" title="kissing_smiling_eyes">😙</span>
+                                        <span class="intercom-emoji-picker-emoji" title="stuck_out_tongue_winking_eye">😜</span><span class="intercom-emoji-picker-emoji" title="stuck_out_tongue_closed_eyes">😝</span>
+                                        <span class="intercom-emoji-picker-emoji" title="stuck_out_tongue">😛</span><span class="intercom-emoji-picker-emoji" title="flushed">😳</span><span class="intercom-emoji-picker-emoji" title="grin">😁</span>
+                                        <span class="intercom-emoji-picker-emoji" title="pensive">😔</span><span class="intercom-emoji-picker-emoji" title="relieved">😌</span><span class="intercom-emoji-picker-emoji" title="unamused">😒</span>
+                                        <span class="intercom-emoji-picker-emoji" title="disappointed">😞</span><span class="intercom-emoji-picker-emoji" title="persevere">😣</span><span class="intercom-emoji-picker-emoji" title="cry">😢</span>
+                                        <span class="intercom-emoji-picker-emoji" title="joy">😂</span><span class="intercom-emoji-picker-emoji" title="sob">😭</span><span class="intercom-emoji-picker-emoji" title="sleepy">😪</span>
+                                        <span class="intercom-emoji-picker-emoji" title="disappointed_relieved">😥</span><span class="intercom-emoji-picker-emoji" title="cold_sweat">😰</span>
+                                        <span class="intercom-emoji-picker-emoji" title="sweat_smile">😅</span><span class="intercom-emoji-picker-emoji" title="sweat">😓</span><span class="intercom-emoji-picker-emoji" title="weary">😩</span>
+                                        <span class="intercom-emoji-picker-emoji" title="tired_face">😫</span><span class="intercom-emoji-picker-emoji" title="fearful">😨</span><span class="intercom-emoji-picker-emoji" title="scream">😱</span>
+                                        <span class="intercom-emoji-picker-emoji" title="angry">😠</span><span class="intercom-emoji-picker-emoji" title="rage">😡</span><span class="intercom-emoji-picker-emoji" title="triumph">😤</span>
+                                        <span class="intercom-emoji-picker-emoji" title="confounded">😖</span><span class="intercom-emoji-picker-emoji" title="laughing">😆</span><span class="intercom-emoji-picker-emoji" title="yum">😋</span>
+                                        <span class="intercom-emoji-picker-emoji" title="mask">😷</span><span class="intercom-emoji-picker-emoji" title="sunglasses">😎</span><span class="intercom-emoji-picker-emoji" title="sleeping">😴</span>
+                                        <span class="intercom-emoji-picker-emoji" title="dizzy_face">😵</span><span class="intercom-emoji-picker-emoji" title="astonished">😲</span><span class="intercom-emoji-picker-emoji" title="worried">😟</span>
+                                        <span class="intercom-emoji-picker-emoji" title="frowning">😦</span><span class="intercom-emoji-picker-emoji" title="anguished">😧</span><span class="intercom-emoji-picker-emoji" title="imp">👿</span>
+                                        <span class="intercom-emoji-picker-emoji" title="open_mouth">😮</span><span class="intercom-emoji-picker-emoji" title="grimacing">😬</span><span class="intercom-emoji-picker-emoji" title="neutral_face">😐</span>
+                                        <span class="intercom-emoji-picker-emoji" title="confused">😕</span><span class="intercom-emoji-picker-emoji" title="hushed">😯</span><span class="intercom-emoji-picker-emoji" title="smirk">😏</span>
+                                        <span class="intercom-emoji-picker-emoji" title="expressionless">😑</span><span class="intercom-emoji-picker-emoji" title="man_with_gua_pi_mao">👲</span>
+                                        <span class="intercom-emoji-picker-emoji" title="man_with_turban">👳</span><span class="intercom-emoji-picker-emoji" title="cop">👮</span>
+                                        <span class="intercom-emoji-picker-emoji" title="construction_worker">👷</span><span class="intercom-emoji-picker-emoji" title="guardsman">💂</span><span class="intercom-emoji-picker-emoji" title="baby">👶</span>
+                                        <span class="intercom-emoji-picker-emoji" title="boy">👦</span><span class="intercom-emoji-picker-emoji" title="girl">👧</span><span class="intercom-emoji-picker-emoji" title="man">👨</span>
+                                        <span class="intercom-emoji-picker-emoji" title="woman">👩</span><span class="intercom-emoji-picker-emoji" title="older_man">👴</span><span class="intercom-emoji-picker-emoji" title="older_woman">👵</span>
+                                        <span class="intercom-emoji-picker-emoji" title="person_with_blond_hair">👱</span><span class="intercom-emoji-picker-emoji" title="angel">👼</span><span class="intercom-emoji-picker-emoji" title="princess">👸</span>
+                                        <span class="intercom-emoji-picker-emoji" title="smiley_cat">😺</span><span class="intercom-emoji-picker-emoji" title="smile_cat">😸</span><span class="intercom-emoji-picker-emoji" title="heart_eyes_cat">😻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="kissing_cat">😽</span><span class="intercom-emoji-picker-emoji" title="smirk_cat">😼</span><span class="intercom-emoji-picker-emoji" title="scream_cat">🙀</span>
+                                        <span class="intercom-emoji-picker-emoji" title="crying_cat_face">😿</span><span class="intercom-emoji-picker-emoji" title="joy_cat">😹</span><span class="intercom-emoji-picker-emoji" title="pouting_cat">😾</span>
+                                        <span class="intercom-emoji-picker-emoji" title="japanese_ogre">👹</span><span class="intercom-emoji-picker-emoji" title="japanese_goblin">👺</span>
+                                        <span class="intercom-emoji-picker-emoji" title="see_no_evil">🙈</span><span class="intercom-emoji-picker-emoji" title="hear_no_evil">🙉</span><span class="intercom-emoji-picker-emoji" title="speak_no_evil">🙊</span>
+                                        <span class="intercom-emoji-picker-emoji" title="skull">💀</span><span class="intercom-emoji-picker-emoji" title="alien">👽</span><span class="intercom-emoji-picker-emoji" title="hankey">💩</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fire">🔥</span><span class="intercom-emoji-picker-emoji" title="sparkles">✨</span><span class="intercom-emoji-picker-emoji" title="star2">🌟</span>
+                                        <span class="intercom-emoji-picker-emoji" title="dizzy">💫</span><span class="intercom-emoji-picker-emoji" title="boom">💥</span><span class="intercom-emoji-picker-emoji" title="anger">💢</span>
+                                        <span class="intercom-emoji-picker-emoji" title="sweat_drops">💦</span><span class="intercom-emoji-picker-emoji" title="droplet">💧</span><span class="intercom-emoji-picker-emoji" title="zzz">💤</span>
+                                        <span class="intercom-emoji-picker-emoji" title="dash">💨</span><span class="intercom-emoji-picker-emoji" title="ear">👂</span><span class="intercom-emoji-picker-emoji" title="eyes">👀</span>
+                                        <span class="intercom-emoji-picker-emoji" title="nose">👃</span><span class="intercom-emoji-picker-emoji" title="tongue">👅</span><span class="intercom-emoji-picker-emoji" title="lips">👄</span>
+                                        <span class="intercom-emoji-picker-emoji" title="thumbs_up">👍</span><span class="intercom-emoji-picker-emoji" title="-1">👎</span><span class="intercom-emoji-picker-emoji" title="ok_hand">👌</span>
+                                        <span class="intercom-emoji-picker-emoji" title="facepunch">👊</span><span class="intercom-emoji-picker-emoji" title="fist">✊</span><span class="intercom-emoji-picker-emoji" title="wave">👋</span>
+                                        <span class="intercom-emoji-picker-emoji" title="hand">✋</span><span class="intercom-emoji-picker-emoji" title="open_hands">👐</span><span class="intercom-emoji-picker-emoji" title="point_up_2">👆</span>
+                                        <span class="intercom-emoji-picker-emoji" title="point_down">👇</span><span class="intercom-emoji-picker-emoji" title="point_right">👉</span><span class="intercom-emoji-picker-emoji" title="point_left">👈</span>
+                                        <span class="intercom-emoji-picker-emoji" title="raised_hands">🙌</span><span class="intercom-emoji-picker-emoji" title="pray">🙏</span><span class="intercom-emoji-picker-emoji" title="clap">👏</span>
+                                        <span class="intercom-emoji-picker-emoji" title="muscle">💪</span><span class="intercom-emoji-picker-emoji" title="walking">🚶</span><span class="intercom-emoji-picker-emoji" title="runner">🏃</span>
+                                        <span class="intercom-emoji-picker-emoji" title="dancer">💃</span><span class="intercom-emoji-picker-emoji" title="couple">👫</span><span class="intercom-emoji-picker-emoji" title="family">👪</span>
+                                        <span class="intercom-emoji-picker-emoji" title="couplekiss">💏</span><span class="intercom-emoji-picker-emoji" title="couple_with_heart">💑</span><span class="intercom-emoji-picker-emoji" title="dancers">👯</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ok_woman">🙆</span><span class="intercom-emoji-picker-emoji" title="no_good">🙅</span>
+                                        <span class="intercom-emoji-picker-emoji" title="information_desk_person">💁</span><span class="intercom-emoji-picker-emoji" title="raising_hand">🙋</span>
+                                        <span class="intercom-emoji-picker-emoji" title="massage">💆</span><span class="intercom-emoji-picker-emoji" title="haircut">💇</span><span class="intercom-emoji-picker-emoji" title="nail_care">💅</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bride_with_veil">👰</span><span class="intercom-emoji-picker-emoji" title="person_with_pouting_face">🙎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="person_frowning">🙍</span><span class="intercom-emoji-picker-emoji" title="bow">🙇</span><span class="intercom-emoji-picker-emoji" title="tophat">🎩</span>
+                                        <span class="intercom-emoji-picker-emoji" title="crown">👑</span><span class="intercom-emoji-picker-emoji" title="womans_hat">👒</span><span class="intercom-emoji-picker-emoji" title="athletic_shoe">👟</span>
+                                        <span class="intercom-emoji-picker-emoji" title="mans_shoe">👞</span><span class="intercom-emoji-picker-emoji" title="sandal">👡</span><span class="intercom-emoji-picker-emoji" title="high_heel">👠</span>
+                                        <span class="intercom-emoji-picker-emoji" title="boot">👢</span><span class="intercom-emoji-picker-emoji" title="shirt">👕</span><span class="intercom-emoji-picker-emoji" title="necktie">👔</span>
+                                        <span class="intercom-emoji-picker-emoji" title="womans_clothes">👚</span><span class="intercom-emoji-picker-emoji" title="dress">👗</span>
+                                        <span class="intercom-emoji-picker-emoji" title="running_shirt_with_sash">🎽</span><span class="intercom-emoji-picker-emoji" title="jeans">👖</span><span class="intercom-emoji-picker-emoji" title="kimono">👘</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bikini">👙</span><span class="intercom-emoji-picker-emoji" title="briefcase">💼</span><span class="intercom-emoji-picker-emoji" title="handbag">👜</span>
+                                        <span class="intercom-emoji-picker-emoji" title="pouch">👝</span><span class="intercom-emoji-picker-emoji" title="purse">👛</span><span class="intercom-emoji-picker-emoji" title="eyeglasses">👓</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ribbon">🎀</span><span class="intercom-emoji-picker-emoji" title="closed_umbrella">🌂</span><span class="intercom-emoji-picker-emoji" title="lipstick">💄</span>
+                                        <span class="intercom-emoji-picker-emoji" title="yellow_heart">💛</span><span class="intercom-emoji-picker-emoji" title="blue_heart">💙</span><span class="intercom-emoji-picker-emoji" title="purple_heart">💜</span>
+                                        <span class="intercom-emoji-picker-emoji" title="green_heart">💚</span><span class="intercom-emoji-picker-emoji" title="broken_heart">💔</span><span class="intercom-emoji-picker-emoji" title="heartpulse">💗</span>
+                                        <span class="intercom-emoji-picker-emoji" title="heartbeat">💓</span><span class="intercom-emoji-picker-emoji" title="two_hearts">💕</span><span class="intercom-emoji-picker-emoji" title="sparkling_heart">💖</span>
+                                        <span class="intercom-emoji-picker-emoji" title="revolving_hearts">💞</span><span class="intercom-emoji-picker-emoji" title="cupid">💘</span><span class="intercom-emoji-picker-emoji" title="love_letter">💌</span>
+                                        <span class="intercom-emoji-picker-emoji" title="kiss">💋</span><span class="intercom-emoji-picker-emoji" title="ring">💍</span><span class="intercom-emoji-picker-emoji" title="gem">💎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bust_in_silhouette">👤</span><span class="intercom-emoji-picker-emoji" title="speech_balloon">💬</span>
+                                        <span class="intercom-emoji-picker-emoji" title="footprints">👣</span>
+                                    </div>
+                                    <div class="intercom-emoji-picker-group">
+                                        <div class="intercom-emoji-picker-group-title">Nature</div>
+                                        <span class="intercom-emoji-picker-emoji" title="dog">🐶</span><span class="intercom-emoji-picker-emoji" title="wolf">🐺</span><span class="intercom-emoji-picker-emoji" title="cat">🐱</span>
+                                        <span class="intercom-emoji-picker-emoji" title="mouse">🐭</span><span class="intercom-emoji-picker-emoji" title="hamster">🐹</span><span class="intercom-emoji-picker-emoji" title="rabbit">🐰</span>
+                                        <span class="intercom-emoji-picker-emoji" title="frog">🐸</span><span class="intercom-emoji-picker-emoji" title="tiger">🐯</span><span class="intercom-emoji-picker-emoji" title="koala">🐨</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bear">🐻</span><span class="intercom-emoji-picker-emoji" title="pig">🐷</span><span class="intercom-emoji-picker-emoji" title="pig_nose">🐽</span>
+                                        <span class="intercom-emoji-picker-emoji" title="cow">🐮</span><span class="intercom-emoji-picker-emoji" title="boar">🐗</span><span class="intercom-emoji-picker-emoji" title="monkey_face">🐵</span>
+                                        <span class="intercom-emoji-picker-emoji" title="monkey">🐒</span><span class="intercom-emoji-picker-emoji" title="horse">🐴</span><span class="intercom-emoji-picker-emoji" title="sheep">🐑</span>
+                                        <span class="intercom-emoji-picker-emoji" title="elephant">🐘</span><span class="intercom-emoji-picker-emoji" title="panda_face">🐼</span><span class="intercom-emoji-picker-emoji" title="penguin">🐧</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bird">🐦</span><span class="intercom-emoji-picker-emoji" title="baby_chick">🐤</span><span class="intercom-emoji-picker-emoji" title="hatched_chick">🐥</span>
+                                        <span class="intercom-emoji-picker-emoji" title="hatching_chick">🐣</span><span class="intercom-emoji-picker-emoji" title="chicken">🐔</span><span class="intercom-emoji-picker-emoji" title="snake">🐍</span>
+                                        <span class="intercom-emoji-picker-emoji" title="turtle">🐢</span><span class="intercom-emoji-picker-emoji" title="bug">🐛</span><span class="intercom-emoji-picker-emoji" title="bee">🐝</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ant">🐜</span><span class="intercom-emoji-picker-emoji" title="beetle">🐞</span><span class="intercom-emoji-picker-emoji" title="snail">🐌</span>
+                                        <span class="intercom-emoji-picker-emoji" title="octopus">🐙</span><span class="intercom-emoji-picker-emoji" title="shell">🐚</span><span class="intercom-emoji-picker-emoji" title="tropical_fish">🐠</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fish">🐟</span><span class="intercom-emoji-picker-emoji" title="dolphin">🐬</span><span class="intercom-emoji-picker-emoji" title="whale">🐳</span>
+                                        <span class="intercom-emoji-picker-emoji" title="racehorse">🐎</span><span class="intercom-emoji-picker-emoji" title="dragon_face">🐲</span><span class="intercom-emoji-picker-emoji" title="blowfish">🐡</span>
+                                        <span class="intercom-emoji-picker-emoji" title="camel">🐫</span><span class="intercom-emoji-picker-emoji" title="poodle">🐩</span><span class="intercom-emoji-picker-emoji" title="feet">🐾</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bouquet">💐</span><span class="intercom-emoji-picker-emoji" title="cherry_blossom">🌸</span><span class="intercom-emoji-picker-emoji" title="tulip">🌷</span>
+                                        <span class="intercom-emoji-picker-emoji" title="four_leaf_clover">🍀</span><span class="intercom-emoji-picker-emoji" title="rose">🌹</span><span class="intercom-emoji-picker-emoji" title="sunflower">🌻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="hibiscus">🌺</span><span class="intercom-emoji-picker-emoji" title="maple_leaf">🍁</span><span class="intercom-emoji-picker-emoji" title="leaves">🍃</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fallen_leaf">🍂</span><span class="intercom-emoji-picker-emoji" title="herb">🌿</span><span class="intercom-emoji-picker-emoji" title="ear_of_rice">🌾</span>
+                                        <span class="intercom-emoji-picker-emoji" title="mushroom">🍄</span><span class="intercom-emoji-picker-emoji" title="cactus">🌵</span><span class="intercom-emoji-picker-emoji" title="palm_tree">🌴</span>
+                                        <span class="intercom-emoji-picker-emoji" title="chestnut">🌰</span><span class="intercom-emoji-picker-emoji" title="seedling">🌱</span><span class="intercom-emoji-picker-emoji" title="blossom">🌼</span>
+                                        <span class="intercom-emoji-picker-emoji" title="new_moon">🌑</span><span class="intercom-emoji-picker-emoji" title="first_quarter_moon">🌓</span><span class="intercom-emoji-picker-emoji" title="moon">🌔</span>
+                                        <span class="intercom-emoji-picker-emoji" title="full_moon">🌕</span><span class="intercom-emoji-picker-emoji" title="first_quarter_moon_with_face">🌛</span>
+                                        <span class="intercom-emoji-picker-emoji" title="crescent_moon">🌙</span><span class="intercom-emoji-picker-emoji" title="earth_asia">🌏</span><span class="intercom-emoji-picker-emoji" title="volcano">🌋</span>
+                                        <span class="intercom-emoji-picker-emoji" title="milky_way">🌌</span><span class="intercom-emoji-picker-emoji" title="stars">🌠</span><span class="intercom-emoji-picker-emoji" title="partly_sunny">⛅</span>
+                                        <span class="intercom-emoji-picker-emoji" title="snowman">⛄</span><span class="intercom-emoji-picker-emoji" title="cyclone">🌀</span><span class="intercom-emoji-picker-emoji" title="foggy">🌁</span>
+                                        <span class="intercom-emoji-picker-emoji" title="rainbow">🌈</span><span class="intercom-emoji-picker-emoji" title="ocean">🌊</span>
+                                    </div>
+                                    <div class="intercom-emoji-picker-group">
+                                        <div class="intercom-emoji-picker-group-title">Objects</div>
+                                        <span class="intercom-emoji-picker-emoji" title="bamboo">🎍</span><span class="intercom-emoji-picker-emoji" title="gift_heart">💝</span><span class="intercom-emoji-picker-emoji" title="dolls">🎎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="school_satchel">🎒</span><span class="intercom-emoji-picker-emoji" title="mortar_board">🎓</span><span class="intercom-emoji-picker-emoji" title="flags">🎏</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fireworks">🎆</span><span class="intercom-emoji-picker-emoji" title="sparkler">🎇</span><span class="intercom-emoji-picker-emoji" title="wind_chime">🎐</span>
+                                        <span class="intercom-emoji-picker-emoji" title="rice_scene">🎑</span><span class="intercom-emoji-picker-emoji" title="jack_o_lantern">🎃</span><span class="intercom-emoji-picker-emoji" title="ghost">👻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="santa">🎅</span><span class="intercom-emoji-picker-emoji" title="christmas_tree">🎄</span><span class="intercom-emoji-picker-emoji" title="gift">🎁</span>
+                                        <span class="intercom-emoji-picker-emoji" title="tanabata_tree">🎋</span><span class="intercom-emoji-picker-emoji" title="tada">🎉</span><span class="intercom-emoji-picker-emoji" title="confetti_ball">🎊</span>
+                                        <span class="intercom-emoji-picker-emoji" title="balloon">🎈</span><span class="intercom-emoji-picker-emoji" title="crossed_flags">🎌</span><span class="intercom-emoji-picker-emoji" title="crystal_ball">🔮</span>
+                                        <span class="intercom-emoji-picker-emoji" title="movie_camera">🎥</span><span class="intercom-emoji-picker-emoji" title="camera">📷</span><span class="intercom-emoji-picker-emoji" title="video_camera">📹</span>
+                                        <span class="intercom-emoji-picker-emoji" title="vhs">📼</span><span class="intercom-emoji-picker-emoji" title="cd">💿</span><span class="intercom-emoji-picker-emoji" title="dvd">📀</span>
+                                        <span class="intercom-emoji-picker-emoji" title="minidisc">💽</span><span class="intercom-emoji-picker-emoji" title="floppy_disk">💾</span><span class="intercom-emoji-picker-emoji" title="computer">💻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="iphone">📱</span><span class="intercom-emoji-picker-emoji" title="telephone_receiver">📞</span><span class="intercom-emoji-picker-emoji" title="pager">📟</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fax">📠</span><span class="intercom-emoji-picker-emoji" title="satellite">📡</span><span class="intercom-emoji-picker-emoji" title="tv">📺</span>
+                                        <span class="intercom-emoji-picker-emoji" title="radio">📻</span><span class="intercom-emoji-picker-emoji" title="loud_sound">🔊</span><span class="intercom-emoji-picker-emoji" title="bell">🔔</span>
+                                        <span class="intercom-emoji-picker-emoji" title="loudspeaker">📢</span><span class="intercom-emoji-picker-emoji" title="mega">📣</span>
+                                        <span class="intercom-emoji-picker-emoji" title="hourglass_flowing_sand">⏳</span><span class="intercom-emoji-picker-emoji" title="hourglass">⌛</span>
+                                        <span class="intercom-emoji-picker-emoji" title="alarm_clock">⏰</span><span class="intercom-emoji-picker-emoji" title="watch">⌚</span><span class="intercom-emoji-picker-emoji" title="unlock">🔓</span>
+                                        <span class="intercom-emoji-picker-emoji" title="lock">🔒</span><span class="intercom-emoji-picker-emoji" title="lock_with_ink_pen">🔏</span>
+                                        <span class="intercom-emoji-picker-emoji" title="closed_lock_with_key">🔐</span><span class="intercom-emoji-picker-emoji" title="key">🔑</span><span class="intercom-emoji-picker-emoji" title="mag_right">🔎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bulb">💡</span><span class="intercom-emoji-picker-emoji" title="flashlight">🔦</span><span class="intercom-emoji-picker-emoji" title="electric_plug">🔌</span>
+                                        <span class="intercom-emoji-picker-emoji" title="battery">🔋</span><span class="intercom-emoji-picker-emoji" title="mag">🔍</span><span class="intercom-emoji-picker-emoji" title="bath">🛀</span>
+                                        <span class="intercom-emoji-picker-emoji" title="toilet">🚽</span><span class="intercom-emoji-picker-emoji" title="wrench">🔧</span><span class="intercom-emoji-picker-emoji" title="nut_and_bolt">🔩</span>
+                                        <span class="intercom-emoji-picker-emoji" title="hammer">🔨</span><span class="intercom-emoji-picker-emoji" title="door">🚪</span><span class="intercom-emoji-picker-emoji" title="smoking">🚬</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bomb">💣</span><span class="intercom-emoji-picker-emoji" title="gun">🔫</span><span class="intercom-emoji-picker-emoji" title="hocho">🔪</span>
+                                        <span class="intercom-emoji-picker-emoji" title="pill">💊</span><span class="intercom-emoji-picker-emoji" title="syringe">💉</span><span class="intercom-emoji-picker-emoji" title="moneybag">💰</span>
+                                        <span class="intercom-emoji-picker-emoji" title="yen">💴</span><span class="intercom-emoji-picker-emoji" title="dollar">💵</span><span class="intercom-emoji-picker-emoji" title="credit_card">💳</span>
+                                        <span class="intercom-emoji-picker-emoji" title="money_with_wings">💸</span><span class="intercom-emoji-picker-emoji" title="calling">📲</span><span class="intercom-emoji-picker-emoji" title="e-mail">📧</span>
+                                        <span class="intercom-emoji-picker-emoji" title="inbox_tray">📥</span><span class="intercom-emoji-picker-emoji" title="outbox_tray">📤</span>
+                                        <span class="intercom-emoji-picker-emoji" title="envelope_with_arrow">📩</span><span class="intercom-emoji-picker-emoji" title="incoming_envelope">📨</span>
+                                        <span class="intercom-emoji-picker-emoji" title="mailbox">📫</span><span class="intercom-emoji-picker-emoji" title="mailbox_closed">📪</span><span class="intercom-emoji-picker-emoji" title="postbox">📮</span>
+                                        <span class="intercom-emoji-picker-emoji" title="package">📦</span><span class="intercom-emoji-picker-emoji" title="memo">📝</span><span class="intercom-emoji-picker-emoji" title="page_facing_up">📄</span>
+                                        <span class="intercom-emoji-picker-emoji" title="page_with_curl">📃</span><span class="intercom-emoji-picker-emoji" title="bookmark_tabs">📑</span><span class="intercom-emoji-picker-emoji" title="bar_chart">📊</span>
+                                        <span class="intercom-emoji-picker-emoji" title="chart_with_upwards_trend">📈</span><span class="intercom-emoji-picker-emoji" title="chart_with_downwards_trend">📉</span>
+                                        <span class="intercom-emoji-picker-emoji" title="scroll">📜</span><span class="intercom-emoji-picker-emoji" title="clipboard">📋</span><span class="intercom-emoji-picker-emoji" title="date">📅</span>
+                                        <span class="intercom-emoji-picker-emoji" title="calendar">📆</span><span class="intercom-emoji-picker-emoji" title="card_index">📇</span><span class="intercom-emoji-picker-emoji" title="file_folder">📁</span>
+                                        <span class="intercom-emoji-picker-emoji" title="open_file_folder">📂</span><span class="intercom-emoji-picker-emoji" title="pushpin">📌</span><span class="intercom-emoji-picker-emoji" title="paperclip">📎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="straight_ruler">📏</span><span class="intercom-emoji-picker-emoji" title="triangular_ruler">📐</span>
+                                        <span class="intercom-emoji-picker-emoji" title="closed_book">📕</span><span class="intercom-emoji-picker-emoji" title="green_book">📗</span><span class="intercom-emoji-picker-emoji" title="blue_book">📘</span>
+                                        <span class="intercom-emoji-picker-emoji" title="orange_book">📙</span><span class="intercom-emoji-picker-emoji" title="notebook">📓</span>
+                                        <span class="intercom-emoji-picker-emoji" title="notebook_with_decorative_cover">📔</span><span class="intercom-emoji-picker-emoji" title="ledger">📒</span>
+                                        <span class="intercom-emoji-picker-emoji" title="books">📚</span><span class="intercom-emoji-picker-emoji" title="book">📖</span><span class="intercom-emoji-picker-emoji" title="bookmark">🔖</span>
+                                        <span class="intercom-emoji-picker-emoji" title="name_badge">📛</span><span class="intercom-emoji-picker-emoji" title="newspaper">📰</span><span class="intercom-emoji-picker-emoji" title="art">🎨</span>
+                                        <span class="intercom-emoji-picker-emoji" title="clapper">🎬</span><span class="intercom-emoji-picker-emoji" title="microphone">🎤</span><span class="intercom-emoji-picker-emoji" title="headphones">🎧</span>
+                                        <span class="intercom-emoji-picker-emoji" title="musical_score">🎼</span><span class="intercom-emoji-picker-emoji" title="musical_note">🎵</span><span class="intercom-emoji-picker-emoji" title="notes">🎶</span>
+                                        <span class="intercom-emoji-picker-emoji" title="musical_keyboard">🎹</span><span class="intercom-emoji-picker-emoji" title="violin">🎻</span><span class="intercom-emoji-picker-emoji" title="trumpet">🎺</span>
+                                        <span class="intercom-emoji-picker-emoji" title="saxophone">🎷</span><span class="intercom-emoji-picker-emoji" title="guitar">🎸</span><span class="intercom-emoji-picker-emoji" title="space_invader">👾</span>
+                                        <span class="intercom-emoji-picker-emoji" title="video_game">🎮</span><span class="intercom-emoji-picker-emoji" title="black_joker">🃏</span>
+                                        <span class="intercom-emoji-picker-emoji" title="flower_playing_cards">🎴</span><span class="intercom-emoji-picker-emoji" title="mahjong">🀄</span><span class="intercom-emoji-picker-emoji" title="game_die">🎲</span>
+                                        <span class="intercom-emoji-picker-emoji" title="dart">🎯</span><span class="intercom-emoji-picker-emoji" title="football">🏈</span><span class="intercom-emoji-picker-emoji" title="basketball">🏀</span>
+                                        <span class="intercom-emoji-picker-emoji" title="soccer">⚽</span><span class="intercom-emoji-picker-emoji" title="baseball">⚾</span><span class="intercom-emoji-picker-emoji" title="tennis">🎾</span>
+                                        <span class="intercom-emoji-picker-emoji" title="8ball">🎱</span><span class="intercom-emoji-picker-emoji" title="bowling">🎳</span><span class="intercom-emoji-picker-emoji" title="golf">⛳</span>
+                                        <span class="intercom-emoji-picker-emoji" title="checkered_flag">🏁</span><span class="intercom-emoji-picker-emoji" title="trophy">🏆</span><span class="intercom-emoji-picker-emoji" title="ski">🎿</span>
+                                        <span class="intercom-emoji-picker-emoji" title="snowboarder">🏂</span><span class="intercom-emoji-picker-emoji" title="swimmer">🏊</span><span class="intercom-emoji-picker-emoji" title="surfer">🏄</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fishing_pole_and_fish">🎣</span><span class="intercom-emoji-picker-emoji" title="tea">🍵</span><span class="intercom-emoji-picker-emoji" title="sake">🍶</span>
+                                        <span class="intercom-emoji-picker-emoji" title="beer">🍺</span><span class="intercom-emoji-picker-emoji" title="beers">🍻</span><span class="intercom-emoji-picker-emoji" title="cocktail">🍸</span>
+                                        <span class="intercom-emoji-picker-emoji" title="tropical_drink">🍹</span><span class="intercom-emoji-picker-emoji" title="wine_glass">🍷</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fork_and_knife">🍴</span><span class="intercom-emoji-picker-emoji" title="pizza">🍕</span><span class="intercom-emoji-picker-emoji" title="hamburger">🍔</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fries">🍟</span><span class="intercom-emoji-picker-emoji" title="poultry_leg">🍗</span><span class="intercom-emoji-picker-emoji" title="meat_on_bone">🍖</span>
+                                        <span class="intercom-emoji-picker-emoji" title="spaghetti">🍝</span><span class="intercom-emoji-picker-emoji" title="curry">🍛</span><span class="intercom-emoji-picker-emoji" title="fried_shrimp">🍤</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bento">🍱</span><span class="intercom-emoji-picker-emoji" title="sushi">🍣</span><span class="intercom-emoji-picker-emoji" title="fish_cake">🍥</span>
+                                        <span class="intercom-emoji-picker-emoji" title="rice_ball">🍙</span><span class="intercom-emoji-picker-emoji" title="rice_cracker">🍘</span><span class="intercom-emoji-picker-emoji" title="rice">🍚</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ramen">🍜</span><span class="intercom-emoji-picker-emoji" title="stew">🍲</span><span class="intercom-emoji-picker-emoji" title="oden">🍢</span>
+                                        <span class="intercom-emoji-picker-emoji" title="dango">🍡</span><span class="intercom-emoji-picker-emoji" title="egg">🍳</span><span class="intercom-emoji-picker-emoji" title="bread">🍞</span>
+                                        <span class="intercom-emoji-picker-emoji" title="doughnut">🍩</span><span class="intercom-emoji-picker-emoji" title="custard">🍮</span><span class="intercom-emoji-picker-emoji" title="icecream">🍦</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ice_cream">🍨</span><span class="intercom-emoji-picker-emoji" title="shaved_ice">🍧</span><span class="intercom-emoji-picker-emoji" title="birthday">🎂</span>
+                                        <span class="intercom-emoji-picker-emoji" title="cake">🍰</span><span class="intercom-emoji-picker-emoji" title="cookie">🍪</span><span class="intercom-emoji-picker-emoji" title="chocolate_bar">🍫</span>
+                                        <span class="intercom-emoji-picker-emoji" title="candy">🍬</span><span class="intercom-emoji-picker-emoji" title="lollipop">🍭</span><span class="intercom-emoji-picker-emoji" title="honey_pot">🍯</span>
+                                        <span class="intercom-emoji-picker-emoji" title="apple">🍎</span><span class="intercom-emoji-picker-emoji" title="green_apple">🍏</span><span class="intercom-emoji-picker-emoji" title="tangerine">🍊</span>
+                                        <span class="intercom-emoji-picker-emoji" title="cherries">🍒</span><span class="intercom-emoji-picker-emoji" title="grapes">🍇</span><span class="intercom-emoji-picker-emoji" title="watermelon">🍉</span>
+                                        <span class="intercom-emoji-picker-emoji" title="strawberry">🍓</span><span class="intercom-emoji-picker-emoji" title="peach">🍑</span><span class="intercom-emoji-picker-emoji" title="melon">🍈</span>
+                                        <span class="intercom-emoji-picker-emoji" title="banana">🍌</span><span class="intercom-emoji-picker-emoji" title="pineapple">🍍</span><span class="intercom-emoji-picker-emoji" title="sweet_potato">🍠</span>
+                                        <span class="intercom-emoji-picker-emoji" title="eggplant">🍆</span><span class="intercom-emoji-picker-emoji" title="tomato">🍅</span><span class="intercom-emoji-picker-emoji" title="corn">🌽</span>
+                                    </div>
+                                    <div class="intercom-emoji-picker-group">
+                                        <div class="intercom-emoji-picker-group-title">Places</div>
+                                        <span class="intercom-emoji-picker-emoji" title="house">🏠</span><span class="intercom-emoji-picker-emoji" title="house_with_garden">🏡</span><span class="intercom-emoji-picker-emoji" title="school">🏫</span>
+                                        <span class="intercom-emoji-picker-emoji" title="office">🏢</span><span class="intercom-emoji-picker-emoji" title="post_office">🏣</span><span class="intercom-emoji-picker-emoji" title="hospital">🏥</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bank">🏦</span><span class="intercom-emoji-picker-emoji" title="convenience_store">🏪</span><span class="intercom-emoji-picker-emoji" title="love_hotel">🏩</span>
+                                        <span class="intercom-emoji-picker-emoji" title="hotel">🏨</span><span class="intercom-emoji-picker-emoji" title="wedding">💒</span><span class="intercom-emoji-picker-emoji" title="church">⛪</span>
+                                        <span class="intercom-emoji-picker-emoji" title="department_store">🏬</span><span class="intercom-emoji-picker-emoji" title="city_sunrise">🌇</span>
+                                        <span class="intercom-emoji-picker-emoji" title="city_sunset">🌆</span><span class="intercom-emoji-picker-emoji" title="japanese_castle">🏯</span>
+                                        <span class="intercom-emoji-picker-emoji" title="european_castle">🏰</span><span class="intercom-emoji-picker-emoji" title="tent">⛺</span><span class="intercom-emoji-picker-emoji" title="factory">🏭</span>
+                                        <span class="intercom-emoji-picker-emoji" title="tokyo_tower">🗼</span><span class="intercom-emoji-picker-emoji" title="japan">🗾</span><span class="intercom-emoji-picker-emoji" title="mount_fuji">🗻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="sunrise_over_mountains">🌄</span><span class="intercom-emoji-picker-emoji" title="sunrise">🌅</span>
+                                        <span class="intercom-emoji-picker-emoji" title="night_with_stars">🌃</span><span class="intercom-emoji-picker-emoji" title="statue_of_liberty">🗽</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bridge_at_night">🌉</span><span class="intercom-emoji-picker-emoji" title="carousel_horse">🎠</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ferris_wheel">🎡</span><span class="intercom-emoji-picker-emoji" title="fountain">⛲</span><span class="intercom-emoji-picker-emoji" title="roller_coaster">🎢</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ship">🚢</span><span class="intercom-emoji-picker-emoji" title="boat">⛵</span><span class="intercom-emoji-picker-emoji" title="speedboat">🚤</span>
+                                        <span class="intercom-emoji-picker-emoji" title="rocket">🚀</span><span class="intercom-emoji-picker-emoji" title="seat">💺</span><span class="intercom-emoji-picker-emoji" title="station">🚉</span>
+                                        <span class="intercom-emoji-picker-emoji" title="bullettrain_side">🚄</span><span class="intercom-emoji-picker-emoji" title="bullettrain_front">🚅</span>
+                                        <span class="intercom-emoji-picker-emoji" title="metro">🚇</span><span class="intercom-emoji-picker-emoji" title="railway_car">🚃</span><span class="intercom-emoji-picker-emoji" title="bus">🚌</span>
+                                        <span class="intercom-emoji-picker-emoji" title="blue_car">🚙</span><span class="intercom-emoji-picker-emoji" title="car">🚗</span><span class="intercom-emoji-picker-emoji" title="taxi">🚕</span>
+                                        <span class="intercom-emoji-picker-emoji" title="truck">🚚</span><span class="intercom-emoji-picker-emoji" title="rotating_light">🚨</span><span class="intercom-emoji-picker-emoji" title="police_car">🚓</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fire_engine">🚒</span><span class="intercom-emoji-picker-emoji" title="ambulance">🚑</span><span class="intercom-emoji-picker-emoji" title="bike">🚲</span>
+                                        <span class="intercom-emoji-picker-emoji" title="barber">💈</span><span class="intercom-emoji-picker-emoji" title="busstop">🚏</span><span class="intercom-emoji-picker-emoji" title="ticket">🎫</span>
+                                        <span class="intercom-emoji-picker-emoji" title="traffic_light">🚥</span><span class="intercom-emoji-picker-emoji" title="construction">🚧</span><span class="intercom-emoji-picker-emoji" title="beginner">🔰</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fuelpump">⛽</span><span class="intercom-emoji-picker-emoji" title="izakaya_lantern">🏮</span><span class="intercom-emoji-picker-emoji" title="slot_machine">🎰</span>
+                                        <span class="intercom-emoji-picker-emoji" title="moyai">🗿</span><span class="intercom-emoji-picker-emoji" title="circus_tent">🎪</span><span class="intercom-emoji-picker-emoji" title="performing_arts">🎭</span>
+                                        <span class="intercom-emoji-picker-emoji" title="round_pushpin">📍</span><span class="intercom-emoji-picker-emoji" title="triangular_flag_on_post">🚩</span>
+                                    </div>
+                                    <div class="intercom-emoji-picker-group">
+                                        <div class="intercom-emoji-picker-group-title">Symbols</div>
+                                        <span class="intercom-emoji-picker-emoji" title="keycap_ten">🔟</span><span class="intercom-emoji-picker-emoji" title="1234">🔢</span><span class="intercom-emoji-picker-emoji" title="symbols">🔣</span>
+                                        <span class="intercom-emoji-picker-emoji" title="capital_abcd">🔠</span><span class="intercom-emoji-picker-emoji" title="abcd">🔡</span><span class="intercom-emoji-picker-emoji" title="abc">🔤</span>
+                                        <span class="intercom-emoji-picker-emoji" title="arrow_up_small">🔼</span><span class="intercom-emoji-picker-emoji" title="arrow_down_small">🔽</span><span class="intercom-emoji-picker-emoji" title="rewind">⏪</span>
+                                        <span class="intercom-emoji-picker-emoji" title="fast_forward">⏩</span><span class="intercom-emoji-picker-emoji" title="arrow_double_up">⏫</span>
+                                        <span class="intercom-emoji-picker-emoji" title="arrow_double_down">⏬</span><span class="intercom-emoji-picker-emoji" title="ok">🆗</span><span class="intercom-emoji-picker-emoji" title="new">🆕</span>
+                                        <span class="intercom-emoji-picker-emoji" title="up">🆙</span><span class="intercom-emoji-picker-emoji" title="cool">🆒</span><span class="intercom-emoji-picker-emoji" title="free">🆓</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ng">🆖</span><span class="intercom-emoji-picker-emoji" title="signal_strength">📶</span><span class="intercom-emoji-picker-emoji" title="cinema">🎦</span>
+                                        <span class="intercom-emoji-picker-emoji" title="koko">🈁</span><span class="intercom-emoji-picker-emoji" title="u6307">🈯</span><span class="intercom-emoji-picker-emoji" title="u7a7a">🈳</span>
+                                        <span class="intercom-emoji-picker-emoji" title="u6e80">🈵</span><span class="intercom-emoji-picker-emoji" title="u5408">🈴</span><span class="intercom-emoji-picker-emoji" title="u7981">🈲</span>
+                                        <span class="intercom-emoji-picker-emoji" title="ideograph_advantage">🉐</span><span class="intercom-emoji-picker-emoji" title="u5272">🈹</span><span class="intercom-emoji-picker-emoji" title="u55b6">🈺</span>
+                                        <span class="intercom-emoji-picker-emoji" title="u6709">🈶</span><span class="intercom-emoji-picker-emoji" title="u7121">🈚</span><span class="intercom-emoji-picker-emoji" title="restroom">🚻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="mens">🚹</span><span class="intercom-emoji-picker-emoji" title="womens">🚺</span><span class="intercom-emoji-picker-emoji" title="baby_symbol">🚼</span>
+                                        <span class="intercom-emoji-picker-emoji" title="wc">🚾</span><span class="intercom-emoji-picker-emoji" title="no_smoking">🚭</span><span class="intercom-emoji-picker-emoji" title="u7533">🈸</span>
+                                        <span class="intercom-emoji-picker-emoji" title="accept">🉑</span><span class="intercom-emoji-picker-emoji" title="cl">🆑</span><span class="intercom-emoji-picker-emoji" title="sos">🆘</span>
+                                        <span class="intercom-emoji-picker-emoji" title="id">🆔</span><span class="intercom-emoji-picker-emoji" title="no_entry_sign">🚫</span><span class="intercom-emoji-picker-emoji" title="underage">🔞</span>
+                                        <span class="intercom-emoji-picker-emoji" title="no_entry">⛔</span><span class="intercom-emoji-picker-emoji" title="negative_squared_cross_mark">❎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="white_check_mark">✅</span><span class="intercom-emoji-picker-emoji" title="heart_decoration">💟</span><span class="intercom-emoji-picker-emoji" title="vs">🆚</span>
+                                        <span class="intercom-emoji-picker-emoji" title="vibration_mode">📳</span><span class="intercom-emoji-picker-emoji" title="mobile_phone_off">📴</span><span class="intercom-emoji-picker-emoji" title="ab">🆎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="diamond_shape_with_a_dot_inside">💠</span><span class="intercom-emoji-picker-emoji" title="ophiuchus">⛎</span>
+                                        <span class="intercom-emoji-picker-emoji" title="six_pointed_star">🔯</span><span class="intercom-emoji-picker-emoji" title="atm">🏧</span><span class="intercom-emoji-picker-emoji" title="chart">💹</span>
+                                        <span class="intercom-emoji-picker-emoji" title="heavy_dollar_sign">💲</span><span class="intercom-emoji-picker-emoji" title="currency_exchange">💱</span><span class="intercom-emoji-picker-emoji" title="x">❌</span>
+                                        <span class="intercom-emoji-picker-emoji" title="exclamation">❗</span><span class="intercom-emoji-picker-emoji" title="question">❓</span><span class="intercom-emoji-picker-emoji" title="grey_exclamation">❕</span>
+                                        <span class="intercom-emoji-picker-emoji" title="grey_question">❔</span><span class="intercom-emoji-picker-emoji" title="o">⭕</span><span class="intercom-emoji-picker-emoji" title="top">🔝</span>
+                                        <span class="intercom-emoji-picker-emoji" title="end">🔚</span><span class="intercom-emoji-picker-emoji" title="back">🔙</span><span class="intercom-emoji-picker-emoji" title="on">🔛</span>
+                                        <span class="intercom-emoji-picker-emoji" title="soon">🔜</span><span class="intercom-emoji-picker-emoji" title="arrows_clockwise">🔃</span><span class="intercom-emoji-picker-emoji" title="clock12">🕛</span>
+                                        <span class="intercom-emoji-picker-emoji" title="clock1">🕐</span><span class="intercom-emoji-picker-emoji" title="clock2">🕑</span><span class="intercom-emoji-picker-emoji" title="clock3">🕒</span>
+                                        <span class="intercom-emoji-picker-emoji" title="clock4">🕓</span><span class="intercom-emoji-picker-emoji" title="clock5">🕔</span><span class="intercom-emoji-picker-emoji" title="clock6">🕕</span>
+                                        <span class="intercom-emoji-picker-emoji" title="clock7">🕖</span><span class="intercom-emoji-picker-emoji" title="clock8">🕗</span><span class="intercom-emoji-picker-emoji" title="clock9">🕘</span>
+                                        <span class="intercom-emoji-picker-emoji" title="clock10">🕙</span><span class="intercom-emoji-picker-emoji" title="clock11">🕚</span><span class="intercom-emoji-picker-emoji" title="heavy_plus_sign">➕</span>
+                                        <span class="intercom-emoji-picker-emoji" title="heavy_minus_sign">➖</span><span class="intercom-emoji-picker-emoji" title="heavy_division_sign">➗</span>
+                                        <span class="intercom-emoji-picker-emoji" title="white_flower">💮</span><span class="intercom-emoji-picker-emoji" title="100">💯</span><span class="intercom-emoji-picker-emoji" title="radio_button">🔘</span>
+                                        <span class="intercom-emoji-picker-emoji" title="link">🔗</span><span class="intercom-emoji-picker-emoji" title="curly_loop">➰</span><span class="intercom-emoji-picker-emoji" title="trident">🔱</span>
+                                        <span class="intercom-emoji-picker-emoji" title="small_red_triangle">🔺</span><span class="intercom-emoji-picker-emoji" title="black_square_button">🔲</span>
+                                        <span class="intercom-emoji-picker-emoji" title="white_square_button">🔳</span><span class="intercom-emoji-picker-emoji" title="red_circle">🔴</span>
+                                        <span class="intercom-emoji-picker-emoji" title="large_blue_circle">🔵</span><span class="intercom-emoji-picker-emoji" title="small_red_triangle_down">🔻</span>
+                                        <span class="intercom-emoji-picker-emoji" title="white_large_square">⬜</span><span class="intercom-emoji-picker-emoji" title="black_large_square">⬛</span>
+                                        <span class="intercom-emoji-picker-emoji" title="large_orange_diamond">🔶</span><span class="intercom-emoji-picker-emoji" title="large_blue_diamond">🔷</span>
+                                        <span class="intercom-emoji-picker-emoji" title="small_orange_diamond">🔸</span><span class="intercom-emoji-picker-emoji" title="small_blue_diamond">🔹</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="intercom-composer-popover-caret"></div>
+                </div>
+
+                <div id="call_filter_result" class="call_filter_result">
+                    <!--<p class="">Showing <span id="convCallCounter"></span> call record(s) from this channel.</p> -->
+                    <p class="">Showing call record(s) from this channel.</p>
+                    <img class="closePopup" onclick="location.reload(); //convCallHistory(this)" src="/images/basicAssets/close_button.svg" alt="">
+                </div>
+
+    </section>
+    <div class="optMore_options" style="display: none;">
+        <div class="moreOptList addtagMsg" onclick="viewTagForFiles(event, this,'frmOpt')">Add tag</div>
+        <div class="moreOptList convert_task" onclick="convertTask(event)">Convert to task</div>
+        <div class="moreOptList editMsg" onclick="editSelectedMsg(this)">Edit message</div>
+        <div class="moreOptList forwardMsg" onclick="shareThisMsg(this)">Forward message</div>
+        <div class="moreOptList autoDelete" style="display: none;" onclick="messageSetTimer(this)">Set timer for auto-delete
+        </div>
+    </div>
+    <script src="/javascripts/socket-client-side.js"></script>
+    <script>
+        var allUserdata = <%- JSON.stringify(data) %>;
+        var user_list = access_user_list = allUserdata[0].users;
+        var student_row = allUserdata[0].student_row;
+        console.log('student__row', student_row);
+        var user_row = allUserdata[0].user_row;
+        console.log('user__row', user_row);
+        var survey_data = allUserdata[0].survey_data;
+        var file_server = '<%= file_server %>';
+        var user_id = '<%= user_id %>'; //alert('user:'+user_id);
+        var company_id = '<%= company_id %>';
+        var company_name = '<%= company_name %>';
+        var user_fullname = '<%= user_fullname %>';
+        var user_img = '<%= user_img %>'; //alert(user_img); alert(student_row.img);
+        var company_img = '<%= company_img %>'; //alert(company_img);
+        var user_email = '<%= user_email %>';
+        var student_name = '<%= student_name %>';
+        var student_id = '<%= student_id %>'; //alert('student_id:'+student_id);
+        $('#student_id_newacc').val(student_id);
+        $('#company_id_newacc').val(company_id);
+        var user_role = '<%= user_role %>'; //alert(user_role);
+        var survey_status = '<%= survey_status %>'; //alert(survey_status);
+        var row_id = '<%= row_id %>';
+        $('#row_id_form').val(row_id);
+        var user_campus = '<%= campus %>'; //alert(user_campus);
+        var page_type = '<%= page_type %>';
+        page_type = page_type.toLowerCase(); //alert(page_type);
+        // debugger
+
+        if (has_permission(user_id, COVID_ADMIN)) {
+            user_role = 'Admin User';
+            // alert('admin');
+        }
+        if (has_permission(user_id, COVID_STUFF)) {
+            user_role = 'Stuff User';
+        }
+
+        var filled_by = '<%= filled_by %>'; //alert(filled_by);
+
+        $('#roomImage').attr('src', file_server + 'profile-pic/Photos/' + student_row.img);
+        if (user_role == 'Public User') {
+            $('#covid_company_pic').attr('src', '/images/workfreeli_logo.png');
+            // $('#link_accounts').addClass('display_none');
+
+        } else {
+            $('#covid_company_pic').attr('src', file_server + 'profile-pic/Photos/' + company_img);
+        }
+
+
+        // ============== form hidden data set
+        // debugger;
+        $('#student_id_form').val(student_id);
+        $('#company_id_form').val(company_id);
+        $('#student_name_form').val(student_name);
+        $('#user_id_form').val(user_id);
+        $('#date_of_form').val(moment().endOf('day').unix());
+        $('#user_role_form').val(user_role);
+        // =========================================================
+
+        var conversation_status = '';
+        var pin_status = '';
+        var mute_status = '';
+        var to = call_partner = '';
+        var conversation_id = '';
+        var conversation_type = '';
+        var room_id = '';
+        var room_img = '';
+        var conv_img_url = '';
+
+        $('.converstaion_name').text(student_name);
+
+
+        console.log('survey_data', survey_data);
+
+
+        function findObjForUser(value) {
+            for (var i = 0; i < user_list.length; i++) {
+                if (user_list[i]['id'] === value) {
+                    if (user_list[i].login_total == null) {
+                        user_list[i].login_total = 0;
+                    }
+                    var userData = {
+                        email: user_list[i].email,
+                        fullname: user_list[i].fullname,
+                        id: user_list[i].id,
+                        img: user_list[i].img,
+                        designation: user_list[i].designation,
+                        dept: user_list[i].dept,
+                        createdat: user_list[i].createdat,
+                        conference_id: user_list[i].conference_id,
+                        login_total: user_list[i].login_total,
+                        phone: user_list[i].phone
+
+                    }
+                    return userData;
+                }
+            }
+            return false;
+        }
+    </script>
+    <script type="text/javascript">
+        /* ////// covid script */
+        $('#form_newaccount_parent').on('submit', function submitHandler(e) {
+            e.preventDefault()
+            $.ajax({
+                url: '/covid/newaccount',
+                type: "POST",
+                data: $('#form_newaccount_parent').serialize(),
+                success: function(data) {
+                    // //debugger
+                    if (data.status) {
+                        if (data.msg == 'add') {
+                            $('#warnignMsgText').text('Parent added successfully.');
+                            $('#warningsPopup').css('display', 'flex');
+                            start_covid_form('back');
+                        } else {
+                            // window.location.href='/covid/signup_mailing';
+                            $('#warnignMsgText').text('Parent added successfully. Please check mail for login password.');
+                            $('#warningsPopup').css('display', 'flex');
+                            start_covid_form('back');
+
+                        }
+                    } else {
+                        $('input').removeClass('border-err');
+                        for (let err of data.msg) {
+                            console.log(1092, err.param);
+                            $('input[name="' + err.param + '"]').addClass('border-err');
+                        }
+                    }
+                },
+                complete: function() {
+                    console.log('process complete');
+                },
+                error: function(err) {
+                    console.log('process error', err);
+                }
+            });
+        })
+
+        function back_covid_parent() {
+            $('#form_start').show();
+            $('#form_survey').hide();
+            $('#form_report').hide();
+            $('#report').hide();
+            $('#form_id').hide();
+            $('#form_qrcode').hide();
+            $('#form_addparent').hide();
+        }
+
+        function show_addparent_from() {
+            $('#form_addparent').show();
+            $('#form_start').hide();
+            $('#form_survey').hide();
+            $('#form_report').hide();
+            $('#report').hide();
+            $('#form_id').hide();
+            $('#form_qrcode').hide();
+
+            $('.head_container .down_arrow').trigger('click');
+        }
+        $("#iframe_addparent").attr('src', '/covid/signup/' + student_id + '/' + user_campus);
+
+        $(document).ready(function() {
+
+            $('#user_email').text(user_email);
+            filter_start_date = flatpickr('#filter_start_date', {
+                disableMobile: "true",
+                dateFormat: 'Z',
+                altInput: true,
+                altFormat: 'd-m-Y',
+                onClose: function(selectedDates, dateStr, instance) {
+                    filter_end_date.set('minDate', dateStr);
+                },
+                    // dateFormat: "d-m-Y",
+                    // defaultDate: [moment().format('DD-MM-YYYY')]
+            });
+            filter_end_date = flatpickr('#filter_end_date', {
+                disableMobile: "true",
+                dateFormat: 'Z',
+                altInput: true,
+                altFormat: 'd-m-Y',
+                minDate: "today",
+                onClose: function(selectedDates, dateStr, instance) {
+                    filter_start_date.set('maxDate', dateStr);
+                },
+                    // dateFormat: "d-m-Y",
+                    // defaultDate: [moment().format('DD-MM-YYYY')]
+            });
+            filter_start_date.setDate('today');
+            filter_end_date.setDate('today');
+            if (user_role == 'Stuff User') {
+                $('#search_campus_input').val(user_campus);
+                $('#filterdiv_campus').addClass('filtering-off');
+                $('#filterdiv_startdate').addClass('filtering-off')
+                $('#filterdiv_enddate').addClass('filtering-off');
+                $('#filter_btn_pdf').hide();
+                $('#filter_btn_xls').hide();
+                $('#btn_scanner_stuff').show();
+                $('#btn_scanner_admin').hide();
+
+                $('.leftContent').remove();
+                $('.leftSearch').show().css('position', 'static').addClass('stuff-search');
+
+
+                // $('#filterdiv_startdate').find('input[type="date"]')[0].value = new Date().toISOString().substring(0, 10);
+                // $('#filterdiv_enddate').find('input[type="date"]')[0].value = new Date().toISOString().substring(0, 10);
+            }
+
+            $('#search_campus_input').select2({
+                width: '100%',
+            });
+            if (page_type == 'survey') {
+                if (survey_status != 'null') {
+                    $('#image_qr').qrcode({
+                        text: student_id,
+                        width: 186,
+                        height: 186
+                    });
+                    
+                    $('#serial_qr').text(student_row.roll_number);
+                    $('#box_survey_qrcode').show();
+                    $('#box_survey').addClass('disable');
+                    $('#box_survey_status').show();
+
+                    if (survey_status == 'yes') {
+                        $('#image_qr').hide();
+                        $('#serial_qr').hide();
+                        $('#text_qr').show();
+                        $('#box_start_screening').hide();
+                        $('#box_survey_checkout').show();
+                        // drawCardLayout(survey_data, '#box_survey_checkout');
+                        $('.idcard_valid').text('Valid till ' + moment().format('DD-MMMM-YYYY') + ' 11:59PM').css('visibility', '').show();
+
+                        $('#box_result_positive').show();
+                        $('#box_result_negative').hide();
+                    } else {
+                        $('#image_qr').show();
+                        $('#serial_qr').show();
+                        $('#text_qr').hide();
+                        $('#box_start_screening').hide();
+                        $('#box_survey_checkin').show();
+                        drawCardLayout(survey_data, '#box_survey_checkin', false);
+                        $('.idcard_valid').text('Valid till ' + moment().format('DD-MMMM-YYYY') + ' 11:59PM').css('visibility', '').show();
+
+                        $('#box_result_positive').hide();
+                        $('#box_result_negative').show();
+                    }
+                    $('#box_survey_finish').show();
+                    $('#box_survey_propic').show();
+                    $('#box_survey_propic img').attr('src', 'https://wfss001.freeli.io/profile-pic/Photos/' + student_row.img);
+
+                } else {
+                    $('#box_survey_qrcode').hide();
+                    $('#box_start_screening').show();
+                    $('#box_survey_comment2').text('For ' + moment().format('DD-MMMM-YYYY'));
+
+                }
+
+            } else if (page_type == 'scan') {
+                start_covid_form('search')
+            } else if (page_type == 'report') {
+                start_covid_form('report')
+            } else if (page_type == 'qr') {
+                start_covid_form('qrcode');
+            }
+
+            if (user_role == 'Admin User') {
+                // $('#covid_qrcode').hide();
+                // $('#covid_report').show();
+
+                $('#box_addparent').hide();
+                // $('#box_qrcode').hide();
+                // $('#box_report').show();
+                $('#box_search').hide();
+                $('#btn_scanner_stuff').hide();
+                $('#btn_scanner_admin').show();
+            } else if (user_role == 'Student User') {
+                $('#box_addparent').show();
+                // $('#box_qrcode').hide();
+                $('#box_report').hide();
+                $('#box_search').hide();
+                $('#addparent_menu_div').show();
+
+            } else if (user_role == 'Public User') {
+                // $('.back_ico').hide();
+            } else {
+                $('#covid_qrcode').hide();
+                $('#covid_report').hide();
+            }
+        });
+
+        function view_idcard_all(el) {
+
+            if ($(el).hasClass('btn_hover')) {
+                $(el).removeClass('btn_hover');
+                $('#box_idcard').hide();
+                $('#box_idcard').find('.idcard_main').hide();
+
+            } else {
+                $('#box_admin_counters .btn_hover').removeClass('btn_hover');
+                $(el).addClass('btn_hover');
+                $('#box_idcard').show();
+                $('#box_idcard').find('.idcard_main').show();
+
+            }
+
+        }
+
+        function view_idcard_default() {
+            $('#box_admin_counters .btn_hover').removeClass('btn_hover');
+            $('#div_idcard_all').addClass('btn_hover');
+            $('#box_idcard').show();
+            $('#box_idcard').find('.idcard_main').show();
+        }
+
+        function view_idcard_green(el) {
+            // //debugger
+
+            if ($(el).hasClass('btn_hover')) {
+                $(el).removeClass('btn_hover');
+                $('#box_idcard').hide();
+                $('#box_idcard').find('.idcard_main').hide();
+
+            } else {
+                $('#box_admin_counters .btn_hover').removeClass('btn_hover')
+                $(el).addClass('btn_hover');
+                $('#box_idcard').show();
+                $('#box_idcard').find('.idcard_main').hide();
+                $('#box_idcard').find('.idcard_main[covid-status="no"]').show();
+
+            }
+
+        }
+
+        function view_idcard_yellow(el) {
+            // //debugger
+
+            if ($(el).hasClass('btn_hover')) {
+                $(el).removeClass('btn_hover');
+                $('#box_idcard').hide();
+                $('#box_idcard').find('.idcard_main').hide();
+
+            } else {
+                $('#box_admin_counters .btn_hover').removeClass('btn_hover')
+                $(el).addClass('btn_hover');
+                $('#box_idcard').show();
+                $('#box_idcard').find('.idcard_main').hide();
+                $('#box_idcard').find('.idcard_main[covid-status="yes"]').show();
+
+            }
+
+        }
+
+        function view_idcard_checkin(el) {
+
+            if ($(el).hasClass('btn_hover')) {
+                $(el).removeClass('btn_hover');
+                $('#box_idcard').hide();
+                $('#box_idcard').find('.idcard_main').hide();
+
+            } else {
+                $('#box_admin_counters .btn_hover').removeClass('btn_hover')
+                $(el).addClass('btn_hover');
+                $('#box_idcard').show();
+                $('#box_idcard').find('.idcard_main').hide();
+                $('#box_idcard').find('.idcard_main[data-checkin="yes"]').show();
+
+            }
+        }
+
+        function view_idcard_deny(el) {
+
+            if ($(el).hasClass('btn_hover')) {
+                $(el).removeClass('btn_hover');
+                $('#box_idcard').hide();
+                $('#box_idcard').find('.idcard_main').hide();
+
+            } else {
+                $('#box_admin_counters .btn_hover').removeClass('btn_hover')
+                $(el).addClass('btn_hover');
+                $('#box_idcard').show();
+                $('#box_idcard').find('.idcard_main').hide();
+                $('#box_idcard').find('.idcard_main[data-deny="true"]').show();
+
+            }
+
+        }
+
+        function open_searchForm() {
+            if ($('.leftSearch').is(':visible')) {
+                $('.leftSearch').hide();
+                $('.submit_inputBar').removeClass('close').css('background-color', 'var(--PrimaryC)');
+            } else {
+                $('.leftSearch').show();
+                $('.submit_inputBar').addClass('close').css('background-color', 'var(--NewSimpleRed)');
+            }
+
+
+        }
+
+        function close_searchForm() {
+
+            $('.leftSearch').hide();
+            $('.submit_inputBar').removeClass('close').css('background-color', 'var(--PrimaryC)');
+        }
+
+        function openMailApp() {
+            // //debugger
+            if (survey_status == 'yes') {
+                var formattedBody = [
+                    $('#text_qr').text(),
+                ].join('\n')
+
+            } else {
+                if ($('.idcard_name_in').is(':visible')) {
+                    var formattedBody = [
+                        $('.idcard_name_in').text(),
+                        $('.idcard_info').text(),
+                        $('.idcard_filled').text(),
+                        $('.idcard_check').text(),
+                        $('.idcard_valid').text()
+                    ].join('\n')
+                } else if ($('.idcard_name_out').is(':visible')) {
+                    var formattedBody = [
+                        $('.idcard_name_out').text(),
+                        $('.idcard_info').text(),
+                        $('.idcard_filled').text(),
+                        $('.idcard_check').text(),
+                        $('.idcard_valid').text()
+                    ].join('\n')
+                } else {
+                    var formattedBody = [
+                        $('.idcard_name').text(),
+                        $('.idcard_info').text(),
+                        $('.idcard_filled').text(),
+                        $('.idcard_deny').text(),
+                        $('.idcard_valid').text()
+                    ].join('\n')
+                }
+
+            }
+
+
+            var mailToLink = 'mailto:' + user_email + '?body=' + encodeURIComponent(formattedBody);
+            window.location.href = mailToLink;
+        }
+
+        function openPrintPdf() {
+            $('#box_survey_finish').hide();
+            window.print();
+            $('#box_survey_finish').show();
+        }
+
+        function openHomeScreen() {
+            if (user_role == 'Public User') {
+                // window.location.href = '/covid/mobile';
+                window.location.replace('/logout')
+            } else {
+                window.location.href = '/covid/mobile';
+            }
+
+        }
+
+        function clearSearchReport() {
+            $('#clear_search_input').hide();
+            $('#search_student_input').val('');
+            if (user_role == 'Stuff User') {
+                $('#box_idcard').empty();
+            } else {
+                searchStudentsCampus(true)
+            }
+
+        }
+
+        function keyupSearchReport() {
+            if (event.keyCode === 13) {
+                searchStudentsCampus(true)
+
+            } else {
+                if ($('#search_student_input').val().length == 0) {
+                    clearSearchReport()
+                } else {
+                    $('#clear_search_input').show();
+                }
+
+            }
+
+        }
+
+        function closeSearchResults(type) {
+            if (type == 'campus') {
+                $('#close_campus_input').css('visibility', 'hidden');
+                $('#search_campus_input').val('')
+            } else {
+                $('#close_student_input').css('visibility', 'hidden');
+                $('#search_student_input').val('')
+            }
+            if (user_role == 'Stuff User') {
+                // getActiveStuff();
+            } else {
+                getActiveStuff();
+
+            }
+
+        }
+
+        function noneCheckedState() {
+            // alert($(this).is(':checked'));
+            var checkBox = document.getElementById("noneCheckedState1");
+            if (checkBox.checked) {
+                $("#ques1 input").prop("checked", false);
+                $('#noneCheckedState1').prop("checked", true);
+            }
+            if ($("#ques1 input:checked").length == 0) {
+                $('#submit_covid_btn').addClass('disable');
+            } else {
+                $('#submit_covid_btn').removeClass('disable');
+            }
+
+        }
+
+        function yesCheckedState(el) {
+            if (el.checked) {
+                $('#noneCheckedState1').prop("checked", false);
+            }
+            if ($("#ques1 input:checked").length == 0) {
+                $('#submit_covid_btn').addClass('disable');
+            } else {
+                $('#submit_covid_btn').removeClass('disable');
+            }
+        }
+
+        
+
+        function student_check_in(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/covid/checkin',
+                type: "POST",
+                data: {
+                    student_id: $('#qr_student_id').text()
+                },
+                dataType: "JSON",
+                success: function(res) {
+                    $('#btn_check_in').hide();
+                },
+                error: function(err) {
+                    console.log(462, err);
+                }
+            });
+
+
+        }
+        var video = document.getElementById('preview');
+        video.setAttribute('webkit-playsinline', 'webkit-playsinline');
+        video.setAttribute('playsinline', '');
+        video.autoplay = true;
+        video.controls = false;
+        video.onerror = function() {
+            alert("==>Media::Error! Something went wrong");
+        };
+        video.onsuspend = function() {
+            alert("==>Media::Loading of the media is suspended");
+
+        };
+        video.onstalled = function() {
+            alert("==>Media::Media data is not available");
+        };
+        video.onloadedmetadata = function(e) {
+            video.play();
+        };
+
+        scanner = new Instascan.Scanner({
+            video: document.getElementById('preview'),
+            scanPeriod: 5,
+            mirror: false
+        });
+        scanner.addListener('scan', function(content) {
+            viewIDcard(content);
+            // scanner.stop();
+
+        });
+
+        function covid_propic_public() {
+            if (user_role == 'Public User') {
+                $('#upload-user-photo').trigger('click');
+            }
+
+        }
+    </script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+
+        function exportTableToExcel(tableID, filename = '') {
+            debugger
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableID);
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+            // Specify file name
+            filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+            // Create download link element
+            downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+                // Setting the file name
+                downloadLink.download = filename;
+
+                //triggering the function
+                downloadLink.click();
+            }
+        }
+
+        function start_covid_form(type) {
+            // alert(type);
+            // e.preventDefault();
+            // debugger
+            if (type == 'start') {
+                reset_question_form();
+                $('.right-input label').css('pointer-events', '').show();
+                $('#survey_back_btn').hide();
+                $('#submit_covid_btn').text('NEXT')
+                $('#submit_covid_div').removeClass('back_covid_res').removeClass('retake').show();
+                $('#no_covid_btn').text('NO')
+                $('#no_covid_div').removeClass('back_covid_res').removeClass('retake').hide();
+                $('.btnAlign').removeClass('btnGrid');
+
+                $('#question_list').removeClass('disabled');
+                $('#form_survey').trigger("reset");
+                $('#covid_report').removeClass('sideActive selected');
+
+                $('#conversation_list_sidebar li').removeClass('sideActive selected');
+
+                $('#form_start').show();
+                $('#form_survey').hide();
+                $('#form_report').hide();
+                $('#report').hide();
+                $('#form_id').hide();
+                $('#form_qrcode').hide();
+                scanner.stop();
+
+            } else if (type == 'survey') {
+                $('.start_survey_form').show();
+                $('.review_survey_form').hide();
+                reset_question_form();
+                $('#ques1').show();
+
+                $('#survey_back_btn').hide();
+                $('#submit_covid_btn').text('NEXT').addClass('disable')
+                $('#submit_covid_div').removeClass('back_covid_res').show();
+                $('#no_covid_btn').text('NO').hide()
+                $('#no_covid_div').removeClass('back_covid_res').removeClass('retake').hide();
+                $('.btnAlign').removeClass('btnGrid');
+
+                $('#question_list').removeClass('disabled');
+                $('#form_survey').trigger("reset");
+                $('#covid_report').removeClass('sideActive selected');
+
+                $('#conversation_list_sidebar li').removeClass('sideActive selected');
+
+                $('#form_start').hide();
+                $('#form_survey').show();
+                $('#form_report').hide();
+                $('#report').hide();
+                $('#form_id').hide();
+                $('#form_qrcode').hide();
+                scanner.stop()
+
+            } else if (type == 'report') {
+
+                $('.leftContent').show();
+                $('.rightContent').show();
+                $('.stuff-off').show();
+                $('#form_qrcode').hide();
+                $('#report').show();
+                $('#form_start').hide();
+                $('#form_survey').hide();
+                $('#form_report').hide();
+                $('#submit_covid_div').hide();
+                $('#form_id').hide();
+                getActiveStuff();
+                scanner.stop();
+
+            } else if (type == 'qrcode') {
+                $('#form_id').hide();
+                $('#report').hide();
+                $('#form_start').hide();
+                $('#form_survey').hide();
+                $('#form_report').hide();
+                $('#submit_covid_div').hide();
+                $('#form_qrcode').show();
+
+                Instascan.Camera.getCameras().then(function(cameras) {
+                    if (cameras.length > 0) {
+                        var selectedCam = cameras[0];
+                        $.each(cameras, (i, c) => {
+                            if (c.name.indexOf('back') != -1) {
+                                selectedCam = c;
+                                return false;
+                            }
+                        });
+                        scanner.start(selectedCam);
+
+                    } else {
+                        console.error('No cameras found.');
+                        alert('No cameras found.');
+                    }
+                }).catch(function(e) {
+                    console.error(e);
+                    // alert(e);
+                });
+
+
+
+            } else if (type == 'addparent') {
+                scanner.stop();
+                // window.location.href = '/covid/signup/'+student_id+'/'+company_id;
+
+                $('#form_addparent').show();
+                $('#form_start').hide();
+                $('#form_survey').hide();
+                $('#form_report').hide();
+                $('#report').hide();
+                $('#form_id').hide();
+                $('#form_qrcode').hide();
+                $('#form_newaccount_parent').trigger("reset");
+                $('input').removeClass('border-err');
+            } else if (type == 'search') {
+                scanner.stop();
+
+                $('.leftContent').show();
+                $('.rightContent').show();
+                $('.stuff-off').hide();
+                $('#form_qrcode').hide();
+                $('#report').show();
+                $('#form_start').hide();
+                $('#form_survey').hide();
+                $('#form_report').hide();
+                $('#submit_covid_div').hide();
+                $('#form_id').hide();
+                // getActiveStuff();
+            } else if (type == 'pdf') {
+                
+                // window.html2canvas = html2canvas;
+
+                var ht = '';
+                ht += '<table id="tbl_pdf">'
+                ht += ' <thead>'
+                ht += '  <tr>'
+                ht += '    <th>SCREEN DATE</th>'
+                ht += '    <th>NAME</th>'
+                ht += '    <th>STATUS</th>'
+                ht += '    <th>CHECK-IN</th>'
+                ht += '    <th>CHECKOUT</th>'
+                ht += '   </tr>'
+                ht += '  </thead>'
+                ht += '  <tbody>'
+                
+                $('#box_idcard .idcard_main').each(function(index, element) {
+                    let checkin = $(element).attr('data-checkin-time');
+                    let checkout = $(element).attr('data-checkout-time');
+                    let status = $(element).attr('covid-status');
+                    let user_role = $(element).attr('user-role');
+                    if(user_role=='Public User' && checkin=="") return;
+                    // console.log('bbb',user_role,checkin);
+                    ht += '<tr>';
+                    ht += ' <td>' + (moment($(element).attr('data-create-date')).format('DD-MMM-YYYY')).toUpperCase() + '</td>';
+                    ht += ' <td>' + ($(element).attr('data-name')).toUpperCase() + '</td>';
+                    ht += ' <td>' + (status == 'no' ? 'OK' : 'DENY') + '</td>';
+                    ht += ' <td>' + (checkin ? moment(checkin).format('hh:mmA').toUpperCase() : '') + '</td>';
+                    ht += ' <td>' + (checkout ? moment(checkout).format('hh:mmA').toUpperCase() : '') + '</td>';
+                    ht += '</tr>';
+
+                });
+                ht += '  </tbody>'
+                ht += '</table>';
+
+                // debugger;
+                $('#elementPdf').html(ht);
+                
+                $.fn.dataTable.moment( 'DD-MMM-YYYY' );
+                $.fn.dataTable.moment( 'hh:mmA' );  
+                $('#tbl_pdf').DataTable({
+                    "order": [[ 0, "asc" ], [ 3, "asc" ]],
+                    "paging": false
+                });
+                
+                
+            } 
+            else if (type == 'xls') {
+                let start = (moment($('#filter_start_date').val()).local().format('DD-MMM-YYYY'));
+                let end = (moment($('#filter_end_date').val()).local().format('DD-MMM-YYYY'));
+                let txt = 'COVID-19 SCREENING REPORT | DATE: ' + start + ' TILL ' + end;
+
+                var ht = '';
+                ht += '<table id="tbl_xls" style="text-align:center;width:100%">'
+                ht += '  <thead>'    
+                ht += '  <tr style="text-align:center;background: grey;">'
+                ht += '    <th style="border: 1px solid;font-size:18px">SCREEN DATE</th>'
+                ht += '    <th style="border: 1px solid;font-size:18px">NAME</th>'
+                ht += '    <th style="border: 1px solid;font-size:18px">STATUS</th>'
+                ht += '    <th style="border: 1px solid;font-size:18px">CHECK-IN</th>'
+                ht += '    <th style="border: 1px solid;font-size:18px">CHECKOUT</th>'
+                ht += '   </tr>'
+                ht += '  </thead>'
+                
+
+                ht += ' <tbody>'
+                $('#box_idcard .idcard_main').each(function(index, element) {
+                    let checkin = $(element).attr('data-checkin-time');
+                    let checkout = $(element).attr('data-checkout-time');
+                    let status = $(element).attr('covid-status');
+                    let user_role = $(element).attr('user-role');
+                    if(user_role=='Public User' && checkin=="") return;
+                    ht += '<tr style="text-align:center">';
+                    ht += ' <td style="border: 1px solid;">' + (moment($(element).attr('data-create-date')).format('DD-MMM-YYYY')).toUpperCase() + '</td>';
+                    ht += ' <td style="border: 1px solid;">' + ($(element).attr('data-name')).toUpperCase() + '</td>';
+                    ht += ' <td style="border: 1px solid;">' + (status == 'no' ? 'OK' : 'DENY') + '</td>';
+                    ht += ' <td style="border: 1px solid;">' + (checkin ? moment(checkin).format('hh:mmA').toUpperCase() : '&nbsp;') + '</td>';
+                    ht += ' <td style="border: 1px solid;">' + (checkout ? moment(checkout).format('hh:mmA').toUpperCase() : '&nbsp;') + '</td>';
+                    ht += '</tr>';
+
+                });
+                ht += '  </tbody>'
+                ht += '</table>';
+
+                $('#elementXls').html(ht);
+
+                let dd = (moment().format('DD_MM_YYYY'));
+                let tt = Date.now();
+
+                $.fn.dataTable.moment( 'DD-MMM-YYYY' );
+                $.fn.dataTable.moment( 'hh:mmA' ); 
+                $('#tbl_xls').DataTable( {
+                    dom: 'Bfrtip',
+                    "paging": false,
+                    "order": [[ 0, "asc" ], [ 3, "asc" ]],
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            title: company_name.toUpperCase(),
+                            message: txt.toUpperCase(),
+                            filename: dd+'_'+tt,
+                            customize: function ( xlsx ) {
+                                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                                $('row c', sheet).each(function(i,e){
+                                    // debugger;
+                                    console.log(i,e);
+                                    if(i==0) $(e).attr('s',51);
+                                    else if( i == 1) $(e).attr('s',51);
+                                    else if( i == 2 || i == 3 || i == 4 || i == 5 || i == 6) $(e).attr('s',30);
+                                    else{
+                                        $(e).attr('s',25);
+                                    }
+
+
+                                });
+                                // $( 'row c', sheet ).attr( 's', '25' );
+                                // $('row:eq(0) c', sheet).attr('s','50');
+                                // $('row:eq(1) c', sheet).attr('s','50')
+                            }
+                            // messageTop: 'The information in this table \r\n is copyright to Sirius Cybernetics Corp.'
+                        },
+                        // {
+                        //     extend: 'pdfHtml5',
+                        //     title: 'Data export'
+                        // }
+                    ]
+                } );
+                
+
+                // exportTableToExcel('tbl_xls');
+                // TableToExcel.convert(document.getElementById("tbl_xls"), {
+                //     name: "table1.xlsx",
+                //     sheet: {
+                //         name: "Sheet 1"
+                //     }
+                //     });
+
+            }
+            else if (type == 'xls_gen') {
+                $('.dt-button.buttons-excel.buttons-html5').click();
+            }
+            else if (type == 'pdf_gen') {
+                var doc = new jsPDF('p', 'pt', 'a4');
+                doc.autoTable({
+                    html: '#tbl_pdf',
+                    theme: 'grid',
+                    didDrawPage: function(data) {
+                        doc.setFontSize(16);
+                        doc.setTextColor(40);
+                        // doc.setFontType("bold");
+                        doc.text(company_name.toUpperCase(), doc.internal.pageSize.getWidth() / 2, 50, {
+                            align: "center"
+                        });
+
+                        doc.setFontSize(13);
+                        doc.setTextColor(40);
+
+                        let start = (moment($('#filter_start_date').val()).local().format('DD-MMM-YYYY'));
+                        let end = (moment($('#filter_end_date').val()).local().format('DD-MMM-YYYY'));
+                        let txt = 'COVID-19 SCREENING REPORT | DATE: ' + start + ' TILL ' + end;
+
+                        doc.text(txt.toUpperCase(), doc.internal.pageSize.getWidth() / 2, 80, {
+                            align: "center"
+                        })
+
+
+                    },
+                    headStyles: {
+                        valign: 'middle',
+                        halign: 'center',
+                        fontStyle: 'bold',
+                    },
+                    styles: {
+                        halign: 'center'
+                    },
+                    margin: {
+                        top: 100
+                    }
+                });
+                let dd = (moment().format('DD_MM_YYYY'));
+                let tt = Date.now();
+                doc.save(dd+'_'+tt+'.pdf');
+            }
+
+
+        }
+        
+        $('#form_survey').on('submit', function submitHandler(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/covid/submit2',
+                type: "POST",
+                data: $('#form_survey').serialize(),
+                success: function(data) {
+                    console.log('submit_2', data);
+                    if (data.status) {
+                        row_id = data.row_id;
+                        $('#row_id_form').val(row_id);
+                        $('#image_qr').empty();
+                        $('#image_qr').qrcode({
+                            text: data.data.student_id_form,
+                            width: 186,
+                            height: 186
+                        });
+                        $('#serial_qr').text(data.new_form.roll_number)
+
+                        $('#box_survey_qrcode').show();
+                        $('#form_start').show();
+                        $('#form_survey').hide();
+                        $('#form_report').hide();
+                        $('#submit_covid_div').hide();
+                        $('#box_report').hide()
+                        $('#box_search').hide()
+                        $('#box_qrcode').hide()
+                        $('#box_survey_checkout').empty();
+                        $('#box_survey_checkin').empty();
+                        if (data.answer_result == 'yes') {
+                            survey_status = 'yes';
+                            $('#image_qr').hide();
+                            $('#serial_qr').hide();
+                            $('#text_qr').show();
+                            $('#box_start_screening').hide();
+                            $('#box_survey_checkout').show();
+
+                            // drawCardLayout(data.new_form, '#box_survey_checkout');
+                            $('.idcard_valid').text('Valid till ' + moment().format('DD-MMMM-YYYY') + ' 11:59PM').css('visibility', '').show();
+                            $('#box_result_positive').show();
+                            $('#box_result_negative').hide();
+                        } else {
+                            survey_status = 'no';
+                            $('#image_qr').show();
+                            $('#serial_qr').show();
+                            $('#text_qr').hide();
+
+                            $('#box_start_screening').hide();
+                            $('#box_survey_checkin').show();
+
+                            drawCardLayout(data.new_form, '#box_survey_checkin', false);
+                            $('.idcard_valid').text('Valid till ' + moment().format('DD-MMMM-YYYY') + ' 11:59PM').css('visibility', '').show();
+                            $('#box_result_positive').hide();
+                            $('#box_result_negative').show();
+
+                        }
+                        $('#box_survey_finish').show();
+                        $('#box_survey_propic').show();
+                        $('#box_survey_propic img').attr('src', 'https://wfss001.freeli.io/profile-pic/Photos/' + data.new_form.student_img);
+
+                    } else {
+                        // alert('again');
+                        $('#warningsPopupCovid').css('display', 'flex');
+                        $('#warningsPopupCovid .warningMsg').text('Sorry, the system has detected that you may have corona positive, please re-take the survey again.');
+                    }
+
+                },
+                beforeSend: function() {
+                    $(".loading_connect").css('display', 'flex');
+
+                },
+                complete: function() {
+                    console.log('process complete');
+                    $(".loading_connect").css('display', 'none');
+                },
+                error: function(err) {
+                    console.log('process error', err);
+                }
+            });
+        });
+        
+    </script>
+
+    <script src="/javascripts/socket-calling.js"></script>
+    <script src="/javascripts/mob_connect_page_covid.js"></script>
+    <script src="/javascripts/localstorage_fun.js"></script>
+    <script src="/javascripts/plugins/JSzip.js"></script>
+    <script src="/javascripts/plugins/jszip-utils.js"></script>
+    <script src="/javascripts/plugins/in-view.min.js"></script>
+    <script>
+        // $(function(){    
+        // socket.emit('getCompanyTag',{user_id:user_id,company_id:company_id},function(res){
+        //  if(res.status){
+        //      allUserTagList = res.data;
+        //      checklistView();
+        //  }else{
+        //      console.log(res);
+        //  }
+        // });
+        // });
+
+
+        // socket.emit('get_all_team', {user_id: user_id}, function (res) {
+        //  if (res.status) {
+        //      allteams = res.teams;
+        //      for(var i=0; i<allteams.length; i++){
+        //          if(allteams[i].team_id == allUserdata[0].conversation[0].group_keyspace)
+        //              $("#conv_key").text('@ '+allteams[i].team_title);
+        //      }
+        //  }
+        // });
+
+
+        // if(allUserdata[0].unreadThread == 'false' && allUserdata[0].has_flagged == 'false'){
+        //  start_conversation_onload(allUserdata[0].conversation_id, allUserdata[0]);
+        // }else if (allUserdata[0].has_flagged == 'true') {
+        //  $('#msg-container').attr('data-filter','true');
+        //  var allConvIdforFilter = [];
+        //  var allFilteredItem = ['flag'];
+        //      allConvIdforFilter.push(allUserdata[0].conversation_id);
+
+        //  socket.emit('Filter_Conv_Last_Time',{company_id:company_id,conversation_list:allConvIdforFilter,allFilteredItem:allFilteredItem,user_id:user_id},function(res){
+        //      if(res.status){
+        //          allUserdata[0].conversation_list = res.data.callBackmsg;
+        //          start_conversation_onload(allUserdata[0].conversation_id, allUserdata[0]);
+
+        //          $('#call_filter_result p').text('Showing flagged messages(s) from this channel.');
+        //          $('#call_filter_result .closePopup').attr('onclick','cancelUnreadThread()');
+        //          $('#call_filter_result').css('display','flex');
+        //      }
+        //  });
+
+        // }else if (allUserdata[0].unreadThread == 'true'){
+        //  console.log(563, allUserdata[0].unreadThread)
+        //  var type = conversation_type;
+        //  var conversationid = allUserdata[0].conversation_id;
+        //  var name = room_name;
+        //  var img = room_img;
+        //  var seartTxt = 1;
+        //  var id = user_id;
+
+        //  var data = { 
+        //      type: type, 
+        //      id: id, 
+        //      conversationid: conversationid, 
+        //      name: name, 
+        //      img: img, 
+        //      user_id: user_id, 
+        //      seartTxt: seartTxt,
+        //      allFilteredItem: [],
+        //      user_id: user_id,
+        //      unreadThread: allUserdata[0].unreadThread,
+        //      filterOnlyTagMsgA: [],
+        //      allUserTagList: allUserTagList
+        //  }
+
+        //  // console.log(586, data)
+
+        //  $('#msg-container').attr('data-filter','true');
+        //  onlyUnread_thread = true;
+        //  // socket.emit('get_conversation_history_thread', { type, id, conversationid, name, img, user_id, seartTxt }, (respons) => {
+        //  //  if (respons.msg == "success") {
+        //  //          start_conversation_onload(conversationid, respons);
+        //  //  } else {
+        //  //      console.log("failed to load filter data");
+        //  //  }
+        //  // });      
+        //  // socket.emit('get_conversation_history', data, (respons) => {
+        //  //  if (respons.msg == "success") {
+        //  //          start_conversation_onload(conversationid, respons);
+        //  //  } else {
+        //  //      console.log("failed to load filter data");
+        //  //  }
+        //  // });
+        // }
+        // if (conversation_id == user_id) {
+        //  $('.mid_area .status').text('It\'s You');
+        //  $('.conv_title.converstaion_name').text(user_fullname);
+        //  $('#more_options_chat').attr('conv_type','personal');
+        // }
+    </script>
+    <%- include('layouts/mob_foot_covid') %>
+
+        <script>
+            // if(adminListUUID.indexOf(user_id) > - 1){
+            //  $('.chat_foot_container').attr('user-type','admin');
+            //  $('#user_head_id').attr('user-type','admin');
+
+            //  $('#more_options_chat').attr('user-type','admin');
+            //  $('#newTopicPopup').attr('user-type','admin');
+            // }else{
+            //  $('.chat_foot_container').attr('user-type','member');
+            //  $('#user_head_id').attr('user-type','member');
+
+            //  $('#more_options_chat').attr('user-type','member');
+            //  $('#newTopicPopup').attr('user-type','member');
+            //  $('.head_end_area .more_ico2').attr('user-type','member');
+            // }
+        </script>
+
+        <script type="text/javascript">
+            $('input[type="checkbox"]').on('change', function() {
+                $('input[name="' + this.name + '"]').not(this).prop('checked', false);
+            });
+            console.log('ttt:start:', moment().startOf('day'), moment().startOf('day').unix());
+            console.log('ttt:now:', moment(), moment().unix());
+            console.log('ttt:end:', moment().endOf('day'), moment().endOf('day').unix());
+
+            // alert('now:'+moment().unix()); // 1618858799 (+5) 1618855199 (+6)
+            // alert('end:'+moment().endOf('day').unix());
+        </script>

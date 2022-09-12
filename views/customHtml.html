@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=0.1">
+	<title>Media View</title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style-basic.css">
+	<script src="/javascripts/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="/javascripts/plugins/jquery.fileDownload.js"></script>
+	<script src="/javascripts/plugins/download.js"></script>
+	<style type="text/css">
+		.menuBarRigthClick{
+		    cursor: pointer;
+		    border: 1px solid #023d67;
+		    padding: 8px;
+		    border-radius: 4px;
+		    color:#023d67;
+		}
+		.notFoundFile{
+			color:var(--PrimaryC)
+		}
+		body{
+			margin: 0px; margin: 0px;
+			display: flex;
+			text-align: center;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+		}
+		body.notFoundBody{
+			background: #FFF;
+		}
+	</style>
+</head>
+<body class="<% if(type == 'notfound'){ %> notFoundBody<%}%>">
+<% if(type == 'notfound'){ %>
+	<h2 class="notFoundFile">File not found or no longer shared!</h2>
+<%} else if(type == 'Photos'){ %>
+	<img style="-webkit-user-select: none;margin: auto; max-width: 100%; max-height: 100vh" src="<%= url %>" >
+	<div class="menuBarRigthClick" style="display: none;position: fixed;"><span data-href="<%= url %>" onclick="downloadAnyFile(event, this,true)">Download</span></div>
+<%}else if(type == 'Videos'){%>
+<video controls="" autoplay="" name="media"><source src="<%= url %>" type="video/mp4"></video>
+<%}else if(type == 'Music'){%>
+	<audio controls="" >		
+		<source class="ado_attach" src="<%= url %>" type="audio/mpeg" data-file_name="system-fault.mp3">
+	</audio>
+<%}else if(type == 'Others'){%>
+	<div id="othersFileId" data-href="<%= url %>" onclick="downloadAnyFile(event, this)"></div>
+<%}%>
+</body>
+<script type="text/javascript">
+		$(document).on({
+		    contextmenu: function(e) {
+		        e.preventDefault();
+		        $(".menuBarRigthClick").css({
+		            "display": "block",
+		            "left": e.pageX,
+		            "top": e.pageY
+		        });
+		    },
+		    click: function(e) {
+		        var $target = $(e.target);
+		        if ($target.is('.menuBarRigthClick') || $target.closest('.menuBarRigthClick').length) {
+		            e.preventDefault();
+		        } else {
+		            $(".menuBarRigthClick").hide();
+		        }
+		    }
+		});
+
+	$(document).ready(function(event){
+		$('#othersFileId').click();
+	});
+	function d_file(url, fileName, type) {
+		download(url, type);
+		console.log(url,type)
+	}
+
+	function download(filename, text) {
+		var element = document.createElement('a');
+		element.setAttribute('href', filename);
+		element.setAttribute('download', text);
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+	}
+
+	function downloadAnyFile(e,elm,img = false) {
+	e.preventDefault();
+	e.stopImmediatePropagation();
+	var url = $(elm).attr('data-href');
+	download(url, 'type');
+	setTimeout(function(){
+		window.close();
+	},1000)
+	// console.log(url)
+	// var type;
+	// var xhttp = new XMLHttpRequest();
+	// xhttp.open('HEAD', url);
+	// xhttp.onreadystatechange = function () {
+	// 	if (this.readyState == this.DONE) {
+	// 		type = this.getResponseHeader("Content-Type");
+	// 		d_file(url,type);
+	// 		if(!img){
+	// 			setTimeout(function(){
+	// 				window.close();
+	// 			},1000)
+	// 		}
+	// 		// mimetype
+	// 	}
+	// };
+	// xhttp.send();
+}
+</script>
+</html>

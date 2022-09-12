@@ -1,0 +1,40 @@
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+	<defs>
+        <style>
+            :root {
+                --background-color: #FF0000;
+                --color: #FFFFFF;
+            }
+
+            .background {
+                fill: var(--background-color);
+            }
+
+            .color-stroke {
+                stroke: var(--color);
+            }
+            .color-fill {
+                fill: var(--color);
+            }
+
+            @media (min-width: 24px) {
+                .small {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 23px) {
+                .large {
+                    display: none;
+                }
+            }
+        </style>
+    </defs>
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="assets" sketch:type="MSArtboardGroup" transform="translate(-499.000000, -348.000000)">
+            <path d="M520,364.166332 L520,376 L514.083166,370.083166 L509.207107,374.959226 C508.816583,375.34975 508.183418,375.34975 507.792893,374.959226 C507.402369,374.568702 507.402369,373.935537 507.792893,373.545012 L524.792893,356.545012 C525.183417,356.154487 525.816582,356.154487 526.207107,356.545012 C526.597631,356.935536 526.597631,357.568701 526.207107,357.959225 L520,364.166332 Z M520,359.337905 L520,357 L514,363 L508.997545,363 C508.446616,363 508,363.437881 508,364.002929 L508,368.997071 C508,369.550973 508.446311,370 508.997545,370 L509.337905,370 L520,359.337905 L520,359.337905 Z" id="speaker-off" fill="#ffffff" sketch:type="MSShapeGroup"></path>
+            <g id="slices" sketch:type="MSLayerGroup" transform="translate(425.000000, 348.000000)"></g>
+        </g>
+    </g>
+</svg>

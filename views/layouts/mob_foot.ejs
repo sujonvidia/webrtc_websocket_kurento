@@ -1,0 +1,1829 @@
+  	
+	<% if(page == 'connect'){ %> 
+
+	  	<section class="foot_container">
+	  		<div class="foot_right">
+	  			<div class="ico_w_label" onclick="show_all_rooms()">
+	  				<div class="connect_ico"></div>
+	  				<div class="_title">All Channels</div>
+	  			</div>
+	  		</div>
+	  		<div class="foot_mid">
+	  			<div class="ico_mid_foot">
+	  				<div class="chat_action_ico" onclick="window.location.href='/connect';//showOption(event,this,'chat_actions_list')"></div>
+	  			</div>
+	  		</div>
+	  		<div class="foot_left">
+	  			<div class="ico_w_label" onclick="showOption(event,this,'more_options')" >
+	  				<div class="more_ico"></div>
+	  				<div class="_title">More</div>
+	  			</div>
+	  		</div>
+	  	</section>
+
+  	<%  } %>
+
+
+  	<section class="popup_section">
+  		<div class="backwrap" id="more_options">
+  			<div class="options_container">
+  				<!-- <div class="option">
+  					<div class="camera_ico"></div>
+  					<div class="text">Camera</div>
+  				</div> -->
+  				<div class="option" onclick="$('#more_options').hide(); add_contact_list()">
+  					<div class="plus_conv_ico single"></div>
+  					<div class="text">Direct Message</div>
+  				</div>
+  				<div class="option" onclick="$('#more_options').hide(); open_new_topic_popup()">
+  					<div class="plus_conv_ico group"></div>
+  					<div class="text">Create Room</div>
+  				</div>
+  			</div>
+		</div>
+		<% if(page == 'chat'){ %> 
+  			<div class="backwrap" id="more_options_chat" conv-type="<%= conversation_type %>" room-status="<%= conversation_status %>">
+				<div class="options_container">
+					<div class="option pinUnpin">
+						<div class="pin_ico opt_icons"></div>
+						<div class="text">Pin</div>
+					</div>
+					<div class="option muteNotifi" onclick="muteNotification(this)">
+						<div class="mute_ico opt_icons"></div>
+						<div class="text">Mute</div>
+					</div>
+					<div class="option srcMsg" onclick="showFilesGallery()">
+						<div class="files_ico opt_icons"></div>
+						<div class="text">Files</div>
+					</div>
+					<div class="option srcMsg" onclick="searchConversations(this)">
+						<div class="search_ico opt_icons"></div>
+						<div class="text">Search</div>
+					</div>
+					<!-- <div class="option convTag" onclick="viewChatTag(this)">
+						<div class="tag_ico opt_icons"></div>
+						<div class="text">Room Tag</div>
+					</div> -->
+					<div class="option selectMsg" onclick="selectConvs()">
+						<div class="select_ico opt_icons"></div>
+						<div class="text">Select Message</div>
+					</div>
+					<div class="option selectMsg" onclick="settunePopup()">
+						<div class="mute_ico opt_icons"></div>
+						<div class="text">Set Notification Tune</div>
+					</div>
+					<div class="option" id="filterFlagged_msg_2" onclick="filter_flag(event)">
+						<span class="active_checker"></span>
+						<div class="msg_flag_ico opt_icons"></div>
+						<div class="text">Flagged</div>
+					</div>
+					<div class="option callFilter" id="viewCallHistory" onclick="convCallHistory(this)">
+						<span class="active_checker"></span>
+						<div class="s_call_ico opt_icons"></div>
+						<div class="text">Filter call history only</div>
+					</div>
+					<div class="option checklistFilter" id="checkListCounter" onclick="viewChecklistMsg()">
+						<span class="active_checker"></span>
+						<div class="s_checklist_ico opt_icons"></div>
+						<div class="text">Filter checklist(s) only</div>
+					</div>
+					<div class="option threadChatFilter" id="threadChatsOnly" onclick="threadChatOnly(this)">
+						<span class="active_checker"></span>
+						<div class="s_tChat_ico opt_icons"></div>
+						<div class="text">Filter thread chat(s) only</div>
+					</div>
+<!-- 					<div class="option UpdateRoom" onclick="$('#more_options').hide(); open_new_topic_popup()">
+						<div class="update_ico opt_icons"></div>
+						<div class="text">Update this room</div>
+					</div> -->
+					<div class="option clrMsg" onclick="viewPopFunc('#more_options_chat','#removeDeleted_msg')">
+						<div class="clear_ico opt_icons"></div>
+						<div class="text">Remove all deleted Message(s)</div>
+					</div>
+					<div class="option clrMsg" onclick="viewPopFunc('#more_options_chat','#clear_conversation')">
+						<div class="clear_ico opt_icons"></div>
+						<div class="text">Clear Message(s)</div>
+					</div>
+					<div class="option leaveRoom" onclick="leave_room()">
+						<div class="leave_ico opt_icons"></div>
+						<div class="text">Leave this Room</div>
+					</div>
+					<div class="option closeRoom" id="closeTRoom" onclick="viewPopFunc('#more_options_chat','#closeRoomPopup')">
+						<div class="leave_ico opt_icons"></div>
+						<div class="text">Close this Room</div>
+					</div>
+					<div class="option hideRoom" id="hideTRoom" onclick="viewPopFunc('#more_options_chat','#hideRoomPopup')">
+						<div class="hide_ico opt_icons"></div>
+						<div class="text">Hide this room</div>
+					</div>
+					<div class="option reOpenRoom" id="reopenTRoom" onclick="viewPopFunc('#more_options_chat','#reopenRoomPopup')">
+						<div class="reopen_ico opt_icons"></div>
+						<div class="text">Re-open this Room</div>
+					</div>
+					<!-- <div class="option deleteRoom" id="deleteRoom" onclick="viewPopFunc('#more_options_chat','#deleteRoomPopup')">
+						<div class="delete_ico opt_icons"></div>
+						<div class="text">Delete this Room</div>
+					</div> -->
+				</div>
+		 	</div>
+		<% } %> 
+  		<div class="backwrap" id="more_options_msg">
+  			<div class="options_container">
+  				<!-- <div class="option">
+  					<div class="task_ico"></div>
+  					<div class="text">Add Task</div>
+  				</div>
+  				<div class="option">
+  					<div class="poll_ico"></div>
+  					<div class="text">Start Poll</div>
+  				</div> -->
+  				<div class="option" onclick="viewAttachPopup(this)">
+  					<div class="attachment_ico"></div>
+  					<div class="text">Upload Files</div>
+  				</div>
+  				<!-- <div class="option">
+  					<div class="reminder_ico"></div>
+  					<div class="text">Set Reminder</div>
+  				</div>
+  				<div class="option">
+  					<div class="calender_ico"></div>
+  					<div class="text">Schedule Event</div>
+				</div> -->
+				<div class="option" onclick="addMsgCheckList()">
+					<div class="task_ico"></div>
+					<div class="text">Add Check List</div>
+				</div>
+  			</div>
+  		</div>
+  		<div class="popup_sec" id="call_details_more">
+  			<div class="popup_container">
+  				<div class="option">
+  					<div class="_ico remove_u_ico"></div>
+  					<div class="text">Remove from call log</div>
+  				</div>
+  				<div class="option">
+  					<div class="_ico block_ico"></div>
+  					<div class="text">Block</div>
+  				</div>
+  			</div>
+  		</div>
+  		<div class="backwrap" id="chat_actions_list">
+  			<div class="options_container">
+  				<div class="option">
+  					<div class="task_ico"></div>
+  					<div class="text">Add Task</div>
+  				</div>
+  				<div class="option">
+  					<div class="calender_ico"></div>
+  					<div class="text">Calender</div>
+  				</div>
+  			</div>
+  		</div>
+
+  		<div class="profilenavMainSection">
+  			<div id="link_accounts"></div>
+			<div class="profileNavContainer" id="profile_teams">
+				<div class="headNav">
+					<% if(page !== 'index'){ %>
+					<h1 id="company_id_name"> </h1>
+					<h1 id="user_email"> <%= user_email %></h1>
+					<% } %>
+					<div class="setting_ico" onclick="profileSetting()"></div>
+				</div>
+				<!-- <div class="group_input">
+					<label class="switchNav">
+						<input type="checkbox">
+						<span class="sliderNav round"></span>
+						<span class="switchFor">Thirty Six Knots</span>
+					</label>
+				</div>
+				<div class="group_input">
+					<label class="switchNav">
+						<input type="checkbox">
+						<span class="sliderNav round"></span>
+						<span class="switchFor">Navigate Design</span>
+					</label>
+				</div>
+				<div class="group_input">
+					<label class="switchNav">
+						<input type="checkbox">
+						<span class="sliderNav round"></span>
+						<span class="switchFor">Sweet Salvation</span>
+					</label>
+				</div> -->
+			</div>
+			<div class="profileNavContainer">
+				<span class="linkAccount" onclick="open_change_password()">Change Password</span>
+			</div>
+			<div class="profileNavContainer">
+				<span class="logOut" onclick="window.location.replace('/logout')">Sign out</span>
+			</div>
+		</div>
+		<div class="backwrap" id="image_viewer">
+			<div class="backWrap_header">
+				<div class="back_ico" onclick="closePopUps('#image_viewer')" ></div>
+				<div class="img_name">Chat</div>
+				<a id="imageSaveLink" onclick="imageSaveLink(event)" href=""> 
+					<div class="save_ico"></div>
+				</a>
+			</div>
+			<div class="backWrap_mid">
+				<div class="img_container">
+					<img src="/images/users/joni.jpg" id="view_image_holder">
+				</div>
+			</div>
+		</div>
+  	</section>
+  	
+  	<section class="call_details" id="call_view_histroy">
+  		<div class="common_head">
+		<div class="back_ico" onclick="backToConnect(event,this)"></div>
+		<div class="mid_area">
+			<div class="head_title">Call Info</div>
+		</div>
+		<div class="head_end_area">
+			<div class="conv_ico" onclick="startConversation(event,this)"></div>
+			<div class="more_ico2" onclick="moreActionBW(event,this,'call_details_more')"></div>
+		</div>
+		<div class="call_history">
+			<div class="conv_area">
+				<div class="right_">
+					<div class="conv_img">
+						<img src="/images/users/joni.jpg">
+						<div class="status online"></div>
+					</div>
+				</div>
+				<div class="mid_">
+					<div class="conv_name">
+						<div class="title">Dalim Chowdhury</div>
+					</div>
+				</div>
+				<div class="left_">
+					<div class="icon_holder">
+						<div class="aud_call_ico active"></div>
+						<div class="vid_call_ico active"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="call_area_mini">
+				<div class="mid_">
+					<div class="last_msg_date_time">
+						<div class="icon_holder">
+							<div class="incomming_ico "></div>
+							<div class="outgoing_ico "></div>
+							<div class="missed_ico active"></div>
+						</div>
+						<div class="date_n_time">May 30,2019 3:40PM</div>
+					</div>
+					<div class="last_msg_date_time">
+						<div class="icon_holder">
+							<div class="incomming_ico "></div>
+							<div class="outgoing_ico "></div>
+							<div class="missed_ico active"></div>
+						</div>
+						<div class="date_n_time">May 30,2019 3:40PM</div>
+					</div>
+					<div class="last_msg_date_time">
+						<div class="icon_holder">
+							<div class="incomming_ico active"></div>
+							<div class="outgoing_ico "></div>
+							<div class="missed_ico "></div>
+						</div>
+						<div class="date_n_time">May 30,2019 3:40PM</div>
+					</div>
+					<div class="last_msg_date_time">
+						<div class="icon_holder">
+							<div class="incomming_ico "></div>
+							<div class="outgoing_ico active"></div>
+							<div class="missed_ico "></div>
+						</div>
+						<div class="date_n_time">May 30,2019 3:40PM</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  	</section>
+	  
+	<!-- Calling Modal -->
+	<div id="call_ring_container"></div>
+	
+	<div class="backwrapCall" id="rejectmsgListBackWrap" data-mute-id="" style="display: none">
+		<div class="hayven_Modal_Container" style="position:fixed;margin:0px;top: 69px;right: 0;width:350px;height: calc(100% - 69px);">
+			<div class="hayven_Modal_heading">
+				<h1>Reject Messages</h1>
+				<div class="closeModal" onclick="closeAllPopUpMsgReject()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			</div>
+			<div class="hayven_Modal_Content">
+				<h6>Please select one of the reject messages.</h6>
+				<ul class="notification_mute_time">
+					<li data-status="" onclick="callRejectBtn(1)">
+						<label class="radioItem showEl">
+							<span style="font-size:14px" class="radioItemName">I'll call you later.</span>
+	
+						</label>
+					</li>
+					<li data-status="" onclick="callRejectBtn(2)">
+						<label class="radioItem showEl">
+							<span style="font-size:14px" class="radioItemName">Can't talk now. Call me later?</span>
+	
+						</label>
+					</li>
+					<li data-status="" onclick="callRejectBtn(3)">
+						<label class="radioItem showEl">
+							<span style="font-size:14px" class="radioItemName">I'm in a meeting. I'll call you back.</span>
+	
+						</label>
+					</li>
+				</ul>
+	
+			</div>
+	
+		</div>
+	</div>
+
+	<div class="backwrap" id="deleteMsgPopup">
+		<div class="delete_msg_div">
+				<img class="closePopup" onclick="closePopUps('#deleteMsgPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Delete message</p>
+				<p class="delete_msg_sec_title">Are you sure you want to delete this message? This cannot be <span class="undone">undone.</span></p>
+				<div class="main-deleted-msg">
+					<div class="msg-user-photo">
+						<img src="/images/users/rabbi.jpg" alt="user image">
+					</div>
+					<div class="delbody">
+						<h4>Fajlah Rabbi&nbsp;
+							<!-- <span class="msg-time">5:16 pm</span><span class="msg-send-seen-delivered" style="display: none;"></span><span data-val="0" class=""></span> -->
+						</h4>
+						<div class="plain_text" id="">gg</div>
+						<div class="replies">
+						</div>
+					</div>
+				</div>
+				<p class="btn_div">
+					<button type="button" style="margin-right: 12px;" class="hv_btn" onclick="closePopUps('#deleteMsgPopup')">Cancel</button>
+					<button type="button" class="hv_btn btn_danger msg_del_me" onclick="delete_commit(this,'for_me')" data-id="">Delete for me</button>
+					<button type="button" style="margin-left: 12px;" class="hv_btn btn_danger msg_del_all" onclick="delete_commit(this,'for_all')" data-id="">Delete for all</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="backwrap" id="delete_item_div">
+		<div class="delete_msg_div">
+				<img class="closePopup" onclick="closePopUps('#delete_item_div')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Delete Task</p>
+				<p class="delete_msg_sec_title">Are you sure you want to delete this Task? This cannot be <span class="undone">undone.</span></p>
+
+				<p class="btn_div">
+					<button type="button" style="margin-right: 12px;" class="hv_btn" onclick="closePopUps('#delete_item_div')"">No</button>
+					<button type="button" class="hv_btn btn_danger msg_del_me"  data-label="Delete" onclick="requesttlBtn(this)" data-id="">Yes</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="clear_conversation">
+		<div class="delete_msg_div">
+				<img class="closePopup" onclick="closePopUps('#clear_conversation')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Clear Message(s)</p>
+				<p class="delete_msg_sec_title">Are you sure you want to clear all the message(s) in this channel?</p>
+				<div class="groupCheckbox">
+					<span class="hyvenCheckboxBefore hyvenCheckbox" onclick="addCheckedCls(this)" id="deletewithmedia"></span>
+					<span class="labelCheckbox">Clear media in this channel</span>
+				</div>
+				<div class="groupCheckbox">
+					<span class="hyvenCheckboxBefore hyvenCheckbox" onclick="addCheckedCls(this)" id="deletewithflagged"></span>
+					<span class="labelCheckbox">Clear flagged messages</span>
+				</div>
+				<p class="btn_div">
+					<button type="button" class="hv_btn" style="margin-right: 15px" onclick="closePopUps('#clear_conversation')">Cancel</button>
+					<button type="button" class="hv_btn btn_danger" onclick="clear_all_history()" data-id="">Clear Now</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="task_manager">
+		<div class="delete_msg_div">
+			<img class="closePopup" onclick="closePopUps('#task_manager')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Task Assignment</p>
+
+				<div class="_3coldiv managementOneSection deactive_sec" style="">
+					<label>Due Date</label>
+					<input type="text" name="" placeholder="Due Date" id="TaskDatePicker">
+				</div>
+				<div class="_3coldiv main_sec_tab managementOneSection deactive_sec" style="" id="normalAssineeSec">
+					<label>Add/Edit Assignee</label>
+					<div class="user" id="TaskUserId"></div>
+					<input type="text" name="" placeholder="Search Assignee" onkeyup="searchAssignee(event)" onfocus="searchAssignee('focus')">
+					<div class="searchDivAction" onmousedown="searchDivActionDiv(event)" onmouseup="searchDivActionDiv(event)">
+					</div>
+				</div>
+				<div class="_3coldiv" style="display: none;">
+					<label class="statusCheck">Assign these tasks to all</label>
+					<label class="switchNav" >
+						<input type="checkbox" checked="" onchange="changeStatusTask(this)" id="TaskCheckForallStatus">
+						<span class="sliderNav round"></span>
+					</label>
+				</div>
+				<div  style="width: 100%;display: none;" id="requestNewDateSec">
+					<div class="_3coldiv request_note_sec" style="width: 100%;">
+						<label class="statusCheck">Request note</label>
+						<textarea type="text" name="" placeholder="Change due date and mention reason here" style="width: 100%; float: left" id="requestNote"></textarea>
+					</div>
+					<div class="_3coldiv decline_note_sec" style="display: none; width: 100%;">
+						<label class="statusCheck">Decline note </label>
+						<textarea type="text" name="" placeholder="Note required" style="width: 100%; float: left" id="declineNote"></textarea>
+					</div>
+				</div>
+				<div style="width: 100%;display: none;float: left;" class="main_sec_tab" id="alternatAssigneeSec">
+					<div class="_3coldiv" style="width: 100%;">
+						<label class="statusCheck">Assignee change reason</label>
+						<textarea id="assigneeChangeResone" name="" placeholder="Assignee change reason" style="width: 100%; float: left"></textarea>
+					</div>
+				</div>
+				<!-- <div class="_3coldiv" style="">
+					<label class="statusCheck">Make this Private</label>
+					<label class="switchNav" >
+						<input type="checkbox" checked="checked" onchange="changeStatusTask(this)" id="TaskPrivacyStatus">
+						<span class="sliderNav round"></span>
+					</label>
+				</div> -->
+				<!-- <p class="btn_div"> -->
+					<!-- <button type="button" class="hv_btn btn_success" style="margin-right: 15px" onclick="SubmitDueCheckList()" data-id="">Submit</button> -->
+					<!-- <button type="button" class="hv_btn" onclick="closePopUps('#task_manager')">Cancel</button> -->
+				<!-- </p> -->
+				<div class="">
+					<div class="btn_group" id="initialSubBtn" style="">
+						<!-- <button class="buttonCancel" onclick="closeModal('dueDatePickerChecklist')">Close</button> -->
+						<!-- <button class="button_Unass" onclick="SubmitDueCheckList('unassign')">Unassign</button> -->
+						<button class="buttonAction" onclick="SubmitDueCheckList()">Submit</button>
+					</div>
+					<div class="btn_group" id="checklistRequestBtn" style="display: none">
+						<!-- <button class="buttonCancel" onclick="requesttlBtn(this)">Reject</button> -->
+						<!-- <button class="button_Unass" onclick="SubmitDueCheckList('unassign')">Unassign</button> -->
+						<button class="buttonAction" onclick="requesttlBtn(this)">Approve</button>
+					</div>
+					<div class="btn_group" id="decline_btn_sec" style="display: none">
+						<!-- <button class="buttonCancel" onclick="requesttlBtn(this)">Close</button> -->
+						<!-- <button class="button_Unass" onclick="SubmitDueCheckList('unassign')">Unassign</button> -->
+						<button class="decline_btn_sec" onclick="requesttlBtn(this)">Decline</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="joinRoomPopup">
+		<div class="delete_msg_div">
+				<img class="closePopup" onclick="closePopUps('#joinRoomPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Update !</p>
+				<p class="delete_msg_sec_title"></span></p>
+				<p class="btn_div">
+					<button type="button" class="hv_btn" style="margin-right: 15px" onclick="closePopUps('#joinRoomPopup')">Later</button>
+					<button type="button" style="background-color: var(--RBC);color: #FFF" id="trigger_room" class="hv_btn" onclick="">Yes</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="removeDeleted_msg">
+		<div class="delete_msg_div">
+				<img class="closePopup" onclick="closePopUps('#removeDeleted_msg')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Remove Message(s)</p>
+				<p class="delete_msg_sec_title">Are you sure you want to remove all deleted messages? This cannot be <span class="undone">undone.</span></p>
+				<p class="btn_div">
+					<button type="button" class="hv_btn" style="margin-right: 15px" onclick="closePopUps('#removeDeleted_msg')">Cancel</button>
+					<button type="button" class="hv_btn btn_danger" onclick="removeDeleted_msg()" data-id="">Remove Now</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="shareMsgPopup">
+		<div class="share_msg_div">
+			<h2 class="popup_title">Forward message</h2>
+			<img class="closePopup" onclick="closePopUps('#shareMsgPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="searchMembers">
+				<form autocomplete="off" style="display: inline">
+					<input id="searchMembersInput" onkeyup="searchShareList(this)" type="text" placeholder="Search by name" autocomplete="off">
+				</form>
+			</div>
+			<div class="membersList" id="shareList">
+				
+			</div>
+		</div>
+	</div>
+	<div class="backwrap" id="muteMotifiPopup">
+		<div class="muteMotifi_div">
+			<h2 class="popup_title">Mute Notifications</h2>
+			<p class="popupLable">Please select one of the mute options.</p>
+			<img class="closePopup" onclick="closePopUps('#muteMotifiPopup')" src="/images/basicAssets/close_button.svg" alt="">
+
+			<div class="muteTimeList">
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="30M">
+					<h3 class="muteTime_title">For 30 Minutes</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="1H">
+					<h3 class="muteTime_title">For 1 hours</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="12H">
+					<h3 class="muteTime_title">For 12 Hours</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="1D">
+					<h3 class="muteTime_title">For 1 Day</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="1W">
+					<h3 class="muteTime_title">For 1 Week</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="1Y">
+					<h3 class="muteTime_title">For 1 year</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="20Y">
+					<h3 class="muteTime_title">Untile I turn it back on</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="ownMuteOption">
+					<h3 class="muteTime_title">Set your own mute option</h3>
+				</div>
+				<div class="customDateTime">
+					<div class="muteStartDate">
+						<p class="customMuteLable">Start Date & Time</p>
+						<input type="datetime-local" class="muteInputs" name="" id="muteCustomDate">
+					</div>
+					<div class="muteEndDate">
+						<p class="customMuteLable">End Date & Time</p>
+						<input type="datetime-local" class="muteInputs" name="" id="muteCustomendDate">
+					</div>
+				</div>
+			</div>
+			<div class="muteBtns">
+				<button class="btn-close" onclick="closePopUps('#muteMotifiPopup')">Cancel</button>
+				<button class="btn-mute" onclick="muteSubmit()">Mute</button>
+			</div>
+		</div>
+	</div>
+	<div class="backwrap" id="autoDelTimePopup">
+		<div class="muteMotifi_div">
+			<h2 class="popup_title">Auto delete will remove this message from everyone.</h2>
+			<p class="popupLable">Please select one of the mute options.</p>
+			<img class="closePopup" onclick="closePopUps('#autoDelTimePopup')" src="/images/basicAssets/close_button.svg" alt="">
+
+			<div class="muteTimeList">
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="01">
+					<h3 class="muteTime_title">1 Minute</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="05">
+					<h3 class="muteTime_title">5 Minutes</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="30">
+					<h3 class="muteTime_title">30 Minutes</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="60">
+					<h3 class="muteTime_title">60 Minutes</h3>
+				</div>
+				<div class="eachMuteTime" data-status="unchecked" onclick="selectMuteOpt(this)" data-val="ownTimerOption">
+					<h3 class="muteTime_title">Set your own custom time(minutes)</h3>
+				</div>
+				<div class="customDateTime">
+					<div class="muteStartDate">
+						<input type="number" id="customTimerMuinutes" class="muteInputs">
+					</div>
+				</div>
+			</div>
+			<div class="muteBtns">
+				<button class="btn-close" onclick="closePopUps('#autoDelTimePopup')">Cancel</button>
+				<button class="btn-mute" onclick="addTimerMsg(this)">Set timer</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="chatTagPopup" data-reload="false">
+		<div class="msg_tag_div">
+			<h2 class="popup_title">Add a Tag</h2>
+			<img class="closePopup" onclick="closePopUps('#chatTagPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="searchMembers">
+				<input id="search_CreateMsgTag" onkeyup="create_search(event)" type="text" placeholder="Search a tag or ceate a new one">
+				<span class="addNewTagBtn" onclick="createNewTagFunc(this)">Add</span>
+			</div>
+			<div class="msgTagList">
+				<div class="eachMsgTag" data-status="checked" onclick="selectMsgTag(this)">
+					<h3 class="tagTitle">Tag Name</h3>
+					<span class="checked_tag"></span>
+					<span class="delete_tag"></span>
+				</div>
+			</div>
+			<div class="btn_row">
+				<button class="hv_btn btn_success" onclick="submitTagFunc()">Submit</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="reaplyMsgPopup">
+		<div class="reaply_msg_div">
+			<h2 class="popup_title"><span class="back-thread" onclick="closePopUps('#reaplyMsgPopup')"></span>
+			<span>Reply Thread</span><span class="viewThreadFiles" onclick="viewThreadFiles()"> | Files</span></h2>
+			<img class="closePopup" onclick="closePopUps('#reaplyMsgPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<span class="toggle_msg" onclick="toggle_msg(this)">Hide full message</span>
+			<!-- <div id="rep_main_msg">			
+				<div class="main-thread-msgs">
+					<div class="thread-user-photo thread-msg-img"><img src="" alt=""></div>
+					<div class="thread-user-msg"><h4><span class="thread-msg-name">A.H Nayeem</span>&nbsp;<span class="thread-msg-time tmt">4:05 pm</span></h4>
+						<div class="mtmbody"></div>
+					</div>
+				</div>
+			</div> -->
+
+			<div class="msgs-thread-reply">
+				<div class="reply-separetor"> <p>No Reply</p> </div>
+				<div class="replies-container"> </div>
+			</div>
+
+			<div class="write-thread-msgs">
+				<div id="replymention_user" class="mention_user_list" style="display: none;"></div>
+				<!-- <div class="plus_ico" onclick="moreActionBW(event,this,'more_options_msg')"></div> -->
+				<p class="rep-typing-indicator"></p>
+				<div class="plus_ico fileUp" onclick="viewAttachPopup(this)"></div>
+				<div type="text" name="reaply_msg" class="msg_box" id="reply_msg" onkeyup="rep_keyup(event)" onkeydown="check4submit(event)" placeholder="" contenteditable="true"></div>
+				<div class="emoji_ico" onclick="showEmojiIcons('reply_msg')"></div>
+				<div class="send_ico" onclick="rep_msg_send_fn()"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="newTopicPopup">
+		<div class="topicDiv">
+			<h2 class="popup_title" style="padding: 0;margin-bottom: unset">Create a room</h2>
+			<img class="closePopup" onclick="closePopUps('#newTopicPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="topicTypeDiv">
+				<div class="topicTypeWork selected" onclick="selecteTopic(this,'work')">Work Room</div>
+				<div class="topicTypeSocial" style="display: none" onclick="selecteTopic(this,'social')">Support Room</div>
+				<input type="hidden" id="room_type" value="work">
+			</div>
+			<div class="scrollable_div">
+				<div class="uploadImg_div">
+					<p class="up_title">Set an Avatar</p>
+					<div class="viewRoomImg" onclick="viewImgOpt(this)" attr-type="opt_hidden">
+						<img src="" id="view_room_img" data-src="feelix.jpg" alt="">
+					</div>
+					<form name="roomImg" id="roomImg" class="roomImg" method="post" enctype="multipart/form-data">
+						<label onclick="removeRoomImg(this,'create')" class="uploadlable imgOpt" id="removeBtn">Remove Image</label>
+						<label for="upload-channel-photo" class="uploadlable" id="uploadBtn">Upload</label>
+						<input type="file" style="display: none" id="upload-channel-photo" data-img="feelix.jpg" name="photos" onchange="roomImageUpdate('',event,this.files)" accept="image/x-png,image/jpeg,image/jpg">
+					</form>
+				</div>
+				<div class="make_privateDiv">
+					<label class="switch">
+						<input type="checkbox" id="grpPrivacy">
+						<span class="slider round"></span>
+					</label>
+					<p class="label_head">Make this a Private Room</p><br>
+					<p class="label_for">Only invited members will have access to this Room.</p>
+				</div>
+				<div class="topic_rows business_unit_row">
+					<p class="topicInputLable">Work Category</p>
+					<select name="" class="topicInputs" id="business_unit">
+						<option value="" disabled selected>Select a Category</option>
+					</select>
+				</div>
+				<div class="topic_rows title">
+					<p class="topicInputLable">Title of Room</p>
+					<input class="topicInputs" id="room-name" onblur="update_room_title()" type="text" placeholder="Marketing, Sales, HR etc...">
+				</div>
+				<div class="topic_rows team">
+					<p class="topicInputLable">Team</p>
+					<select name="" class="topicInputs" id="select-ecosystem">
+						<option value="">Navigate</option>
+						<option value="">Freelance</option>
+						<option value="">Personal</option>
+					</select>
+				</div>
+				<div class="topic_rows members_row">
+					<p class="invite_button addMemberBtn" onclick="open_invite_member_list('member')">Add Member(s) to this Room</p>
+					<div class="contentEditableDiv" id="temp_invite_member_list"></div>
+					<p class="placeholderContent">Invite Member(s)</p>
+					<div class="invite_userList">
+						<img class="closePopup" onclick="closePopUps('.invite_userList')" src="/images/basicAssets/close_button.svg" alt="">
+						<h2 class="popup_title">Add member(s)</h2>
+						<div class="searchMembers">
+							<input id="search_mbrInvite" onkeyup="searchMembers(event)" type="text" placeholder="Search member(s)">
+						</div>
+						<div class="invite_Scroll" id="newRoomMemberList">
+							<div class="eachmember" onclick="inviteMember(this)">
+								<div class="member_img">
+									<img src="" alt="">
+								</div>
+								<div class="member_info">
+									<h2 class="member_title">A.H Nayeem</h2>
+									<span class="invite_btn" onclick="share_this_msg_with(event)"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>				
+				<div class="topic_rows guest_row">
+					<p class="invite_button addGuestBtn" onclick="open_invite_member_list('guest')">Invite Guest Member(s) to this Room</p>
+					<div class="contentEditableDiv" id="temp_guest_member_list"></div>
+					<p class="placeholderContent">Invite Member(s)</p>
+					<div class="invite_userList">
+						<img class="closePopup" onclick="closePopUps('.invite_userList')" src="/images/basicAssets/close_button.svg" alt="">
+						<h2 class="popup_title">Guest member(s)</h2>
+						<div class="searchMembers">
+							<input id="" onkeyup="searchMembers(event)" type="text" placeholder="Search member(s)">
+						</div>
+						<div class="invite_Scroll" id="newguestMemberList">
+							<div class="eachmember" onclick="inviteMember(this)">
+								<div class="member_img">
+									<img src="" alt="">
+								</div>
+								<div class="member_info">
+									<h2 class="member_title">A.H Nayeem</h2>
+									<span class="invite_btn" onclick="share_this_msg_with(event)"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="topic_rows">
+					<p class="topicInputLable">Add or create Tag to this Room</p>
+					<div class="contentEditableDiv" id="topic_tag_list" onclick="opentagpopup()">
+					</div>
+					<p class="placeholderContent">Add Tag</p>
+				</div> -->
+				<div class="topic_rows caller_id_row">
+					<p class="topicInputLable">Caller ID</p>
+					<input class="topicInputs" name="caller_id" id="callerid_url" type="text" placeholder="Caller ID" disabled="disabled" style="background: rgb(239, 239, 239);">
+					<br><br>
+					<button class="hv_btn btn_success" id="copy_caller_id">Copy URL</button>
+					<button class="hv_btn btn_danger" onclick="call_reset_url('group')">Reset URL</button>
+				</div>
+				<div class="button_rows">
+					<button class="hv_btn cancel_topic" onclick="closePopUps('#newTopicPopup')">Cancel</button>
+					<button class="hv_btn btn_success create_topic" id="CreateGroup" onclick="CreateGroup()">Create Room</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="addContactPopup">
+		<div class="add_contactList">
+			<img class="closePopup" onclick="closePopUps('#addContactPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<h2 class="popup_title" style="padding:0px">Create Direct Message</h2>
+			<div class="searchMembers">
+				<input id="search_dirMsgUsr" onkeyup="searchMembers(event)" type="text" placeholder="Search member(s)">
+			</div>
+			<div class="invite_Scroll" id="AllContactMemberList">
+				
+			</div>
+			<button id="startSingleConv" onclick="submitnewSingleConv()" class="hv_btn hv_btn_block btn_success" style="margin-top: 15px;">Start Conversation</button>
+		</div>
+	</div>
+
+	<!-- USer Setting Popup Start -->
+	<div class="backwrap" id="profileSettingPopup">
+		<div class="profileSettingDiv">
+			<h2 class="popup_title">User Settings</h2>
+			<img class="closePopup" onclick="closePopUps('#profileSettingPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<!-- <div class="profileTopSide">
+				<select name="" class="selectProSetting" id="" onchange="changeProTabs(this)">
+					<option value="account" selected>Account</option>
+					<option value="notification">Notifications</option>
+					<option value="privacy">Privacy & Security</option>
+					<option value="billing">Billing</option>
+					<option value="support">Support</option>
+				</select>
+			</div> -->
+			<div class="scrollable_div">
+				<div class="profileBodyTabs account_div" id="account" style="display: flow-root">
+					<div class="uploadImg_div">
+						<!-- <h4 class="poup_subtitle">Personal Information</h4> -->
+						<p class="up_title">Upload a profile picture</p>
+						<div class="viewRoomImg" onclick="viewImgOpt(this)" attr-type="opt_hidden">
+							<img src="" default-data="/upload/feelix.jpg" id="view_room_img" data-src="feelix.jpg" alt="">
+						</div>
+						<input type="hidden" id="cur_user_img">
+						<form name="userimg" id="userimg" class="roomImg" method="post" enctype="multipart/form-data">
+							<label onclick="remove_user_img()" class="uploadlable imgOpt" id="removeBtn">Remove Image</label>
+							<label for="upload-user-photo" class="uploadlable">Upload</label>
+							<input type="file" style="display: none" id="upload-user-photo" data-img="feelix.jpg" name="photos" onchange="upload_user_img(this.files)" accept="image/x-png,image/jpeg,image/jpg">
+						</form>
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Display Name(<span style="color:red">*</span>)</label>
+						<input class="setInpField" name="fullname" id="fullname" type="text" placeholder="Display Name">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">User Name</label>
+						<input class="setInpField" name="username" id="username" type="text" placeholder="User Name">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Email Adderss</label>
+						<input class="setInpField" name="email" id="email" type="text" placeholder="Email Adderss">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Caller ID</label>
+						<input class="setInpField" name="caller_id" id="caller_id" type="text" placeholder="Caller ID">
+						<br><br>
+						<button class="hv_btn btn-default" id="copy_caller_id">Copy URL</button>
+						<button class="hv_btn btn-danger" onclick="profile_url_reset('profile')">Reset URL</button>
+					</div>
+					<!-- <div class="eachSetRow">
+						<label for="" class="setInpLable">Job title</label>
+						<input class="setInpField" name="job_title" id="job_title" type="text" placeholder="Job title">
+					</div> -->
+					<!-- <div class="eachSetRow">
+						<label for="" class="setInpLable">Company</label>
+						<input class="setInpField" type="text" placeholder="Company">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Office Location</label>
+						<input class="setInpField" type="text" placeholder="Office Location">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Personal Address</label>
+						<input class="setInpField" type="text" placeholder="Personal Address">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">City</label>
+						<input class="setInpField" type="text" placeholder="City">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Provience/State</label>
+						<input class="setInpField" type="text" placeholder="Provience/State">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Postal Code</label>
+						<input class="setInpField" type="text" placeholder="Postal Code">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Country</label>
+						<select name="" id="" class="setInpField">
+							<option value="">Select a Country</option>
+						</select>
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Language</label>
+						<select name="" id="" class="setInpField">
+							<option value="">Select a language</option>
+						</select>
+					</div> -->
+					<div class="eachSetRow">
+						<button class="hv_btn hv_btn_block btn_success" onclick="update_user_info()">Update</button>
+					</div>
+					<!-- <hr class="proBorder"> -->
+
+					<!-- <h4 class="poup_subtitle">Social Media</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Linkdin</label>
+						<input class="setInpField" type="text" placeholder="Enter Linkdin Url">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Twitter</label>
+						<input class="setInpField" type="text" placeholder="Enter Twitter Url">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Facebook</label>
+						<input class="setInpField" type="text" placeholder="Enter Facebook Url">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Instagram</label>
+						<input class="setInpField" type="text" placeholder="Enter Instagram Url">
+					</div>
+					<div class="eachSetRow">
+						<button class="hv_btn hv_btn_block btn_success">Save</button>
+					</div> -->
+					<!-- <hr class="proBorder"> -->
+
+					<!-- <h4 class="poup_subtitle">Change Password</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Old Password</label>
+						<input class="setInpField" type="text" placeholder="Old Password">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">New Password</label>
+						<input class="setInpField" type="text" placeholder="New Password">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Confirm New Password</label>
+						<input class="setInpField" type="text" placeholder="Confirm Password">
+					</div>
+					<div class="eachSetRow">
+						<button class="hv_btn hv_btn_block btn_success">Save</button>
+					</div> -->
+					<!-- <hr class="proBorder"> -->
+					
+					<!-- <h4 class="poup_subtitle">Change Password</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Upload your CSV file and sync your contacts</label>
+						<input hidden type="file" id="uploadCsv">
+						<label class="uploadCsv proPrimaryBtn" for="uploadCsv">Upload File</label>
+					</div> -->
+					<!-- <hr class="proBorder"> -->
+					<!-- <h4 class="poup_subtitle">Deactivate Account</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">We’re sad to see you leave :(</label>
+						<button class="proDeactiveBtn">Deactivate Account</button>
+					</div> -->
+				</div>
+				<!-- <div class="profileBodyTabs notification_div" id="notification">
+					<h4 class="poup_subtitle">Email Notifications</h4>
+					<div class="notification-setting">
+						<div class="each-notifi-setting">
+							<div class="notification-text"> 
+								<p>Send email when I recieve DM messages</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email when I get mentioned in messages</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email when tasks are completed</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email when a project is completed</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email reminding me about my pending tasks</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email for other notifications and alerts</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email when I get assigned to task/project</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email when changes occur on tasks/projects</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Send email when I get invited to events</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Recieve weekly digest</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="eachSetRow">
+							<button class="proToggleNotifiBtn">Opt out all email notifications</button>
+						</div>
+					</div>
+					<h4 class="poup_subtitle">Desktop Notifications</h4>
+					<div class="notification-setting">
+						<div class="each-notifi-setting">
+							<div class="notification-text"> 
+								<p> Play sound when recieving message </p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Play sound when recieving a notification</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Show preview of message</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+						<div class="each-notifi-setting">
+							<div class="notification-text">
+								<p>Enable Desktop notification</p>
+							</div>
+							<div class="notification-active-inactive">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<h4 class="poup_subtitle">Email Preference</h4>
+					<div class="notification-setting">
+						<div class="eachSetRow">
+							<label for="" class="setInpLable">We will use the bellow email to send you notifications</label>
+							<select name="" class="setInpField" id="">
+								<option value="">Select Email</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="profileBodyTabs privacy_div" id="privacy">
+					<h4 class="poup_subtitle">Security Questions</h4>
+					<label for="" class="setInpLable">Add your customized questions and answers below, this will help us verify your identity should you forget your password.</label>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Question 1</label>
+						<input class="setInpField" type="text" placeholder="Question 1">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Answer 1</label>
+						<input class="setInpField" type="text" placeholder="Answer 1">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Question 2</label>
+						<input class="setInpField" type="text" placeholder="Question 2">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Answer 2</label>
+						<input class="setInpField" type="text" placeholder="Answer 2">
+					</div>
+					<p class="add-question"> + Add another security question</p>
+
+					<h4 class="poup_subtitle">Feedback Participation</h4>
+
+					<div class="eachSetRow">
+						<button class="proDeactiveBtn proPrimaryBtn">Feedback Participation</button>
+					</div>
+					<h4 class="poup_subtitle">Marketing Emails</h4>
+
+					<div class="eachSetRow">
+						<button class="proDeactiveBtn proPrimaryBtn">Marketing Emails</button>
+					</div>
+					<h4 class="poup_subtitle">Why We Love Cookies?</h4>
+
+					<div class="eachSetRow">
+						<button class="proDeactiveBtn proPrimaryBtn">Learn More </button>
+					</div>
+				</div>
+				<div class="profileBodyTabs billing_div" id="billing">
+					<h4 class="poup_subtitle">Payment Method</h4>
+					<label for="" class="setInpLable">We accept all major credit cards</label>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Card Holder Name</label>
+						<input class="setInpField" type="text" placeholder="Card Holder Name">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Card Number</label>
+						<input class="setInpField" type="text" placeholder="Card Number">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Expiry Date</label>
+						<input style="width: 49%;float:left;margin-right: 2%" class="setInpField" type="text" placeholder="MM">
+						<input style="width: 49%;float:left" class="setInpField" type="text" placeholder="YYY">
+					</div>
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">CVV</label>
+						<input class="setInpField" type="text" placeholder="CVV">
+					</div>
+					<div class="eachSetRow">
+						<button class="hv_btn hv_btn_block btn_success">Save</button>
+					</div>
+				</div>
+				<div class="profileBodyTabs support_div" id="support">
+					<h4 class="poup_subtitle">Create Ticket</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Experiencing a problem? submit a ticket</label>
+						<button class="proPrimaryBtn">Create Ticket</button>
+					</div>
+					<h4 class="poup_subtitle">Open Tickets</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Already submitted a ticket? want to know it’s status?</label>
+						<button class="proPrimaryBtn">Open Tickets</button>
+					</div>
+					<h4 class="poup_subtitle">Get In Touch</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">We appreciate your interest in Hayven and thank you for trusting us with your questions or concerns.</label>
+						<p class="proAdr">Toronto Office: <span style="color: #0084ff"> 416-834-9232</span></p>
+						<p class="proAdr">Toll Free: <span style="color: #0084ff"> 1-866-342-1111</span></p>
+						<p class="proAdr">Email: <span style="color: #0084ff"> Info@hayven.io</span></p>
+					</div>
+					<h4 class="poup_subtitle">Give Feedback</h4>
+
+					<div class="eachSetRow">
+						<label for="" class="setInpLable">Found a bug? have a suggestion? click on the hyperlink bellow, fill out the form and we’ll look into it.</label>
+						<button class="proPrimaryBtn">Give Feedback</button>
+					</div>
+					<hr class="proBorder">
+					<label class="setInpLable">Visit our <span style="color: #0084ff"> Help Center </span> page for more information.</label>
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<!-- USer Setting Popup End -->
+
+	<!-- Admin Info Update popup start -->
+	<div class="backwrap" id="admin_userInfoUpdatePopup" data-id="">
+		<div class="admin_userInfoDiv">
+			<h2 class="popup_title">Update User Info</h2>
+			<img class="closePopup" onclick="window.location.reload();" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="infoPopupBody">
+				<div class="updateAdmin_userImg">
+					<img class="admin_userImg" src="" alt="">
+					<label for="changePhoto">Upload / Change
+						<input type="file" name="" id="changePhoto" hidden>
+					</label>
+				</div>
+				<table id="userInfoTable">
+					<thead role="rowgroup">
+						<tr role="row">
+							<th role="columnheader">Name:</th>
+							<th role="columnheader">Email Address:</th>
+							<th role="columnheader">Username:</th>
+							<th role="columnheader">Job Title:</th>
+							<th role="columnheader">Account Status:</th>
+							<th role="columnheader">Account Creation:</th>
+							<!-- <th role="columnheader">Last Active:</th> -->
+							<th role="columnheader">Role:</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup">
+						<tr role="row">
+							<td role="user_info"><div id="UserProfileName" onkeypress="userProfileName(event)" style="float: left;">Hallie Lambert</div> <span onclick="UserEditProfileName()" class="edit-value">Edit</span></td>
+							<td role="user_info" class="email">gottlieb_raegan@ivy.name</td>
+							<td role="user_info" class="username">HLambert</td>
+							<td role="user_info"><div id="UserProfileJobTitle" onkeypress="UserProfileJobTitle(event)" style="float: left;">Sr. Product Manager</div> <span onclick="UserProfileEditJobTitle()" class="edit-value">Edit</span></td>
+							<td role="user_info" class="">Active <span class="edit-value">Deactive</span></td>
+							<td role="user_info" class="createdat">10 June 2018</td>
+							<!-- <td role="user_info" class="">12 June 2018, 3:56 PM</td> -->
+
+							<td role="user_info" class="information-value">
+								<label class="userRoleLabel">Admin
+									<input type="radio" checked="checked" name="radio">
+									<span class="checkmark"></span>
+								</label>
+							</td>
+							<td class="information-value">
+								<label class="userRoleLabel">Member
+									<input type="radio" checked="checked" name="radio">
+									<span class="checkmark"></span>
+								</label>
+							</td>
+							<td class="information-value">
+								<label class="userRoleLabel">User
+									<input type="radio" checked="checked" name="radio">
+									<span class="checkmark"></span>
+								</label>
+							</td>   
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="channel_team_permission">
+					<ul class="combineHead">
+						<li class="combineHead_li active" onclick="activeHead(this, 'channel')">Rooms <span class="active_border"></span></li>
+						<li class="combineHead_li " onclick="activeHead(this, 'team')">Teams <span class="active_border"></span></li>
+						<li class="combineHead_li " onclick="activeHead(this, 'permission')">Permissions <span class="active_border"></span></li>
+					</ul>
+					<div class="combineBody">
+						<div class="combineBodys channels_body" style="display: block">
+							<table role="table">
+								<thead role="rowgroup">
+									<tr role="row">
+										<th role="columnheader">Name</th>
+										<th role="columnheader">Description</th>
+										<th role="columnheader">Action</th>
+									</tr>
+								</thead>
+								<tbody role="rowgroup">
+									<tr role="row">
+										<td role="admin_channel_td">Everyone</td>
+										<td role="admin_channel_td"> Non-work banter and water cooler conversation.</td>
+										<td role="admin_channel_td"><button class="hv_btn hv_btn_sm btn_danger">Remove</button></td>
+									</tr>
+								</tbody>
+							</table>
+							<button class="addChannelBtn">+ Add Channel</button>
+						</div>
+						<div class="combineBodys teams_body">
+							<div class="eachAddedTeam">
+								<h2>Design</h2>
+							</div>
+							<div class="eachAddedTeam addTeam">
+								<h2>+ Add Team</h2>
+							</div>
+						</div>
+						<div class="combineBodys permissions_body">
+							<h4 class="poup_subtitle">Connect Page</h4>
+							<div class="notification-setting" id="connect_page_access"> </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Admin Info Update popup End -->
+
+	<!-- Delete Msg TAg Popup Start -->
+	<div class="backwrap" id="deleteMsgTag">
+		<div class="delete_tag_div">
+			<img class="closePopup" onclick="closePopUps('#deleteMsgTag')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Remove Tag</p>
+				<p class="delete_msg_sec_title">Are you sure you want to remove this tag?</span></p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="btn-cancel" onclick="closePopUps('#deleteMsgTag')" style="margin-right: 15px">Cancel</button>
+					<button type="button" class="btn-msg-del msg_del_me" id="deleteTagBtn" data-msgid="" data-tagstr="" data-tagid="" onclick="delete_this_tag_from_this_msg(event)">Remove</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Msg TAg Popup End -->	
+
+	<!-- Delete Msg TAg Popup Start -->
+	<div class="backwrap" id="deleteTagPopup" data-tagid="">
+		<div class="delete_tag_div">
+			<img class="closePopup" onclick="closePopUps('#deleteTagPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="del_msg_title">Delete Tag</p>
+				<p class="delete_msg_sec_title">Are you sure you want to Delete this tag?</span></p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="btn-cancel" onclick="closePopUps('#deleteTagPopup')" style="margin-right: 15px">Cancel</button>
+					<button type="button" class="btn-msg-del msg_del_me" id="deleteTagBtn" onclick="deletePrivateTag($('#deleteTagPopup').attr('data-tagid'))">Delete</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Msg TAg Popup End -->
+
+	<!-- Leave Room Popup Start -->
+	<div class="backwrap" id="leaveRoomPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#leaveRoomPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Leave Room</p>
+				<p class="delete_msg_sec_title">Are you sure you want to leave this room?</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn btn_success" onclick="closePopUps('#leaveRoomPopup')">Close</button>
+					<button type="button" class="msg_del_me hv_btn btn_danger" style="margin-left: 15px" onclick="leave_me()">Leave</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Leave Room Popup End -->
+
+	<!-- Leave Room Popup Start -->
+	<div class="backwrap" id="fileWrnPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#fileWrnPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Warning!</p>
+				<p class="delete_msg_sec_title">ddl,exe,bat files are not allowed to upload here..</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn btn_success" onclick="closePopUps('#fileWrnPopup')">Close</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Leave Room Popup End -->
+
+	<!-- Close Room Popup Start -->
+	<div class="backwrap" id="closeRoomPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#closeRoomPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Close Room</p>
+				<p class="delete_msg_sec_title">Are you sure you want to Close this Room?</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#closeRoomPopup')">Cancel</button>
+					<button type="button" class="hv_btn btn_danger" style="margin-left: 15px" onclick="closeThisRoom()">Close Now</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Close Room Popup End -->
+
+	<!-- Close Room Popup Start -->
+	<div class="backwrap" id="deleteFilePopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#deleteFilePopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Delete file</p>
+				<p class="delete_msg_sec_title">Are you sure you want to delete this file? This cannot be UNDONE.</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#deleteFilePopup')">Cancel</button>
+					<button type="button" class="hv_btn btn_danger" style="margin-left: 15px" onclick="delete_attach()">Ok</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Close Room Popup End -->
+
+	<!-- Re-open Room Popup Start -->
+	<div class="backwrap" id="reopenRoomPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#reopenRoomPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Re-open Room</p>
+				<p class="delete_msg_sec_title">Are you sure you want to re-open the Room in this thread ?</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#reopenRoomPopup')" style="margin-right: 15px">Cancel</button>
+					<button type="button" class="hv_btn btn_success" onclick="reopenThisRoom()">Re-open Now</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Re-open Room Popup End -->
+
+	<!-- Re-open Room Popup Start -->
+	<div class="backwrap" id="hideRoomPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#hideRoomPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Hide Room</p>
+				<p class="delete_msg_sec_title">Are you sure you want to hide this Room?</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#hideRoomPopup')" style="margin-right: 15px">Cancel</button>
+					<button type="button" class="hv_btn btn_danger" onclick="removeThisList($('#user_head_id').attr('room-id'))">Hide Now</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Re-open Room Popup End -->
+
+	<!-- Download popup Start -->
+	<div class="backwrap" id="downloadPreviewPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#downloadPreviewPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p style="margin-top: 28px;" class="leave_room_title">Sorry! This file
+				cannot be previewed, would you like to download the file instead?</p>
+				<div class="downloadPreviewContent">
+					<p class="file_namee"></p>
+					<p class="file_sizee"></p>
+				</div>
+				<!-- <p class="delete_msg_sec_title"></p> -->
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#downloadPreviewPopup')" style="margin-right: 15px">Cancel</button>
+					<a download id="download_link" href="" class="hv_btn btn_danger"
+						style="text-decoration: none" onclick="$('#downloadPreviewPopup').hide()">Sure</a>
+					<!-- <button type="button" class="hv_btn btn_danger" onclick="removeThisList($('#user_head_id').attr('room-id'))">Sure</button> -->
+				</p>
+			</div>
+		</div>
+	</div>
+	<!--  Download popup End -->
+
+	<!-- Re-open Room Popup Start -->
+	<div class="backwrap" id="deleteRoomPopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#deleteRoomPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Delete Room</p>
+				<p class="delete_msg_sec_title">Are you sure you want to delete this Room?</p>
+				<p class="delete_msg_sec_title">Please note this action will permanently delete this room and all its contents – messages, images, files, links, etc.</p>
+				<p class="delete_msg_sec_title">This action cannot be undone!</p>
+				<p class="delete_msg_sec_title">To proceed with deleting this Room, Please enter this following 6 digits into the input box and click the Delete button:</p>
+				<h2 id="deleteConvLastTimeVal"></h2>
+				<input type="number" value="" id="deleteConvLastTimeInput" onkeyup="confirmDelete(event)" onkeydown="confirmDelete(event)" autocomplete="off" style="border-color: rgb(216, 216, 216);">
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#deleteRoomPopup')" style="margin-right: 15px">Cancel</button>
+					<button type="button" id="rm_delete_btn" style="pointer-events: none;opacity:0.5" class="hv_btn btn_danger" onclick="roomDeleteLastTime()">Delete Now</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Re-open Room Popup End -->
+
+	<!-- Make Admin popup Start  -->
+	<div class="backwrap" id="makeAdminPopup">
+		<div class="makeAdmin_div">
+			<img class="closePopup" onclick="closePopUps('#makeAdminPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="popup_title">Make Admin</p>
+				<p class="delete_msg_sec_title">Are you sure you want to make admin to this member?</p>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" style="margin-right: 15px;position: absolute;left: 0;" onclick="closePopUps('#makeAdminPopup')">Cancel</button>
+					<button type="button" class="hv_btn btn_danger" style="margin-right: 15px" onclick="removeMember()">Remove</button>
+					<button type="button" class="hv_btn btn_success make-admin-btn" onclick="makeAdmin()">Make Admin</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Make Admin popup end  -->
+
+	<!-- Make Admin popup Start  -->
+	<div class="backwrap" id="createTeamPopup">
+		<div class="makeAdmin_div">
+			<img class="closePopup" onclick="closePopUps('#createTeamPopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<h2 class="popup_title">Create Team</h2>
+
+			<div class="body">
+				<lable class="setInpLable">Team Name</lable>
+				<input type="text" style="margin-bottom: 10px;" class="setInpField" placeholder="Enter Team name">
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="btn-cancel" style="margin-right: 15px;position: absolute;left: 0;" onclick="closePopUps('#createTeamPopup')">Cancel</button>
+					<button type="button" class="btn-msg-del make-admin-btn" style="background-color: #0084ff;color:#FFF" onclick="">Create Team</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Make Admin popup end  -->
+
+	<!-- Make Guest popup Start  -->
+	<div class="backwrap" id="add_Guest_popup">
+		<div class="makeAdmin_div">
+			<img class="closePopup" onclick="closePopUps('#add_Guest_popup')" src="/images/basicAssets/close_button.svg" alt="">
+			<h2 class="popup_title">Add Guest</h2>
+
+			<div class="body">
+				<div class="input_row">
+					<input type="text" id="gufn1" style="margin-bottom: 10px;" class="setInpField" placeholder="First Name">
+				</div>
+				<div class="input_row">
+					<input type="text" id="gufn2" style="margin-bottom: 10px;" class="setInpField" placeholder="Last Name">
+				</div>
+				<div class="input_row">
+					<input type="email" id="guem" style="margin-bottom: 10px;" class="setInpField" placeholder="Email">
+				</div>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="btn-cancel" style="margin-right: 15px;" onclick="closePopUps('#add_Guest_popup')">Cancel</button>
+					<button type="button" class="btn-msg-del make-admin-btn" style="background-color: var(--PrimaryC);color:#FFF" onclick="add_temp_guest_user()">Submit</button>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- Make Admin popup end  -->
+
+	<!-- Caller Info popup start  -->
+	<div class="backwrap" id="callerInfoPopup">
+		<div class="callerInfo_div">
+			<div class="callerInfoHeader">
+				<div class="callerHeadLeft">
+					<div class="callerInfoBack_btn" onclick="closePopUps('#callerInfoPopup')"> Call Info</div>
+				</div>
+				<div class="callerHeadRight">
+					<div class="callerMoreOpt"></div>
+				</div>
+			</div>
+			<div class="callerInfoTop">
+				<div class="callerIcon">
+					<img id="conv_img" src="" alt="">
+				</div>
+				<div class="callerName">
+					<h3 id="caller_title"></h3>
+				</div>
+				<div class="callingOptions">
+					<div data-type="audio" class="callingOpt voiceCall onC" id="_voiceCall" onclick="openVideoCall(this)"></div>
+					<div data-type="video" class="callingOpt videoCall onC" id="_videoCall" onclick="openVideoCall(this)"></div>
+					<div class="callingOpt msg" id="msgFrom_callInfo"></div>
+				</div>
+			</div>
+			<div class="callerInfoDetail" id="callerInfoDetail">
+				<div class="callerInfoDateSepator">
+					<p>Jun 15, 2019</p>
+				</div>
+				<div class="callingDetailsLists">
+					<div class="callTimingList">
+						<div class="mid_">
+							<div class="conv_name">
+								<div class="title">Outgoing</div>
+							</div>
+							<p class="last_call_time outgoing">May 20, 2019, 12:38 pm</p>
+							<p class="calling_duration">0:0:54</p>
+						</div>
+					</div>
+					<div class="callTimingList">
+						<div class="mid_">
+							<div class="conv_name">
+								<div class="title">Incoming</div>
+							</div>
+							<p class="last_call_time incoming">May 20, 2019, 12:38 pm</p>
+							<p class="calling_duration">0:0:54</p>
+						</div>
+					</div>
+					<div class="callTimingList">
+						<div class="mid_">
+							<div class="conv_name">
+								<div class="title">Incoming</div>
+							</div>
+							<p class="last_call_time incoming">May 20, 2019, 12:38 pm</p>
+							<p class="calling_duration">0:0:54</p>
+						</div>
+					</div>
+					<div class="callTimingList">
+						<div class="mid_">
+							<div class="conv_name">
+								<div class="title">Outgoing</div>
+							</div>
+							<p class="last_call_time outgoing">May 20, 2019, 12:38 pm</p>
+							<p class="calling_duration">0:0:54</p>
+						</div>
+					</div>
+					<div class="callTimingList">
+						<div class="mid_">
+							<div class="conv_name">
+								<div class="title">Outgoing</div>
+							</div>
+							<p class="last_call_time outgoing">May 20, 2019, 12:38 pm</p>
+							<p class="calling_duration">0:0:54</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Caller Info popup end  -->
+
+	<div id="filterDataPopup" class="filterDataPopup">
+		<div class="filterItem">
+			<span>FILTER BY <div class="remove" style="float: right; margin-right: 10px; width: 16px; height: 16px"></div></span>
+			<li id="filterFlagged_msg" onclick="show_flag_msg(this)">Flagged</li>
+			<!-- <li id="filterTagged_msg" class="tagged" onclick="chooseTag()" style="pointer-events: auto;">Tagged</li> -->
+			<li id="filterUnread_msg" onclick="filter_unread(this)">Unread</li>
+			<li id="filterHideConv_msg" onclick="open_hide_conv()">Unhide Conversation</li>
+		</div>
+		<div class="chooseTag">
+			<img onclick="backToFilter()" class="backToFilter" src="/images/basicAssets/ChevronRightBlack.svg" alt="">
+			<span>CHOOSE A TAG</span>
+			<div class="tag-search" style="margin-top: 14px">
+				<input type="text" placeholder="Search a tag" onkeyup="searchTag(this.value)">
+			</div>
+			<div id="taggedItem" class="overlayScrollbars">
+				<li class="added-tag-list">
+					<label for="tag_id"> Check Data
+						<input id="tag_id" data-tagid="" data-tagtitle="" class="checkmember checkToDo" type="checkbox">
+						<span class="checkmark"></span>
+					</label>
+				</li>
+			</div>
+		</div>
+		<div class="open_hide_conv">
+			<img onclick="backToFilter()" class="backToFilter" src="/images/basicAssets/ChevronRightBlack.svg" alt="">
+			<span>UNHIDE CONVERSATION</span>
+			<div class="tag-search" style="margin-top: 14px">
+				<input type="text" placeholder="Search conversation" onkeyup="searchconv(this.value)">
+			</div>
+			<div id="unhide_conv" class="overlayScrollbars"></div>
+		</div>
+
+		<div class="chooseTopic">
+			<img onclick="backToFilter()" class="backToFilter" src="/images/basicAssets/ChevronRightBlack.svg" alt="">
+			<span>CHOOSE A ROOM</span>
+			<div class="tag-search" style="margin-top: 14px">
+				<input type="text" placeholder="Search a Room" onkeyup="searchTopic(this.value)">
+			</div>
+			<div id="topicItem" class="overlayScrollbars">
+				<!-- <li class="added-topic-list">
+					<label for="topic_id"> Check Topic
+						<input id="topic_id" data-tagid="" data-tagtitle="" class="checkmember checkToDo" type="checkbox">
+						<span class="checkmark"></span>
+					</label>
+				</li> -->
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="videoCallMenuPopup">
+		<div id="callAdvanceOption">
+			<div class="call-advance-option-div">
+				<p>CHOOSE ROOM MEMBERS</p>
+				<div class="channel-member-search">
+					<input type="text" placeholder="Search" onkeyup="searchCallMember($(this).val())">
+					<p class="call-users-count">User(s) online: <span class="call-users-online"></span> | offline: <span class="call-users-offline"></span></p>
+				</div>
+				<div class="added-room-members">
+					<div id="memberHolderCall">
+					</div>
+				</div>
+			</div>
+			<div class="todo-btn-group">
+				<button class="hv_btn" style="margin-right: 15px;" onclick="cancelCall()">Cancel</button>
+				<!-- <button id="btnWindowOpen" type="button" class="call-open-btn" onclick="ringGroupCall('window')">Open Window</button> -->
+				<button id="btnMakecall" class="hv_btn btn_success" onclick="ringGroupCall()">Make a call</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="warningPopupForCallMsg" data-type="" style="display: none">
+		<div class="hayven_Modal_Container">
+			<div class="hayven_Modal_heading">
+				<h1 id="warningTitleForCallMsg" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Mute Notifications</h1>
+				<div class="closeModal" onclick="closePopUps('#warningPopupForCallMsg')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			</div>
+			<div class="hayven_Modal_Content">
+				<h6 id="warningMessageForCallMsg" style="line-height: 25px;font-size: 15px;color: #5A5A5A;"> message</h6>
+				<input id="messageForCalOff" class="msgSendBox" type="text" placeholder="Write message...." onkeydown="submitOffCallMsWithkey(event)">
+	
+			</div>
+			<div class="hayven_Modal_endSection">
+				<div class="btn_group">
+					<button class="hv_btn" style="margin-right: 15px;" onclick="closePopUps('#warningPopupForCallMsg')">Cancel</button>
+					<button class="hv_btn btn_success" onclick="submitOffCallMs()">Send</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="warningPopup" id="warningsPopup">
+		<div class="warningPopupBody">
+			<div class="closeModal" onclick="closeModal('warningPopup')"></div>
+			<h2 class="popup_title">Warning !</h2>
+			<div class="warningPopupContent">
+				<p class="warningMsg" id="warnignMsgText"></p>
+			</div>
+			<div class="warningPopupFooter">
+				<button class="closeWarningPopup" onclick="$('#warningsPopup').hide()">Close</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="setTunePopup">
+		<div class="leave_room_div">
+			<img class="closePopup" onclick="closePopUps('#setTunePopup')" src="/images/basicAssets/close_button.svg" alt="">
+			<div class="body">
+				<p class="leave_room_title">Notification Tune</p>
+				<div class="invite_Scroll" id="tuneList">
+					<div class="eachTune selected" onclick="selectTune(this)">
+						<div class="tune_info">
+							<h2 class="tune_title name"></h2>
+							<span class="invite_btn"></span>
+						</div>
+					</div>
+				</div>
+				<p class="btn_div" style="display: flex;justify-content: flex-end;">
+					<button type="button" class="hv_btn" onclick="closePopUps('#setTunePopup')">Cancel</button>
+					<button type="button" class="hv_btn btn_success" style="margin-left: 15px" onclick="setAsNotify(this)">Set Tune</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="shareLinkPop" data-type="" style="display: none">
+		<div class="shareLinkPopBody">
+			<div class="closeModal" onclick="closeModal('shareLinkPop')"></div>
+			<h2 class="popup_title">Share link</h2>
+			<input type="text" class="input_text" id="shareLink">
+			<div class="share_btn_grp">
+				<button class="btn_cancel hv_btn" style="margin-right: 15px" onclick="closeModal('shareLinkPop')">Cancel</button>
+				<button class="btn_copy hv_btn btn_success" onclick="copyShareLink(this)">Copy</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="backwrap" id="editCustomTitle" data-type="" style="display: none">
+		<div class="shareLinkPopBody">
+			<div class="closeModal" onclick="closeModal('editCustomTitle')"></div>
+			<h2 class="popup_title">Set your own custom file name</h2>
+			<input type="text" class="input_text" id="inputFile_title" placeholder="File Title">
+			<div class="share_btn_grp">
+				<button class="btn_cancel hv_btn" style="margin-right: 15px" onclick="closeModal('editCustomTitle')">Cancel</button>
+				<button class="btn_cancel hv_btn btn_success" id="reset_title" style="margin-right: 15px" onclick="editTitleResetFun($('#editCustomTitle').attr('data-type'))">Reset</button>
+				<button class="btn_copy hv_btn btn_success" onclick="actionCustomTitle($('#editCustomTitle').attr('data-type'))">Save</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="createZip" id="prepar_download" >
+		<div class="creHead"><h3>Preparing download</h3> <span></span></div>
+	</div>
+
+    <!-- Notification Sound -->
+
+    <div id="notifyAudioContainer">	
+	    <audio id="notifyAudio" style="display:none">
+	      <source src="/ringtones/short_tone.mp3" type="audio/mp3">
+	      Your browser does not support the audio element.
+	    </audio>
+    </div>
+
+
+	<link rel="stylesheet" href="/javascripts/jquery-confirm/jquery-confirm.min.css">
+	<script src="/javascripts/jquery-confirm/jquery-confirm.min.js"></script>
+	<style type="text/css">
+		.jconfirm .jconfirm-scrollpane{
+			width: 40% !important;
+			position: fixed !important;
+			left: 50% !important;
+			top: 50% !important;
+		  transform: translate(-50%,-50%) !important;
+	
+		}
+		.jconfirm-content-pane.no-scroll{
+	
+			padding-bottom: 20px !important;
+		}
+	</style>
+
+  </body>
+	<script src="/javascripts/taphold.js"></script>
+	<!-- <script src="/javascripts/mob_connect_page.js"></script> -->
+	<script src="/javascripts/mob_custom.js"></script>
+	<script src="/javascripts/plugins/jquery-multidownload.js"></script>
+	<script src="/javascripts/plugins/jquery.fileDownload.js"></script>
+	<script src="/javascripts/plugins/download.js"></script>
+	<script src="/javascripts/fontawesome-all.js"></script>
+  
+
+</html>
+
+<script>
+	var msg = 'Hello World!';
+	function warningMsg(msgs) {
+		$('#warningsPopup').css('display','flex');
+		$('#warningsPopup .warningMsg').text(msgs);
+	}
+	
+	// function playNotification() {
+	// var playS = document.getElementById("notifyAudio");
+	//  	playS.play(); 
+	//  	console.log('play Notification Sound Successfully');
+	// }
+
+</script>

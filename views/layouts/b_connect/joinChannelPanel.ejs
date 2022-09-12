@@ -1,0 +1,88 @@
+<div class="join-channel connect_right_section overlayScrollbars " id="joinChannelPanel" style="display:none">
+	<!-- <div class="added-channel-div" id="myRoomDivFull">
+		<div class="page-header" id="joinedDivHead">
+			<h1 id="joinedRoomsTitle">My Room (<span class="roomCounter"></span>) </h1>
+			<form autocomplete="off">
+				<input type="text" id="roomSearch" autocomplete="false" class="roomSearch" placeholder="Search Room" onkeyup="searchRooms($(this).val());">
+			</form>
+			
+			<img class="dir-msg-close" onclick="closeRightSection()" src="/images/basicAssets/close_button.svg" alt="">
+		</div>
+		<div id="myroomSdiv">
+	
+		</div>
+		<div class="noroomfound">No room found.</div>
+	</div>
+	<div class="added-channel-div" id="joinedRoomDivFull">
+		<div class="page-header" style="padding: 10px 0px;" id="joinedRoomHead">
+			<h1 style="width: auto; float: left; line-height: 50px;">Already Joined Room (<span class="roomCounter"></span>)</h1>
+		</div>
+		<div id="joinedDiv">
+	
+		</div>
+		<div class="noroomfound">No room found.</div>
+	</div>
+	<div class="added-channel-div" id="publicRoomsList">
+		<div class="page-header" id="joinDivHead" style="padding: 10px 0px;">
+			<h1 style="width: auto; float: left; line-height: 50px;">Join a Room (<span class="roomCounter"></span>)</h1>
+			<div class="select-workspace">
+				<p>Team</p>
+				<select id="workspaceList" onchange="getPublicData(this.value)">
+					<option value="Navigate">Navigate</option>
+					<option value="Freelance">Freelance</option>
+					<option value="NavCon">NavCon</option>
+					<option value="Personal">Personal</option>
+				</select>
+			</div>
+		</div>
+		<div id="joinDiv">
+
+		</div>
+		<div class="noroomfound">No room found.</div>
+	</div> -->
+
+	<div class="added-channel-div">
+		<div class="fixed_header">
+			<form autocomplete="off">
+				<input type="text" id="roomSearch" autocomplete="false" class="roomSearch" placeholder="Search Room" onkeyup="searchRooms($(this).val());">
+			</form>
+			<!-- <img class="dir-msg-close" onclick="closeRightSection()" src="/images/basicAssets/close_button.svg" alt=""> -->
+			<div class="dir-msg-close closeModal" onclick="closeRightSection()"></div> 
+		</div>
+
+		<div class="added-channel-div" id="private_rooms">
+			<div class="page-header" style="padding: 10px 0px;">
+				<h1 style="width: auto; float: left; line-height: 50px;">Private Rooms (<span class="roomCounter">0</span>)</h1>
+			<span class="more_channel" onclick="showMoreChannel(this, 'private_rooms')" style="display: none;">+ Show More(<span class="counter"></span>)</span></div>
+			<div id="allPrivateRoomsView">
+
+			</div>
+		</div>
+		<div class="added-channel-div" id="public_rooms">
+			<div class="page-header" style="padding: 10px 0px;">
+				<h1 style="width: auto; float: left; line-height: 50px;">Public Rooms (<span class="roomCounter">0</span>)</h1>
+			<span class="more_channel" onclick="showMoreChannel(this, 'public_rooms')" style="display: none;">+ Show More(<span class="counter"></span>)</span></div>
+			<div id="allPublicRoomsView">
+
+			</div>
+		</div>
+		<div class="added-channel-div" id="closed_rooms">
+				<div class="page-header" style="padding: 10px 0px;">
+					<h1 style="width: auto; float: left; line-height: 50px;">Closed Rooms (<span class="roomCounter">0</span>)</h1>
+				<span class="more_channel" onclick="showMoreChannel(this, 'closed_rooms')" style="display: none;">+ Show More(<span class="counter"></span>)</span></div>
+				<div id="allClosedRoomView">
+					
+				</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+</div>

@@ -1,0 +1,55 @@
+<li
+	onclick="start_conversation(event)"
+	data-privacy="<%= privecy %>"
+	data-status="<%= status %>"
+	data-mute="unmute"
+	data-pin="<%= pinned %>"
+	data-cnv-type="<% if(conversation_type == 'personal'){ %>single<% }else{%>group<% } %>"
+	data-octr="<%= ocrt %>"
+	data-nom="0"
+	data-myid="<%= myid%>"
+	data-createdby="<%= createdby%>"
+	data-nor="0"
+	data-id="<%= userid %>"
+	data-tm="<%= totalMember %>"
+	data-subtitle="<%= sub_title %>"
+	data-conversationtype="<%= conversation_type %>"
+	data-conversationid="<%= conversation_id %>"
+	data-root_conv_id="<%= root_conv_id %>"
+	data-conferenceid="<%= conference_id %>"
+	data-name="<%= users_name %>"
+	data-img="<% if(users_img !== ''){%><%= users_img %><% }else{ %> feelix.jpg <% }%>"
+	id="conv<%= conversation_id %>"
+	class="<%if(display_type === false) {%> conv_hide <%} %> <% if(status == 'close'){ %> conv_closed <%}%> <% if(root_conv_id !== null){ %> itssubconvhide <%}%>">
+	<span class=" <% if(conversation_type == 'personal'){ %>offline online_<%= userid %> <% } else{ if(privecy == 'public'){ %>hash<% }else if(privecy == 'protected'){ %>protected<% }else{ %>lock<% }} %>"></span>
+	<span class=" usersName">
+			<% if(conversation_type == 'personal'){ %>
+				<span class="user_name<%= userid %> conv_nickname_<%= user_id %>"><%= users_name %></span>
+			<% }else{ %>
+				<span class="conv_nickname_<%= conversation_id %>"><%= users_name %></span>
+			<% } %>
+		<% _.each(participants,function(v,k){%>
+			<%if(participants_admin.indexOf(v) > -1){%>
+				<span data-id="<%= v %>" class="convParticipantsname conv_admin _participants_id<%= v %>"></span>
+			<%} else {%>
+			<span data-id="<%= v %>" class="convParticipantsname _participants_id<%= v %>"></span>
+			<%}%>
+		<%})%>
+	</span>
+	<span class="subroomunread"></span>
+	<span class="unreadMsgCount"></span>
+	<span id="sidebartooltip_<%= conversation_id %>" class="sidebartooltip freeliTooltip"> <%= users_name %><span class="_subTitle_<%= sub_title %>"></span> <span style="top: 2px; position: relative; display: none;"><%= totalMember %> members</span><span style="display: none;" class="sidebartooltipcall"  id="sidebartooltipcall_<%= conversation_id %>">(call in progress)</span></span>
+	<!-- <% if(conversation_type == 'personal'){%>
+	<span class="  remove" data-balloon="Click to hide" data-balloon-pos="left" onclick="removeThisList('<%= conversation_id %>')" onmouseenter="asideRemoveMouseEnter('<%= conversation_id %>')" onmouseleave="asideRemoveMouseLeave('<%= conversation_id %>')" ></span>
+	<% } %>
+	<% if(conversation_type == 'group'){%>
+	<span class=" remove removeThisGroup" data-balloon="Click to hide" onmouseenter="asideRemoveMouseEnter('<%= conversation_id %>')" onmouseleave="asideRemoveMouseLeave('<%= conversation_id %>')" onclick="removeThisList('<%= conversation_id %>')"
+	 data-balloon-pos="left"></span>
+	<% } %> -->
+	<% if(status == 'close'){ %>
+	<span class=" closeSta" style="display:block;">[closed]</span>
+	<% } else{%>
+	<span class=" closeSta" style="display:none;">[closed]</span>
+	<% }%>
+
+</li>

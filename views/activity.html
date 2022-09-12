@@ -1,0 +1,3171 @@
+<%- include('layouts/basic_head') %>
+
+<%- include('templates/sideBar') %>
+<section class="right-section" id="right-section-area">
+    <!-- <div class="loading" style="display: block; position: relative; text-align: center; top: calc(100vh - 75vh);">
+        <img src="/images/basicAssets/loader.gif">
+    </div> -->
+    <div class="createTaskPopUp" id="createBoardPopUp" style="display: none;">
+        <h3 class="createTaskTitle"><span>Create a Board</span>
+            <img class="close_create_t back" onclick="close_create_board()" src="/images/basicAssets/BackArrow.svg" alt="">
+            <img class="close_create_t close" onclick="close_create_board()" src="/images/basicAssets/close_button.svg" alt="">
+        </h3>
+        <div id="boardTypeSelector">
+            <div class="boards_type">
+                <p onclick="createBoardByType('CRM')">CRM Board</p>
+                <span class="board_handlr"><i class="fas fa-arrows-alt"></i></span>
+            </div>
+            <div class="boards_type">
+                <p onclick="createBoardByType('Project')">Project Board</p>
+                <span class="board_handlr"><i class="fas fa-arrows-alt"></i></span>
+            </div>
+            <!-- <div class="boards_type">
+                <p onclick="createBoardByType('Process')">Process Board</p>
+                <span class="board_handlr"><i class="fas fa-arrows-alt"></i></span>
+            </div>
+            <div class="boards_type">
+                <p onclick="createBoardByType('Blank')">Blank Board</p>
+                <span class="board_handlr"><i class="fas fa-arrows-alt"></i></span>
+            </div> -->
+        </div>
+        <div id="boardTypeCRM">
+            <div class="ct_row">
+                <div class="w_category">
+                    <label class="field_lable">Work Category (<span style="color: #c00;font-size: 20px;position: relative;bottom: -6px;">*</span>)</label>
+                    <select name="" id="create_task_BUnit" onchange="//crtt_onchange(this)">
+                        <option value="" disabled selected>Marketing, Sales, HR etc...</option>
+                        <option value="General Discussion">General Discussion</option>
+                        <option value="Operations">Operations</option>
+                        <option value="HR-Payroll">HR-Payroll</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="IT">IT</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+                </div>
+                <div class="t_title">
+                    <label class="field_lable">Title (<span style="color: #c00;font-size: 20px;position: relative;bottom: -6px;">*</span>)</label>
+                    <input type="text" id="create_task_title" onkeypress="prevent_space(event) //createTaskTitle(event)" placeholder="Title">
+                </div>
+            </div>
+            <div class="ct_row">
+                <div class="t_description">
+                    <label class="field_lable">Description</label>
+                    <textarea name="" id="create_task_desc" onkeypress="create_task_desc(event)" placeholder="Description"></textarea>
+                </div>
+                <div class="st_date" style="margin-bottom: 10px;width: 30%;">
+                    <label class="field_lable">Start Date</label>
+                    <input type="text" id="create_st_date" class="select_date" placeholder="Start Date">
+                </div>
+                <div class="du_date" style="width: 30%;">
+                    <label class="field_lable">Due Date</label>
+                    <input type="text" id="create_du_date" class="select_date" placeholder="Due Date">
+                </div>
+            </div>
+            <div class="ct_row linktoproject hidden">
+                <h2 class="toggle_title" onclick="toggleChild(this)"> + Add link project </h2>
+                <div class="estw_hour" style="display: none;">
+                    <label class="field_lable">Project Lists</label>
+                    <select id="link_project_lists" name="link_project_lists[]" multiple="multiple"></select>
+                </div>
+                <div class="t_budget" style="display: none;">
+                    <label class="field_lable">Task Lists</label>
+                    <select id="link_task_lists" name="link_task_lists[]" multiple="multiple"></select>
+                </div>
+            </div>
+            <!-- <div class="ct_row">
+                <h2 class="toggle_title" onclick="showContactPopup()"> + Add New Contact </h2>
+            </div> -->
+            <div class="ct_row">
+                <h2 class="toggle_title" onclick="showContactPopup(this)"> + Add contact </h2>
+                <div class="contact_lists" style="display: none;">
+                    <ul class="selected_contact_lists">
+                        <li onclick='$("#contactListsPopup").css("display","flex")'>Open Contact Lists</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ct_row">
+                <h2 class="toggle_title" onclick="toggleChild(this)"> + Add activity budget & Estimated work hours </h2>
+                <div class="estw_hour" style="display: none;">
+                    <label class="field_lable">Estimated Work Hours</label>
+                    <input type="text" id="create_EstWorkHour" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="hh:mm">
+                </div>
+                <div class="t_budget" style="display: none;">
+                    <label class="field_lable">Activity Budget</label>
+                    <input type="text" id="activity_budget" onkeypress="globalOnKeypress(event)" onblur="onblurTbudget(event)" placeholder="0.00" value="0.00">
+                </div>
+            </div>
+            <div class="ct_row" style="margin-bottom: 45px">
+                <h2 class="toggle_title" onclick="toggleChild(this)"> + Add team to collaborate </h2>
+                <div class="t_team" style="display: none;">
+                    <label class="field_lable">Team</label>
+                    <select name="" id="create_task_team">
+                        <option value="" disabled selected>Select a Team</option>
+                        <option value="Android">Android</option>
+                        <option value="Development">Development</option>
+                    </select>
+                </div>
+                <div class="t_choose_member" style="display: none;">
+                    <label class="field_lable">Choose Members and their roles</label>
+                    <input type="text" onclick="addTaskMembers()" placeholder="Search Users">
+                    <h3 class="taskmemberDivTitle">Activity Member(s)</h3>
+                    <ul class="taskMemberlist" id="ctaskMemberlist">
+    
+                    </ul>
+                </div>
+            </div>
+            <div class="ct_row ctbtn_row">
+                <button onclick="close_create_board()" class="ctCancel_btn">Cancel</button>
+                <button class="ctCreate_btn" onclick="createNewProject(this)">Create Board</button>
+            </div>
+        </div>
+    </div>
+    <div class="to_do_container" data-attr="1" style="display: none;">
+        <div class="to_do_header">
+            <h3 class="toDoName_2" id="toDoName_2" sub-activity="0" style="display: block;" ondblclick="editTask_name(this)">
+                <span class="task_name" onclick="backToTask(this)">Project Name </span>
+                <span class="task_teamName"></span>
+            </h3>
+            <!-- <div class="to_do_head_left" id="toDoName">
+                <textarea class="edit-todo-name" type="textarea" maxlength="128" style="display: none;" id="todoTitle" placeholder="New Activity" spellcheck="false"></textarea>
+            </div> -->
+            <div class="todo_headerOptions">
+                <div class="secLabel">
+                    <span id="taskCreated_By">Created By [Max]</span>
+                    <span id="totalTaskMember" onclick="totalTaskMember()">[0 Member(s)]</span>
+                    <div class="customToolTip" id="TTM"></div>
+                    <span id="taskCreated_By">Work Category: [Operations]</span>
+                    <span id="taskCreated_At"> Start: [23-10-2019]</span>
+                    <span id="taskCreated_At"> Due: [31-10-2019]</span>
+                    <span id="taskCreated_At"> Status: [Initiate]</span>
+                </div>
+
+                <div class="to_do_head_right">
+                    <div class="pin" id="toDoPinUnpinDiv" onclick="todopinunpin(this);" style="display:flex">
+                        <img id="pin_unpin" class="pin-to-bar unpin" src="/images/basicAssets/custom_not_pin.svg">
+                    </div>
+                    <div class="tags" id="tagged_area" name="" style="display:flex">
+                        <img src="/images/basicAssets/custom_not_tag_f.svg" class="tagged" alt="">
+                    </div>
+                    <div class="addTagConv" style="display: none">
+                        <span id="taskTagItemList"></span>
+                        <div class="taglistHolder">
+                            <input type="" name="" class="createConvTag" id="createTaskConvTag" placeholder="Create or Search Tag(s)" data-acid="">
+                            <img class="settingEmail tagSet" onclick="removeTaskUsertag(this);" src="/images/basicAssets/Settings.svg">
+                            <ul class="taggedList" id="taskTaggedList"></ul>
+                        </div>
+                    </div>
+                    <div class="flag" data-balloon="Flag this activity" data-balloon-pos="up" onclick="toDoFlagUnflag(this)" style="display:flex">
+                        <img id="flag_unflag" data-flagid="" class="unflag" src="/images/basicAssets/Not_Flagged.svg">
+                    </div>
+                    <div class="up_load" data-balloon="Upload file(s)" data-balloon-pos="up" onclick="" style="display:flex">
+                        <img style="width: 12px;" src="/images/basicAssets/up_load.svg">
+                    </div>
+                    <div class="up_load delete_project" data-balloon="Delete Project" data-balloon-pos="up" onclick="delete_project(event)" style="display:flex">
+                        <img style="width: 12px;" src="/images/basicAssets/trash-alt-regular.svg">
+                    </div>
+                    <div class="more" onclick="showMorePopUp()" style="display:flex">
+                        <img src="/images/basicAssets/custom_moreForHead_menu.svg">
+                    </div>
+                    <div class="moreMenuPopup" style="display:none">
+                        <li id="deletetodoTopBar" data-activityid="" onclick="showRemovePopUp($(this).data('activityid'));"> Delete Activity</li>
+                        <li id="duplicateActivty" data-activityid="" onclick="//duplicateActivity($(this).data('activityid'));"> Duplicate Activity</li>
+                    </div>
+                </div>
+                <div class="to_do_head_files">
+                    <h3 data-balloon="Files Gallery" data-balloon-pos="up" onclick="viewTaskFileGallery()">Files</h3>
+                </div>
+                <div class="to_do_head_right_section">
+                    <div class="create-event chat" id="chat_icon" onclick="viewMsgPanel(this)" style="display: block;">
+                        <p style="pointer-events:none">Project Chat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="workspaceform">
+            <div class="content-wraper">
+                <div id="fpc_effect-back">
+                    <div id="fpc_box">
+                        <div id="fpc_content"> </div>
+                        <div id="fpc_corner-box">
+                            <a id="fpc_page-tip" href="#">
+                                <div id="fpc_corner-contents">
+                                    <div id="fpc_corner-button">
+                                        <span>Default</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Design Start -->
+
+                <div class="task_container">
+                    <ul class="task_menuBar">
+                        <li onclick="activeMenuByclick(this, 'dsc')">View Description</li>
+                        <li onclick="activeMenuByclick(this, 'est')">View budget & Estimated work hours</li>
+                    </ul>
+                    <div class="task_description">
+                        <textarea name="" onkeypress="writeTaskDesc(event)" placeholder="Description" id="task_description"></textarea>
+                    </div>
+                    <div class="task_ewh_budget">
+                        <div class="task_ewh_field">
+                            <label for=""></label>
+                            <input type="text" id="task_budgetAmount" onclick="getWarning(this)" onkeyup="budgetVariance()" onkeypress="globalOnKeypress(event)" onblur="taskBudgetOnblur(event)" placeholder="Budget Amount" readonly>
+                        </div>
+                        <div class="task_ewh_field">
+                            <label for=""></label>
+                            <input type="text" id="task_actualAmount" onclick="getWarning(this)" onkeyup="budgetVariance()" onkeypress="globalOnKeypress(event)" onblur="taskActualAmountOnblur(event)" placeholder="Actual Amount" readonly>
+                        </div>
+                        <div class="task_ewh_field">
+                            <label for=""></label>
+                            <input type="text" id="task_estimatedwh" onclick="getWarning(this)" onkeyup="estimateCost()" onkeypress="globalOnKeypress_2(event)" onblur="task_estimatedwhOnblur(event)" placeholder="Estimated Work Hour" readonly>
+                        </div>
+                        <div class="task_ewh_field">
+                            <label for=""></label>
+                            <input type="text" id="task_estimatedHr" onclick="getWarning(this)" onkeyup="estimateCost()" onkeypress="globalOnKeypress(event)" onblur="taskEstimatedHrOnblur(event)" placeholder="Estimated Hourly Rate" readonly>
+                        </div>
+                        <div class="task_ewh_field">
+                            <label for=""></label>
+                            <input type="text" id="task_actualWh" onclick="getWarning(this)" onkeyup="actualCost()" onkeypress="globalOnKeypress_2(event)" onblur="task_actualWhOnblur(event)" placeholder="Actual Work Hours" readonly>
+                        </div>
+                        <div class="task_ewh_field">
+                            <label for=""></label>
+                            <input type="text" id="task_actualHr" onclick="getWarning(this)" onkeyup="actualCost()" onkeypress="globalOnKeypress(event)" onblur="taskActualHrOnblur(event)" placeholder="Actual Hourly Rate" readonly>
+                        </div>
+                        <div class="task_total_costing">
+                            <div class="task_costing_field">
+                                <label for=""><span>Budget Variance : </span><span class="budget_variance">0.00</span></label>
+                            </div>
+                            <div class="task_costing_field">
+                                <label for=""><span>Estimated Cost : </span><span class="estimated_cost">0</span></label>
+                            </div>
+                            <div class="task_costing_field">
+                                <label for=""><span>Actual Cost :</span><span class="actual_cost">0</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add_new_st">
+                    <input type="text" onkeypress="createANactivity(event)" data-type="activity" class="create_new_st" placeholder=" + Add an activity">
+                </div>
+
+                <div class="multipleProgress">
+                    <div class="text total" id="totalProgressSubtask">0%</div>
+                    <div class="progressBarContainer"></div>
+                </div>
+            </div>
+            <span class="toggleKanvan_view">
+                <select class="phase_filter" onchange="filter_phase(this)" id="">
+                    <option value="Phase" selected>Phase</option>
+                    <option value="Users">Users</option>
+                </select>
+                <!-- <span class="locatepath"><span style="cursor: pointer;" class="backToTask" onclick="backToTask(this)"> Task</span> / <span style="color: var(--BtnC);pointer-events: none;">Sub-task</span></span> -->
+                <span class="filter_column" view-type="" onclick="columnSettingMenu(this)"></span>
+                <span class="togglePanel active" view-type="grid" onclick="toggleKanvanView(this)"></span>
+            </span>
+            <div class="subtaskContainer">
+                <div class="board-content-component currentBoard" style="min-height: 220px;">
+                    <ul class="task_header">
+                        <!-- Expandable Header Column start -->
+                        <li class="header_column task_expandable" style="min-width: 41px;max-width: 41px;">
+                            <!-- <span style="display: none;" class="group-menu-button fa fa-caret-down"></span> -->
+                        </li>
+                        <!-- Title Header Column start -->
+                        <li class="header_column sticky_title" style="max-width: 500px;min-width: calc(32% - 16px);">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <!-- <span class="activityHeader_name" style="color: #579bfc;">Activity</span> -->
+                            <span class="activityHeader_name">Activity</span>
+                            <span class="column_menu_btn" data-name="title" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="checkThis_task all_select" onclick="selectThis_row(this, event)">
+                                <div class="left-indicator-checkbox">
+                                    <span class="left-indicator-checkbox-mark fa fa-check"></span>
+                                </div>
+                            </span>
+                        </li>
+                        <!-- Owner Header Column start -->
+                        <li class="header_column hcrs owner_column" id="hcrs" data-filter="0">
+                            <!-- <span class="sort_thisColumn">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span> -->
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Owner</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Co-owner Header Column start -->
+                        <li class="header_column hcrs coowner_column" data-filter="0">
+                            <!-- <span class="sort_thisColumn">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span> -->
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Co-owner</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Observer Header Column start -->
+                        <li class="header_column hcrs observer_column" data-filter="0">
+                            <!-- <span class="sort_thisColumn">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span> -->
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Observer</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Assignee Header Column start -->
+                        <li class="header_column hcrs assignee_column" data-filter="0">
+                            <!-- <span class="sort_thisColumn">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span> -->
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Assignee</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Actual Amount Header Column start -->
+                        <li class="header_column hcrs acAmount_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Actual Amount</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Variance Header Column start -->
+                        <li class="header_column hcrs bgVariance_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Variance</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Estimated Work Hour Header Column start -->
+                        <li class="header_column hcrs estWorkHour_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Estimated Work Hour</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+
+                        <!-- Estimated Work Hour Header Column start -->
+                        <li class="header_column hcrs hoursWorked_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Hours worked</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+
+                        <!-- Budget Amount Header Column start -->
+                        <li class="header_column hcrs bgAmount_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Budget</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+
+                        <!-- Money Spent Header Column start -->
+                        <li class="header_column hcrs moneySpent_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Money Spent</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+
+                        <!-- Estimated Hourly Rate Header Column start -->
+                        <li class="header_column hcrs estHourRate_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Estimated Hourly Rate</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Actual Work Hour Header Column start -->
+                        <li class="header_column hcrs acWorkHour_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Actual Work Hour</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Actual Hourly Rate Header Column start -->
+                        <li class="header_column hcrs acHourRate_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Actual Hourly Rate</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Actual Variance Rate Header Column start -->
+                        <li class="header_column hcrs acVarianceRate_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Variance</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Due Date Header Column start -->
+                        <li class="header_column hcrs dueDate_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Due Date</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Completed Date Header Column start -->
+                        <li class="header_column hcrs compDate_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Completed Date</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Phase Header Column start -->
+                        <li class="header_column hcrs phase_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Phase</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Status Header Column start -->
+                        <li class="header_column hcrs status_column" data-filter="0">
+                            <span class="sort_thisColumn" data-sort="" onclick="sortTable(event)">
+                                <i class="icon fa fa-sort-up asc-icon"></i>
+                                <i class="icon fa fa-sort-down desc-icon"></i>
+                            </span>
+                            <span class="clearColumnSrc" onclick="$(this).parents('.header_column').attr('data-filter',0)"></span>
+                            <input type="text" autocomplete="false" class="searchByThisColumn" placeholder="Search..." autofocus>
+                            <span class="drag-handle icon icon-dapulse-drag-2"></span>
+                            <span>Status</span>
+                            <span class="column_menu_btn" onclick="viewColumn_menu(this)"> <i class="fa fa-caret-down"></i></span>
+                            <span class="column_handlr"></span>
+                        </li>
+                        <!-- Ending Header Column start -->
+                        <li class="header_column lastColumn_ofRow" style="min-width: 40px;max-width: 40px;">
+                            <div class="ds-menu-button-container">
+                                <a class="add-column-menu-button" onclick="columnSettingMenu(this)" style="position: relative;left: -3px;display: none;">
+                                    <span class="fas fa-plus-circle"></span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="main_parent_container">
+                        <li class="row">
+                            <%- include('templates/task_row', {'title': 'Activity 01'}) %>
+                            <ul class="child_container" data-level=1>
+                                <li class="row">
+                                    <%- include('templates/task_row', {'title': 'Activity 02'}) %>
+                                    <ul class="child_container" data-level=2>
+                                        <li class="row">
+                                            <%- include('templates/task_row', {'title': 'Activity 03'}) %>
+                                            <ul class="child_container" data-level=3>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 04'}) %></li>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 05'}) %></li>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 06'}) %></li>
+                                            </ul>
+                                        </li>
+                                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 07'}) %></li>
+                                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 08'}) %></li>
+                                        <li class="row">
+                                            <%- include('templates/task_row', {'title': 'Activity 09'}) %>
+                                            <ul class="child_container" data-level=3>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 10'}) %></li>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 11'}) %></li>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 12'}) %></li>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 13'}) %></li>
+                                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 14'}) %></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="row">
+                                    <%- include('templates/task_row', {'title': 'Activity 15'}) %>
+                                    <ul class="child_container" data-level=2>
+                                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 16'}) %></li>
+                                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 17'}) %></li>
+                                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 18'}) %></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 19'}) %></li>
+                        <li class="row">
+                            <%- include('templates/task_row', {'title': 'Activity 20'}) %>
+                            <ul class="child_container" data-level=1>
+                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 21'}) %></li>
+                                <li class="row"><%- include('templates/task_row', {'title': 'Activity 22'}) %></li>
+                            </ul>
+                        </li>
+                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 23'}) %></li>
+                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 24'}) %></li>
+                        <li class="row"><%- include('templates/task_row', {'title': 'Activity 25'}) %></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="kanvan_view" style="display: none;">
+                <div class="kanvan_container normal_Height" id="sortable_kvview" style="list-style: none;">
+                    <div class="hidden_tiles" data-hidden="1">
+                        <div class="stage_progress" style="background-color: #FFF;color: #FFF;">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status"  style="background-color: #FFF;color: #FFF;">0</span>
+                        </div>
+                    </div>
+                    <div class="tiles" onclick="selectTiles(this)" data-title="phase_1" data-phase="Prospecting">
+                        <div class="stage_progress">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status">97,900৳</span>
+                        </div>
+                        <div class="tile_title">
+                            <span class="title_txt" onkeypress="savePhaseTitle(this,event)" onblur="blurStageAction(this,event)" onclick="editPhaseTitle(this)"> Prospecting</span>
+                            <span class="create_subtile" onclick="stageOptView(this,event); //createNewPhase(this)"></span>
+                        </div>
+                        <ul class="sortable_kvview_task">
+
+                        </ul>
+                    </div>
+                    <div class="tiles" onclick="selectTiles(this)" data-title="phase_2" data-phase="Qualified">
+                        <div class="stage_progress">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status">97,900৳</span>
+                        </div>
+                        <div class="tile_title">
+                            <span class="title_txt" onkeypress="savePhaseTitle(this,event)" onblur="blurStageAction(this,event)" onclick="editPhaseTitle(this)">Qualified </span>
+                            <span class="create_subtile" onclick="stageOptView(this,event);"></span>
+                        </div>
+                        <ul class="sortable_kvview_task"></ul>
+                    </div>
+                    <div class="tiles" onclick="selectTiles(this)" data-title="phase_3" data-phase="Proposal">
+                        <div class="stage_progress">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status">97,900৳</span>
+                        </div>
+                        <div class="tile_title">
+                            <span class="title_txt" onkeypress="savePhaseTitle(this,event)" onblur="blurStageAction(this,event)" onclick="editPhaseTitle(this)">Proposal </span>
+                            <span class="create_subtile" onclick="stageOptView(this,event);"></span>
+                        </div>
+                        <ul class="sortable_kvview_task">
+
+                        </ul>
+                    </div>
+                    <div class="tiles" onclick="selectTiles(this)" data-title="phase_4" data-phase="Negotiation">
+                        <div class="stage_progress">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status">97,900৳</span>
+                        </div>
+                        <div class="tile_title"> 
+                            <span class="title_txt" onkeypress="savePhaseTitle(this,event)" onblur="blurStageAction(this,event)" onclick="editPhaseTitle(this)">Negotiation</span> 
+                            <span class="create_subtile" onclick="stageOptView(this,event);"></span> 
+                        </div>
+                        <ul class="sortable_kvview_task"></ul>
+                    </div>
+                    <div class="tiles" onclick="selectTiles(this)" data-title="phase_5" data-phase="Win">
+                        <div class="stage_progress">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status">97,900৳</span>
+                        </div>
+                        <div class="tile_title"> 
+                            <span class="title_txt" onkeypress="savePhaseTitle(this,event)" onblur="blurStageAction(this,event)" onclick="editPhaseTitle(this)">Win </span>
+                            <span class="create_subtile" onclick="stageOptView(this,event);"></span> 
+                        </div>
+                        <ul class="sortable_kvview_task"></ul>
+                    </div>
+                    <div class="tiles" onclick="selectTiles(this)" data-title="phase_6" data-phase="Loss">
+                        <div class="stage_progress">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status">97,900৳</span>
+                        </div>
+                        <div class="tile_title"> 
+                            <span class="title_txt" onkeypress="savePhaseTitle(this,event)" onblur="blurStageAction(this,event)" onclick="editPhaseTitle(this)">Loss</span>
+                            <span class="create_subtile" onclick="stageOptView(this,event);"></span> 
+                        </div>
+                        <ul class="sortable_kvview_task"></ul>
+                    </div>
+                    <div class="hidden_tiles" data-hidden="2">
+                        <div class="stage_progress" style="background-color: #FFF;color: #FFF;">
+                            <div class="stageProgressBar"></div>
+                            <span class="stageProgeress_status"  style="background-color: #FFF;color: #FFF;">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- ................................................................ -->
+        <!-- ................................................................ -->
+        <div class="help_point" onclick="showHelp()">
+            <div class="container_left">
+                <div class="help_outer"></div>
+                <div class="help_inner">Help</div>
+            </div>
+        </div>
+        <div id="helpContainer" class="">
+            <div class="help_header">
+                <img class="help-close" onclick="$('#helpContainer').css('right','-310px');"
+                    src="/images/basicAssets/close_button.svg" alt="">
+                <h3 class="help-title">Help</h3>
+            </div>
+            <div class="help_body">
+                <h3>Lorem ipsum dolor sit amet</h3>
+                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet ut mollitia delectus voluptates veniam
+                    facilis quae autem doloremque eum? Nulla illum maxime sit quibusdam itaque minima exercitationem inventore porro? </p>
+                <h3>Lorem ipsum dolor sit amet</h3>
+                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet ut mollitia delectus voluptates veniam
+                    facilis quae autem doloremque eum? Nulla illum maxime sit quibusdam itaque minima exercitationem inventore porro? </p>
+                <h3>Lorem ipsum dolor sit amet</h3>
+                <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus amet ut mollitia delectus voluptates veniam
+                    facilis quae autem doloremque eum? Nulla illum maxime sit quibusdam itaque minima exercitationem inventore porro? </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<%- include('templates/popups') %>
+<%- include('templates/activity_chat/act_chat') %>
+<%- include('layouts/b_connect/basicProfile') %>
+<%- include('layouts/b_connect/basicAdminSetting') %>
+
+<input type="hidden" id="activityCreatedAt" value="0" />
+<input type="hidden" id="updateAction" value="0" />
+<input type="hidden" id="actCre" value="0" />
+<div class="customTooltip"></div>
+<style>
+.hidden{
+    display: none;
+}
+.linktoproject .select2-selection__rendered{
+    min-width: 250px;
+}
+.linktoproject .select2-container--default .select2-selection--single .select2-selection__arrow{
+    height: 26px !important;
+    position: absolute !important;
+    top: 1px !important;
+    right: 1px !important;
+    width: 20px !important;
+}
+.ui-state-highlight{
+    height: 43px;
+}
+.uistatehighlight{
+    height: 43px;
+    display: block;
+    background:#f0e68c94;
+}
+.rowheight{
+    display: block;
+    background: #f0e68c94;
+    position: absolute;
+    z-index: 9;
+}
+.parrow{
+    height: 42px;
+    width: 100%;
+    position: relative;
+    background: #FFF;
+}
+.coll_off{
+    max-width: 2% !important;
+    min-width: 2% !important;
+    overflow: hidden !important;
+}
+.coll_expan::before {
+    content: "\f2ac";
+    position: relative;
+    left: 1px;
+    width: 20px;
+    line-height: 35px;
+    font-family: "dapulse";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-decoration: inherit;
+    text-rendering: optimizeLegibility;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.coll_off div, .coll_off span{
+    display: none;
+}
+.sticky{
+    position: sticky !important;
+    top: 0px;
+    z-index: 2;
+}
+
+.singlerow{
+    display: flex;
+}
+.child_container{
+    display: none;
+    position: relative;
+}
+.child_container .checkThis_task{
+    background: #FFF;
+}
+</style>
+<script>
+    var user_id = '<%= user_id %>';
+    var user_fullname = '<%= user_fullname %>';
+    var user_img = '<%= user_img %>';
+    var user_email = '<%= user_email %>';
+    var file_server = '<%= file_server %>';
+    var allUserdata = [];
+    // var workspace_user = _.orderBy(allUserdata[0].users, ["fullname"], ["asc"]);
+    var memberList = [];
+    var adminList = [];
+    var adminListUUID = [];
+    var memberListUUID = [];
+    var typing = false; //Global typing variable, for storing typing status
+    var timeout = undefined; //Global timeout variable, for storing when typing timeout
+    var frzIndex = 0;
+    var ascIndex = 0;
+    var descIndex = 0;
+    var access_user_list = [];
+    var allactivity = <%- JSON.stringify(activity) %>;
+    var companies = <%- JSON.stringify(companies) %>;
+    var contacts = <%- JSON.stringify(contacts) %>;
+</script>
+
+<script src="/javascripts/jQuery/jquery-ui.min.js"></script>
+<script src="/javascripts/socket-client-side.js"></script>
+<script src="/javascripts/socket-calling.js"></script>
+<script src="/javascripts/plugins/select2.min.js"></script>
+<script src="/javascripts/task.js"></script>
+<!-- <script src="/javascripts/custom_to_do.js"></script> -->
+
+<%- include('layouts/basic_foot') %>
+
+<script>
+    $(function(){
+        console.log(836, Date.now());
+        $(".side_bar_list_item li:first").trigger("click");
+
+        // $(".main_parent_container .due_date").on("blur", function(event){
+            
+        // });
+    })
+
+    function check_child(){
+        console.log(854, Date.now());
+        $(".ds-menu-button").hide(); // hide all expandActivity button
+        // for list view
+        $.each($(".main_parent_container ul"), function(k,v){
+            if($(v).hasClass('singlerow')){
+                var aid = $(v).attr('data-activity_id');
+                $.each(allactivity, function(kk, vv){
+                    if(aid == vv.root_id){
+                        $("#activity_" + aid).find(".ds-menu-button").show(); // show expandActivity button which has submenu
+                        return false;
+                    }
+                });
+            }
+        });
+        
+        // for grid view
+        $.each($(".kvsinglerow"), function(k, v){
+            var aid = $(v).attr('data-activity_id');
+            $.each(allactivity, function(kk, vv){
+                if(aid == vv.root_id){
+                    $("#kvactivity_"+aid).find(".ds-menu-button:first").show();
+                    return false;
+                }
+            });
+        });
+    }
+
+    function callSortable() {
+    /* Board View drag and drop start */
+        /* When board drag and drop */
+        $( "#sortable_kvview" ).sortable({
+            placeholder: "kvview-highlight",
+            cancel: ".title_txt",
+            axis: 'x',
+            sort: function (event, ui) {
+                var that = $(this),
+                    w = ui.helper.outerWidth();
+                that.children().each(function () {
+                    if ($(this).hasClass('ui-sortable-helper') || $(this).hasClass('ui-sortable-placeholder')) 
+                        return true;
+                    // If overlap is more than half of the dragged item
+                    var dist = Math.abs(ui.position.left - $(this).position().left),
+                        before = ui.position.left > $(this).position().left;
+                    if ((w - dist) > (w / 2) && (dist < w)) {
+                        if (before)
+                            $('.ui-sortable-placeholder', that).insertBefore($(this));
+                        else
+                            $('.ui-sortable-placeholder', that).insertAfter($(this));
+                        return false;
+                    }
+                });
+            }
+        }).disableSelection();
+        
+        /* When task drag and drop */
+        var old_phase = "";
+        $( ".sortable_kvview_task" ).sortable({
+            connectWith: [".sortable_kvview_task", ".sortable_kvview_subtask"],
+            placeholder: "highlightTaskPlc",
+            start: function( event, ui ) {
+                old_phase = ui.item.closest('.tiles').attr('data-phase');
+                if($(ui.item).find('.sortable_kvview_subtask').children().length>0){
+                    $(ui.item).find(">.warningdiv").text('This activity have some subtask. So if you drop it as a subtask, all current subtask will be deleted.').show();
+                }
+            },
+            stop: function(event, ui){
+                var phase = ui.item.closest('.tiles').attr('data-phase');
+                var id = ui.item.closest('.kvsinglerow').attr('data-activity_id');
+                var created_by = ui.item.closest('.kvsinglerow').attr('data-created_by');
+                var amt = ui.item.closest('.kvsinglerow').attr('data-budget_amount');
+                update_activity_data({id, created_by, phase});
+
+                update_budget_by_phase(phase, amt);
+                update_budget_by_phase(old_phase, (amt * -1));
+                
+                $(".warningdiv").text("").hide();
+                if($(ui.item).closest('ul').hasClass('sortable_kvview_subtask')){
+                    $(ui.item).find('.sortable_kvview_subtask').remove();
+                }
+            }
+        }).disableSelection();
+        
+        /* When subtask drag and drop */
+        var old_parent_id = "";
+        $( ".sortable_kvview_subtask" ).sortable({
+            connectWith: [".sortable_kvview_subtask", ".sortable_kvview_task"],
+            placeholder: "highlightTaskPlc",
+            // start: function(event, ui){
+            //     old_parent_id = ui.item.closest('.sortable_kvview_subtask').closest('.kvsinglerow').attr('data-activity_id');
+            // },
+            // stop: function(event, ui){
+            // }
+        }).disableSelection();
+
+    /* Board View end */
+    /* Board view resize */
+        $(".tiles").resizable({
+            minWidth: 307,
+            maxWidth: 600,
+            handles: 'e',
+            resizeHeight: false,
+            resize: function(event, ui){
+                var currentWidth = ui.size.width;
+
+                var targetDiv = $(event.target)[0];
+                var title = $(targetDiv).attr('data-title');
+                // setCookie(title,currentWidth);
+            }
+        });   
+    /* Board view resize end */
+
+
+    /* List View drag and drop start */
+        /* When task drag and drop */
+        $(".main_parent_container").sortable({
+            connectWith: [".main_parent_container", ".child_container"],
+            placeholder: "ui-state-highlight",
+            // cancel: ".phase-wrapper,.status-wrapper",
+            handle: ".row_handlr",
+            // stop: function(event, ui){
+            //     if($(ui.item).parent().hasClass('subtask_rowContainer')){
+            //         $(ui.item).find('.subtask_rowContainer').remove();
+            //         $(ui.item).find('.task_column').addClass('subtask_column').removeClass('task_column');
+            //         $(ui.item).find('.task_row').addClass('subtask_row').removeClass('task_row');
+            //         $(ui.item).addClass('subrow').removeClass('task_parent');
+            //         $(ui.item).attr('data-status', "");
+            //         $(ui.item).find('.task_expandable').html('');
+            //     }
+            // }
+        }).disableSelection();
+        
+        /* In task panel when subtask drag and drop */
+        $(".child_container").sortable({
+            connectWith: [".child_container", ".main_parent_container"],
+            placeholder: "ui-state-highlight",
+            handle: ".row_handlr",
+            // stop: function(event, ui){
+            //     if($(ui.item).parent().hasClass('task_bodyContainer')){
+            //         $(ui.item).find('.subtask_column').addClass('task_column').removeClass('subtask_column');
+            //         $(ui.item).find('.subtask_row').addClass('task_row').removeClass('subtask_row');
+            //         $(ui.item).addClass('task_parent').removeClass('subrow');
+            //         $(ui.item).append('<ul class="subtask_rowContainer ui-sortable"></ul>');
+            //     }
+            // }
+        }).disableSelection();
+
+        /* In subtask panel when subtask drag and drop */
+        $(".subtask_bodyContainer").sortable({
+            placeholder: "ui-state-highlight",
+            cancel: ".phase-wrapper,.status-wrapper",
+            handle: ".row_handlr"
+        }).disableSelection();
+
+        /* When column drag and drop */
+        var prev_col_index = -1;
+        $(".task_header").sortable({
+            placeholder: {
+                element: function(currentItem) {
+                    return $("<li class='uistatehighlight'><div class='rowheight'></div></li>")[0];
+                },
+                update: function(container, p) {
+                    return;
+                }
+            },
+            forcePlaceholderSize: true,
+            handle: '.drag-handle',
+            axis: 'x',
+            sort: function (event, ui) {
+                var that = $(this),
+                    w = ui.helper.outerWidth();
+                that.children().each(function () {
+                    if ($(this).hasClass('ui-sortable-helper') || $(this).hasClass('ui-sortable-placeholder')) 
+                        return true;
+                    // If overlap is more than half of the dragged item
+                    var dist = Math.abs(ui.position.left - $(this).position().left),
+                        before = ui.position.left > $(this).position().left;
+                    if ((w - dist) > (w / 2) && (dist < w)) {
+                        if (before)
+                            $('.ui-sortable-placeholder', that).insertBefore($(this));
+                        else
+                            $('.ui-sortable-placeholder', that).insertAfter($(this));
+                        return false;
+                    }
+                });
+            },
+            start: function(event, ui){
+                var uiw = $(ui.item).css("width");
+                var uih = ($('.singlerow:visible').length) * 42;
+                // ui.item.css('height', uih);
+                prev_col_index = ui.item.index() + 1;
+                $(".uistatehighlight").css("width", uiw);
+                $(".rowheight").css("width", uiw);
+                $(".rowheight").css("height", uih);
+                var ele = $('.singlerow:visible');
+                $.each(ele, function(i, row){
+                    if(i+1 == ele.length) return false;
+                    var html = "<div class='parrow'>";
+                    html += $(row).children().eq(prev_col_index).html();
+                    html += "</div>";
+                    ui.item.append(html);
+                });
+            },
+            beforeStop: function(event, ui){
+                var current_col_index = ui.item.index();
+                if(current_col_index < 3){
+                    $(ui.item).removeClass('uistatehighlight');
+                    $(this).sortable('cancel');
+                    $('.parrow').remove();
+                }
+            },
+            stop: function(event, ui){
+                var current_col_index = ui.item.index() + 1;
+                $('.parrow').remove();
+                var ele = $(".singlerow");
+                if(prev_col_index != current_col_index){
+                    $(ele).each(function (i, row) {
+                        if(i+1 == ele.length) return false;
+                        row = $(row);
+                        if (current_col_index < prev_col_index) {
+                            row.children().eq(current_col_index).before(row.children()[prev_col_index]);
+                        } else if (current_col_index > prev_col_index) {
+                            row.children().eq(current_col_index).after(row.children()[prev_col_index]);
+                        }
+                    });
+
+                    // Footer row
+                    // var row2 = $(".columns-footer-component");
+                    // if (newIndex < oldIndex) {
+                    //     row2.children().eq(newIndex).before(row2.children()[oldIndex]);
+                    // } else if (newIndex > oldIndex) {
+                    //     row2.children().eq(newIndex).after(row2.children()[oldIndex]);
+                    // }
+                }
+            }
+        });
+    /* List View drag and drop end */
+    
+    /* List view resize */
+        $('.hcrs').resizable({
+            maxWidth: 400,
+            minWidth: 150,
+            resizeHeight: false,
+            handles: {
+                e: '.column_handlr'
+            },
+            resize: function(event, ui){
+                var currentWidth = ui.size.width,
+                targetDiv = $(event.target)[0];
+                $(targetDiv).attr('style','').css('min-width',currentWidth+'px');
+                var index = ui.element.index();
+                var ele = $('.singlerow');
+                var subrow = index+1;
+                $.each(ele, function(k, row){
+                    $(row).children().eq(subrow).attr('style', '').css('min-width', currentWidth+'px');
+                });
+            },
+            stop: function(event, ui){
+                
+            }
+        });
+    /* List view resize end */
+    }
+    $( function() {
+        callSortable();
+        check_child();
+        $("#boardTypeSelector").sortable({
+            connectWith: ".boards_type",
+            handle: ".board_handlr",
+            cancel: ".board_handlr p",
+            placeholder: "ui-state-highlight"
+        });
+        $("#boardTypeSelector").disableSelection();
+    });
+
+    /* Row sorting */
+    function sortTable(event) {
+        var index = $(event.target).closest('li').index() + 1;
+        var sort_type = $(event.target).attr('data-sort');
+        $(event.target).attr('data-sort', sort_type=='desc' ? 'asc': 'desc');
+        var table, rows, row_class, switching, i, x, y, shouldSwitch;
+        table = $(".main_parent_container").is(":visible") ? $(".main_parent_container") : $(".subtask_bodyContainer");
+        row_class = $(".main_parent_container").is(":visible") ? ".singlerow" : ".subtask_row";
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        var n =0;
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = $(table).find('>li');
+            /*Loop through all table rows:*/
+            for (i = 0; i < rows.length; i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                if($(rows[i+1]).find(row_class).children().eq(index).find('input').length == 1){
+                    x = Number($(rows[i]).find(row_class).children().eq(index).find('input').val().replace(/-/g, ''));
+                    y = Number($(rows[i + 1]).find(row_class).children().eq(index).find('input').val().replace(/-/g, ''));
+                } else { 
+                    x = $(rows[i]).find(row_class).children().eq(index).text().trim().toLocaleLowerCase();
+                    y = $(rows[i + 1]).find(row_class).children().eq(index).text().trim().toLocaleLowerCase();
+                }
+                //check if the two rows should switch place:
+                if(sort_type == 'desc'){
+                    if (x < y && x != "" && y != "") {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }else{
+                    if (x > y && x != "" && y != "") {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                $(rows[i]).before($(rows[i+1]));
+                switching = true;
+            }
+
+            $('li .header-column-menu').remove();
+        }
+    }
+
+    function collapse_head(){
+        $(".collaseC").on("click", function(event){
+            var index = $(event.target).closest('li').index() + 1;
+            $(event.target).closest('li').attr('onclick', 'expan_coll(event)');
+            $(event.target).closest('li').addClass('coll_off').addClass('coll_expan').removeClass('header_column');
+            var ele = $(".singlerow");
+            $(ele).each(function (i, row) {
+                row = $(row);
+                row.children().eq(index).addClass('coll_off');
+            });
+            $(event.target).closest('li .header-column-menu').remove();
+        });
+    }
+    
+    function freez_unfreez(event){
+        var index = $(event.target).closest('li').index();
+        var parent_ele = $(event.target).closest('ul');
+
+        if($('.sticky').length > 0){
+            for(var i=0; i<30; i++){
+                if(i>index && $(parent_ele).children().eq(i).hasClass('sticky')){
+                    $(parent_ele).children().eq(i).removeClass('sticky');
+                    $(parent_ele).children().eq(i).css({'left': 'unset', 'z-index':2, 'height':'unset'});
+                    var ele = $('.singlerow');
+                    var subrow = i+1;
+                    $.each(ele, function(k, row){
+                        $(row).children().eq(subrow).removeClass('sticky').css('left', 'unset');
+                    });
+                }
+                else if(i<=index && ! $(parent_ele).children().eq(i).hasClass('sticky')){
+                    var this_left = $(parent_ele).children().eq(i).position().left + 21;
+                    $(parent_ele).children().eq(i).addClass('sticky').css('left', this_left);
+                    var ele = $('.singlerow');
+                    var subrow = i+1;
+                    $.each(ele, function(k, row){
+                        $(row).children().eq(subrow).addClass('sticky').css('left', this_left);
+                    });
+                }
+            }
+        }
+        else{
+            for(var i=0; i<=index; i++){
+                var this_left = $(parent_ele).children().eq(i).position().left + 21;
+                $(parent_ele).children().eq(i).addClass('sticky').css('left', this_left);
+                var ele = $('.singlerow');
+                var subrow = i+1;
+                $.each(ele, function(k, row){
+                    $(row).children().eq(subrow).addClass('sticky').css('left', this_left);
+                });
+            }
+        }
+
+        $('li .header-column-menu').remove();
+    }
+    
+    function expan_coll(event){
+        var index = $(event.target).index() + 1;
+        $(event.target).attr('onclick', '');
+        $(event.target).addClass('header_column').removeClass('coll_expan').removeClass('coll_off');
+        var ele = $(".singlerow");
+        $(ele).each(function (i, row) {
+            row = $(row);
+            row.children().eq(index).removeClass('coll_off');
+        });
+    }
+    
+    function createBoardByType(type) {
+        $("#boardTypeCRM .w_category").show();
+        $("#boardTypeCRM .t_title").css('width', '75%');
+        $('#toDoName_2 .task_name').text('Project Name');
+        $('#boardTypeSelector').fadeOut();
+        $('#boardTypeCRM').fadeIn();
+        $('.close_create_t.back').show();
+        $('.close_create_t.close').show();
+        if (type == 'CRM') {
+            $('.ctCreate_btn').attr('create-type','crm');
+        } 
+        else if(type == "My Task"){
+            $(".createTaskTitle span").text("Create a Task");
+            $('.ctCreate_btn').text('Create a Task');
+            $('.ctCreate_btn').attr('create-type','My Task');
+        }
+        else if(type == 'Blank'){
+            $("#boardTypeCRM .w_category").hide();
+            $("#boardTypeCRM .t_title").css('width', '100%');
+            $('.ctCreate_btn').attr('create-type','blank');
+            $('.linktoproject').show();
+            $("#link_project_lists").html("");
+            $("#link_task_lists").html("");
+            $.each(allactivity, function(k, v){
+                if(v.type == 'Project')
+                    $("#link_project_lists").append("<option value='"+ v.activity_id +"'>"+v.title+"</option>");
+                // else if(v.type == 'Task')
+                //     $("#link_task_lists").append("<option data-rootid='" + v.root_id + "' value='"+ v.activity_id +"'>"+v.title+"</option>");
+            });
+            $("#link_project_lists").select2({width: 'resolve'});
+            $("#link_task_lists").select2({width: 'resolve'});
+        } else {
+            $('.ctCreate_btn').attr('create-type','Project or Process');
+        }
+    }
+
+    $("#link_project_lists").on("change", function (e) { 
+        $("#link_task_lists").html("");
+        var pl = $("#link_project_lists").val();
+        $.each(allactivity, function(k, v){
+            if(v.type == 'Task' && pl.indexOf(v.root_id)>-1)
+                $("#link_task_lists").append("<option value='"+ v.activity_id +"'>"+v.title+"</option>");
+        });
+    });
+
+    function close_create_board() {
+        if ($('#boardTypeCRM').is(':visible')) {
+            $('.close_create_t.back').hide();
+            $('.close_create_t.close').hide();
+            $('#boardTypeCRM').hide();
+            $('#boardTypeSelector').show();
+            $(".createTaskTitle span").text("Create Board");
+            $('.ctCreate_btn').text('Create Board');
+        }
+    }
+
+    function toggleKanvanView(ele) {
+        var type = $(ele).attr('view-type') == 'grid' ? 'Board' : 'list';
+        var project_id = $(".side_bar_list_item").find(".activeTodo").attr("data-activity_id");
+        draw_task(project_id, type);
+    }
+
+    function show_grid(){
+        $('.togglePanel').attr('view-type','list');
+        $('.subtaskContainer').css('display', 'none');
+        $('.multipleProgress').css('display', 'none');
+        $('.add_new_st').css('display', 'none');
+        $('.kanvan_view').css('display', 'block');
+        $('.phase_filter').css('display', 'block');
+        $('.filter_column').css('display', 'none');
+        $('.togglePanel').addClass('active');
+        if ($('.todo_li.activeTodo').attr('data-project_type') == 'Board') {
+            $('.stage_progress').css('display', 'none');
+        }else{
+            $('.stage_progress').css('display', 'flex');
+        }
+    }
+
+    function show_list(){
+        $('.togglePanel').attr('view-type','grid');
+        $('.subtaskContainer').css('display', 'block');
+        $('.multipleProgress').css('display', 'flex');
+        $('.add_new_st').css('display', 'flow-root');
+        $('.kanvan_view').css('display', 'none');
+        $('.phase_filter').css('display', 'none');
+        $('.filter_column').css('display', 'block');
+        $('.togglePanel').removeClass('active');
+    }
+    // static work
+
+    var recent_pid = "";
+    function createNewProject(ele) {
+        var title = $('#create_task_title').val().trim();
+        var task_BUnit = $('#create_task_BUnit').val();
+        var type = ($(ele).attr('create-type') == 'Project or Process') ? 'Project' : ($(ele).attr('create-type') == 'My Task') ? 'My Task' : 'ProjectBoard';
+        
+        var child_lists = "";
+        if($("#link_project_lists").val().length > 0){
+            if($("#link_task_lists").val().length > 0){
+                child_lists = $("#link_task_lists").val().join();
+            }else{
+                var pl = [];
+                $.each(allactivity, function(k, v){
+                    if($("#link_project_lists").val().indexOf(v.root_id) > -1)
+                        pl.push(v.activity_id);
+                });
+                child_lists = pl.join();
+            }
+        }
+        child_lists = child_lists != "" ? child_lists : null;
+        var root_id = 'N';
+        var budget_amount = $('#activity_budget').val();
+        var actual_amount = 0;
+        var contacts = [];
+        $.each($(".selected_contact_lists li"), function(k, v){
+            if($(v).attr('data-id') !== undefined)
+                contacts.push($(v).attr('data-id'));
+        });
+        var contact = contacts.length > 0 ? contacts.join() : null;
+        if (title != '') {
+            var alldata = {title, type, user_id, root_id, budget_amount, actual_amount, child_lists, contact, phase: 'Prospecting'};
+
+            $.ajax({
+                type: 'POST',
+				data: alldata,
+				dataType: 'json',
+				url: '/boards/add_activity',
+				success: function (data) {
+                    recent_pid = data.activity.activity_id;
+                    var created_by = data.activity.created_by;
+                    var html = '    <li id="activity_'+ recent_pid +'" data-project_type="'+ type +'" data-activityid="'+ recent_pid +'" class="com-t-l todo_li activeTodo" onclick="startproject(event)">';
+                    html    += '      <span class="toDoName">' + title + '</span>';
+                    html    += '    </li>';
+                    $(".main_parent_container").html(""); // list view
+                    $(".kanvan_container>.tiles .sortable_kvview_task").html(""); // grid view
+                    
+                    if ($(ele).attr('create-type') == 'crm') {
+                        $('.com-t-l.todo_li').removeClass('activeTodo');
+                        $('#projects_list').append(html);
+                        $('#create_task_title').val('');
+                        $('#toDoName_2 .task_name').text(title);
+                        $('#toDoName_2').attr("data-aid", recent_pid);
+                        $('#toDoName_2').attr("data-created_by", created_by);
+                        $('.filter_column').css('display', 'none');
+                        $('.multipleProgress').css('display', 'none');
+                        $('#createBoardPopUp').hide();
+                        $('.to_do_container').css('display', 'block');
+                        $('.subtaskContainer').css('display', 'none');
+                        $('.kanvan_view').css('display', 'block');
+                        $('#chat_icon p').text('Team Chat');
+                        $('.add_new_st').hide();
+                        $('#create_task_title').attr('style','');
+                        $('#create_task_BUnit').attr('style','');
+                    } 
+                    else if ($(ele).attr('create-type') == 'My Task') {
+                        $('.com-t-l.todo_li').removeClass('activeTodo');
+                        $('#my_task_list').append(html);
+                        $('#create_task_title').val('');
+                        $('#toDoName_2 .task_name').text(title);
+                        $('#toDoName_2').attr("data-aid", recent_pid);
+                        $('#toDoName_2').attr("data-created_by", created_by);
+                        $('.filter_column').css('display', 'none');
+                        $('.multipleProgress').css('display', 'none');
+                        $('#createBoardPopUp').hide();
+                        $('.to_do_container').css('display', 'block');
+                        $('.subtaskContainer').css('display', 'none');
+                        $('.kanvan_view').css('display', 'block');
+                        $('#chat_icon p').text('Team Chat');
+                        $('.add_new_st').hide();
+                        $('#create_task_title').attr('style','');
+                        $('#create_task_BUnit').attr('style','');
+                    } 
+                    else {
+                        $('.com-t-l.todo_li').removeClass('activeTodo');
+                        $('#projects_list').append(html);
+                        $('#create_task_title').val('');
+                        $('#createBoardPopUp').hide();
+                        $('#toDoName_2 .task_name').text(title);
+                        $('#toDoName_2').attr("data-aid", recent_pid);
+                        $('#toDoName_2').attr("data-created_by", created_by);
+                        $('.to_do_container').css('display', 'block');
+                        $('.filter_column').css('display', 'block');
+                        $('.multipleProgress').css('display', 'flex');
+                        $('.togglePanel.active').attr('view-type', 'grid').removeClass('active');
+                        $('.subtaskContainer').css('display', 'block');
+                        $('.kanvan_view').css('display', 'none');
+                        $('#create_task_title').attr('style','');
+                        $('#create_task_BUnit').attr('style','');
+                    }
+                    $('#plus_To_Do2').show();
+                },
+                error: function(e){
+                    console.log('createNewProject = ', e);
+                }
+            });
+        }else{
+            if (title == '') {
+                $('#create_task_title').css('border','1px solid red');
+            }else{
+                $('#create_task_title').removeAttr('style');
+            }
+            if (task_BUnit == null){
+                $('#create_task_BUnit').css('border','1px solid red');
+            }else{
+                $('#create_task_BUnit').removeAttr('style');
+            }
+        }
+    }
+
+    function startproject(e) {
+        // console.log(1451, Date.now());
+        $('#createBoardPopUp').hide();
+        $('.side_bar_list_item li').removeClass('activeTodo'); //.removeClass('selected');
+        $(e.target).addClass('activeTodo'); //.addClass('selected');
+        $('.to_do_container').css('display', 'block');
+        $('#toDoName_2 .task_name').text($(e.target).find('.toDoName').text());
+        $("#plus_To_Do2").show();
+        var project_id = $(".side_bar_list_item").find(".activeTodo").attr("data-activity_id");
+        var view_type = $(e.target).attr('data-project_type');
+        $('#toDoName_2').attr("data-aid", project_id);
+        draw_task(project_id, view_type);
+        if(view_type == "My Task")
+            $(".delete_project").hide();
+        else
+            $(".delete_project").show();
+    }
+
+    function draw_task(project_id, view_type){
+        $(".main_parent_container").html(""); // list view
+        $(".kanvan_container>.tiles .sortable_kvview_task").html(""); // grid view
+        $(".kanvan_container .tiles").find('.stageProgeress_status').text("0");
+        // var gridele = $(".kanvan_container>.tiles:first"); // grid view
+        
+        
+        $.each(allactivity, function(k, v){ // this block need for child activity
+            if(v.child_lists != null){
+                if(v.activity_id == project_id && v.child_lists.length > 0) {
+                    $.each(v.child_lists, function(kk, vv){
+                        $.each(allactivity, function(kkk, vvv){
+                            if(vvv.activity_id == vv){
+                                $('#toDoName_2').attr("data-created_by", vvv.created_by);
+                                draw_activity(vvv, 'list');
+                                draw_activity(vvv, 'grid');
+                            }
+                        });
+                    });
+                    return false;
+                }
+            }
+        });
+        
+        var has_activity = false;
+        $.each(allactivity, function(k, v){ // this block needs for root activity
+            // console.log(1450, v.root_id)
+            if(v.root_id == project_id) {
+                $('#toDoName_2').attr("data-created_by", v.created_by);
+                draw_activity(v, 'list');
+                draw_activity(v, 'grid');
+                has_activity = true;
+            }
+            if(has_activity === false && allactivity.length == (k+1)){
+                $(".main_parent_container").html("");
+                var activity = $('#empty_row')[0].outerHTML;
+                $('.main_parent_container').append(activity);
+            }
+        });
+
+        if(view_type == 'Board') // check view type
+            show_grid();
+        else
+            show_list();
+        check_child();
+        callSortable();
+    }
+    function draw_activity(data, type){
+        if(type == 'grid'){
+            $("#kvactivity_data").find('.stage_title').text(data.title);
+            var html = '<li class="taskByPhase kvsinglerow" id="kvactivity_'+ data.activity_id +'" data-budget_amount="'+ data.budget_amount +'" data-activity_id="'+ data.activity_id +'" data-created_by="'+ data.created_by +'" onclick="viewChildOfthisParent(this,event)">';
+            html    += $("#kvactivity_data").html();
+            html    += '</li>';
+            $(".kanvan_container .tiles[data-phase='" + data.phase + "']").find('.sortable_kvview_task').append(html);
+            var bud_amt = $(".kanvan_container .tiles[data-phase='" + data.phase + "']").find('.stageProgeress_status').text();
+            bud_amt = Number(bud_amt.replace('৳', '')) + Number(data.budget_amount);
+            $(".kanvan_container .tiles[data-phase='" + data.phase + "']").find('.stageProgeress_status').text(bud_amt.toFixed(2));
+        }
+        else if(type == 'list'){
+            $('#singlerowid').find('.sticky_title>.editable_title').html(data.title);
+            $('#singlerowid').find('.bgAmount_column').text(data.budget_amount);
+            $('#singlerowid').find('.phaseBody_txt').text(data.phase);
+            $('#singlerowid').find('.statusBody_txt').text(data.status);
+            $('#singlerowid').find('.dueDate_column').html('<input type="text" class="due_date" onkeyup="check_date_update(event)" onblur="update_date(event)" value="'+ moment(data.end_time).format("YYYY-MM-DD") +'">');
+            $('#singlerowid').find('.phaseBody_txt').css('background-color', set_phase_bg(data.phase));
+            $('#singlerowid').find('.statusBody_txt').css('background-color', set_status_bg(data.status));
+            $('#singlerowid .singlerow').attr("data-activity_id", data.activity_id);
+            $('#singlerowid .singlerow').attr("data-created_by", data.created_by);
+            $('#singlerowid .singlerow').attr("id", "activity_"+data.activity_id);
+            var activity = $('#singlerowid').html();
+            $('.main_parent_container').append(activity);
+        }
+    }
+
+    function draw_child(activity_id, type){
+        if(type == 'list'){
+            $.each(allactivity, function(kk, vv){
+                if(vv.root_id == activity_id){
+                    var level = Number($('#activity_'+activity_id).closest('.child_container').attr('data-level')) + 1;
+                    level = isNaN(level) ? 1 : level;
+                    var html = '<ul class="child_container" data-level='+ level +'>';
+                    $.each(allactivity, function(kk, vvv){
+                        if(vvv.root_id == activity_id){
+                            $('#singlerowid').find('.sticky_title>.editable_title').html(vvv.title);
+                            $('#singlerowid').find('.bgAmount_column').text(vvv.budget_amount);
+                            $('#singlerowid').find('.phaseBody_txt').text(vvv.phase);
+                            $('#singlerowid').find('.statusBody_txt').text(vvv.status);
+                            $('#singlerowid').find('.phaseBody_txt').css('background-color', set_phase_bg(vvv.phase));
+                            $('#singlerowid').find('.statusBody_txt').css('background-color', set_status_bg(vvv.status));
+                            $('#singlerowid').find('.dueDate_column').html('<input type="text" class="due_date" onkeyup="check_date_update(event)" onblur="update_date(event)" value="'+ moment(vvv.end_time).format("YYYY-MM-DD") +'">');
+                            $('#singlerowid .singlerow').attr("data-activity_id", vvv.activity_id);
+                            $('#singlerowid .singlerow').attr("data-created_by", vvv.created_by);
+                            $('#singlerowid .singlerow').attr("id", "activity_"+vvv.activity_id);
+                            html += $('#singlerowid').html();
+                        }
+                    });
+                    html += '</ul>';
+                    $('.main_parent_container').find('#activity_'+activity_id).closest('.row').append(html);
+                    return false;
+                }
+            });
+        }
+        else if(type == 'grid'){
+            $.each(allactivity, function(kk, vv){
+                if(vv.root_id == activity_id){
+                    var level = Number($('#kvactivity_'+activity_id).closest('.sortable_kvview_subtask').attr('data-level')) + 1;
+                    level = isNaN(level) ? 1 : level;
+                    var html = '<ul class="sortable_kvview_subtask" style="display: block" data-level='+ level +'>';
+                    $.each(allactivity, function(kk, vvv){
+                        if(vvv.root_id == activity_id){
+                            $("#kvactivity_data").find('.stage_title').text(vvv.title);
+                            html += '<li class="taskByPhase kvsinglerow" id="kvactivity_'+ vvv.activity_id +'" data-budget_amount="'+ vvv.budget_amount +'" data-activity_id="'+ vvv.activity_id +'" data-created_by="'+ vvv.created_by +'" onclick="viewChildOfthisParent(this,event)">';
+                            html += $("#kvactivity_data").html();
+                            html += '</li>';
+                        }
+                    });
+                    html += '</ul>';
+                    // $('.main_parent_container').find('#activity_'+activity_id).closest('.row').append(html);
+                    $("#kvactivity_"+activity_id).append(html);
+                    return false;
+                }
+            });
+        }
+    }
+    
+    function check_date_update(e){
+        var key = e.keyCode || e.charCode || e.which;
+        if(key == 13){
+            $(e.target).blur();
+        }
+    }
+
+    function update_date(event){
+        var end_time = $(event.target).val();
+        var id = $(event.target).closest(".singlerow").attr("data-activity_id");
+        var created_by = $(event.target).closest(".singlerow").attr("data-created_by");
+        update_activity_data({id, created_by, end_time});
+    }
+
+    function createNewTodo() {
+        // $(".loading").hide();
+        $('#createBoardPopUp').show();
+        $('#plus_To_Do2').hide();
+        // close_create_board();
+        close_create_board()
+
+        $("#create_st_date").flatpickr({
+            altInput: true,
+            altFormat: "Y-m-d",
+            dateFormat: "Y-m-d",
+            defaultDate: "today",
+            onReady: function(selectedDates, dateStr, instance) {
+                $(this).val(dateStr);
+                $("#create_du_date").flatpickr({
+                    altInput: true,
+                    altFormat: "Y-m-d",
+                    dateFormat: "Y-m-d",
+                    minDate: dateStr,
+                });
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                $(this).val(dateStr);
+                if (dateStr > $("#create_du_date").val() || $("#create_du_date").val() == '') {
+                    $("#create_du_date").flatpickr({
+                        altInput: true,
+                        altFormat: "Y-m-d",
+                        dateFormat: "Y-m-d",
+                        minDate: dateStr,
+                    });
+                }
+            }
+        });
+
+        var liDesign = '<li class="todoLink activeTodo newTodo selected" id="n_ToDo_item"><span class="toDo"></span><span class="toDoName">New Task</span></li>';
+        
+            $("#create_task_title").val('');
+            $("#create_task_desc").val('');
+            $("#create_du_date").val('');
+            $("#create_EstWorkHour").val('');
+            $("#create_task_budget").val('');
+            $("#ctaskMemberlist").html('');
+            $(".taskmemberDivTitle").hide();
+            $("#addActivitAdminBtn").css({'pointer-events':'none','background-color':'gainsboro'});
+            tempCTAdminC            = [];
+            CreatetaskParticipants  = [];
+            tempCTObserverC         = [];
+            tempCTMemberC           = [];
+
+        if (!$('.side_bar_list_item li.newTodo').is(':visible')) {
+            $('.side_bar_list_item li').removeClass('activeTodo');
+            $(".side_bar_list_item li").removeClass('selected');
+
+            $('#actCre').val(user_id);
+            $('#unpinTodoList').prepend(liDesign);
+
+            $('#create_task_BUnit').html("");
+            $('#create_task_BUnit').prepend('<option value="" disabled selected>Marketing, Sales, HR etc...</option>');
+            $.each(allUnit,function(k,v){
+                $('#create_task_BUnit').append('<option value="'+v.unit_id+'">'+v.unit_name+'</option>');
+            });
+            
+            socket.emit('getCompanyIdByUser',{user_id:user_id},function(res){
+                if(res.status){
+                companyID = res.data.company_id;
+                }
+            });
+            
+            $('#create_task_team').html("");
+            $('#create_task_team').prepend('<option value="" selected disabled>Select a Team</option>');
+            $.each(allteams, function(k, v){
+                $("#create_task_team").append('<option value="'+v.team_id+'">'+v.team_title+'</option>');
+            });
+        } else {
+            $('.side_bar_list_item li.newTodo').click();
+        }
+    }
+
+    function updateStageAct(ele) {
+        var type = $(ele).attr('action-type');
+        var title = $('#propertyPopup').find('#create_task_title').val().trim();
+        var id = $('#propertyPopup').find('#create_task_title').attr('data-id');
+        var created_by = $('#propertyPopup').find('#create_task_title').attr('data-created_by', created_by);
+        var phase = $('#propertyPopup').find('#create_task_title').attr('data-phase');
+        var budget_amount = $('#propertyPopup').find('#create_task_budget').val();
+        if(title != ''){
+            if (type == 'add-activity') {
+                var alldata = { title, 
+                                type:"Task", 
+                                user_id, 
+                                root_id: id, 
+                                budget_amount, 
+                                created_by,
+                                actual_amount:0, 
+                                child_lists: null, 
+                                phase};
+                save_new_activity(alldata, 'grid');
+                closeModal('propertyPopup');
+            } else if (type == 'add-subactivity') {
+                var alldata = { title, 
+                                type:"Task", 
+                                user_id, 
+                                root_id: id, 
+                                budget_amount, 
+                                created_by,
+                                actual_amount:0, 
+                                child_lists: null, 
+                                phase};
+                save_new_activity(alldata, 'subgrid');
+
+
+                // html.find('.stage_title').text(title);
+                // html.attr('style','').addClass('taskByPhase').addClass('kvsinglerow').removeAttr('id');
+                // $('#propertyPopup').find('#create_task_title').removeAttr('style');
+                // $('ul[data-set="true"]').append(html);
+                // $('ul[data-set="true"]').removeAttr('data-set');
+                closeModal('propertyPopup');
+            } else if (type == 'edit-activity') {
+                var alldata = {title, id, created_by, budget_amount};
+                update_activity_data(alldata);
+                $('#propertyPopup').find('#create_task_title').removeAttr('style');
+                $('.stage_title[data-set="true"]').text(title).removeAttr('data-set');
+                closeModal('propertyPopup');
+            }
+        }
+        else{
+            $('#propertyPopup').find('#create_task_title').css('border','1px solid red');
+        }
+    }
+
+    function update_activity_data(data){
+        $.ajax({
+            url: '/boards/update_activity',
+            type: 'POST',
+            dataType: 'JSON',
+            data: data,
+            beforeSend: function(){
+                console.log(1643, data);
+            },
+            success: function(rep){
+                console.log(rep);
+                allactivity = rep.activities;
+                $.each(allactivity, function(k, v){
+                    if(v.activity_id == rep.params.id) {
+                        v.title = rep.params.title;
+                        v.phase = rep.params.phase;
+                        v.budget_amount = rep.params.budget_amount;
+                        return true;
+                    }
+                });
+            },
+            error: function(e){
+                console.log('createANactivity = ', e);
+            }
+        });
+    }
+
+    function expandActivity(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        
+        var colorArray = ['rgb(162, 93, 220)','rgb(120, 75, 209)','rgb(128, 128, 128)','rgb(51, 51, 51)','rgb(196, 196, 196)','rgb(255, 90, 196)','rgb(255, 21, 138)','rgb(226, 68, 92)','rgb(187, 51, 84)','rgb(127, 83, 71)','rgb(255, 100, 46)','rgb(253, 171, 61)','rgb(255, 203, 0)','rgb(202, 182, 65)','rgb(156, 211, 38)','rgb(0, 200, 117)','rgb(3, 127, 76)','rgb(0, 134, 192)','rgb(87, 155, 252)','rgb(102, 204, 255)'];
+        
+        // var randomColor = Math.floor(Math.random()*colorArray.length);
+        $(ele).closest('.taskByPhase ').find(".sortable_kvview_subtask").toggle(200);
+        if ($(e.target).hasClass('right')) {
+            $(e.target).removeClass('right').addClass('down');
+            $(e.target).closest('.activity_parent').find('.subactivities_paren .pulse-component').css('display', 'flex');
+        } else {
+            $(e.target).addClass('right').removeClass('down');
+            $(e.target).closest('.activity_parent').find('.subactivities_paren .pulse-component').css('display', 'none');
+        }
+
+        if ($(e.target).closest('.task_parent').attr('data-status') == '0') {
+            $(e.target).closest('.task_parent').attr('data-status','1');
+        } else {
+            $(e.target).closest('.task_parent').attr('data-status','0');
+        }
+
+        /* table view row expand and close */
+
+        var wdt = $(ele).parents('.singlerow').find('.sticky_title').css('min-width');
+        var margin_left = $(ele).parents('.singlerow').find('.sticky_title').css('margin-left');
+        var prnt_color =  $(ele).parents('.singlerow').find('.sticky_title .checkThis_task').css('background-color');
+        var vlu = margin_left.replace('px', '');
+
+        
+
+        if ($(e.target).hasClass('down')) {
+            var aid = $(e.target).closest('.singlerow').attr('data-activity_id');
+            draw_child(aid, 'list');
+            var randomColor = $(e.target).closest('.row').find('>.child_container').attr('data-level');
+            $(e.target).closest('.row').find('>.child_container').show();
+            $(ele).parents('.singlerow').next('.child_container').find('.row .singlerow .sticky_title .checkThis_task').css('background-color',colorArray[randomColor]);
+        
+            $(ele).parents('.singlerow').next('.child_container').find('.row .singlerow .sticky_title').css('min-width','calc('+wdt+' - 8px)');
+            $(ele).parents('.singlerow').next('.child_container').find('.row .singlerow .sticky_title').css('margin-left',''+ Number(parseInt(vlu) + 8)+'px');
+            check_child();
+            callSortable();
+        } else {
+            $(e.target).closest('.row').find('>.child_container').remove();
+        }
+    }
+
+    $("#create_st_date").flatpickr({
+        altInput: true,
+        altFormat: "Y-m-d",
+        dateFormat: "Y-m-d",
+        defaultDate: "today",
+        onReady: function(selectedDates, dateStr, instance) {
+            $(this).val(dateStr);
+            $("#create_du_date").flatpickr({
+                altInput: true,
+                altFormat: "Y-m-d",
+                dateFormat: "Y-m-d",
+                minDate: dateStr,
+            });
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            $(this).val(dateStr);
+            if (dateStr > $("#create_du_date").val() || $("#create_du_date").val() == '') {
+                $("#create_du_date").flatpickr({
+                    altInput: true,
+                    altFormat: "Y-m-d",
+                    dateFormat: "Y-m-d",
+                    minDate: dateStr,
+                });
+            }
+        }
+    });
+
+    function viewSubtaskByTask(ele) {
+        var value = $('#toDoName_2 .task_name').text();
+        $('.board-content-items').attr('data-list-type','subactivity');
+        $('.name-column-header .group-name span').text('Sub-activity');
+
+        $('#toDoName_2 .task_name').text(value+' -> Activity One');
+        $('.create_new_st').attr("placeholder"," + Add an Sub-activity");
+        $('.create_new_st').attr("data-type","subactivity");
+    }
+
+    function createNewPhase(ele) {
+        $('.tiles').removeClass('new_tile');
+        var mainElm = $(ele).parents('.tiles');
+        var elmts = $(ele).parents('.tiles').clone();
+        elmts.addClass('new_tile');
+        elmts.addClass('ui-*');
+        elmts.find('.sortable_kvview_task').html('');
+        elmts.find('.title_txt').text('');
+        elmts.find('.stageOptionPopup_2').remove();
+        mainElm.after(elmts);
+        $(ele).parents('.stageOptionPopup_2').remove();
+        $('.tiles.new_tile').find('.title_txt').trigger('click');
+        callSortable();
+    }
+
+    function editPhaseTitle(ele) {
+        if($(ele).attr('contenteditable') != 'true'){
+            $(ele).attr('contenteditable','true').focus();
+            $(ele).selectText();
+        }
+    }
+    jQuery.fn.selectText = function(){
+        var doc = document;
+        var element = this[0];
+        // console.log(this, element);
+        if (doc.body.createTextRange) {
+            var range = document.body.createTextRange();
+            range.moveToElementText(element);
+            range.select();
+        } else if (window.getSelection) {
+            var selection = window.getSelection();        
+            var range = document.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
+    
+    function savePhaseTitle(ele, e) {
+        var key = e.keyCode || e.charCode || e.which;
+        if (key == 13) {
+            if ($(ele).text().trim() != '') {
+                $(ele).blur();
+            }else{
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }
+    }
+
+    function filter_phase(ele) {
+        var type = $(ele).val().trim();
+        var phase = ["Prospecting","Qualified","Proposal","Negotiation","Win","Loss"];
+        var users = ["User A","User B","User C","User D","User E","User F"];
+        var phaselist = $('#sortable_kvview')[0];
+        var p_list = [];
+        $.each($(phaselist).find('.tiles'), function(k,v) {
+            p_list.push($(v).attr("data-title"));
+        });
+        var i;
+
+        if (type == 'Users') {
+            for (i = 0; i < users.length; i++) {
+                $('.tiles[data-title='+p_list[i]+']').find('.tile_title .title_txt').text(users[i]);
+            }
+        } else {
+            for (i = 0; i < phase.length; i++) {
+                $('.tiles[data-title='+p_list[i]+']').find('.tile_title .title_txt').text(phase[i]);
+            }
+        }
+    }
+
+    function choosePhase(ele) {
+        var content = $('.phase-wrapper')[0].outerHTML;
+        if (!$(ele).parents('li').find('.phase-wrapper').is(':visible')) {
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            $('li .single_rowOption').remove();
+            $('li .assignee_users').remove();
+            if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                $('.header-column-menu').parents('li').css('z-index',0);
+            }
+            $('li .header-column-menu').remove();
+            $('li .status-wrapper').remove();
+            $('li .phase-wrapper').remove();
+            $(ele).after(content);
+        }else{
+            $('li .phase-wrapper').remove();
+        }
+    }
+
+    function chooseStatus(ele) {
+        var content = $('.status-wrapper')[0].outerHTML;
+        if (!$(ele).parents('li').find('.status-wrapper').is(':visible')) {
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            $('li .single_rowOption').remove();
+            $('li .assignee_users').remove();
+            if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                $('.header-column-menu').parents('li').css('z-index',0);
+            }
+            $('li .header-column-menu').remove();
+            $('li .phase-wrapper').remove();
+            $('li .status-wrapper').remove();
+            $(ele).after(content);
+        }else{
+            $('li .status-wrapper').remove();
+        }
+    }
+
+    function viewUsersList(ele) {
+        var content = $('.assignee_users')[0].outerHTML;
+        if (!$(ele).parents('li').find('.assignee_users').is(':visible')) {
+            $('li .single_rowOption').remove();
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                $('.header-column-menu').parents('li').css('z-index',0);
+            }
+            $('li .header-column-menu').remove();
+            $('li .phase-wrapper').remove();
+            $('li .status-wrapper').remove();
+            $('li .assignee_users').remove();
+            $(ele).after(content);
+        }else{
+            $('li .assignee_users').remove();
+        }
+    }
+
+    function singleRowOption(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var content = $('.single_rowOption')[0].outerHTML;
+        if (!$(ele).parents('li').find('.single_rowOption').is(':visible')) {
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                $('.header-column-menu').parents('li').css('z-index',0);
+            }
+            $('li .header-column-menu').remove();
+            $('li .phase-wrapper').remove();
+            $('li .status-wrapper').remove();
+            $('li .single_rowOption').remove();
+            $(ele).after(content);
+            $(ele).parents('.group_option').addClass('active');
+            $(ele).parents('.sticky_title').css('z-index',4);
+        }else{
+            $('li .single_rowOption').remove();
+            $(ele).parents('.group_option').removeClass('active');
+            $(ele).parents('.sticky_title').css('z-index',2);
+        }
+    }
+
+    function viewColumn_menu(ele) {
+        var type = $(ele).attr('data-name');
+        var content = $('.header-column-menu')[0].outerHTML;
+        if (!$(ele).parents('li').find('.header-column-menu').is(':visible')) {
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            $('li .single_rowOption').remove();
+            $('li .assignee_users').remove();
+            $('li .status-wrapper').remove();
+            $('li .phase-wrapper').remove();
+            $('li .header-column-menu').remove();
+            $(ele).parents('li').append(content);
+            $(ele).parents('li').css({'height': '40px', 'z-index': '3'});
+            if (type == 'title') {
+                $('.header-column-menu:visible .columnMenu_list.freezeC').hide();
+                $('.header-column-menu:visible .columnMenu_list.collaseC').hide();
+            }else{
+                $('.header-column-menu:visible .columnMenu_list.freezeC').show();
+                $('.header-column-menu:visible .columnMenu_list.collaseC').show();
+            }
+            collapse_head();
+        }else{
+            $(ele).parents('li').css({'height': 'unset', 'z-index': '0'});
+            $('li .header-column-menu').remove();
+        }
+    }
+
+    function selectPhase(ele) {
+        var id = $(ele).closest('.singlerow').attr('data-activity_id');
+        var created_by = $(ele).closest('.singlerow').attr('data-created_by');
+        var data = $(ele).find('span').text().trim();
+        update_activity_data({id, created_by, phase: data});
+        var color = $(ele).css('background-color');
+        $(ele).parents('.phase-wrapper').siblings('.phaseBody_txt').css('background-color',color).text(data);
+        $(ele).parents('.phase-wrapper').remove();
+    }
+
+    function selectStatus(ele) {
+        var id = $(ele).closest('.singlerow').attr('data-activity_id');
+        var created_by = $(ele).closest('.singlerow').attr('data-created_by');
+        var data = $(ele).find('span').text();
+        var color = $(ele).css('background-color');
+        $(ele).parents('.status-wrapper').siblings('.statusBody_txt').css('background-color',color).text(data);
+        update_activity_data({id, created_by, status: data});
+        if (data == 'Completed') {
+            $(ele).parents('.singlerow').find('.sticky_title .checkThis_task').addClass('task_complete');
+            $(ele).parents('.singlerow').find('.sticky_title .checkThis_task .left-indicator-checkbox').addClass('selected');
+        }else{
+            $(ele).parents('.singlerow').find('.sticky_title .checkThis_task').removeClass('task_complete');
+            $(ele).parents('.singlerow').find('.sticky_title .checkThis_task .left-indicator-checkbox').removeClass('selected');
+        }
+        $(ele).parents('.status-wrapper').remove();
+    }
+
+    function columnSettingMenu(ele) {
+        var content = $('.column-setting-menu')[0].outerHTML;
+        if (!$(ele).parents('.toggleKanvan_view').find('.column-setting-menu').is(':visible')) {
+            if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                    $('.header-column-menu').parents('li').css('z-index',0);
+                }
+            $('li .header-column-menu').remove();
+            $('li .single_rowOption').remove();
+            $('li .assignee_users').remove();
+            $('li .status-wrapper').remove();
+            $('li .phase-wrapper').remove();
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            $(ele).parents('.toggleKanvan_view').append(content);
+        }else{
+            $('.toggleKanvan_view .column-setting-menu').remove();
+        }
+    }
+    var temp_html = "";
+    function subtasksByThisTask(ele) {
+        var editable = $(ele).find('.editable_title').attr('contenteditable');
+        if (editable != 'true') {
+            if ($('#toDoName_2').attr('sub-activity') == 0) {
+                $('#toDoName_2').attr('sub-activity',1)
+            }
+            var st_title = $(ele).find('.editable_title').text().trim();
+            var root_task_id = $(ele).closest('.singlerow').attr('data-activity_id');
+            if($('#toDoName_2 .task_teamName').text() == "")
+                $('#toDoName_2 .task_teamName').text(st_title).show();
+            else
+                $('#toDoName_2 .task_teamName').append(" / "+st_title).show();
+            $('#toDoName_2 .task_teamName').attr('data-activity_id', root_task_id);
+            $('.activityHeader_name').text('Sub-activity');
+            
+            $(ele).closest('.row').find('.ds-menu-button:first').trigger('click');
+            
+            if($(ele).closest('.row').find('.child_container').length > 0){
+                $('.main_parent_container').html("");
+                $('.main_parent_container').html($(ele).closest('.row').find('.child_container')[0].outerHTML);
+                $('.child_container').find('.row .singlerow .sticky_title').css('min-width','33%');
+                $('.child_container').find('.row .singlerow .sticky_title').css('margin-left','0px');
+            }
+            else{
+                $(".main_parent_container").html("");
+                var activity = $('#empty_row')[0].outerHTML;
+                $('.main_parent_container').append(activity);
+            }
+            $('.create_new_st').attr('data-type','subactivity').attr('placeholder',' + Add an Sub-activity');
+            callSortable();
+        }
+    }
+
+    function backToTask(ele) {
+        if ($('#toDoName_2').attr('sub-activity') == 1) {
+            $('#toDoName_2').attr('sub-activity',0)
+        }
+        $('.task_teamName').text('');
+        $('.activityHeader_name').text('Activity');
+        var project_id = $(".side_bar_list_item").find(".activeTodo").attr("data-activity_id");
+        draw_task(project_id, 'Project');
+        $('.main_parent_container>li .ds-menu-button').removeClass('down').addClass('right');
+        $('.child_container').hide();
+        $('.create_new_st').attr('data-type','activity').attr('placeholder',' + Add an activity');
+    }
+
+    function selectThis_row(ele, e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var prnt = $(ele).parents('.singlerow');
+        var checker = $(ele).find('.left-indicator-checkbox');
+        if ($(ele).hasClass('all_select')) {
+            var rws = $('.main_parent_container').find('.singlerow');
+            if (checker.hasClass('selected')) {
+                checker.removeClass('selected');
+                $(ele).removeClass('selected');
+                rws.find('.sticky_title .checkThis_task').removeClass('task_complete');
+                rws.find('.sticky_title .checkThis_task').find('.left-indicator-checkbox').removeClass('selected');
+                rws.find('.status_column .statusBody_txt').text('Initiate').attr('data-type','Initiate');
+            } else {
+                checker.addClass('selected');
+                $(ele).addClass('selected');
+                rws.find('.sticky_title .checkThis_task').addClass('task_complete');
+                rws.find('.sticky_title .checkThis_task').find('.left-indicator-checkbox').addClass('selected');
+                rws.find('.status_column .statusBody_txt').text('Completed').attr('data-type','Completed');
+            }
+        } else {
+            if (checker.hasClass('selected')) {
+                checker.removeClass('selected');
+                prnt.find('.sticky_title .checkThis_task').removeClass('task_complete');
+                prnt.find('.status_column .statusBody_txt').text('Initiate').attr('data-type','Initiate');
+                if ($('.checkThis_task.all_select').hasClass('selected')) {
+                    $('.checkThis_task.all_select').removeClass('selected')
+                }
+            } else {
+                checker.addClass('selected');
+                $(ele).addClass('task_complete');
+                prnt.find('.status_column .statusBody_txt').text('Completed').attr('data-type','Completed');
+            }
+        }
+    }
+
+    function viewColumnSearch(ele) {
+        $(ele).parents('li.header_column').attr('data-filter',1);
+        $(ele).parents('li.header_column').find('.searchByThisColumn').focus();
+        $(ele).parents('li .header-column-menu').remove();
+    }
+
+    function allKeyUp() {
+        $(document).keyup(function (e) {
+            var key = e.keyCode || e.charCode || e.which;
+            if (key == 27) {
+                if ($('.header-column-menu').is(':visible')) {
+                    if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                        $('.header-column-menu').parents('li').css('z-index',0);
+                    }
+                    $('li .header-column-menu').remove();
+                }else if ($('.column-setting-menu').is(':visible')) {
+                    $('.toggleKanvan_view .column-setting-menu').remove();
+                }else if ($('.assignee_users').is(':visible')) {
+                    $('li .assignee_users').remove();
+                    $('.popRowField .assignee_users').remove();
+                }else if ($('.phase-wrapper').is(':visible')) {
+                    $('li .phase-wrapper').remove();
+                }else if ($('.status-wrapper').is(':visible')) {
+                    $('li .status-wrapper').remove();
+                }else if ($('.searchByThisColumn').is(':visible')) {
+                    $('.header_column').attr('data-filter',0);
+                    $('li .searchByThisColumn').hide();
+                }else if ($('#informationPopup').is(':visible')) {
+                    $('.input_field[data-set="true"]').removeAttr('data-set');
+		            $('.task_ewh_field input[data-set="true"]').removeAttr('data-set');
+                    $('#informationPopup').hide();
+                }else if ($('#expensePopup').is(':visible')) {
+                    $('#expensePopup').hide();
+                }else if ($('.stageOptionPopup').is(':visible')) {
+                    $('.taskByPhase .stageOptionPopup').remove();
+                }else if ($('.stageOptionPopup_2').is(':visible')) {
+                    $('.tile_title .stageOptionPopup_2').remove();
+                }else if ($('#propertyPopup').is(':visible')) {
+                    $('#propertyPopup').hide();
+                }else if ($('.single_rowOption').is(':visible')) {
+                    $('li .single_rowOption').remove();
+                    $('li .group_option').removeClass('active');
+                    $('li.sticky_title').css('z-index',2);
+                }else if ($('.editable_title[contenteditable="true"]').is(':visible')) {
+                    $('.editable_title[contenteditable="true"]').blur();
+                }
+            }
+        });
+    }
+    allKeyUp();
+
+    function allMouseUp() {
+        $(document).mouseup(function (e) {
+
+            var column_menu_btn = $('.column_menu_btn');
+            var columnMenu_list = $('.columnMenu_list');
+            var header_column_menu = $('.header-column-menu');
+
+            if (header_column_menu.is(':visible') && 
+               !header_column_menu.is(e.target) && 
+               !columnMenu_list.is(e.target) && 
+               !column_menu_btn.is(e.target)) {
+                if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                    $('.header-column-menu').parents('li').css('z-index',0);
+                }
+                $('li .header-column-menu').remove();
+                
+            }
+
+            var src_users = $('.src_users');
+            var usersList = $('.usersList');
+            var single_owner = $('.single_owner');
+            var assignee_users = $('.assignee_users');
+            var sinple_ownerContainer = $('.sinple_ownerContainer');
+
+            if (assignee_users.is(':visible') && 
+               !src_users.is(e.target) && 
+               !usersList.is(e.target) && 
+               !assignee_users.is(e.target) && 
+               !sinple_ownerContainer.is(e.target) && 
+               !single_owner.is(e.target)) {
+                $('li .assignee_users').remove();
+                $('.popRowField .assignee_users').remove();
+            }
+
+            var phase_wrapper = $('.phase-wrapper');
+            var phaseBody_txt = $('.phaseBody_txt');
+            var single_phase = $('.single-phase');
+
+            if (phase_wrapper.is(':visible') && 
+               !phase_wrapper.is(e.target) && 
+               !single_phase.is(e.target) && 
+               !phaseBody_txt.is(e.target)) {
+                $('li .phase-wrapper').remove();
+            }
+
+            var status_wrapper = $('.status-wrapper');
+            var statusBody_txt = $('.statusBody_txt');
+            var single_status = $('.single-status');
+
+            if (status_wrapper.is(':visible') && 
+               !status_wrapper.is(e.target) && 
+               !single_status.is(e.target) && 
+               !statusBody_txt.is(e.target)) {
+                $('li .status-wrapper').remove();
+            }
+
+            var setting_menu = $('.column-setting-menu');
+            var filter_column = $('.filter_column');
+
+            if (setting_menu.is(':visible') && 
+               !setting_menu.is(e.target) && 
+               !filter_column.is(e.target) && 
+               !columnMenu_list.is(e.target)) {
+                $('.toggleKanvan_view .column-setting-menu').remove();
+            }
+
+
+            var single_rowOption = $('.single_rowOption');
+            var moreOpt_thisTask = $('.moreOpt_thisTask');
+            var single_rowOptLi = $('.single_rowOptLi');
+
+            if (single_rowOption.is(':visible') && 
+               !single_rowOption.is(e.target) && 
+               !single_rowOptLi.is(e.target) && 
+               !moreOpt_thisTask.is(e.target)) {
+                $('li .single_rowOption').remove();
+                $('li .group_option').removeClass('active');
+                $('li.sticky_title').css('z-index',2);
+            }
+
+            var stageOptionPopup = $('.stageOptionPopup');
+            var st_borderColor = $('.st_borderColor');
+            var stage_act_option = $('.stage_act_option');
+            var editThisActivity = $('.editThisActivity');
+
+            if (stageOptionPopup.is(':visible') && 
+               !stageOptionPopup.is(e.target) && 
+               !st_borderColor.is(e.target) && 
+               !editThisActivity.is(e.target) && 
+               !stage_act_option.is(e.target)) {
+                $('.taskByPhase .stageOptionPopup').remove();
+            }
+
+            var stageOptionPopup_2 = $('.stageOptionPopup_2');
+            var st_borderColor = $('.st_borderColor');
+            var stage_act_option = $('.stage_act_option');
+            var editThisActivity = $('.editThisActivity');
+
+            if (stageOptionPopup_2.is(':visible') && 
+               !stageOptionPopup_2.is(e.target) && 
+               !st_borderColor.is(e.target) && 
+               !editThisActivity.is(e.target) && 
+               !stage_act_option.is(e.target)) {
+                $('.tile_title .stageOptionPopup_2').remove();
+            }
+
+        });
+    }
+    allMouseUp();
+
+    function toDoFlagUnflag(ele){
+        var flag = '/images/basicAssets/Flagged_red.svg';
+        var not_flag = '/images/basicAssets/Not_Flagged.svg';
+        if ($('#flag_unflag').hasClass('unflag')) {
+            $('#flag_unflag').removeClass('unflag').addClass('Flagged').attr('src', flag);
+            $('.side_bar_list_item li.activeTodo').addClass('Flagged');
+        }else{
+            $('#flag_unflag').removeClass('Flagged').addClass('unflag').attr('src', not_flag);
+            $('.side_bar_list_item li.activeTodo').removeClass('Flagged');
+        }
+    }
+
+
+    function todopinunpin(ele) {
+        var data = $('.todo_li.activeTodo')[0].outerHTML;
+        if ($("#pin_unpin").hasClass('pined')) {
+            $("#pin_unpin").removeClass('pined');
+            $("#pin_unpin").attr('src', '/images/basicAssets/custom_not_pin.svg');
+            $('.todo_li.activeTodo').remove();
+            $('#projects_list').append(data);
+        } else {
+            $("#pin_unpin").addClass('pined');
+            $("#pin_unpin").attr('src', '/images/basicAssets/custom_pinned.svg');
+            $('.todo_li.activeTodo').remove();
+            $('#pinnedToDoList').append(data);
+        }
+    }
+
+    function addColumn(ele,type) {
+        var data = $(ele).attr('data-type');
+        if (data == 0) {
+            $(ele).attr('data-type',1);
+            var prntEle = $(ele).closest('.column-setting-menu');
+            var thisEle = $(ele)[0].outerHTML;
+            $(ele).remove();
+            prntEle.prepend(thisEle);
+            
+            if (type == 'owner') {
+                $('.owner_column').show();
+                $('.owner_column').show();
+            } else if (type == 'observer') {
+                $('.observer_column').show();
+            } else if (type == 'assignee') {
+                $('.assignee_column').show();
+            } else if (type == 'phase') {
+                $('.phase_column').show();
+            } else if (type == 'duedate') {
+                $('.dueDate_column').show();
+            } else if (type == 'compdate') {
+                $('.compDate_column').show();
+            } else if (type == 'estWorkHour') {
+                $('.estWorkHour_column').show();
+            } else if (type == 'taskbudget') {
+                $('.bgAmount_column').show();
+                $('.acAmount_column').show();
+                $('.bgVariance_column').show();
+                $('.estHourRate_column').show();
+                $('.acWorkHour_column').show();
+                $('.acHourRate_column').show();
+                $('.acVarianceRate_column').show();
+            } else if (type == 'status') {
+                $('.status_column').show();
+            }
+
+                var leftPos = $('.workspaceform').scrollLeft();
+                var divWidth = $('.workspaceform').width();
+                $(".workspaceform").animate({scrollLeft: leftPos + divWidth}, 0);
+
+        } else {
+            $(ele).attr('data-type',0);
+
+            var prntEle = $(ele).closest('.column-setting-menu');
+            var thisEle = $(ele)[0].outerHTML;
+            $(ele).remove();
+            prntEle.append(thisEle);
+            
+            if (type == 'owner') {
+                $('.owner_column').hide();
+                $('.owner_column').hide();
+            } else if (type == 'observer') {
+                $('.observer_column').hide();
+            } else if (type == 'assignee') {
+                $('.assignee_column').hide();
+            } else if (type == 'phase') {
+                $('.phase_column').hide();
+            } else if (type == 'duedate') {
+                $('.dueDate_column').hide();
+            } else if (type == 'compdate') {
+                $('.compDate_column').hide();
+            } else if (type == 'estWorkHour') {
+                $('.estWorkHour_column').hide();
+            } else if (type == 'taskbudget') {
+                $('.bgAmount_column').hide();
+                $('.acAmount_column').hide();
+                $('.bgVariance_column').hide();
+                $('.estHourRate_column').hide();
+                $('.acWorkHour_column').hide();
+                $('.acHourRate_column').hide();
+                $('.acVarianceRate_column').hide();
+            } else if (type == 'status') {
+                $('.status_column').hide();
+            }
+        }
+    }
+    
+    function budgetVariance(){
+        var variance = Number($("#task_budgetAmount").val()) - Number($("#task_actualAmount").val());
+        $(".budget_variance").text(variance.toFixed(2));
+    }
+
+    function estimateCost(){
+        var twh = $("#task_estimatedwh").val().split(":");
+        if(twh.length == 1)
+            var wh = Number(twh[0]);
+        else
+            var wh = Number(twh[0]) + Number(twh[1] / 60);
+        $(".estimated_cost").text((wh * Number($("#task_estimatedHr").val())).toFixed(2));
+    }
+
+    function actualCost(){
+        var twh = $("#task_actualWh").val().split(":");
+        if(twh.length == 1)
+            var wh = Number(twh[0]);
+        else
+            var wh = Number(twh[0]) + Number(twh[1] / 60);
+        $(".actual_cost").text((wh * Number($("#task_actualHr").val())).toFixed(2));
+    }
+    
+    function edit_thisTitle(ele, e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $(ele).parents('.group_option').siblings('.editable_title').attr('contenteditable',true);
+    }
+
+    function saveThisTitle(ele, e) {
+        var key = e.keyCode || e.charCode || e.which;
+        if (key == 13) {
+            if ($(ele).text().trim() != '') {
+                $(ele).blur();
+                var data = {id: $(ele).closest('.singlerow').attr('data-activity_id'), created_by: $(ele).closest('.singlerow').attr('data-created_by'), title: $(ele).text().trim()}
+                update_activity_data(data);
+            }else{
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }
+    }
+
+    function addAsDemo(ele) {
+        var srce = $(ele).find('.demo_img').attr('src');
+        if ($(ele).hasClass('active')) {
+            $(ele).removeClass('active');
+            $(ele).parents('.assignee_users').siblings('.sinple_ownerContainer').find('.single_owner:last').remove();
+            $(ele).parents('.assignee_users').siblings('.assigneeHolder').find('.single_owner:last').remove();
+        }else{
+            $(ele).addClass('active');
+            var html = '<span class="single_owner">';
+                html += '    <img src="'+srce+'">';
+                html += '</span>';
+                $(ele).parents('.assignee_users').siblings('.sinple_ownerContainer').append(html);
+                $(ele).parents('.assignee_users').siblings('.assigneeHolder').append(html);
+        }
+
+    }
+
+    function createNewStatus(ele) {
+        var html = '<div class="single-status" onclick="selectStatus(this)" style="background-color: #d8d8d8;">Status 5</div>';
+        $(ele).before(html);        
+    }
+
+    function moreOpt_thisTask(ele, e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+    }
+
+    function selectAllTxt(ele) {
+        requestAnimationFrame(function() {
+            selectElementContents(ele);
+        });
+    }
+
+    function selectElementContents(el) {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+
+    function getWarning(ele) {
+        var popTitle = $(ele).attr('placeholder');
+        var value = $(ele).val().trim();
+        $('#informationPopup').find('.popup_title').text('Update '+popTitle);
+        $('#informationPopup').find('input[data-type="inp-data"]').attr('placeholder',popTitle).val(value);
+        $('#informationPopup').css('display','flex');
+        $(ele).attr('data-set','true');
+        if (popTitle == 'Budget Amount' ||
+            popTitle == 'Actual Amount' ||
+            popTitle == 'Actual Hourly Rate' ||
+            popTitle == 'Estimated Hourly Rate') {
+                $('.informationPopupBtn[btn-type="save"]').text('Save Amount');
+            }else{
+                $('.informationPopupBtn[btn-type="save"]').text('Save Time');
+            }
+    }
+
+    function hoursWorkedInformation(ele) {
+        $('#informationPopup').css('display','flex');
+        $(ele).attr('data-set','true');
+    }
+    function viewExpensedtl(ele) {
+        $('#expensePopup').css('display','flex');
+        $('#expensePopup').attr('data-id', $(ele).closest('.singlerow').attr('data-activity_id'));
+        $('#expensePopup').attr('data-created_by', $(ele).closest('.singlerow').attr('data-created_by'));
+        $('#expensePopup .amount').val($(ele).text());
+    }
+
+    function save_expense(){
+        var id = $("#expensePopup").attr("data-id");
+        var created_by = $("#expensePopup").attr("data-created_by");
+        var budget_amount = $("#expensePopup .amount").val();
+        var sib_amt = 0, root_amt = 0;
+        var root_ele = $("#activity_"+id).closest(".child_container").closest(".row").first(".singlerow");
+        var sib_ele = $("#activity_"+id).closest(".child_container").find(".singlerow");
+        root_amt = Number($(root_ele).find(".bgAmount_column").first().text());
+        // console.log(2454, root_amt);
+        $.each($(sib_ele), function(k, v){
+            if($(v).attr("data-activity_id") == id){
+                sib_amt += Number(budget_amount);
+                console.log(2458, budget_amount);
+            }
+            else{
+                sib_amt += Number($(v).find(".bgAmount_column").text());
+                console.log(2462, sib_amt);
+            }
+        });
+        // console.log(2461, sib_amt);
+        if(root_amt>sib_amt || root_amt == 0){
+            update_activity_data({id, created_by, budget_amount});
+            $("#activity_"+id).find(".bgAmount_column").text(budget_amount);
+        }
+        else{
+            alert("Your budget amount cross the root budget amount. So please update root budget.");
+        }
+        closeModal('expensePopup');
+    }
+
+    function viewStageActOption(ele, e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var data = $('.stageOptionPopup')[0].outerHTML;
+        $(ele).after(data);
+    }
+
+    function stageOptView(ele, e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var data = $('.stageOptionPopup_2')[0].outerHTML;
+        $(ele).after(data);
+    }
+
+    function st_borderColor(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var clr = '';
+        if ($(ele).hasClass('none')) {
+            clr = $(ele).attr('data-color');
+            $(ele).closest('.taskByPhase').css('border-left','1px solid '+clr+'')
+        } else {
+            clr = $(ele).css('background-color');
+            $(ele).closest('.taskByPhase').css('border-left','4px solid '+clr+'')
+        }
+        $(ele).closest('.stageOptionPopup').remove();
+    }
+
+    function viewChildOfthisParent(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var colorArray = ['#ccc','#aaa','#888','#666','#444','#222','#666','#555','rgb(187, 51, 84)','rgb(127, 83, 71)','rgb(255, 100, 46)','rgb(253, 171, 61)','rgb(255, 203, 0)','rgb(202, 182, 65)','rgb(156, 211, 38)','rgb(0, 200, 117)','rgb(3, 127, 76)','rgb(0, 134, 192)','rgb(87, 155, 252)','rgb(102, 204, 255)'];
+        $(ele).find('>.sortable_kvview_subtask').toggle(200);
+
+        var aid = $(ele).closest('.kvsinglerow').attr('data-activity_id');
+        if ($(ele).find(">.stage_act_expnd .phase_act").hasClass('right')) {
+            $(ele).find(">.stage_act_expnd .phase_act").removeClass('right').addClass('down');
+            draw_child(aid, 'grid');
+            check_child();
+            var randomColor = $(ele).closest('.sortable_kvview_subtask').attr('data-level');
+            randomColor = isNaN(randomColor) ? 0 : randomColor;
+            $(ele).closest('.sortable_kvview_subtask').find('.sortable_kvview_subtask .kvsinglerow').css('background-color',colorArray[randomColor]);
+        }else{
+            $(ele).find(">.stage_act_expnd .phase_act").removeClass('down').addClass('right');
+            $("#kvactivity_"+ aid +" .sortable_kvview_subtask").remove();
+        }
+        if (!$(ele).parents('.tiles').hasClass('active')) {
+            $('.tiles').removeClass('active');
+            $(ele).parents('.tiles').addClass('active');
+        }
+        callSortable();
+    }
+
+    function createANactivity(e) {
+        var key = e.keyCode || e.charCode || e.which;
+        if (key == 32) {
+            if ($(e.target).val().trim() == '') {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }else{
+            if ($(e.target).val().trim() != '') {
+                if (key == 13) {
+                    var title = $(e.target).val().trim();
+                    if($(e.target).attr("data-type") == "activity"){
+                        var root_id = $(".side_bar_list_item").find(".activeTodo").attr("data-activity_id");
+                        if(root_id === undefined) { var root_id = recent_pid; recent_pid = ""; }
+                    }
+                    else
+                        var root_id = $('#toDoName_2 .task_teamName').attr('data-activity_id');
+                    if(root_id !== undefined){
+                        var alldata = { title, 
+                                        type:"Task", 
+                                        user_id, 
+                                        root_id, 
+                                        budget_amount: 0, 
+                                        actual_amount:0, 
+                                        child_lists: null, 
+                                        phase: 'Prospecting'};
+                        save_new_activity(alldata, 'list');
+                    }
+                }
+            }
+        }
+    }
+
+    function save_new_activity(data, type){
+        $.ajax({
+            url: '/boards/add_activity',
+            type: 'POST',
+            dataType: 'JSON',
+            data: data,
+            beforeSend: function(){
+                console.log(data);
+            },
+            success: function(rep){
+                allactivity = rep.activities;
+                if(type == 'list'){
+                    $('.main_parent_container #empty_row').remove();
+                    $('#singlerowid').find('.sticky_title>.editable_title').html(data.title);
+                    $('#singlerowid').find('.bgAmount_column').text(rep.activity.budget_amount);
+                    $('#singlerowid').find('.phaseBody_txt').text(rep.activity.phase);
+                    $('#singlerowid').find('.statusBody_txt').text(rep.activity.status);
+                    $('#singlerowid').find('.dueDate_column').html('<input type="text" class="due_date" onkeyup="check_date_update(event)" onblur="update_date(event)" value="'+ moment(rep.activity.end_time).format("YYYY-MM-DD") +'">');
+                    $('#singlerowid').find('.phaseBody_txt').css('background-color', set_phase_bg(rep.activity.phase));
+                    $('#singlerowid').find('.statusBody_txt').css('background-color', set_status_bg(rep.activity.status));
+                    $('#singlerowid .singlerow').attr("data-activity_id", rep.activity.activity_id);
+                    $('#singlerowid .singlerow').attr("data-created_by", rep.activity.created_by);
+                    $('#singlerowid .singlerow').attr("id", "activity_"+ rep.activity.activity_id);
+                    // if($('.main_parent_container .row').length > 0){
+                    //     var bg = $('.main_parent_container .checkThis_task:first').css('background-color');
+                    //     $('#singlerowid').find('.checkThis_task').css('background-color', bg);
+                    // }
+                    var activity = $('#singlerowid').html();
+                    $('.main_parent_container').append(activity);
+                    $('.create_new_st').val('');
+                }
+                else if(type == 'grid'){
+                    $("#kvactivity_data").find('.stage_title').text(data.title);
+                    var html = '<li class="taskByPhase kvsinglerow" id="kvactivity_'+ rep.activity.activity_id +'" data-budget_amount="'+ data.budget_amount +'" data-activity_id="'+ rep.activity.activity_id +'" data-created_by="'+ rep.activity.created_by +'" onclick="viewChildOfthisParent(this,event)">';
+                    html    += $("#kvactivity_data").html();
+                    html    += '</li>';
+                    $(".kanvan_container .tiles[data-phase='" + data.phase + "']").find('.sortable_kvview_task').append(html);
+                    var bud_amt = $(".kanvan_container .tiles[data-phase='" + data.phase + "']").find('.stageProgeress_status').text();
+                    bud_amt = Number(bud_amt.replace('৳', '')) + Number(data.budget_amount);
+                    $(".kanvan_container .tiles[data-phase='" + data.phase + "']").find('.stageProgeress_status').text(bud_amt.toFixed(2));
+                }
+                else if(type == 'subgrid'){
+                    draw_child(rep.activity.activity_id, 'grid');
+                }
+                check_child();
+                callSortable();
+            },
+            error: function(e){
+                console.log('create new activity error = ', e);
+            }
+        });
+    }
+    
+    function renameActivity(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $(ele).closest('.single_rowOption').siblings('.edit_thisTitle').trigger('click');
+        $(ele).closest('.single_rowOption').remove();
+        $('.group_option.active').removeClass('active');
+    }
+
+    function duplicateActivity(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var data = $(ele).closest('.row')[0].outerHTML;
+            $(ele).closest('.row').after(data);
+            $('.group_option.active').find('.single_rowOption').remove();
+            $('.group_option.active').removeClass('active');
+    }
+
+    function delete_project(e){
+        if(confirm("Do you want to really delete this project?")){
+            var id = $('#toDoName_2').attr("data-aid");
+            var created_by = $('#toDoName_2').attr("data-created_by");
+            deleteActivity({id, created_by}, e);
+            window.location.reload();
+        }
+    }
+    function delete_Activity(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var id = $(e.target).closest(".singlerow").attr("data-activity_id");
+        var created_by = $(e.target).closest(".singlerow").attr("data-created_by");
+        deleteActivity({id, created_by}, e);
+    }
+    function deleteActivity(data, e){
+        $.ajax({
+            url: "/boards/delete_activity",
+            type: 'POST',
+            data: data,
+            // dataType: "JSON",
+            // beforeSend: function(){
+            //     console.log(2667, id, created_by)
+            // },
+            success: function(res){
+                console.log(res);
+                $(e.target).closest(".row").remove();
+            },
+            error: function(e){
+                console.log(2618, e);
+            }
+        });
+    }
+
+    function viewMsgPanel(ele) {
+        $('#live-chat').show();
+        $('.todos-chat-write').show();
+        $('.task-edit-write').hide();
+        $('#live-chat').find('.todo-chat-body').css('height','calc(100vh - 194px)');
+    }
+
+    function activity_chat(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#chat_icon').trigger('click');
+        $('.group_option.active').find('.single_rowOption').remove();
+        $('.group_option.active').removeClass('active');
+    }
+
+    function set_phase_bg(str){
+        var bg = "";
+        $.each($('.phase-wrapper div'), function(k, v){
+            if($(v).text().trim() == str){
+                bg = $(v).css('background-color');
+                return false;
+            }
+        });
+        return bg;
+    }
+    
+    function set_status_bg(str){
+        var bg = "";
+        $.each($('.status-wrapper div'), function(k, v){
+            if($(v).text().trim() == str){
+                bg = $(v).css('background-color');
+                return false;
+            }
+        });
+        return bg;
+    }
+
+    function activityTypeBox(ele,e) {
+        var key = e.keyCode || e.charCode || e.which;
+        var value = $(ele).text().trim();
+
+        if (value != '' && key == 13) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var html = '<div class="chat-message clearfix todo_msgid_" data-msgid="">';
+                html += '<img class="user-imgs" src="'+file_server+'profile-pic/Photos/' + user_img + '">';
+                html += '<div class="chat-message-content clearfix">';
+                html += '<h5>';
+                html += 'User Name <span class="chat-time">' + moment(Date()).format('h:mm a') + '</span>';
+                html += '</h5>';
+                html += '<p class="chating_para_2">' + value + '</p>';
+
+                html += '</div>';
+            $('#live-chat .chat-history').append(html);
+            $(ele).text('');
+        }
+    }
+
+    function editThisActivity(ele,e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var title = $(ele).parents('.stageOptionPopup').siblings('.stage_title').text();
+        $(ele).parents('.stageOptionPopup').siblings('.stage_title').attr('data-set','true');
+        var aid = $(ele).closest('.kvsinglerow').attr('data-activity_id');
+        var created_by= $(ele).closest('.kvsinglerow').attr('data-created_by');
+        var bd = $(ele).closest('.kvsinglerow').attr('data-budget_amount');
+        $('#propertyPopup').css('display','flex');
+        $('#propertyPopup .popupBody_div').find('.popup_title').text('Activity Properties');
+        $('#activity_action_btn').text('Update Activity').attr('action-type','edit-activity');
+        $('.taskByPhase .stageOptionPopup').remove();
+        $('#propertyPopup').find('#create_task_budget').val(bd);
+        $('#propertyPopup').find('#create_task_title').val(title).attr('data-id', aid).attr('data-created_by', created_by).focus();
+    }
+
+    function addAssignAbleUser(ele) {
+        var content = $('.assignee_users')[0].outerHTML;
+        if (!$(ele).closest('.popRowField').find('.assignee_users').is(':visible')) {
+            $('li .single_rowOption').remove();
+            $('.toggleKanvan_view .column-setting-menu').remove();
+            if ($('.header-column-menu').parent('.sticky_title').length == 0) {
+                $('.header-column-menu').parents('li').css('z-index',0);
+            }
+            $('li .header-column-menu').remove();
+            $('li .phase-wrapper').remove();
+            $('li .status-wrapper').remove();
+            $('.popRowField .assignee_users').remove();
+            $(ele).after(content);
+        }else{
+            $('.popRowField .assignee_users').remove();
+        }
+    }
+
+    function saveHoursWorked(ele,type) {
+        var value = $('.popRowField input[data-type="inp-data"]').val().trim();
+        if (type == 'save') {
+            $('.input_field[data-set="true"]').val(value).removeAttr('data-set');
+            $('.task_ewh_field input[data-set="true"]').val(value).removeAttr('data-set');
+            $('.popRowField input[data-type="inp-data"]').val('');
+            $('.popRowField input[placeholder="Date"]').val('');
+            $('.popRowField textarea[placeholder="Comments (Optional)"]').val('');
+            $('#informationPopup').hide();
+        } else if (type == 'saveNadd') {
+            $('.input_field[data-set="true"]').val(value).removeAttr('data-set');
+            $('.task_ewh_field input[data-set="true"]').val(value).removeAttr('data-set');
+            $('.popRowField input[data-type="inp-data"]').val('');
+            $('.popRowField input[placeholder="Date"]').val('');
+            $('.popRowField textarea[placeholder="Comments (Optional)"]').val('');
+        }
+    }
+
+    function viewLogHistory(ele) {
+        $(ele).parent('.popupContentRow').next('.popupContentRow').find('.log_container').toggleClass('visible');
+    }
+
+    $('.workspaceform').on("scroll", function (event) {
+        var scroll = $(event.target).scrollLeft();
+        $('.sticky_title').css('transform','translateX('+scroll+'px)');
+        $('.task_expandable').css('transform','translateX('+scroll+'px)');
+        $('.row_handlr').css('transform','translateX('+scroll+'px)');
+        $('#sortable_kvview .hidden_tiles[data-hidden="1"]').css('transform','translateX('+ scroll +'px)');
+    });
+
+    function update_budget_by_phase(phase, amt_tobe_add){
+        var bud_amt = $(".kanvan_container .tiles[data-phase='" + phase + "']").find('.stageProgeress_status').text();
+        bud_amt = Number(bud_amt.replace('৳', '')) + Number(amt_tobe_add);
+        $(".kanvan_container .tiles[data-phase='" + phase + "']").find('.stageProgeress_status').text(bud_amt.toFixed(2));
+    }
+
+    
+function showMorePopUp(){
+    if (!$('.moreMenuPopup').is(':visible')) {
+        if ($('#actCre').val() == user_id) {
+            $('.moreMenuPopup').show();
+        } else {
+            $('.moreMenuPopup').hide();
+        }
+    } else {
+        $('.moreMenuPopup').hide();
+    }
+}
+
+function blurStageAction(ele,e) {
+    if ($(ele).text().trim() == '') {
+        // if(!$('title_txt[contenteditable="false"]').is(e.target)){
+            $(ele).text('Untitled Stage');
+            $(ele).attr('contenteditable','false');
+        // }
+    }else{
+        // if(!$('title_txt[contenteditable="false"]').is(e.target)){
+            $(ele).attr('contenteditable','false');
+        // }
+    }
+}
+
+// function addDemoActivity(ele, e, type) {
+//     e.preventDefault();
+//     e.stopImmediatePropagation();
+
+//     if (type == 'activity') {
+//         $('.sortable_kvview_subtask').removeAttr('data-set');
+//         $(ele).parents('.tiles').find('.sortable_kvview_task').attr('data-set','true');
+//         var aid = $("#projects_list").find(".activeTodo").attr('data-activity_id');
+//         var phase = $(ele).closest('.tiles').attr('data-phase');
+//         $('#propertyPopup').css('display','flex');
+//         $('#propertyPopup').find('#create_task_title').focus();
+//         $('#propertyPopup').find('#create_task_title').attr('data-phase', phase).attr('data-id', aid);
+//         $('#propertyPopup .popupBody_div').find('.popup_title').text('Add Activity');
+//         $('#activity_action_btn').text('Save Activity').attr('action-type','add-activity');
+//     } else {
+//         $('.sortable_kvview_subtask').removeAttr('data-set');
+//         if ($(ele).parents('.taskByPhase.kvsinglerow').find('.sortable_kvview_subtask').length == 0) {
+//             $(ele).parents('.taskByPhase.kvsinglerow').append('<ul class="sortable_kvview_subtask" style="display: block"></ul>');
+//         }
+//         $(ele).parents('.taskByPhase.kvsinglerow').find('.sortable_kvview_subtask').attr('data-set','true');
+//         var aid = $(ele).closest('.kvsinglerow').attr('data-activity_id');
+//         var phase = $(ele).closest('.tiles').attr('data-phase');
+//         $('#propertyPopup').css('display','flex');
+//         $('#propertyPopup').find('#create_task_title').focus();
+//         $('#propertyPopup').find('#create_task_title').attr('data-phase', phase).attr('data-id', aid);
+//         $('#propertyPopup .popupBody_div').find('.popup_title').text('Add a Sub-activity');
+//         $('#activity_action_btn').text('Save Sub-activity').attr('action-type','add-subactivity');
+//     }
+//     $('.tile_title .stageOptionPopup_2').remove();
+//     $('#propertyPopup').find('#create_task_title').val('');
+//     $('#propertyPopup').find('#create_task_title').attr('data-id', aid);
+// }
+
+function selectTiles(ele) {
+    $('.tiles').removeClass('active');
+    $(ele).addClass('active');
+}
+
+function showContactPopup(ele)
+{
+    if (!$(ele).parents('.ct_row').hasClass('active')) {
+        $(ele).parents('.ct_row').addClass('active');
+        
+        if($(ele).parents('.ct_row').find('.contact_lists ul>li').length == 1){
+            $("#contactListsPopup").css('display','flex');
+            // $("#contactPopup").css('display','flex');
+            // <li>Md. Mahfuzur Rahman <img src="/images/basicAssets/trash-alt-regular_000.svg"></li>
+        }
+    } else {
+        $(ele).parents('.ct_row').removeClass('active');
+    }
+}
+function open_new_contactpopup()
+{
+    $("#contactPopup").css('display','flex');
+}
+function open_companypopup()
+{
+    $("#contactPopup").hide();
+    $("#companyPopup").css('display','flex');
+}
+function close_copmanypopup()
+{
+    $("#companyPopup").hide();
+    open_new_contactpopup();
+}
+function addfield(event)
+{
+    var ele = $(event.target).closest(".popRowField").find("input:first").clone();
+    var cur_name = ele.attr("name");
+    if(cur_name.indexOf("[") > -1){
+        var cur_pos = cur_name.match(/\d+/g);
+        ele.attr("name", cur_name.replace(cur_pos[0], Number(cur_pos[0])+1));
+    }
+    ele.val("").css("margin-top", "8px");
+    $(event.target).closest(".popRowField").find("input:last").after(ele);
+    $(event.target).closest(".popRowField").find("input:last").focus();
+}
+function addfield_name(id, name, k)
+{
+    var ele = $("#"+ id + " input[name='"+ name +"[0]']").clone();
+    ele.attr("name", name+"["+ k +"]");
+    ele.val("").css("margin-top", "8px").addClass("temp");
+    $("#"+ id + " input[name='"+ name +"[0]']").closest(".popRowField").find("input:last").after(ele);
+}
+function trigger_checkbox(event)
+{
+    if($(event.target).closest(".container").find("input[type='checkbox']").is(":checked"))
+        $(event.target).closest(".container").find("input[type='checkbox']").prop('checked', true);
+    else
+        $(event.target).closest(".container").find("input[type='checkbox']").prop('checked', false);
+}
+function add_contact(event)
+{
+    event.preventDefault();
+    var formData = {};
+    formData['user_id'] = user_id;
+    var error = "";
+    $("#contactPopup form").find("input[name], select[name]").each(function (index, node) {
+        // console.log(node.name, node.value);
+        if($(this).closest(".popRowField").hasClass("require")){
+            if(node.name.indexOf('[') > -1){
+                if(node.name.indexOf('[0]') > -1 && (node.value == null || node.value == "" || node.value === undefined)) {
+                    // console.log(node.value);
+                    error += node.name + " is required.\n";
+                }
+            }
+            else if(node.value == null || node.value == "" || node.value === undefined) {
+                error += node.name + " is required.\n";
+            }
+        }
+        if(node.type == "checkbox"){
+            formData[node.name] = node.checked ? 1 : 0;
+        }else{
+            formData[node.name] = node.value;
+        }
+    });
+    console.log(formData);
+    if(error == ""){
+        $.ajax({
+            url: '/boards/add_contact',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            // beforeSend: function(){
+            //     console.log(formData);
+            // },
+            success: function(rep){
+                // console.log(rep);
+                if(rep.status){ 
+                    var st = rep.contact.salutation != undefined ? rep.contact.salutation + " " : "";
+                    $("#contactListsPopup ul").append('<li data-id="'+ rep.contact.id +'" onclick="toggle_contact_select(this)"><span>'+ st + rep.contact.first_name + ' '+ rep.contact.last_name + '</span> <img src="/images/basicAssets/Remove.svg"></li>' );
+                    $("#contactPopup").hide();
+                }
+            },
+            error: function(e){
+                console.log('createANactivity = ', e);
+            }
+        });
+    }else{
+        alert(error);
+    }
+}
+function toggle_contact_select(ele){
+    if(! $(ele).hasClass("select")){
+        $(ele).addClass("select");
+    }else{
+        $(ele).removeClass("select");
+    }
+}
+function add_into_contact_list()
+{
+    $.each($("#contactListsPopup ul li.select"), function(k, v){
+        var ele = $(v).clone();
+        ele.find('img').attr('onclick', 'toggle_list(this)');
+        var id = ele.attr('data-id');
+        ele.attr('onclick', '');
+        ele.find('span').attr('onclick', 'open_contact_details("'+ id +'")');
+        $(".selected_contact_lists").prepend(ele);
+        $(v).hide();
+    });
+    $("#contactListsPopup").hide();
+}
+function open_contact_details(id)
+{
+    open_new_contactpopup();
+    $.each(contacts, function(k, v){
+        if(v.id.toString() == id){
+            $("#contactPopup input[name='salutation']").val(v.salutation);
+            $("#contactPopup input[name='first_name']").val(v.first_name);
+            $("#contactPopup input[name='last_name']").val(v.last_name);
+            $("#contactPopup input[name='position']").val(v.designation);
+            $("#contactPopup input[name='street']").val(v.address);
+            $("#contactPopup input[name='city']").val(v.city);
+            $("#contactPopup input[name='province']").val(v.province);
+            $("#contactPopup input[name='country']").val(v.country);
+            $("#contactPopup input[name='postal_code']").val(v.post_code);
+            
+            if(v.email.length > 0){
+                $.each(v.email, function(k,v){
+                    if(k>0) addfield_name("contactPopup", "email", k);
+                    $("#contactPopup input[name='email["+ k +"]']").val(v);
+                });
+            }
+            if(v.phone.length > 0){
+                $.each(v.phone, function(k,v){
+                    if(k>0) addfield_name("contactPopup", "phone", k);
+                    $("#contactPopup input[name='phone["+ k +"]']").val(v);
+                });
+            }
+            if(v.office_email.length > 0){
+                $.each(v.office_email, function(k,v){
+                    if(k>0) addfield_name("contactPopup", "office_email", k);
+                    $("#contactPopup input[name='office_email["+ k +"]']").val(v);
+                });
+            }
+            if(v.office_phone.length > 0){
+                $.each(v.office_phone, function(k,v){
+                    if(k>0) addfield_name("contactPopup", "office_phone", k);
+                    $("#contactPopup input[name='office_phone["+ k +"]']").val(v);
+                });
+            }
+            
+            $("#contactPopup select[name='company_id']").val(v.company_id);
+            $("#contactPopup select[name='root_company_id']").val(v.mother_company_id);
+            
+            var is_private = v.is_private == 1 ? true : false;
+            $("#contactPopup input[name='private']").val(v.is_private).prop("checked", is_private);
+
+            $("#contactPopup button[btn-type='add']").attr("disabled", "disabled");
+        }
+    });
+}
+function closePopup(e, id)
+{
+    e.preventDefault();
+    $("#"+id).find('form')[0].reset();
+    $("#"+id).find('.temp').remove();
+    $("#"+id).find('button[btn-type="add"]').attr("disabled", false);
+    $("#"+id).hide();
+}
+function toggle_list(ele){
+    var id = $(ele).closest('li').attr('data-id');
+    $("#contactListsPopup ul li[data-id='"+ id +"']").removeClass('select').show();
+    $(ele).closest('li').remove();
+}
+function add_copmany(event)
+{
+    event.preventDefault();
+    var formData = {};
+    formData['user_id'] = user_id;
+    var error = "";
+    $("#companyPopup form").find("input[name], select[name]").each(function (index, node) {
+        if($(this).closest(".popRowField").hasClass("require") && node.name.indexOf('[0]') > -1){
+            if(node.value == null || node.value == "" || node.value === undefined)
+                {
+                    // console.log(node.value);
+                    error += node.name + " is required.\n";
+                }
+        }
+        if(node.type == "checkbox"){
+            formData[node.name] = node.checked ? 1 : 0;
+        }else{
+            formData[node.name] = node.value;
+        }
+    });
+    if(error == ""){
+        $.ajax({
+            url: '/boards/add_company',
+            type: 'POST',
+            dataType: 'JSON',
+            data: formData,
+            // beforeSend: function(){
+            //     console.log(formData);
+            // },
+            success: function(rep){
+                // console.log(rep);
+                if(rep.status) {
+                    $("#contactPopup select").append('<option value="'+ rep.company.id +'">'+ rep.company.name +'</option>');
+                    close_copmanypopup();
+                }
+            },
+            error: function(e){
+                console.log('createANactivity = ', e);
+            }
+        });
+    }else{
+        alert(error);
+    }
+}
+
+</script>

@@ -1,0 +1,77 @@
+<%- include('layouts/head') %>
+    <link href="/stylesheets/singup.css" rel="stylesheet">
+    <div class="logo_icon">
+        <a href="/"> <img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="" style="border-radius: 4px;"></a>
+        <span class="workfreeli_text">Workfreeli</span>
+    </div>
+    <div class="backPage_area">
+        <a href="/" data-tooltip="Back to previous page" class="tooltip-right">
+            <button class="backBtn">
+                <img class="back_icon" src="/images/back-icon.png" alt="" style="border-radius: 4px;width: 25px;">
+            </button>
+
+        </a>
+    </div>
+    <div class="centered-form__form">
+        <div class="hello-welcome-back">Sign up</div>
+        <div class="get_started_text">Get started with Workfreeli for free!</div>
+        <a href="/signup_work_account">
+            <div class="box_container">
+                <div class="left_area">
+                    <div class="create_acount_text">Create a Work account</div>
+                    <div class="create_acount_name_text">Work with your team</div>
+                </div>
+                <div class="right_area">
+                    <img class="work_acount_icon" src="/images/signup_icons/work_icon.png" alt="">
+                </div>
+
+            </div>
+        </a>
+        <a href="/signup_social_account">
+            <div class="box_container lastdiv">
+                <div class="left_area">
+                    <div class="create_acount_text">Create a Social account</div>
+                    <div class="create_acount_name_text">Enjoy with family & friends</div>
+                </div>
+                <div class="right_area">
+                    <img class="work_acount_icon" src="/images/signup_icons/social_icon.png" alt="">
+                </div>
+
+            </div>
+        </a>
+
+
+    </div>
+    <script type="text/javascript">
+        var all_company = <%- JSON.stringify(company) %>;
+        $(document).ready(function() {
+            $("#account_type").change(function() {
+                if ($(this).val() == "Social") {
+                    $(".comdiv").hide();
+                } else {
+                    $(".comdiv").show();
+                }
+            });
+            $.each(all_company, function(k, v) {
+                var html = '<option value="' + v.company_name + '">';
+                $("#company_name_list").append(html);
+            });
+            $('.create_Account').css('pointer-events', 'none');
+            $('.create_Account').css('background-color', '#dde9f7');
+            $("#agreeid").on("click", function() {
+                if ($("#agreeid").is(':checked')) {
+                    if ($("#first_name").val() == "" || $("#last_name").val() == "" || $("#email").val() == "") {
+                        alert("Enter name and email address please");
+                        $('#agreeid').prop('checked', false);
+                    } else {
+                        $('.create_Account').css('pointer-events', 'unset');
+                        $('.create_Account').css('background-color', '#4A90E2');
+                    }
+                } else {
+                    $('.create_Account').css('pointer-events', 'none');
+                    $('.create_Account').css('background-color', '#dde9f7');
+                }
+            });
+        });
+    </script>
+    <%- include('layouts/foot') %>

@@ -1,0 +1,295 @@
+<div class="to_do_container"  data-attr="2">
+    <div class="to_do_header">
+        <div class="to_do_head_left" id="toDoName" style="margin: 22px 0px;width: 545px;">
+            &nbsp;
+            <label class="checkbox_container" style="top: 5px; cursor: pointer;display: none;">
+                <input id="amazonWishlist" type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <textarea class="edit-todo-name" type="textarea" maxlength="128" id="todoTitle" placeholder="New Task" style="display: none;"></textarea>
+        </div>
+        <div class="to_do_head_right">
+            <div class="pin" id="toDoPinUnpinDiv">
+                <img id="pin_unpin" onclick="todopinunpin($(this).attr('data-acid'));" data-acid="" class="pin-to-bar unpin" src="/images/basicAssets/custom_not_pin.svg">
+            </div>
+            <div class="tags" id="tagged_area" name="">
+                <img src="/images/basicAssets/custom_not_tag.svg" class="tagged" alt="">
+            </div>
+            <div class="addTagConv" style="display: none">
+                <span id="tagItemList"></span>
+                <div class="taglistHolder">
+                    <input type="" name="" class="createConvTag" id="createConvTag" placeholder="Create or Search Tag(s)" data-acid="">
+                        <img class="settingEmail tagSet" onclick="removeUsertag(this);" src="/images/basicAssets/Settings.svg">
+                    <ul class="taggedList" id="taggedList"></ul>
+                </div>
+            </div>
+            <div class="flag" onclick="toDoFlagUnflag(event)">
+                <img id="flag_unflag" class="unflag" src="/images/basicAssets/Not_Flagged.svg">
+            </div>
+            <div class="more" onclick="showMorePopUp()">
+                <img src="/images/basicAssets/custom_moreForHead_menu.svg">
+            </div>
+            <div class="moreMenuPopup" style="display:none">
+                <li id="deletetodoTopBar" data-activityid="" onclick="showRemovePopUp($(this).data('activityid'));">Delete Task</li>
+                <li>Duplicate Task</li>
+            </div>
+        </div>
+        <div class="to_do_head_right_section">
+            <div class="create-event chat" id="chat_icon">
+                <img src="/images/basicAssets/Chat.svg" style="width: 14px; height: 14px;">
+                <p>Task Chat</p>
+            </div>
+            <div class="create-event" id="CreateEvent" onclick="createEventPop(event)" data-balloon="Create an event or schedule and share" data-balloon-pos="up">
+                <p><span>+</span> Schedule</p>
+            </div>
+            <div class="create-event-popup">
+                <input type="" name="" class="create-event-popup-title" placeholder="Create a event list with this room">
+                <div class="event-date-location">
+                    <input class="event-date-time" type="text" placeholder="Choose date and time" id="eventDateAndTime">
+                    <input class="event-location" type="text" placeholder="Enter event location" id="">
+                    <!-- CREATE event CALENDER -->
+                    <div class="todo-calender" style="display:none" id="calenderPicker">
+                        <h4>August 2018 <span class="prev-arrow">
+                            <img src="/images/basicAssets/CalendarChevronRight.svg" alt=""></span>
+                            <span class="next-arrow"><img src="/images/basicAssets/CalendarChevronRight.svg" alt=""></span></h4>
+                        <div class="todo-days">
+                            <span>S</span>
+                            <span>M</span>
+                            <span>T</span>
+                            <span>W</span>
+                            <span>T</span>
+                            <span>F</span>
+                            <span>S</span>
+                        </div>
+                        <div class="todo-dates">
+                            <span class="perv-month">27</span>
+                            <span class="perv-month">28</span>
+                            <span class="perv-month">29</span>
+                            <span class="perv-month">30</span>
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span class="selected">6</span>
+                            <span>7</span>
+                            <span>8</span>
+                            <span>9</span>
+                            <span>10</span>
+                            <span>11</span>
+                            <span>12</span>
+                            <span class="">13</span>
+                            <span>14</span>
+                            <span>15</span>
+                            <span>16</span>
+                            <span>17</span>
+                            <span>18</span>
+                            <span>19</span>
+                            <span>20</span>
+                            <span>21</span>
+                            <span>22</span>
+                            <span>23</span>
+                            <span>24</span>
+                            <span>25</span>
+                            <span>26</span>
+                            <span>27</span>
+                            <span>28</span>
+                            <span>29</span>
+                            <span>30</span>
+                            <span>31</span>
+                        </div>
+                        <div class="todo-from-to-reminder">
+                            <input class="todo-from" type="text" placeholder="From">
+                            <input class="todo-to" type="text" placeholder="To">
+                            <input class="todo-reminder" type="text" placeholder="Set Reminder">
+                        </div>
+                        <div class="todo-btn-div">
+                            <button class="todo-cancel-btn" id="calenderCancelBtn" type="button">Cancel</button>
+                            <button class="todo-done-btn" id="calenderDoneBtn" type="button">Done</button>
+                        </div>
+                    </div>
+                    <!-- CREATE event CALENDER -->
+                </div>
+                <div class="create-todo-ad-option" onclick="eventToggleAdvance()" style="margin: 18px 0px;">
+                    <p>ADVANCED OPTIONS</p>
+                </div>
+                <div class="todo-advance-option-div" id="eventAdvanceOption" style="margin-top: -8px !important;margin-bottom: 16px;overflow: hidden; display: none">
+                    <p>choose room members</p>
+                    <div class="room-member-search">
+                        <input type="text" placeholder="Search">
+                    </div>
+                    <div class="added-room-members">
+                        <li>
+                            <label class="">John Smith
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Mahfuzur Rahman
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">AH Nayeem
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Dalim Chowdhury
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Dipok Chakraborty
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Sadikur Rahman
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">John Smith
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Mahfuzur Rahman
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">AH Nayeem
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Dalim Chowdhury
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Dipok Chakraborty
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="">Sadikur Rahman
+                                <input class="checkmember" type="checkbox" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                    </div>
+                </div>
+                <div class="event-btn-group">
+                    <button class="event-cancel-btn">Cancel</button>
+                    <button class="event-create-btn" onclick="createEventF(event)">Create Event</button>
+                </div>
+            </div>
+            <!-- Create event popup end here -->
+            <div class="createFeedBack" data-balloon="Add a feedback" data-balloon-pos="up">
+                <p><span>+</span> Feedback</p>
+            </div>
+            <!-- <div class="" id="closeNewToDO" onclick="closeRightSection()"  style="display: none;"><img src="/images/basicAssets/close_button.svg"></div> -->
+        </div>
+    </div>
+    <div class="workspaceform overlayScrollbars" style="display:none">
+        <form action="">
+            <div class="form_left">
+                <div class="group_div">
+                    <div class="inputGroup">
+                        <label class="fullLabel" for="">Due date</label>
+                        <input readonly type="text" name="dueDateWS" id="dueDatePicker" class="input_box" placeholder="Choose a date">
+                        <div class="todo-calender" style="display:none" id="dueDatePickerDiv">
+                            <div class="addTimePicker">
+                                <li class="time-from">
+                                    <input class="datefrom" id="timeFrom" type="text" placeholder="From" readonly>
+                                </li>
+                                <li class="time-to">
+                                    <input id="timeTo" class="dateto" type="text" placeholder="To" readonly>
+                                </li>
+                                <li class="remind-time">
+                                    <!-- <input id="timeReminder" class="reminder" type="text" placeholder="Set Reminder"> -->
+                                    <select id="ReminderTime" class="reminder" required>
+                                        <option value="" disabled selected>Set Reminder</option>
+                                        <option value="15">Snooze 15 Minutes before</option>
+                                        <option value="30">Snooze 30 Minutes before</option>
+                                        <option value="45">Snooze 45 Minutes before</option>
+                                        <option value="1">Snooze 1 Hours before</option>
+                                        <option value="2">Snooze 2 Hours before</option>
+                                        <option value="3">Snooze 3 Hours before</option>
+                                        <option value="4">Snooze 4 Hours before</option>
+                                        <option value="5">Snooze 5 Hours before</option>
+                                    </select>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inputGroup" style="margin-left:20px;">
+                        <label class="fullLabel">Team</label>
+                        <select class="selectWorkspace" id="selectWorkspace" required>
+                        </select>
+                    </div>
+                </div>
+                <div class="inputGroup2" style="margin-top: 3px;">
+                    <label class="fullLabel">Share with</label>
+                    <input type="text" placeholder="Search members" name="" id="search_members" class="input_box2">
+                    <span class="remove" onclick="clearMemberSearch(event)" style="display:none"></span>
+                    <div class="suggested-type-list overlayScrollbars">
+                        <ul class="suggested-list">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="shareingImg" id="sharePeopleList" style="display:none;">
+                    <p class="sharing_label">Sharing with</p>
+                    <span style="margin-left:8px;cursor:pointer; display:none">+4</span>
+                </div>
+                <div style="margin-top:32px">
+                    <label class="fullLabel">Notes</label>
+                    <textarea class="notes_area" id="notes_area" placeholder="Enter your notes here" style="margin-bottom: 8px !important;"></textarea>
+                </div>
+
+                <div class="fileContainer" onclick="uploadFileFunction()">
+                    Upload File(s) <img src="/images/basicAssets/Attach_green.svg" alt="">
+                </div>
+                <div style="width:100%;display: none;overflow: hidden;margin-bottom: 32px" id="viewUploadFileviewUploadFile">
+                </div>
+            </div>
+            <div class="form_right">
+                <input class="checklist_item" id="addTodoCheckList" type="text" placeholder="Add a checklist item" name="">
+                <div class="item_list" id="toDoCheckListContainer">
+                    <div class="item_progress">
+                        <label class="progress_status"><span id="showPercent"></span> </label>
+                        <div class="progress" id="progressbar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="new-added-check-list">
+                        <li>
+                            <span class="remove" data-chtitle="" onclick="removeThisCheckList(event)"></span>
+                            <label class="country-label"> Default Check List
+                                <input type="checkbox" value="Default Check List">
+                                <span class="checkmark"></span>
+                            </label>
+                        </li>
+                    </div>
+                </div>
+                <div class="button-section">
+                    <button class="cancel-btn" id="cancel-btn" onclick="closeRightSection()">Cancel</button>
+                    <button class="create-btn" id="create-btn" onclick="createNewActivity();">Create Task</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

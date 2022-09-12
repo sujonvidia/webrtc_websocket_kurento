@@ -1,0 +1,309 @@
+
+
+	
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+		<title>
+			<%= page_title %>
+		</title>
+		<link rel="stylesheet" href="/stylesheets/jquery.mobile-1.4.5.min.css" />
+		<script src="/javascripts/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="/javascripts/jQuery/jquery-ui.min.js"></script>
+		<script src="/javascripts/jQuery/jquery.mobile-1.4.5.js"></script>
+		<script src="/javascripts/bootstrap.min.js"></script>
+		<style>
+			.company_con {
+				box-sizing: border-box;
+				height: 100%;
+				width: 100%;
+				/* border: 1px solid red; */
+				position: relative;
+			}
+			.comnay_content {
+				box-sizing: border-box;
+				width: 65%;
+				margin: 100px auto;
+				border: 1px solid #003466;
+				padding: 30px 60px 45px;
+
+				
+				box-shadow: 3px 2px 8px -2px rgba(142, 142, 142, 0.73);
+				-webkit-box-shadow: 3px 2px 8px -2px rgba(142, 142, 142, 0.73);
+				-moz-box-shadow: 3px 2px 8px -2px rgba(142, 142, 142, 0.73);
+			}
+			.company_logo {
+				width: 100%;
+				text-align: center;
+			}
+			.company_logo img {
+				width: 130px;
+			}
+			.company_names_head {
+				text-align: center;
+				font-family: Verdana, sans-serif;
+				/* text-shadow: 4px 4px 2px rgba(150, 150, 150, 1); */
+				font-size: 20px;
+			}
+			.compnay_btns_con {
+				box-sizing: border-box;
+				/* border: 1px solid #717B8E; */
+				padding: 15px 0px;
+				min-height: 190px;
+			}
+			.compnay_btns_con .com_btn {
+				box-sizing: border-box;
+				display: inline-block;
+				text-decoration: none;
+				text-align: center;
+				float: left;
+				border: 1px solid #646783;
+				width: calc(50% - 30px);
+				border-radius: 4px;
+				color: rgba(0, 0, 0, 1);
+				font-size: 22px;
+				line-height: 26px;
+				font-weight: bold;
+				margin: 15px 0px;
+				padding: 10px 8px;
+				cursor: pointer;
+			}
+			.compnay_btns_con .com_btn:nth-child(2n+1) {
+				margin-right: 60px;
+			}
+			.compnay_btns_con .com_btn.selected{
+				border: 5px solid #646783;
+			}
+			.company_sign_in_con {
+				width: 100%;
+				text-align: center;
+				margin-top: 25px;
+				/* border: 1px solid red; */
+			}
+			.company_sign_in_con button {
+					width: 33.33%;
+					text-align: center;
+					font-size: 22px;
+					line-height: 27px;
+					border-radius: 4px;
+					background-color: #003466;
+					border: 1px solid #003466;
+					color: #FFF;
+					cursor: pointer;
+					padding: 7px;
+			}
+			#com_btn_submit{
+				display: none;
+			}
+			.com_btn{
+				position: relative;
+			}
+			.com_btn:hover:before{
+				width: 32px;
+				height: 32px;
+				content: " ";
+				background-image: url(/images/forward_32.svg);
+				position: absolute;
+				right: 5%;
+				top: 50%;
+				transform: translateY(-50%);
+
+			}
+			#adminSettingBackWrap, #profileBackWrap {
+				background-color: rgba(0, 0, 0, 0.3);
+				width: 100%;
+				height: 100%;
+				overflow-y: auto;
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				z-index: 1000;
+				display: none;
+			}
+			#wsAddRolePopUp {
+				width: 480px;
+				border-radius: 1px;
+				background-color: #fafafa;
+				margin: 141px auto;
+				padding: 0px;
+				box-sizing: border-box;
+				position: relative;
+				/* display: inline-table; */
+			}
+			.createRollPopTitle {
+    height: 28px;
+    color: #FFF;
+    font-family: var(--F1);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 24px;
+    /* margin-bottom: 24.37px; */
+    background-color: #023d67;
+    padding: 15px;
+}
+.close-popup {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.role-data-input {
+    padding: 24px;
+}
+.form-inline-role {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    width: 100%;
+}
+.form-inline-role label {
+    height: 16px;
+    color: #023d67;
+    font-family: var(--F1);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 16px;
+    margin-bottom: 6px;
+}
+.form-inline-role input {
+    box-sizing: border-box;
+    height: 38.5px;
+    border: 1.5px solid #e6e8ed;
+    border-radius: 4px;
+    background-color: #ffffff;
+    padding: 8px 10px;
+    font-family: var(--F1);
+    font-size: 16px;
+    width: 420px;
+    margin-left: 10px;
+}
+[placeholder]:empty::before {
+    content: attr(placeholder);
+    color: #555;
+}
+#roleCreateErrMsg {
+    padding-left: 50px;
+    color: #F55;
+    margin-top: 4px;
+}
+.from-inline-block-role {
+    display: block;
+    min-height: 36px;
+    margin-top: 20px;
+}
+.createRoleBtn {
+    height: 35px;
+    width: 129px;
+    border-radius: 4px;
+    /* background-color: #5cd4ef; */
+		background-color: var(--PrimaryC);
+    float: right;
+    position: relative;
+    /* margin-top: 24px; */
+    cursor: pointer;
+    border: none;
+    color: #ffffff;
+    font-family: var(--F1);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 32px;
+}
+.cancelRoleBtn {
+    height: 35px;
+    width: 129px;
+    border-radius: 4px;
+    color: #FFF;
+    background-color: transparent;
+    float: right;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    color: #5cd4ef;
+    font-family: var(--F1);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 32px;
+    border: 1px solid #5cd4ef;
+    /* margin-top: 24px; */
+    margin-right: 15px;
+}
+		</style>
+	</head>
+	<body>
+		<div class="company_con">
+			<form action="/company" method="POST">
+			<div class="comnay_content">
+					<div class="company_logo">
+						<img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="Workfreeli">
+					</div>
+					<p class="company_names_head">Please select a business to continue...</p>
+					<div class="compnay_btns_con">
+						<div class="com_btn">OHS Global</div>
+						<div class="com_btn">Ascent Group</div>
+						<div class="com_btn">Demo Company</div>
+						<div class="com_btn">ABC Inc.</div>
+					</div>
+					<input type="hidden" name="company_name" id="company_name" value="<%= comid %>">
+					<input type="hidden" name="pass" id="password">
+					<div class="company_sign_in_con">
+						<!-- <button>Sign In</button> -->
+						<button id="com_btn_submit" type="submit">Continue</button>
+					</div>
+			</div>
+			</form>
+		</div>
+		<div id="adminSettingBackWrap" style="<%= (need_password > 0)? 'display:block' : 'display:none' %>">
+			<div id="wsAddRolePopUp" style="<%= (need_password > 0)? 'display:block' : 'display:none' %>">
+				<h3 class="createRollPopTitle">Authentication</h3>
+				<img onclick="closeAdminSettingPop()" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="">
+				<form class="form-inline-role" onsubmit="return false;">
+					<div class="role-data-input">
+						<input type="password" autocomplete="off" id="WsManagRoleName" placeholder="Enter your password">
+						<div class="from-inline-block-role">
+							<button class="createRoleBtn" onclick="verify()" id="WsManagAddRole">Verify Now</button>
+							<button class="cancelRoleBtn" onclick="closeAdminSettingPop()">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+        var all_company = <%- JSON.stringify(company) %>;
+        $(document).ready(function() {
+            $('.company_sign_in_con button').attr("disabled", true);
+            $(".compnay_btns_con").html("");
+            $.each(all_company, function(k, v){
+                var comname = v.company_name.split("@");
+                var html = '<div class="com_btn " onclick="setcomid(this)" data-id="'+ v.company_id +'">'+comname[0]+'</div>';
+                $(".compnay_btns_con").append(html);
+            });
+        });
+        function setcomid(e){
+			$('.company_sign_in_con button').attr("disabled", false);
+            $('.com_btn').removeClass('selected');
+            $('#company_name').val($(e).attr("data-id"));
+			$(e).addClass('selected');
+			$('#com_btn_submit').click();
+		}
+		function verify()
+		{
+			$("#password").val($("#WsManagRoleName").val());
+			var cid = $("#company_name").val();
+			closeAdminSettingPop();
+			$(".com_btn[data-id='"+ cid +"']").click();
+		}
+		function closeAdminSettingPop()
+		{
+			$("#adminSettingBackWrap").hide();
+			$("#wsAddRolePopUp").hide();
+		}
+    </script>
+</html>
+

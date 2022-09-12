@@ -1,0 +1,14 @@
+node_modules/
+package-lock.json
+app.log
+bin/
+bin/www
+config/config.js
+config/config.json
+config/privatekey.json
+config/s3_config.json
+libav/index.js
+public/javascripts/apprtc.debug____2.js
+sdp/
+URL_Data.json
+*.jpg

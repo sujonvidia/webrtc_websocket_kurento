@@ -1,0 +1,12 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" id="Layer_1" x="0px" y="0px" viewBox="0 0 38 38">
+    <style type="text/css">
+        .st0{fill:none;stroke:#D1D1D1;stroke-width:1;}
+        .st1{fill:none;stroke:#FF2E63;stroke-width:1;transform-origin:18px 18px;}
+        .st2{fill:none;stroke:#0000FF;stroke-width:1;transform-origin:18px 18px;}
+    </style>
+    <g transform="translate(1 1)">
+        <circle class="st0" cx="18" cy="18" r="18"></circle>
+        <path class="st1" d="M36,18c0-9.9-8.1-18-18-18"></path>
+        <path class="st2" d="M18,36c9.9,0,18-8.1,18-18"></path>
+    </g>
+</svg>

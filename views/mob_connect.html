@@ -1,0 +1,433 @@
+<%- include('layouts/mob_head') %>
+<div class="loading_connect connectLoader"> <img src="/images/assets/loading_data.gif"></div>
+<section class="connect_section">
+	<div class="connect_tab_container">
+		<ul>
+			<li class="b_label active" onclick="headerTab(this,'chats')">Chats</li>
+			<li class="b_label calls_l" onclick="headerTab(this,'calls')">Calls</li>
+			<li class="b_label calls_l" onclick="headerTab(this,'notify')"id="notificaitonClickItem">Notification(s) <span class="unreadMsgCount"></span></li>
+			<li class="b_label filter" onclick="filterData(this)"></li>
+		</ul>
+	</div>
+
+	<div class="conv_list_container" id="chat_conversations">
+		<!-- Test Commit By Nayeem -->
+		<!-- My conversation -->
+		<% _.each(data[0].myid, function(v, k) {%>
+			<div data-conv-type="personal" 
+				room-status="active" 
+				data-convtype="pinuser" user-id="<%= v.userid %>" 
+				data-conv-id="<%= user_id %>" 
+				data-name="<%= v.users_name %>" data-img="<%= v.users_img %>"
+				data-team="<%= v.sub_title %>" 
+				data-privacy = "private"
+				class="conv_area pinuser convid<%= v.conversation_id %>" 
+				data-unreadThread="false"
+				has_flagged="false"
+				onclick="startConversation(event,this)">
+				<div class="right_">
+					<div class="conv_img">
+						<img src="<%= file_server %>profile-pic/Photos/<%= v.users_img %>">
+						<div class="status online conv_<%= user_id %>"></div>
+					</div>
+				</div>
+				<div class="mid_">
+					<div class="conv_name">
+						<div class="title"><%= v.users_name %> </div>
+					</div>
+					<div class="last_msg">It's You!</div>
+				</div>
+				<div class="left_">
+					<div class="last_msg_date"></div>
+					<div class="more_noti">
+						<div class="unread_msg"></div>
+						<div class="unread_thread"></div>
+						<div class="pin active" onclick="unpinme('<%= v.pinid %>', '<%= v.conversation_id %>', event)"></div>
+						<div class="mute_noti"></div>
+						<div class="room_status">[Closed]</div>
+					</div>
+				</div>
+			</div>
+		<% }); %>
+				
+		<!-- pin users display -->
+			<% _.each(data[0].pin, function(v, k) {
+					if(v.conversation_type == 'personal'){
+						var dirname = 'profile-pic'; 
+						v.conversation_type = 'single';
+					}
+					else
+						var dirname = 'room-images-uploads';
+					%>
+					<div data-conv-type="<%= v.conversation_type %>" 
+						room-status="<%  if(v.status !== 'active' && v.status !== null){%>close<%} else {%>active<%} %>" 
+						data-convtype="pinuser" user-id="<%= v.user_id %>" 
+						data-conv-id="<%= v.conversation_id %>" 
+						data-name="<%= v.users_name %>" data-img="<%= v.users_img %>" 
+						data-team="<%= v.sub_title %>" 
+						data-nom="0"
+						data-nor="0"
+						data-privacy = "<%= v.privecy %>"
+						class="conv_area pinuser convid<%= v.conversation_id %>" 
+						data-unreadThread="false"
+						has_flagged="false"
+						onclick="startConversation(event,this)">
+						<div class="right_">
+							<div class="conv_img">
+								<img src="<%= file_server %><%= dirname %>/Photos/<%= v.users_img %>">
+								<div class="status offline conv_<%= v.conversation_id %>"></div>
+								<div class="privacy_status"></div>
+							</div>
+						</div>
+						<div class="mid_">
+							<div class="conv_name">
+								<!-- <div class="privacy_status"></div> -->
+								<div class="title"><%= v.users_name %> </div>
+								<% _.each(v.participants,function(va,ka){%>
+									<span class="_participants_id<%= va %>"></span>
+								<%})%>
+							</div>
+							<div class="last_msg"><%- v.last_msg %></div>
+						</div>
+						<div class="left_">
+							<div class="last_msg_date"><%= moment(v.last_msg_time).format('ll') %></div>
+							<div class="more_noti">
+								<div class="unread_msg"></div>
+								<div class="unread_thread"></div>
+								<div class="pin active" onclick="unpinme('<%= v.pinid %>', '<%= v.conversation_id %>', event)"></div>
+								<div class="mute_noti"></div>
+								<div class="room_status">[Closed]</div>
+							</div>
+						</div>
+					</div>
+			<% }); %>
+
+		<!-- pin users display -->
+		
+		<!-- unpin users display -->
+			<% _.each(data[0].all_unpin, function(v, k) {
+					if(v.conversation_type == 'personal'){
+						var dirname = 'profile-pic'; 
+						v.conversation_type = 'single';
+					}
+					else
+						var dirname = 'room-images-uploads';
+					%>
+					<div data-conv-type="<%= v.conversation_type %>" 
+						room-status="<%  if(v.status !== 'active' && v.status !== null){%>close<%} else {%>active<%} %>" 
+						data-convtype="unpinuser" user-id="<%= v.user_id %>" 
+						data-conv-id="<%= v.conversation_id %>" data-name="<%= v.users_name %>" 
+						class="conv_area unpinuser convid<%= v.conversation_id %>" 
+						data-team="<%= v.sub_title %>" 
+						data-nom="0"
+						data-nor="0"
+						data-privacy = "<%= v.privecy %>"
+						data-img="<%= v.users_img %>" 
+						data-unreadThread="false"
+						has_flagged="false"
+						onclick="startConversation(event,this)">
+						<div class="right_">
+							<div class="conv_img">
+								<img src="<%= file_server %><%= dirname %>/Photos/<%= v.users_img %>">
+								<div class="status offline conv_<%= v.conversation_id %>"></div>
+								<div class="privacy_status"></div>
+							</div>
+						</div>
+						<div class="mid_">
+							<div class="conv_name">
+								<!-- <div class="privacy_status"></div> -->
+								<div class="title"><%= v.users_name %> </div>
+								<% _.each(v.participants,function(va,ka){%>
+									<span class="conv_participant _participants_id<%= va %>"></span>
+								<%})%>
+							</div>
+							<div class="last_msg"><%- v.last_msg %></div>
+						</div>
+						<div class="left_">
+							<div class="last_msg_date"><%= moment(v.last_msg_time).format('ll') %></div>
+							<div class="more_noti">
+								<div class="unread_msg"></div>
+								<div class="unread_thread"></div>
+								<div class="pin"></div>
+								<div class="mute_noti"></div>
+								<div class="room_status">[Closed]</div>
+							</div>
+						</div>
+					</div>
+			<% }); %>
+	</div>
+	<div class="conv_list_container" id="all_channels" style="display: none"></div>
+	<div class="conv_list_container" id="conversations_notify" style="display: none">
+		<div id="notification_body"> </div>
+	</div>
+	<div class="conv_list_container" id="call_conversations" style="display: none"> </div>
+</section>
+<div class="thread_notify" id="thread_notify" onclick="filter_thread_msg()"> <span id="thread_notify_cntr">0</span> Threaded message(s)</div>
+
+<div class="changePwdPopup" id="changePwdPopup">
+	<form action="" autocomplete="off">
+		<div class="changePwdPopupBody">
+			<div class="close_popup" onclick="close_change_password()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+			<h2 class="popup_title">Change Password</h2>
+			<div class="input_row">
+				<label for="" class="input_lable">Current Password</label>
+				<input type="password" autocomplete="new-password" id="old_password" value="" class="input_field" placeholder="********">
+			</div>
+			<div class="input_row">
+				<label for="" class="input_lable">New Password</label>
+				<input type="password" autocomplete="new-password" id="new_password" value="" class="input_field" placeholder="********">
+			</div>
+			<div class="input_row">
+				<label for="" class="input_lable">Confirm Password</label>
+				<input type="password" autocomplete="new-password" id="con_password" value="" class="input_field" placeholder="********">
+			</div>
+			<div class="pwd_btn_group">
+				<button class="cancel_pwd" type="reset" onclick="close_change_password()">Cancel</button>
+				<button class="update_pwd" onclick="change_user_password()">Update</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script>
+	var session_id 		= '<%= session_id %>';
+	var user_id 		= '<%= user_id %>';
+	var company_id 		= '<%= company_id %>';
+	var user_email 		= '<%= user_email %>';
+	var user_fullname 	= '<%= user_fullname %>';
+	
+	var user_img 		= '<%= user_img %>';
+	var file_server 	= '<%= file_server %>';
+	var typing 			= false; //Global typing variable, for storing typing status
+	var timeout 		= undefined; //Global timeout variable, for storing when typing timeout
+	var allUserdata 	= <%- JSON.stringify(data) %>;
+	var all_unread_data	= <%- JSON.stringify(all_unread_data) %>;
+	var access_user_list = allUserdata[0].users;
+	var dept 			= [];
+	var memberList 		= [];
+	var adminList 		= [];
+	var adminListUUID 	= [];
+	var memberListUUID 	= [];
+	var unread_replay_data = [];
+	var data_unreadAllMsg = [];
+	var data_allEditUnreadMsg = [];
+	var allUnit 		= [];
+	var alltags 		= allUserdata[0].tags;
+	var all_conv 		= allUserdata[0].all_conv;
+	var temTNA 			= [];
+	var temp_tag_str 	= [];
+	var page_title 		= "<%= page %>";
+	var conversation_id = '';
+	var data_for_visibility = [];
+
+	console.log(223, all_unread_data);
+
+</script>
+<script src="/javascripts/socket-client-side.js"></script>
+<script src="/javascripts/socket-calling.js"></script>
+<script src="/javascripts/mob_connect_page.js"></script>
+<script>
+	$(function(){
+		var shteamlist = getCookie("sh_team_lists").split("@");
+		// console.log(318, shteamlist);
+		if(shteamlist.length > 0){
+			$.each(shteamlist, function(k, v){
+				if(v != "")
+					$(".conv_area[data-team='"+v+"']").hide();
+			});
+		}
+
+		socket.emit('get_all_team', { user_id: user_id}, function (res) {
+			if (res.status) {
+				$('#select-ecosystem').html("");
+				allteams = res.teams;
+				var html = "";
+				$.each(allteams, function (k, v) {
+					if(v.participants.indexOf(user_id)>-1){
+						var chk = shteamlist.indexOf(v.team_id) == -1 ? "checked": "";
+						html = '<div class="group_input">'+
+									'<label class="switchNav">'+
+										'<input type="checkbox" onclick="onoffteamroom(event)" '+ chk +' id="myteamid' + v.team_id + '" value="' + v.team_id + '">'+
+										'<span class="sliderNav round"></span>'+
+										'<span class="switchFor">' + v.team_title + '</span>'+
+									'</label>'+
+								'</div>';
+						$('#profile_teams').append(html);
+					}
+				});
+			}
+		});
+		var my_all_conv = [];
+		$.each($('.conv_area'), function(k,v){
+			if($(v).attr('data-conv-id') != undefined){
+				var id = $(v).attr('data-conv-id');
+				my_all_conv.push(id);
+			}
+		});
+		
+		socket.emit('get_all_member_ina_room', {my_all_conv}, function(data){
+			data_for_visibility = data;
+			$.each(data, function(k, v){
+				var participantActive = _.intersection(onlineUserList, v.participants);
+				if (participantActive.length > 1) {
+					$('.conv_'+v.conversation_id).addClass('online').removeClass('offline');
+				} else {
+					$('.conv_'+v.conversation_id).addClass('offline').removeClass('online');
+				}
+			});
+		});
+		
+		var _visibility = setInterval(_visibility, 1500);
+
+		function _visibility() {
+		  $.each(data_for_visibility, function(k, v){
+				var participantActive = _.intersection(onlineUserList, v.participants);
+				if (participantActive.length > 1) {
+					$('.conv_'+v.conversation_id).addClass('online').removeClass('offline');
+					$('._call_'+v.conversation_id+' .status').addClass('online').removeClass('offline');
+				} else {
+					$('.conv_'+v.conversation_id).addClass('offline').removeClass('online');
+					$('._call_'+v.conversation_id+' .status').addClass('offline').removeClass('online');
+				}
+			});
+		// console.log(307, onlineUserList);
+		}
+
+		/**
+		 * Mute
+		*/
+		socket.emit('all_mute_conv', user_id, function(data){
+			$.each(data,function(k,v){
+				if(v.mute_status == "active"){
+					var startTime = moment(new Date(v.mute_start_time)).format("llll")
+					var now = moment(new Date()).format("llll"); //todays date
+					var end = moment(new Date(v.mute_end_time)).format("llll");
+					var date2 = new Date(now);
+					var date1 = new Date(end);
+					var timeDiff = Math.ceil(date1.getTime() - date2.getTime());
+					var dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24));
+					if(timeDiff > 0){
+						if(dayDifference == 1){
+							if(v.mute_end_time !== null){
+								let end = moment(v.mute_end_time).format("x"); // activity end date
+								let date2 = moment().format('x');
+								let timeDiff = Math.ceil(end - date2);
+								let secDifference = Math.ceil(timeDiff / 1000);
+								let minDiff = Math.ceil(secDifference / 60);
+							}
+						}
+						$('.convid' + v.conversation_id).find('.mute_noti').addClass('active');
+						$('.convid' + v.conversation_id).find('.mute_noti').attr('data-mute-id', v.mute_id);
+						$('.convid' + v.conversation_id).find('.mute_noti').attr('onclick', 'unmuteNotification(event, "'+ v.mute_id +'")');
+						// myAllMuteConvid.push(v.conversation_id);
+						// myAllMuteConv.push(v);
+
+					}
+				}
+			});
+
+		});
+		
+		
+		$.each(alltags, function(k, v){
+			if(v.title != "" && v.visibility != null && v.visibility != 'hidden'){
+				var html = '<li class="added-tag-list">';
+				html +=		'<label for="tag_id_'+ v.tag_id +'">'+ v.title;
+				html +=			'<input onclick="select_filter_tag(event)" id="tag_id_'+ v.tag_id +'" data-tagid="'+ v.tag_id +'" data-tagtitle="'+ v.title +'" class="checkmember checkToDo" type="checkbox">';
+				html +=			'<span class="checkmark"></span>';
+				html +=		'</label>';
+				html +=	'</li>';
+				$("#taggedItem").append(html);
+			}
+		});
+		
+		$.each(all_conv, function(k, v){
+			if(v.is_active !== null){
+				if(v.is_active.indexOf(user_id) > -1){
+					var html = '<li class="hiddenconv-list">';
+					html +=		'<label for="hidden_convid_'+ v.conversation_id +'">'+ v.title;
+					html +=			'<input onclick="show_hidden_conv(\''+ v.conversation_id +'\', \''+ v.company_id +'\')" id="hidden_convid_'+ v.conversation_id +'" class="checkmember" type="checkbox">';
+					html +=			'<span class="checkmark"></span>';
+					html +=		'</label>';
+					html +=	'</li>';
+					$("#unhide_conv").append(html);
+				}
+			}
+		});
+		$.each(alltags, function(k, v){
+			if(v.title != "" && v.visibility != null && v.visibility != 'hidden'){
+				var html = '<li class="added-tag-list">';
+				html +=		'<label for="tag_id_'+ v.tag_id +'">'+ v.title;
+				html +=			'<input onclick="select_filter_tag(event)" id="tag_id_'+ v.tag_id +'" data-tagid="'+ v.tag_id +'" data-tagtitle="'+ v.title +'" class="checkmember checkToDo" type="checkbox">';
+				html +=			'<span class="checkmark"></span>';
+				html +=		'</label>';
+				html +=	'</li>';
+				$("#taggedItem").append(html);
+			}
+		});
+
+		socket.emit('myTopicList', { userid: user_id }, (respons) => {
+			if (respons.staus) {
+				$("#topicItem").html("");
+				$.each(respons.rooms, function (k, v) {
+					if(v.single == 'no'){
+						if(v.title != '' && v.title != null){
+							if(my_all_conv.indexOf(v.conversation_id.toString()) > -1 && v.title.indexOf(',') == -1){
+								var html = '<li class="added-topic-list">'+
+												'<label for="topic_id'+ v.conversation_id.toString() +'"> '+ v.title +
+													'<input id="topic_id'+ v.conversation_id.toString() +'" class="checkmember checkToDo" onclick="conv_show_hide(event)" checked type="checkbox">'+
+													'<span class="checkmark"></span>'+
+												'</label>'+
+											'</li>';
+								$("#topicItem").append(html);
+							}
+						}
+					}
+				});
+
+				$.each(respons.rooms, function (k, v) {
+					if(v.single == 'no'){
+						if(v.title != '' && v.title != null){
+							if(my_all_conv.indexOf(v.conversation_id.toString()) == -1 && v.title.indexOf(',') == -1){
+								var html = '<li class="added-topic-list">'+
+												'<label for="topic_id'+ v.conversation_id.toString() +'"> '+ v.title +
+													'<input id="topic_id'+ v.conversation_id.toString() +'" class="checkmember checkToDo" onclick="conv_show_hide(event)" type="checkbox">'+
+													'<span class="checkmark"></span>'+
+												'</label>'+
+											'</li>';
+								$("#topicItem").append(html);
+							}
+						}
+					}
+				});
+			}
+		});
+
+	});
+function findObjForUser(value) {
+	for (var i = 0; i < user_list.length; i++) {
+		if (user_list[i]['id'] === value) {
+			if(user_list[i].login_total == null){
+				user_list[i].login_total = 0;
+			}
+			var userData ={
+				email: user_list[i].email,
+				fullname: user_list[i].fullname,
+				id: user_list[i].id,
+				img: user_list[i].img,
+				designation: user_list[i].designation,
+				dept: user_list[i].dept,
+				createdat: user_list[i].createdat,
+				conference_id:user_list[i].conference_id,
+				login_total:user_list[i].login_total
+
+			}
+			return userData;
+		}
+	}
+	return false;
+}
+</script>
+
+<%- include('layouts/mob_foot') %>
+

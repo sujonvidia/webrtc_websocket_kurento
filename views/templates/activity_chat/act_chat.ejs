@@ -1,0 +1,1160 @@
+<div id="live-chat">
+	<header class="clearfix">
+		<div class="headLabelTitle"><img src="/images/basicAssets/Chat.svg">
+			<p>Activity Chat</p>
+		</div>
+		<img class="chat-close" onclick="$('#live-chat').hide();" width="34" src="/images/basicAssets/close_button.svg" alt="Close">
+		<div class="heading_area">
+			<h4 class="todo_chat_room_title">Activity Chat</h4>
+			<img src="/images/basicAssets/Users.svg" alt="">
+			<span class="count_member tcm"></span>
+			<div class="customToolTip"></div>
+		</div>
+		<div class="voice-call"><img src="/images/basicAssets/custom_voice_call.svg" alt=""></div>
+		<div class="video-call"><img src="/images/basicAssets/custom_video_call.svg" alt=""></div>
+		<div class="search-into-todo-msg" onclick="show_search_input()"><img
+				src="/images/basicAssets/search_icon_for_todo_chat.svg" alt=""></div>
+		<input type="text" id="todo_chat_search_input" onkeypress="chat_search_input(event)" onblur="hide_search_input()">
+		<img class="clear_search_box" onclick="clear_search_box()"src="/images/basicAssets/close_button.svg" alt="Clear">
+	</header>
+	<div class="msg-separetor_head">
+		<div id="top-date"></div>
+	</div>
+
+	<div class="todo-chat-body">
+		<div class="chat-history">
+		</div><!-- end chat-history -->
+		<!-- <p class="chat-feedback">Your partner is typing…</p> -->
+	</div>
+
+	<div class="todos-chat-write">
+		<div contenteditable="true" onkeypress="activityTypeBox(this,event)" type="text" id="chatbox" placeholder="Write a message.." autofocus></div>
+		<div contenteditable="true" type="text" id="chatboxEditor" placeholder="" autofocus style="display:none"
+			onkeyup="todoEditorkeyUp(event,this)" onkeydown="todoEditorkeyDown(event,this)"></div>
+		<p class="typing-indicator"></p>
+		<input type="hidden">
+		<div class="sendBtn" onclick="todo_msg_send()"></div>
+		<div class="attachmentHolder" onclick="open_file_browser()"></div>
+		<div class="emojiHolder" onclick="open_todo_emoji()"></div>
+	</div>
+
+	<div class="task-edit-write">
+		<div contenteditable="true" type="text" id="subtaskNote" autofocus></div>
+	</div>
+</div>
+
+<div id="live-note" style="display: none !important;">
+	<header class="clearfix">
+		<div class="headLabelTitle headLabelTitleNote">
+			<p>Subtask Note</p>
+			<div class="noteName active" id="myNote" onclick="noteToggle(this)">My Note</div>
+			<div class="noteName" id="shareNote" onclick="noteToggle(this)">Collaborative Note</div>
+		</div>
+		<img class="chat-close" width="34" src="/images/basicAssets/close_button.svg" alt="Close" onclick="hideNoteBox()">
+		<div class="heading_area">
+			<h4 class="todo_chat_room_title">Amazon Wishlist</h4>
+			<!-- <img src="/images/basicAssets/Users.svg" alt="" onclick="viewShareList(event)"> -->
+			<!-- <span class="count_member" onclick="viewShareList(event)">8 Members</span> -->
+		</div>
+		<!--<div class="voice-call"><img src="/images/basicAssets/custom_voice_call.svg" alt=""></div>
+        <div class="video-call"><img src="/images/basicAssets/custom_video_call.svg" alt=""></div>
+        <div class="search-into-todo-msg" onclick="show_search_input()"><img src="/images/basicAssets/search_icon_for_todo_chat.svg" alt=""></div>-->
+	</header>
+	<!-- <ul id="note_colla_tab"></ul> -->
+	<div class="batchButtonSec">
+		<div class="floatingBtn active" onclick="filter_note_history(event)" data-val="all">All</div>
+		<div class="floatingBtn" onclick="filter_note_history(event)" data-val="co-owner">Admin <span
+				onmouseover="viewuserlist(event)" onmouseout="hideuserlist()"></span>
+			<div class="assignee_users" style="left: -45px;">
+				<div class="users_container"></div>
+			</div>
+		</div>
+		<div class="floatingBtn" onclick="filter_note_history(event)" data-val="observer">Observer <span
+				onmouseover="viewuserlist(event)" onmouseout="hideuserlist()"></span>
+			<div class="assignee_users" style="left: -45px;">
+				<div class="users_container"></div>
+			</div>
+		</div>
+		<div class="floatingBtn" onclick="filter_note_history(event)" data-val="assignee">Assignee <span
+				onmouseover="viewuserlist(event)" onmouseout="hideuserlist()"></span>
+			<div class="assignee_users" style="left: -45px;">
+				<div class="users_container"></div>
+			</div>
+		</div>
+	</div>
+	<div class="todo-chat-body">
+		<div class="chat-history" id="shareNoteContainer"> </div>
+	</div>
+	<div class="todos-chat-write">
+		<div contenteditable="true" type="text" id="noteBox" placeholder=""></div>
+		<div type="text" id="noteBoxEditor" placeholder="" autofocus style="display:none"></div>
+		<button class="freli-btn f-btn-primary" id="submitLiveNote" style="display: none"
+			onclick="saveLiveNote(this)">Save</button>
+		<p class="typing-indicator"></p>
+		<input type="hidden">
+	</div>
+</div>
+<div id="subtaskProperty" style="width: 617px; display:none">
+	<header class="clearfix" style="position:relative">
+		<img class="chat-close" width="34" src="/images/basicAssets/close_button.svg" alt="Close"
+			onclick="$('#subtaskProperty').hide()">
+		<div class="heading_area">
+			<h4 class="todo_chat_room_title property_title">Amazon Wishlist</h4>
+			<img src="/images/basicAssets/Users.svg" alt="">
+			 <span class="count_member tcm">8 Members</span>
+			<div class="customToolTip"></div>
+		</div>
+		<div class="voice-call"><img src="/images/basicAssets/custom_voice_call.svg" alt=""></div>
+		<div class="video-call"><img src="/images/basicAssets/custom_video_call.svg" alt=""></div>
+		<div class="search-into-todo-msg" onclick="show_search_input()"><img src="/images/basicAssets/search_icon_for_todo_chat.svg" alt=""></div>
+		<input type="text" id="sub_chat_search_input" onkeypress="chat_search_input(event)" onblur="hide_search_input()">
+		<img class="clear_search_box" onclick="clear_search_box()"src="/images/basicAssets/close_button.svg" alt="Clear">
+		<div class="secLabel" style="position: absolute;bottom: 3px;left: 5px">
+			<span id="subTaskCreated_By"></span>
+			<span id="subTaskCreated_At" style="margin-left:5px"></span>
+			<span id="subTaskCreated_At_time" style="margin-left:5px"></span>
+		</div>
+	</header>
+	<div class="batchButtonSec">
+		<div class="floatingBtn bproperties active" data-value="bproperties" onclick="toggleBatchActions(this)">Properties
+		</div>
+		<div class="floatingBtn pmsg" data-value="pmsg" onclick="toggleBatchActions(this)">Message(s)</div>
+		<div class="floatingBtn bnote" data-value="bnote" onclick="toggleBatchActions(this)">Note(s)</div>
+	</div>
+	<div class="property-details overlayScrollbars" style="display: block">
+		<div class="property_names">
+
+			<div class="st_owner pro_name_value" style="display:none">
+				<h4>Owner</h4>
+			</div>
+			<div class="st_coWoner pro_name_value">
+				<h4>Co-Owner</h4>
+			</div>
+			<div class="st_observer pro_name_value">
+				<h4>Observer</h4>
+			</div>
+			<div class="st_assignee pro_name_value">
+				<h4>Assignee</h4>
+			</div>
+			<div class="st_phase pro_name_value">
+				<h4>Phase</h4>
+			</div>
+
+			<div class="st_dDate pro_name_value">
+				<h4>Due Date</h4>
+			</div>
+
+			<div class="st_cDate pro_name_value">
+				<h4>Completed Date</h4>
+			</div>
+
+			<div class="st_bAmount pro_name_value">
+				<h4>Budget Amount</h4>
+			</div>
+			<div class="st_aAmount pro_name_value">
+				<h4>Actual Amount</h4>
+			</div>
+			<div class="st_variance pro_name_value" style="display:none">
+				<h4>Variance</h4>
+			</div>
+			<div class="st_ewHour pro_name_value">
+				<h4>Estimated Work Hour</h4>
+			</div>
+			<div class="st_ehRate pro_name_value">
+				<h4>Estimated Hourly Rate</h4>
+			</div>
+			<div class="st_awHour pro_name_value">
+				<h4>Actual Work Hour</h4>
+			</div>
+			<div class="st_ahRate pro_name_value">
+				<h4>Actual Hourly Rate</h4>
+			</div>
+			<div class="st_status pro_name_value">
+				<h4>Status</h4>
+			</div>
+			<div class="st_reminder pro_name_value" style="border-bottom: 1px solid #d8d8d84f;">
+				<h4>Set Reminder</h4>
+			</div>
+		</div>
+		<div class="property_value">
+			<div class="st_owner pro_name_value" style="display:none">
+				<h4 class="st_owner_value"></h4>
+			</div>
+			<div class="st_coWoner pro_name_value" style="position:relative">
+				<h4 onclick="memberDistribute(this)" class="st_coWoner_value"></h4>
+				<div class="assignee_users">
+					<span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+					<input class="src_users" type="text" placeholder="Person Name"
+						onkeyup="searchUsersContainer(event,'co-owner')">
+					<div class="users_container">
+						<div class="usersList">
+							<img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+							<h3 class="name_label">AH Nayeem</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="st_observer pro_name_value" style="position:relative">
+				<h4 onclick="memberDistribute(this)" class="st_observer_value"></h4>
+				<div class="assignee_users">
+					<span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+					<input class="src_users" type="text" placeholder="Person Name"
+						onkeyup="searchUsersContainer(event,'co-owner')">
+					<div class="users_container">
+						<div class="usersList">
+							<img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+							<h3 class="name_label">AH Nayeem</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="st_assignee pro_name_value" style="position:relative">
+				<h4 onclick="memberDistribute(this)" class="st_assignee_value"></h4>
+				<div class="assignee_users">
+					<span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+					<input class="src_users" type="text" placeholder="Person Name"
+						onkeyup="searchUsersContainer(event,'co-owner')">
+					<div class="users_container">
+						<div class="usersList">
+							<img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+							<h3 class="name_label">AH Nayeem</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="st_phase pro_name_value">
+				<h4 class="st_phase_value" style="padding:0px"></h4>
+			</div>
+			<div class="st_dDate pro_name_value">
+				<h4>
+					<input class="st_dDate_value property_input" type="text" placeholder="">
+				</h4>
+			</div>
+			<div class="st_dDate pro_name_value">
+				<h4>
+					<input class="st_cDate_value property_input" type="text" placeholder="">
+				</h4>
+			</div>
+			<div class="st_bAmount pro_name_value">
+				<h4>
+					<input onkeydown="updateFromProperty(event, this)" class="st_bAmount_value property_input" type="text"
+						placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_aAmount pro_name_value">
+				<h4>
+					<input onkeydown="updateFromProperty(event, this)" class="st_aAmount_value property_input" type="text"
+						placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_variance pro_name_value" style="display:none">
+				<h4>
+					<input class="st_variance_value property_input" type="text" placeholder="0.00" disabled>
+				</h4>
+			</div>
+			<div class="st_ewHour pro_name_value">
+				<h4>
+					<input onkeydown="updateTimeProperty(event, this)" class="st_ewHour_value property_input" type="text"
+						placeholder="hh:mm">
+				</h4>
+			</div>
+			<div class="st_ehRate pro_name_value">
+				<h4>
+					<input onkeydown="updateFromProperty(event, this)" class="st_ehRate_value property_input" type="text"
+						placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_awHour pro_name_value">
+				<h4>
+					<input onkeydown="updateTimeProperty(event, this)" class="st_awHour_value property_input" type="text"
+						placeholder="hh:mm">
+				</h4>
+			</div>
+			<div class="st_ahRate pro_name_value">
+				<h4>
+					<input onkeydown="updateFromProperty(event, this)" class="st_ahRate_value property_input" type="text"
+						placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_status pro_name_value" style="border-bottom:1px solid #d8d8d84f">
+				<h4 class="st_status_value" style="padding:0px"></h4>
+			</div>
+			<div class="st_status pro_name_value" style="border-bottom:1px solid #d8d8d84f">
+				<h4 class="st_reminder_value"
+					style="position: relative;padding:0px;display: flex;align-items: center;justify-content: center">
+					<div id="tstr_btn" class="tstr_btn reminder_buttons" onclick="setToastr(this,'toastr')"> Toaster </div>
+					<div id="minutes_btn" class="minutes_btn reminder_buttons" onclick="setReminder(this,'reminder')"> Minutes
+					</div>
+					<div id="tstr_popup" class="tstr_popup">
+						<span class="closeMiniPopUp" onclick="closeMiniPopUp('tstr_popup')">+</span>
+						<li class="tstr_element" onclick="setToastr(this,'email')">Email</li>
+						<li class="tstr_element" onclick="setToastr(this,'msg')">Message</li>
+						<li class="reminder_element" data-value="15" onclick="setReminder(this,'beforeMin')">Before 15 Minutes</li>
+						<li class="reminder_element" data-value="30" onclick="setReminder(this,'beforeMin')">Before 30 Minutes</li>
+						<li class="reminder_element" data-value="45" onclick="setReminder(this,'beforeMin')">Before 45 Minutes</li>
+						<li class="reminder_element inp" style="padding:0px;"><input type="text" name="" id="addCustomMinutes"
+								onkeyup="addCustomMinutes(event)" placeholder="Enter Before Minutes"></li>
+					</div>
+				</h4>
+			</div>
+		</div>
+	</div>
+
+	<div class="property_notes">
+		<div class="st_chat" style="display: none">
+			<h3 class="chatEmptyMsg" style="text-align: center;padding-top: 33%;">No Chat History Available</h3>
+			<div id="proChatHistory" class="chat-history"></div>
+			<!-- <input type="text" id="batchMsg" placeholder="Batch Messages">
+			
+			<div class="sendbtn"></div> -->
+			<div class="batchWriteText">
+				<div contenteditable="true" id="stpmsg" placeholder="Add a Message" class="writeText"></div>
+				<div class="sendBtn" onclick="send_stp_msg()"></div>
+				<div class="attachmentHolder" onclick="open_file_browser()"></div>
+				<div class="emojiHolder" onclick="open_todo_emoji()"></div>
+			</div>
+		</div>
+		<div class="st_note" style="display: none">
+			<div class="createNoteContainer">
+				<div class="startNote" onclick="takeNote(this,'text')">Take a note...</div>
+				<div class="startNewList" style="position: relative" onclick="noteSorting(event)">
+					<div class="noteSortingDiv">
+						<li onclick="viewSortingNote(event,'Shared')">Shared Note</li>
+						<li onclick="viewSortingNote(event,'Private')">Private Note</li>
+					</div>
+				</div>
+			</div>
+			<div class="b_n_w_c mainNEditor" data-bg="#fff" style="display:none">
+				<div class="b_n_t_r_s">
+					<div class="moreico" onclick="toggleNoteOptions(this)"></div>
+					<ul class="note_m_op">
+						<li class="hide_n_elm" onclick="archiveBNote(this)">Archive</li>
+						<li class="hide_n_elm editbtnNote" onclick="editBNote(this)">Edit</li>
+						<li class="hide_n_elm" onclick="deleteBNote(this)">Delete</li>
+						<!-- <li onclick="openBNoteEditor(this)">Open in Keep</li> -->
+					</ul>
+					<div class="pinico" onclick="togglePinUnpin(this)"></div>
+				</div>
+				<div class="assign_photo"></div>
+				<div class="batch_note_text_part" onclick="triggerEditNote(this)">
+					<div class="b_n_w_title" onclick="triggerEditNote(this)">
+						<input type="text" placeholder="Title" id="batch_note_title">
+					</div>
+					<div class="b_n_w_desc" onclick="triggerEditNote(this)">
+						<div class="w_n_description" id="batch_note_desc" contenteditable="true" placeholder="Take a note..."
+							style="display:none"></div>
+						<div class="w_n_checkList" style="display:none;">
+							<ul class="incompletedCheck">
+								<!-- <li><span class="c_box" onclick="checkNLItem(this,'incompleted')"></span><span class="i_name" contenteditable="true">asdf asdfasdfasdf </span> <span class="i_close" onclick="removeListItemN(this,'in')"></span></li> -->
+							</ul>
+							<div class="addlistItemco" contenteditable="true" onkeydown="addlistItemCoIn(event,this)"
+								onkeyup="addlistItemCoup(event,this)"></div>
+							<div class="completecheckItemCo" style="display:none">
+								<div class="headingCom" onclick="togglecompLI(this)"><i class="rotateArrow"></i> <span><span
+											class="counter">1</span> Completed items</span></div>
+								<ul class="completedCheck">
+									<!-- <li><span class="c_box active" onclick="checkNLItem(this,'completed')"></span><span class="i_name" contenteditable="true">asdf </span> <span class="i_close" onclick="removeListItemN(this,'com')"></span></li> -->
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="collapse" onclick="collapseNoteDesc(this)"></div>
+					<div class="n_label_container">
+
+					</div>
+					<div class="n_update_time"><span></span></div>
+					<!-- <div class="w_n_btn_s">
+							<div class="btn_done_n" onclick="noteDone(this)" data-action="done">Done</div>
+						</div> -->
+					<div class="b_n_bottom_sec">
+						<ul class="ico_holder">
+							<!-- <li style="width: 60px;top: 5px;position: relative;">
+								<div class="group_input">
+									<label class="switchNav">
+										<input type="checkbox" id="bnpp_" onchange="notetypechange(this)">
+										<span class="sliderNav round"></span>
+										<span class="switchFor" style="color:#2a76ea;font-size: 13px;font-weight:400;">Private</span>
+									</label>
+								</div>
+							</li> -->
+							<li class="addlabel_ico" onclick="openLabelNote(event,this)">
+								<div class="add_l_noteCo">
+									<div class="heading">Label Note</div>
+									<input class="search hvText" type="text" placeholder="Enter label name"
+										onkeyup="findeditorLabel(event,this)">
+									<ul class="label_list">
+
+									</ul>
+									<div class="create_ico" style="display: none" onclick="createENlabel(this)"><span>Create </span>
+										"<span class="valueText"></span>"</div>
+								</div>
+							</li>
+							<li class="checklist_ico" onclick="toggleENCheckboxs(this)"></li>
+							<li class="delete_ico" onclick="deleteEN(this)"></li>
+							<li class="closediv btn_done_n" onclick="noteDone(this)" data-action="done">Done</li>
+							<li class="closediv btn_cancelNote" onclick="cancelUpdateNote(this)" data-action="cancel">Cancel</li>
+						</ul>
+						<div class="group_input">
+							<label class="switchNav">
+								<input type="checkbox" id="bnpp_" onchange="notetypechange(this)">
+								<span class="sliderNav round"></span>
+								<span class="switchFor" style="color:#2a76ea;font-size: 13px;font-weight:400;">Make this note private</span>
+							</label>
+						</div>
+					</div>
+					<div class="collaboratorDiv" data-bg="#fff">
+						<div class="colla_heading">
+							<span>Collaborators</span>
+						</div>
+						<div class="colla_content">
+							<ul class="collaborators_list">
+								<li>
+									<div class="uImg"><img src="/images/users/joni.jpg" alt=""></div>
+									<div class="nameNemail">
+										<div class="name">Dc Jony (Owner)</div>
+										<div class="email">dalimchyjony@gmail.com</div>
+									</div>
+									<div class="removeColla"></div>
+								</li>
+							</ul>
+							<div class="addColla">
+								<div class="uImg"><img src="/images/basicAssets/user-plus-solid.svg" alt=""></div>
+								<input type="email" class="addCollaInput" placeholder="Person or email to share with"
+									onkeyup="addNoteCollaborator(event,this)">
+							</div>
+						</div>
+						<div class="colla_foot">
+							<div class="btnSave" onclick="saveNoteCollaborators(this)">Save</div>
+							<div class="btnCancel" onclick="cancelAddCollaborators(this)">Cancel</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="openoldnote" onclick="openoldnote()" style="display:none;cursor: pointer;color: #009aff;font-family: 'hvAssistant';font-size: 13px;margin-left: 20px;">View old note</div>
+			<div class="draw_c_Note">
+				<div class="draw_pin_note"></div>
+				<div class="draw_unpin_note"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="batchProcessing" style="width: 617px; display:none">
+	<header class="clearfix">
+		<img class="chat-close" width="34" src="/images/basicAssets/close_button.svg" alt="Close"
+			onclick="hideBatchProcessing(this)">
+		<div class="batchHeading">
+			<h1><span class="b_a_ico"></span> Batch Actions <span class="selectedStcounter"> (2) Subtask selected</span></h1>
+			<div class="selectedStaction"><span class="selectedStDelete" onclick="">Delete</span><span class="selectedStDuplicate" onclick="">Duplicate</span></div>
+		</div>
+	</header>
+	<!-- New Batch processing design -->
+
+	<div class="property-details overlayScrollbars" id="batchProDetails">
+		<h2 class="batch_details_title"> What would you like to do with the selected tasks ?</h2>
+		
+		<div class="ct_row" style="margin-bottom: 5px">
+			<h2 class="toggle_title" onclick="toggleChild(this)"> + Edit Observer(s) </h2>
+			<div class="" style="display: none;width: 100%">
+				<input type="text">
+			</div>
+		</div>
+		<div class="ct_row" style="margin-bottom: 5px">
+			<h2 class="toggle_title" onclick="toggleChild(this)"> + Edit Assignee </h2>
+			<div class="" style="display: none;width: 100%">
+				<input type="text">
+			</div>
+		</div>
+		<div class="ct_row" style="margin-bottom: 5px">
+			<h2 class="toggle_title" onclick="toggleChild(this)"> + Edit Start Date </h2>
+			<div class="" style="display: none;width: 100%">
+				<input type="text">
+			</div>
+		</div>
+		<div class="ct_row" style="margin-bottom: 5px">
+			<h2 class="toggle_title" onclick="toggleChild(this)"> + Edit Due Date </h2>
+			<div class="" style="display: none;width: 100%">
+				<input type="text">
+			</div>
+		</div>
+		<div class="ct_row" style="margin-bottom: 5px">
+			<h2 class="toggle_title" onclick="toggleChild(this)"> + Edit Phase </h2>
+			<div class="" style="display: none;width: 100%">
+				<input type="text">
+			</div>
+		</div>
+		<div class="ct_row" style="margin-bottom: 5px">
+			<h2 class="toggle_title" onclick="toggleChild(this)"> + Edit Status </h2>
+			<div class="" style="display: none;width: 100%">
+				<input type="text">
+			</div>
+		</div>
+		<div class="ct_row" style="margin-top: 20px; padding: 0 13px;">
+			<button class="saveChanges">Apply Changes</button>
+		</div>
+	</div>
+
+	<!-- <div class="batchButtonSec">
+		<div class="floatingBtn bproperties active" data-value="bproperties" onclick="toggleBatchActions(this)">Properties
+		</div>
+		<div class="floatingBtn bmsg" data-value="bmsg" onclick="toggleBatchActions(this)">Send Message(s)</div>
+		<div class="floatingBtn bnote" data-value="bnote" onclick="toggleBatchActions(this)">Note(s)</div>
+	</div> -->
+	<!-- <div class="property-details overlayScrollbars" id="batchProDetails">
+
+		<div class="property_names" id="batchPropertyNames">
+
+			<div class="st_coWoner pro_name_value">
+				<h4>Co-Owner</h4>
+			</div>
+			<div class="st_observer pro_name_value">
+				<h4>Observer</h4>
+			</div>
+			<div class="st_assignee pro_name_value">
+				<h4>Assignee</h4>
+			</div>
+			<div class="st_phase pro_name_value">
+				<h4>Phase</h4>
+			</div>
+			<div class="st_dDate pro_name_value">
+				<h4>Due Date</h4>
+			</div>
+			<div class="st_bAmount pro_name_value">
+				<h4>Budget Amount</h4>
+			</div>
+			<div class="st_aAmount pro_name_value">
+				<h4>Actual Amount</h4>
+			</div>
+			<div class="st_ewHour pro_name_value">
+				<h4>Estimated Work Hour</h4>
+			</div>
+			<div class="st_ehRate pro_name_value">
+				<h4>Estimated Hourly Rate</h4>
+			</div>
+			<div class="st_awHour pro_name_value">
+				<h4>Actual Work Hour</h4>
+			</div>
+			<div class="st_ahRate pro_name_value">
+				<h4>Actual Hourly Rate</h4>
+			</div>
+			<div class="st_status pro_name_value" style="border-bottom:1px solid #d8d8d84f">
+				<h4>Status</h4>
+			</div>
+		</div>
+		<div class="property_value" id="batchPropertyValue">
+			<div class="st_coWoner pro_name_value coowonerCell">
+				<h4 class="st_coWoner_value">
+					<div class="person-cell-component can-edit " id="batchAcoowner" onclick="viewUsersList(event)">
+						<div class="person-image-wrapper" style="pointer-events: none;">
+							<div class="person-bullet-component inline-image">
+								<img src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img" title="Dipok"
+									alt="Dipok">
+								<span class="more_observer"></span>
+							</div>
+						</div>
+						<div class="assignee_users">
+							<span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+							<input class="src_users" type="text" placeholder="Person Name"
+								onkeyup="searchUsersContainer(event,'co-owner')">
+							<div class="users_container">
+								<div class="usersList">
+									<img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+									<h3 class="name_label">AH Nayeem</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h4>
+
+			</div>
+			<div class="st_observer pro_name_value ObserverCell">
+				<h4 class="proObserverCell st_observer_value">
+					<div class="person-cell-component can-edit observerViewList" id="batchOvserver" data-id="" data-createdby="" onclick="viewUsersList(event)">
+						<div class="person-image-wrapper" style="pointer-events: none;">
+							<div class="person-bullet-component inline-image">
+								<span class="more_observer"></span>
+								<img src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img"><img
+									src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img">
+							</div>
+						</div>
+						<div class="assignee_users">
+							<span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+							<input class="src_users" type="text" placeholder="Person Name" onkeyup="searchUsersContainer(event,'observer')">
+							<div class="users_container">
+								<div class="usersList">
+									<img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+									<h3 class="name_label">AH Nayeem</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h4>
+			</div>
+			<div class="st_assignee pro_name_value AssigneeCell">
+				<h4 class="proAssigneeCell st_assignee_value">
+					<div class="person-cell-component can-edit assigneeViewList" id="batchAssignee" data-id="" data-createdby=""
+						onclick="viewUsersList(event)">
+						<div class="person-image-wrapper" style="pointer-events: none;">
+							<div class="person-bullet-component inline-image">
+								<span class="more_observer"></span>
+								<img src="/images/users/default_profile_empty.png" class="person-bullet-image demo_img"></div>
+						</div>
+						<div class="assignee_users">
+							<span class="closeMiniPopUp" onclick="closeMiniPopUp('assignee_users')">+</span>
+							<input class="src_users" type="text" placeholder="Person Name"
+								onkeyup="searchUsersContainer(event,'assignee')">
+							<div class="users_container">
+								<div class="usersList">
+									<img src="/images/users/default_profile_empty.png" class="demo_img" title="Dipok" alt="Dipok">
+									<h3 class="name_label">AH Nayeem</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h4>
+			</div>
+			<div class="st_phase pro_name_value">
+				<h4 class="st_phase_value" style="padding:0px">
+					<div class="status-cell-component">
+						<div class="transparent-deadline-indicator left-to-linked"></div>
+						<div class="priority-note-wrapper  ">
+							<div>
+							</div>
+						</div>
+						<div class="priority-label menu-color menu-color-print-helper-grey left-to-linked"
+							style="background-color: #c3c4c3">
+							<div class="status-label-marking">
+								<div class="ds-text-component priority-label-container" onclick="choosePriority(event)" dir="auto">
+									<span class="view_priority">Phase 1</span>
+								</div>
+								<div class="priority-picker-wrapper">
+									<div class="priority_container" style="position:relative">
+										<span onclick="pickPriority(this)" style="background-color: rgb(196, 196, 196);" data-id="" data-createdby="" class="single_priority">
+											<span onclick="editPrioritylabel(this)" onblur="blurPrioritylabel(this)" style="width: 100% !important;" class="priorityLabel">Phase 1</span>
+										</span>
+
+										<span onclick="pickPriority(this)" data-id="" data-createdby="" style="background-color:#e2445c"
+											class="single_priority">
+											<span onclick="editPrioritylabel(this)" onblur="blurPrioritylabel(this)"
+												style="width: 100% !important;" class="priorityLabel">Phase 2</span>
+										</span>
+
+										<span onclick="pickPriority(this)" data-id="" data-createdby="" style="background-color:#00c875"
+											class="single_priority">
+											<span onclick="editPrioritylabel(this)" onblur="blurPrioritylabel(this)"
+												style="width: 100% !important;" class="priorityLabel">Phase 3</span>
+										</span>
+										<span onclick="createPriority(event)" class="create_priority">New Phase</span>
+									</div>
+									<div class="priority-color-wrapper">
+										<div class="status-change-color open"
+											style="top: 176px; transform-origin: center bottom 0px; padding-right: 4px; padding-left: 4px;">
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</h4>
+			</div>
+			<div class="st_dDate pro_name_value">
+				<h4>
+					<input class="st_dDate_value property_input" type="text" placeholder="">
+				</h4>
+			</div>
+			<div class="st_bAmount pro_name_value">
+				<h4>
+					<input class="st_bAmount_value property_input" onkeydown="onInputbatchValue(event)"
+						onblur="amountInputBlur(this)" type="text" placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_aAmount pro_name_value">
+				<h4>
+					<input class="st_aAmount_value property_input" onkeydown="onInputbatchValue(event)"
+						onblur="amountInputBlur(this)" type="text" placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_ewHour pro_name_value">
+				<h4>
+					<input class="st_ewHour_value property_input" onkeydown="onInputbatchValue(event)"
+						onblur="amountInputBlur(this)" type="text" placeholder="hh:mm">
+				</h4>
+			</div>
+			<div class="st_ehRate pro_name_value">
+				<h4>
+					<input class="st_ehRate_value property_input" onkeydown="onInputbatchValue(event)"
+						onblur="amountInputBlur(this)" type="text" placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_awHour pro_name_value">
+				<h4>
+					<input class="st_awHour_value property_input" onkeydown="onInputbatchValue(event)"
+						onblur="amountInputBlur(this)" type="text" placeholder="hh:mm">
+				</h4>
+			</div>
+			<div class="st_ahRate pro_name_value">
+				<h4>
+					<input class="st_ahRate_value property_input" onkeydown="onInputbatchValue(event)"
+						onblur="amountInputBlur(this)" type="text" placeholder="0.00">
+				</h4>
+			</div>
+			<div class="st_status pro_name_value" style="border-bottom:1px solid #d8d8d84f">
+				<h4 class="st_status_value" style="padding:0px">
+					<div class="status-cell-component">
+						<div class="transparent-deadline-indicator left-to-linked"></div>
+						<div class="status-note-wrapper  ">
+							<div>
+							</div>
+						</div>
+						<div class="status-label menu-color menu-color-print-helper-grey left-to-linked"
+							style="border-bottom-color: #f0f0f0;background-color:#d8d8d8">
+							<div class="status-label-marking">
+								<div class="ds-text-component status-label-container" onclick="chooseStatus(event)" dir="auto">
+									<span class="view_status">Initiate</span>
+								</div>
+								<div class="status-picker-wrapper" style="left: 1086px; top: 459.1px; display: none;">
+									<div class="status_container" style="position:relative">
+										<span onclick="pickStatus(this)" data-color="#d8d8d8" style="background-color:#d8d8d8"
+											data-id="04417760-643e-11e9-ae6a-a922dd1e67ed"
+											data-createdby="be8fa449-cb6c-49db-a6c5-dcdda261e555" class="initiate single_status">
+											<span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span>
+											<span onclick="editStatuslabel(this)" onblur="blurStatuslabel(this)"
+												style="width: 100% !important;" class="statusLabel">Initiate</span>
+										</span>
+										<span onclick="pickStatus(this)" data-id="04417760-643e-11e9-ae6a-a922dd1e67ed"
+											data-createdby="be8fa449-cb6c-49db-a6c5-dcdda261e555" data-color="#fdab3d"
+											style="background-color:#fdab3d" class="single_status working">
+											<span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span>
+											<span onclick="editStatuslabel(this)" onblur="blurStatuslabel(this)"
+												style="width: 100% !important;" class="statusLabel">Working</span>
+										</span>
+										<span onclick="pickStatus(this)" data-id="04417760-643e-11e9-ae6a-a922dd1e67ed"
+											data-createdby="be8fa449-cb6c-49db-a6c5-dcdda261e555" data-color="#0086c0"
+											style="background-color:#0086c0" class="single_status waitfeedback">
+											<span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span>
+											<span onclick="editStatuslabel(this)" onblur="blurStatuslabel(this)"
+												style="width: 100% !important;" class="statusLabel">Waiting for feedback</span>
+										</span>
+										<span onclick="pickStatus(this)" data-color="#00c875" style="background-color:#00c875"
+											data-id="04417760-643e-11e9-ae6a-a922dd1e67ed"
+											data-createdby="be8fa449-cb6c-49db-a6c5-dcdda261e555" class="rowComplted single_status">
+											<span class="statusSamColor"><img src="/images/basicAssets/drop.svg" alt=""></span>
+											<span onclick="editStatuslabel(this)" onblur="blurStatuslabel(this)"
+												style="width: 100% !important;" class="statusLabel">Completed</span>
+										</span>
+										<span onclick="createStatus(event)" class="create_new_status">New Status</span>
+									</div>
+									<div class="status-color-wrapper">
+										<div class="status-change-color open"
+											style="top: 176px; transform-origin: center bottom 0px; padding-right: 4px; padding-left: 4px;">
+
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(255, 90, 196)" style="background-color: rgb(255, 90, 196);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(255, 21, 138)" style="background-color: rgb(255, 21, 138);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(226, 68, 92)" style="background-color: rgb(226, 68, 92);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(187, 51, 84)" style="background-color: rgb(187, 51, 84);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(127, 83, 71)" style="background-color: rgb(127, 83, 71);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(255, 100, 46)" style="background-color: rgb(255, 100, 46);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(253, 171, 61)" style="background-color: rgb(253, 171, 61);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(255, 203, 0)" style="background-color: rgb(255, 203, 0);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(202, 182, 65)" style="background-color: rgb(202, 182, 65);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(156, 211, 38)" style="background-color: rgb(156, 211, 38);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(0, 200, 117)" style="background-color: rgb(0, 200, 117);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(3, 127, 76)" style="background-color: rgb(3, 127, 76);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(0, 134, 192)" style="background-color: rgb(0, 134, 192);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(87, 155, 252)" style="background-color: rgb(87, 155, 252);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(102, 204, 255)" style="background-color: rgb(102, 204, 255);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(162, 93, 220)" style="background-color: rgb(162, 93, 220);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(120, 75, 209)" style="background-color: rgb(120, 75, 209);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(128, 128, 128)" style="background-color: rgb(128, 128, 128);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(51, 51, 51)" style="background-color: rgb(51, 51, 51);"></div>
+											<div class="create_priority_status status-change-color-icon open" onclick="updatePaseColor(this)"
+												data-color="rgb(196, 196, 196)" style="background-color: rgb(196, 196, 196);"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h4>
+			</div>
+		</div>
+	</div> -->
+	<!-- <div class="property_notes" id="batchPropertyNotes">
+		<div class="st_chat">
+			<h3 class="chatEmptyMsg" style="text-align: center;padding-top: 33%;">No Chat History Available</h3>
+			<div class="todo-chat-body">
+				<div class="chat-history"></div>
+			</div>
+			<div class="batchWriteText">
+				<div contenteditable="true" id="batchmsg" placeholder="Batch Message(s)" class="writeText"></div>
+				<div class="sendBtn" onclick="sendbatchmsg()"></div>
+				<div class="attachmentHolder"></div>
+				<div class="emojiHolder"></div>
+			</div>
+		</div>
+		<div class="st_note">
+			<div class="createNoteContainer">
+				<div class="startNote" onclick="takeNote(this,'text')">Take a note...</div>
+				<div class="startNewList" onclick="takeNote(this,'check')"></div>
+			</div>
+			<div class="b_n_w_c mainNEditor" data-bg="#fff" style="display:none">
+				<div class="b_n_t_r_s">
+					<div class="moreico" onclick="toggleNoteOptions(this)"></div>
+					<ul class="note_m_op">
+						<li class="hide_n_elm" onclick="archiveBNote(this)">Archive</li>
+						<li class="hide_n_elm editbtnNote" onclick="editBNote(this)">Edit</li>
+						<li class="hide_n_elm" onclick="deleteBNote(this)">Delete</li>
+					</ul>
+					<div class="pinico" onclick="togglePinUnpin(this)"></div>
+				</div>
+				<div class="assign_photo"></div>
+				<div class="batch_note_text_part" onclick="triggerEditNote(this)">
+					<div class="b_n_w_title" onclick="triggerEditNote(this)">
+						<input type="text" placeholder="Title" id="batch_note_title">
+					</div>
+					<div class="b_n_w_desc" onclick="triggerEditNote(this)">
+						<div class="w_n_description" id="batch_note_desc" contenteditable="true" placeholder="Take a note..."
+							style="display:none"></div>
+						<div class="w_n_checkList" style="display:none;">
+							<ul class="incompletedCheck">
+							</ul>
+							<div class="addlistItemco" contenteditable="true" onkeydown="addlistItemCoIn(event,this)"
+								onkeyup="addlistItemCoup(event,this)"></div>
+							<div class="completecheckItemCo" style="display:none">
+								<div class="headingCom" onclick="togglecompLI(this)"><i class="rotateArrow"></i> <span><span
+											class="counter">1</span> Completed items</span></div>
+								<ul class="completedCheck">
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="collapse" onclick="collapseNoteDesc(this)"></div>
+					<div class="n_label_container">
+
+					</div>
+					<div class="n_update_time"><span></span></div>
+
+					<div class="b_n_bottom_sec">
+						<ul class="ico_holder">
+
+							<li class="addlabel_ico" onclick="openLabelNote(event,this)">
+								<div class="add_l_noteCo">
+									<div class="heading">Label Note</div>
+									<input class="search hvText" type="text" placeholder="Enter label name"
+										onkeyup="findeditorLabel(event,this)">
+									<ul class="label_list">
+
+									</ul>
+									<div class="create_ico" style="display: none" onclick="createENlabel(this)"><span>Create </span>
+										"<span class="valueText"></span>"</div>
+								</div>
+							</li>
+							<li class="checklist_ico" onclick="toggleENCheckboxs(this)"></li>
+							<li class="delete_ico" onclick="deleteEN(this)"></li>
+
+							<li class="closediv btn_done_n" onclick="noteDone(this)" data-action="done">Done</li>
+							<li class="closediv btn_cancelNote" onclick="cancelUpdateNote(this)" data-action="cancel">Cancel</li>
+						</ul>
+					</div>
+					<div class="collaboratorDiv" data-bg="#fff">
+						<div class="colla_heading">
+							<span>Collaborators</span>
+						</div>
+						<div class="colla_content">
+							<ul class="collaborators_list">
+								<li>
+									<div class="uImg"><img src="/images/users/joni.jpg" alt=""></div>
+									<div class="nameNemail">
+										<div class="name">Dc Jony (Owner)</div>
+										<div class="email">dalimchyjony@gmail.com</div>
+									</div>
+									<div class="removeColla"></div>
+								</li>
+							</ul>
+							<div class="addColla">
+								<div class="uImg"><img src="/images/basicAssets/user-plus-solid.svg" alt=""></div>
+								<input type="email" class="addCollaInput" placeholder="Person or email to share with"
+									onkeyup="addNoteCollaborator(event,this)">
+							</div>
+						</div>
+						<div class="colla_foot">
+							<div class="btnSave" onclick="saveNoteCollaborators(this)">Save</div>
+							<div class="btnCancel" onclick="cancelAddCollaborators(this)">Cancel</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="openoldnote" onclick="openoldnote()" style="display:none;cursor: pointer;color: #009aff;font-family: 'hvAssistant';font-size: 13px;margin-left: 20px;">View old note</div>
+			<div class="draw_c_Note">
+				<div class="draw_pin_note"></div>
+				<div class="draw_unpin_note"></div>
+			</div>
+
+		</div>
+	</div> -->
+	<!-- <div class="batch-actions-menu-wrapper" id="batchActionMenu">
+		<div class="num-of-actions_wrapper">
+			<div class="num-of-actions">1</div>
+		</div>
+		<div class="batch-actions-title-section">
+			<div class="title">Subtask(s) selected</div>
+			<div class="pulses_dots">
+				<div class="extra-dots">+ 3</div>
+			</div>
+		</div>
+		<div class="general-notice-component">
+			<div class="general-notice-content" style="display:none;">
+				<div class="notice-message-container notice-count-down-button-container">
+				</div>
+				<span class="icon icon-dapulse-x-slim close-notice-button" onclick="cancelUndoBatch(this)"></span>
+			</div>
+		</div>
+		<div class="batch-actions-item Duplicate" onclick="duplicateBatchAction()">
+			<span class="batch_action_ico duplicate"></span>
+			<span class="action-name">Duplicate</span>
+		</div>
+		<div class="batch-actions-item Export">
+			<span class="batch_action_ico export"></span>
+			<span class="action-name">Export</span>
+		</div>
+		<div class="batch-actions-item Archive">
+			<span class="batch_action_ico archive"></span>
+			<span class="action-name">Archive</span>
+		</div>
+		<div class="batch-actions-item Delete" onclick="deleteBatchAction(this)">
+			<span class="batch_action_ico delete"></span>
+			<span class="action-name">Delete</span>
+		</div>
+		<div class="batch-actions-item Apply" onclick="applyBatchProcessing()">
+			<span class="batch_action_ico apply"></span>
+			<span class="action-name">Apply</span>
+		</div>
+		<div class="batch-actions-delete-item" onclick="hideBatchProcessing(this)">
+			<span class="icon-dapulse-x-slim"></span>
+		</div>
+	</div> -->
+</div>
+
+<!-- <div class="batch-actions-menu-wrapper" id="batchActionFull" style="display:none">
+	<div class="num-of-actions_wrapper">
+		<div class="num-of-actions">1</div>
+	</div>
+	<div class="batch-actions-title-section">
+		<div class="title">Subtask(s) selected</div>
+		<div class="pulses_dots">
+			<div class="extra-dots">+ 3</div>
+		</div>
+	</div>
+
+	<div class="general-notice-component">
+		<div class="general-notice-content" style="display:none;">
+			<div class="notice-message-container notice-count-down-button-container">
+			</div>
+			<span class="icon icon-dapulse-x-slim close-notice-button" onclick="cancelUndoBatch(this)"></span>
+		</div>
+	</div>
+
+	<div class="batch-actions-item" onclick="duplicateBatchAction()">
+		<span class="batch_action_ico duplicate"></span>
+		<span class="action-name">Duplicate</span>
+	</div>
+	<div class="batch-actions-item">
+		<span class="batch_action_ico export"></span>
+		<span class="action-name">Export</span>
+	</div>
+	<div class="batch-actions-item">
+		<span class="batch_action_ico archive"></span>
+		<span class="action-name">Archive</span>
+	</div>
+	<div class="batch-actions-item" onclick="deleteBatchAction(this)" >
+		<span class="batch_action_ico delete"></span>
+		<span class="action-name">Delete</span>
+	</div>
+	<div class="batch-actions-item" id="batchApplyBtn" style="display:none" onclick="$('#batchProcessing').show(); $('#batchActionFull').hide()">
+		<span class="batch_action_ico apply"></span>
+		<span class="action-name">Batch Actions</span>
+	</div>
+	<div class="batch-actions-delete-item" onclick="hideSBA()">
+		<span class="icon-dapulse-x-slim"></span>
+	</div>
+</div> -->
+
+<!-- Thread reply popup  start-->
+<div class="backwrap" style="display: none" id="threadReplyPopUp_task">
+	<div class="msgs-thread-popup">
+		<div class="msgs-thread-head">
+			<h3><img src="/images/basicAssets/thread.svg" alt=""> Thread</h3>
+			<img class="thread-close" src="/images/basicAssets/close_button.svg" alt="" onclick="closetodoreply()">
+		</div>
+		<div class="main-thread-msgs"></div>
+		<div class="msgs-thread-reply">
+			<div class="reply-separetor">
+				<p></p>
+			</div>
+			<div class="forScrollBar overlayScrollbars">
+				<div class="replies-container"></div>
+			</div>
+		</div>
+		<div class="write-thread-msgs">
+			<div contenteditable="true" id="task_msg_rep" class="write-msgs" placeholder="Reply to Raymond Holt"></div>
+			<img class="add-attachment send-rep-attach" onclick="open_file_browser()" src="/images/basicAssets/Attach.svg"
+				alt="">
+			<img class="add-emoji" onclick="open_rep_emoji(event)" src="/images/basicAssets/AddEmoji_White.svg" alt="">
+			<p class="rep-typing-indicator"></p>
+		</div>
+		<div class="pevThread" onclick="open_another_rep(event)" data-ano_msg_id="">
+			<img src="/images/basicAssets/prevThreadicon.svg">
+		</div>
+		<div class="nextThread" onclick="open_another_rep(event)" data-ano_msg_id="">
+			<img src="/images/basicAssets/nextThreadicon.svg">
+		</div>
+	</div>
+</div>
+<!-- Thread reply popup  end-->
+<div class="backwrap" id="custom_n_editor" style="display:none">
+	<div class="b_n_w_c editor_main_con" data-bg="#fff">
+		<div class="b_n_t_r_s">
+			<div class="pinico" onclick="togglePinUnpin(this)"></div>
+		</div>
+		<div class="b_n_w_title">
+			<input type="text" placeholder="Title" id="edit_n_title">
+		</div>
+		<div class="b_n_w_desc">
+			<div class="w_n_description" id="edit_n_desc" contenteditable="true" placeholder="Take a note..."></div>
+			<div class="w_n_checkList" style="display:none;" id="edit_n_checklist">
+				<ul class="incompletedCheck">
+
+				</ul>
+				<div class="addlistItemco" contenteditable="true" onkeydown="addlistItemCoIn(event,this)"
+					onkeyup="addlistItemCoup(event,this)"></div>
+				<div class="completecheckItemCo" style="display:none">
+					<div class="headingCom" onclick="togglecompLI(this)"><i class="rotateArrow"></i> <span><span
+								class="counter">1</span> Completed items</span></div>
+					<ul class="completedCheck">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="n_label_container">
+
+		</div>
+		<div id="n_update_time"><span>Edited 3:56 PM</span></div>
+		<div class="b_n_bottom_sec">
+			<ul class="ico_holder">
+				<li class="reminder_ico" onclick="showNoteReminderOp(event,this)">
+					<ul class="moreActionNoteRem">
+						<li class="header">Reminder:</li>
+						<li><span class="name">Later today</span> <span class="dateNtime">8:00PM</span></li>
+						<li><span class="name">Tomorrow</span> <span class="dateNtime">8:00PM</span></li>
+						<li><span class="name">Next week</span> <span class="dateNtime">Mon, 8:00PM</span></li>
+						<li class="clock"><span class="ico"></span> <span class="name">Pick date & time</span></li>
+						<li class="location"><span class="ico"></span> <span class="name">Pick place</span></li>
+					</ul>
+				</li>
+				<li class="addM_ico" onclick="showCollaborator(this)"></li>
+				<li class="theme_ico">
+					<div class="colorPick">
+						<div class="colorDiv active" onclick="changeNoteBG(this)" data-color="#fff"
+							style="border:1px solid #d8d8d8"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#f28b82"
+							style="border:1px solid #f28b82; background-color:#f28b82"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#fbbc02"
+							style="border:1px solid #fbbc02; background-color:#fbbc02"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#fdf475"
+							style="border:1px solid #fdf475; background-color:#fdf475"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#ccff90"
+							style="border:1px solid #ccff90; background-color:#ccff90"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#a6ffeb"
+							style="border:1px solid #a6ffeb; background-color:#a6ffeb"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#cbf0f8"
+							style="border:1px solid #cbf0f8; background-color:#cbf0f8"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#aecbfa"
+							style="border:1px solid #aecbfa; background-color:#aecbfa"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#d8aefb"
+							style="border:1px solid #d8aefb; background-color:#d8aefb"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#fdcfe8"
+							style="border:1px solid #fdcfe8; background-color:#fdcfe8"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#e6c9a8"
+							style="border:1px solid #e6c9a8; background-color:#e6c9a8"></div>
+						<div class="colorDiv" onclick="changeNoteBG(this)" data-color="#e8eaed"
+							style="border:1px solid #e8eaed; background-color:#e8eaed"></div>
+					</div>
+				</li>
+				<li class="img_ico"></li>
+				<li class="archive_ico"></li>
+				<li class="more_Ver_ico" onclick="open_moreN_op(event,this)">
+					<ul class="moreActionNote">
+						<li onclick="deleteEN(this)">Delete note</li>
+						<li onclick="openLabelNote(event,this)">Add label</li>
+						<li>Add drawing</li>
+						<li>Make a copy</li>
+						<li class="checkelm" onclick="toggleENCheckboxs(this)">Show checkboxes</li>
+					</ul>
+					<div class="add_l_noteCo">
+						<div class="heading">Label Note</div>
+						<input class="search hvText" type="text" placeholder="Enter label name"
+							onkeyup="findeditorLabel(event,this)" />
+						<ul class="label_list">
+
+						</ul>
+						<div class="create_ico" style="display: none" onclick="createENlabel(this)"><span>Create </span> "<span
+								class="valueText"></span>"</div>
+					</div>
+				</li>
+				<li class="undo_ico" id="noteUndoBtn"></li>
+				<li class="redo_ico" id="noteRedoBtn"></li>
+				<li class="closediv" onclick="closeNEditor(this)">Close</li>
+			</ul>
+		</div>
+	</div>
+	<div class="collaboratorDiv" id="collaboratorDiv" data-bg="#fff">
+		<div class="colla_heading">
+			<span>Collaborators</span>
+		</div>
+		<div class="colla_content">
+			<ul class="collaborators_list">
+				<li>
+					<div class="uImg"><img src="/images/users/joni.jpg" alt=""></div>
+					<div class="nameNemail">
+						<div class="name">Dc Jony (Owner)</div>
+						<div class="email">dalimchyjony@gmail.com</div>
+					</div>
+					<div class="removeColla"></div>
+				</li>
+			</ul>
+			<div class="addColla">
+				<div class="uImg"><img src="/images/basicAssets/user-plus-solid.svg" alt=""></div>
+				<input type="email" class="addCollaInput" placeholder="Person or email to share with"
+					onkeyup="addNoteCollaborator(event,this)">
+			</div>
+		</div>
+		<div class="colla_foot">
+			<div class="btnSave" onclick="saveNoteCollaborators(this)">Save</div>
+			<div class="btnCancel" onclick="cancelAddCollaborators(this)">Cancel</div>
+		</div>
+	</div>
+</div>
+
+<input style="display: none;" id="uploadNoteimg" type="file" accept="image/*" onchange="uploadNoteImg(event,this)" />

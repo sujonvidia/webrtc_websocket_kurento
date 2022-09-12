@@ -1,0 +1,86 @@
+<%- include('layouts/head') %>
+    <link href="/stylesheets/singup.css" rel="stylesheet">
+    <div class="logo_icon">
+        <a href="/"> <img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="" style="border-radius: 4px;"></a>
+        <span class="workfreeli_text">Workfreeli</span>
+    </div>
+    <div class="backPage_area">
+        <a href="/signup_work_account" data-tooltip="Back to previous page" class="tooltip-right">
+            <button class="backBtn">
+            <img class="back_icon" src="/images/back-icon.png" alt="" style="border-radius: 4px;width: 25px;">
+        </button>
+
+        </a>
+    </div>
+    <div class="activition_header">
+        <div class="indictor">
+            <img src="/images/signup_icons/indicator.png" alt="" style="border-radius: 4px;">
+        </div>
+
+        <div class="account_email_text1">We have sent an activation code to <span class="email_bold">demo@demo.com.</span></div>
+
+    </div>
+
+    <form class="frm_activition" id="frm_activition" action="/signup_set_password" method="POST">
+        <div class="centered_form_area">
+            <div class="activation_code_text">
+                Please check your inbox and enter the activation code to complete your registration
+
+            </div>
+            <div class="input_code_section">
+                <div class="input_code">
+                    <input class="input_code_area" type="text" name="" id="">
+
+                </div>
+
+                <div class="input_code">
+                    <input class="input_code_area" type="text" name="" id="">
+
+                </div>
+                <div class="input_code">
+                    <input class="input_code_area" type="text" name="" id="">
+
+                </div>
+                <div class="input_code">
+                    <input class="input_code_area" type="text" name="" id="">
+
+                </div>
+                <div class="input_code">
+                    <input class="input_code_area" type="text" name="" id="">
+
+                </div>
+                <div class="input_code">
+                    <input class="input_code_area" type="text" name="" id="">
+
+                </div>
+            </div>
+            <div class="active_submit_area">
+                <button class="active_submitBtn " id="active_submitBtn">Submit</button>
+
+            </div>
+
+
+
+
+            <% if (error) { %>
+                <div class="form-field">
+                    <ul class="error-msg">
+                        <% for(var i=0; i < error.length; i++) { %>
+                            <li>
+                                <%= error[i].msg %>
+                            </li>
+                            <% } %>
+                    </ul>
+                </div>
+                <% } %>
+        </div>
+
+
+
+    </form>
+    <div class="receive_text">Didn’t receive your activation code?</div>
+    <button class="resandBtn " id="resandBtn">Resend Email</button>
+
+
+
+    <%- include('layouts/foot') %>

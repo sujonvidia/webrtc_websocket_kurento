@@ -1,0 +1,1483 @@
+.logo_icon {
+    /* position: absolute;
+    /*top: 35px;
+    left: 35px; */
+/*     text-align: center;
+    margin-bottom: 16px; */
+    text-align: center;
+    margin-bottom: 16px;
+    position: absolute;
+    left: 12px;
+    top: 10px;
+}
+.logo_icon img{
+/*     width: 135px;
+    height: 100px; */
+    width: 100px;
+    height: 70px;
+}
+.logo_icon_covid{
+    text-align: center;
+    margin-bottom: 16px;
+    position: absolute;
+    left: 50%;
+    top: 1%;
+    transform: translate(-50%,-1%);
+}
+span.workfreeli_text {
+    color: #023d67;
+    font-size: 24px;
+    font-weight: 600;
+    position: relative;
+    left: 10px;
+    font-family: "hvWorkSans";
+}
+
+body {
+    background: #F5F5F5;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.centered-form__form {
+    position: absolute;
+    background: #FAFAFA;
+    border-radius: 4px;
+    /* width: 466px; */
+   /*  width: 556px; */
+   width: 600px;
+    height: auto;
+    padding: 0;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    top: 150px;
+    margin-bottom: 35px;
+    padding-bottom: 0px;
+
+}
+.centered_form_area{
+position: relative;
+    background: #FAFAFA;
+    border-radius: 4px;
+    /* width: 466px; */
+    /* width: 556px; */
+    width: 600px;
+    height: auto;
+    padding: 0;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    top: 0px;
+
+    padding-bottom: 30px;
+    padding-left: 62.5px;
+    padding-right: 62.5px;
+    padding-top: 30px;
+
+}
+.centered-form__form>form {
+/*     margin-left: 80px;
+    margin-right: 80px; */
+    margin-left: 62.5px;
+    margin-right: 62.5px;
+     padding-bottom: 0px;
+    margin-bottom: 40px;
+}
+
+.hello-welcome-back {
+    margin-top: 40px;
+    color: #000 !important;
+    font-weight: 500;
+}
+.get_started_text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+/*Back buttton area*/
+.backPage_area {
+    position: absolute;
+    top: 100px;
+    left: 15px;
+}
+.backBtn {
+    padding: 0 26px 9px 12px;
+    border-radius: 10px;
+    border: 2px solid #023d67;
+    background-color: #fff;
+    cursor: pointer;
+}
+.box_container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 400px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: right;
+    /* display: inline-block; */
+    /* float: left; */
+    border: 2px solid #5F86CC;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    cursor: pointer;
+
+}
+.submitBtn{
+    height: 48px;
+    width: 100%;
+    border-radius: 4px;
+    background-color: #023d67;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 20px;
+/*     font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    border: 0;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+}
+.cancleBtn{
+    height: 48px;
+    width: 100%;
+    border-radius: 4px;
+    background-color: transparent;;
+    margin-top: 10px;
+    color: #023d67;
+    font-family: "hvWorkSans";
+    font-size: 20px;
+/*     font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    border: 1px solid #023d67;
+}
+.cancleBtn:hover{
+    border: 1px solid #e91e63;
+}
+.resandBtn{
+    height: 40px;
+    width: 320px;
+    border-radius: 10px;
+    background-color: transparent;
+    margin-top: 10px;
+    color: #023d67;
+    font-family: "hvWorkSans";
+    font-size: 16px;
+    /* font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    border: 2px solid #023d67;
+    position: absolute;
+    top: 545px;
+}
+.active_submitBtn{
+    height: 40px;
+    width: 475px;
+    border-radius: 10px;
+    background-color: #023d67;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 16px;
+/*     font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    border: none;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+}
+.submit_area {
+    width: 100%;
+    position: absolute;
+   /* padding-left: 30px;
+    padding-right: 30px;*/
+}
+.lastdiv{
+        margin-bottom: 60px;
+}
+.create_acount_text {
+    color: #023d67;
+    font-size: 18px;
+     font-family: "hvWorkSans";
+}
+.create_acount_name_text {
+    font-size: 15px;
+    font-weight: 600;
+     color: #023d67;
+      font-family: "hvWorkSans";
+}
+.left_area {
+    padding-left: 40px;
+    padding-right: 20px;
+}
+
+.new_account_text {
+    position: absolute;
+    top: 125px;
+    color: #000;
+    font-size: 24px;
+    font-family: "hvWorkSans";
+}
+.new_scocialaccount_text {
+    position: absolute;
+    top: 175px;
+    color: #000;
+    font-size: 24px;
+    font-family: "hvWorkSans";
+}
+.new_parentaccount_text {
+    position: absolute;
+    top: 0;
+    color:white;
+    font-size: 24px;
+    font-family: "hvWorkSans";
+    padding: 5px;
+    text-align: center;
+    width: 40%;
+    background-color: #023d67;
+    border-radius: 5px;
+    /* width:90%; */
+}
+.new_parentaccount_form{
+    position: absolute;
+    top: 60px;
+    width: 40%;
+}
+.new_parentaccount_form:after {
+    position: absolute;
+    content: "";
+    bottom: -20px;
+    height: 20px;
+    width: 1px;
+}
+.hayven-logo-covid{
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    height: 64px;
+    position: absolute;
+    top: 0;
+}
+.input_area {
+    width: 100%;
+    margin-top: 10px;
+}
+.input_area_helf {
+    width: 47%;
+
+    padding-right: 5px ;
+    display: table-cell;
+
+}
+input.full_width {
+    width: 98%;
+    border-radius: 4px;
+    height: 48px;
+    outline: none;
+    border: 1px solid #E1E4E8;
+    padding-left: 10px;
+}
+input.half_width{
+    height: 48px;
+    width: calc(100% - 5px);
+    border: 1px solid #E1E4E8;
+    border-radius: 4px;
+    text-indent: 16px;
+    font-family: "hvWorkSans";
+}
+label.form_label {
+    font-size: 14px;
+    color: #023d67;
+    font-weight: 600;
+    font-family: "hvWorkSans";
+    margin-bottom: 0;
+}
+p.discribe_text {
+    font-size: 12px;
+    color: #8a8580;
+    width: 95%;
+    line-height: 14px;
+}
+span.agreement_text {
+    position: relative;
+    top: 0px;
+    font-size: 14px;
+     font-family: "hvWorkSans";
+}
+.checkboxdiv {
+    position: absolute;
+    margin-top: 15px;
+    width: 100%;
+
+    /*padding-left: 30px;
+    padding-right: 30px;*/
+}
+/* checkbox */
+input[type=checkbox] {
+        position: relative;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    input[type=checkbox]:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 22px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    border: 2px solid #d6d6d6;
+    border-radius: 3px;
+    background-color: #ffffff;
+}
+
+    input[type=checkbox]:checked:after {
+    content: "";
+    display: block;
+    width: 7px;
+    height: 11px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    top: 3px;
+    left: 8px;
+}
+::-webkit-input-placeholder { /* Edge */
+  color: #8a8580;
+  font-size: 14px;
+}
+
+:-ms-input-placeholder { /* Internet Explorer */
+  color: #8a8580;
+  font-size: 14px;
+}
+
+::placeholder {
+  color: #8a8580;
+  font-size: 14px;
+}
+
+.optional {
+    color: #8a8580;
+}
+/*Signup activition page css*/
+form#frm_activition {
+    position: absolute;
+    top: 230px;
+}
+.account_email_text1 {
+
+    color: #000;
+    font-size: 20px;
+    font-family: "hvWorkSans";
+    float: right;
+}
+.account_email_text {
+
+    color: #000;
+    font-size: 20px;
+    font-family: "hvWorkSans";
+}
+.allmostdone {
+    color: #000;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: "hvWorkSans";
+    
+}
+.activition_header {
+    position: absolute;
+    top: 170px;
+}
+.allmostdone_header {
+    position: absolute;
+    top: 175px;
+}
+
+.indictor {
+    float: left;
+    padding-right: 10px;
+}
+span.email_bold {
+    font-weight: 600;
+}
+.activation_code_text {
+    font-size: 20px;
+    text-align: center;
+    color: #000000;
+}
+.input_code_area{
+    width: 100%;
+    height: 50px;
+    border: 2px solid #8cd060;
+    outline: unset;
+    text-align: center;
+    border-radius: 10px;
+}
+.input_code {
+    width: 40px;
+    height: 50px;
+    margin-right: 10px;
+  
+}
+input.half_width:focus{
+    border: 1px solid #E1E4E8 !important;
+    border-radius: 4px !important;
+    outline: none;
+}
+.receive_text {
+    position: absolute;
+    top: 530px;
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
+    font-family: "hvWorkSans";
+}
+.input_code_section {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+}
+.active_submit_area {
+    padding-bottom: 25px;
+}
+/*End activition area*/
+/*set password css*/
+
+.set_password_text {
+    text-align: center;
+    font-size: 20px;
+    font-family: "hvWorkSans";
+    margin-bottom: 25px;
+}
+.password_box_area {
+    margin-top: 10px;
+}
+input.setPass {
+    width: 100%;
+    padding-left: 10px;
+    padding-bottom: 7px;
+    border-radius: 10px;
+    height: 40px;
+    outline: none;
+    border: 1px solid #d6d6d6;
+}
+
+.continue_submitBtn{
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: #023d67;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 16px;
+/*     font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    border: none;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    position: relative;
+    left: 325px;
+}
+
+button:focus {
+
+    outline: none;
+}
+.bottom-margin {
+    margin-bottom: 25px;
+}
+.pass-icon {
+  background: url('/images/signup_icons/eye_icon.png') no-repeat 97.25% 10px white;
+  padding-left: 5px;
+  padding-right: 50px;
+  width: 255px;
+  height: 30px;
+  border: 1px gray solid;
+  border-radius: 5px 5px 0px 0px;
+}
+/*End set password css*/
+/*Registration complete css*/
+.complete_text {
+
+    color: #000;
+    font-size: 20px;
+    font-family: "hvWorkSans";
+    float: right;
+}
+.complete_head_text {
+    text-align: center;
+    font-size: 20px;
+    font-family: "hvWorkSans";
+}
+.people_image {
+    text-align: center;
+    margin-top: 25px;
+}
+.inviteBtn{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: #023d67;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 16px;
+/*     font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    border: none;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+}
+.invite_area {
+    text-align: center;
+}
+.skipBtn{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: transparent;;
+    margin-top: 10px;
+    color: #023d67;
+    font-family: "hvWorkSans";
+    font-size: 16px;
+/*     font-size: 24px; */
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    border: 2px solid #023d67;
+}
+.invite_box_area {
+    margin-top: 10px;
+   
+}
+input.invitebox {
+    width: 80%;
+    padding-left: 10px;
+    padding-bottom: 7px;
+    border-radius: 10px;
+    height: 40px;
+    outline: none;
+    border: 1px solid #d6d6d6;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.width90{
+    width: 80% !important; 
+}
+p.discribe_text2 {
+    font-size: 12px;
+    color: #8a8580;
+    width: 80%;
+     margin-left: 10%;
+    margin-right: 10%;
+    line-height: 14px;
+}
+.add_invite_box_area{
+    width: 80%;
+    color: #4B77CA;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 14px;
+    cursor: pointer;
+}
+a.remove_button {
+    position: relative;
+    left: 365px;
+    text-decoration: none;
+}
+textarea.message {
+    width: 80%;
+    margin-left: 10%;
+    height: 60px;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-top: 7px;
+}
+label.messageLabel {
+    margin-left: 10%;
+    margin-bottom: 2px;
+    margin-top: 20px;
+}
+
+.send_inviteBtn{
+            height: 40px;
+            width: 130px;
+            border-radius: 10px;
+            background-color: #023d67;
+            margin-top: 25px;
+            color: #FFFFFF;
+            font-family: "hvWorkSans";
+            font-size: 14px;
+            /* font-size: 24px; */
+            font-weight: 500;
+            line-height: 21px;
+            text-align: center;
+            outline: none;
+            border: none;
+            padding-top: 4px;
+            padding-bottom: 7px;
+            cursor: pointer;
+            position: relative;
+            left: 86px;
+        }
+
+ .send_inviteCancleBtn{
+            height: 40px;
+            width: 130px;
+            border-radius: 10px;
+            background-color: transparent;
+            margin-top: 25px;
+            margin-right: 10px;
+            color: #023d67;
+            font-family: "hvWorkSans";
+            font-size: 14px;
+            /* font-size: 24px; */
+            font-weight: 500;
+            line-height: 21px;
+            text-align: center;
+            outline: none;
+            border: 2px solid #023d67;
+            padding-top: 4px;
+            padding-bottom: 7px;
+            cursor: pointer;
+            position: relative;
+            left: 86px;
+        }  
+        
+ .invitations_head {
+    text-align: center;
+    font-family: "hvWorkSans";
+    font-size: 20px;
+    color: #000;
+}   
+.invitations_head_img {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}   
+.go_inviteBtn{
+            height: 40px;
+            width: 400px;
+            border-radius: 10px;
+            background-color: #023d67;
+            margin-top: 25px;
+            color: #FFFFFF;
+            font-family: "hvWorkSans";
+            font-size: 14px;
+            /* font-size: 24px; */
+            font-weight: 500;
+            line-height: 21px;
+            text-align: center;
+            outline: none;
+            border: none;
+            padding-top: 4px;
+            padding-bottom: 7px;
+            cursor: pointer;
+            position: relative;
+            left: 40px;
+        } 
+/*End*/
+
+.get-started-for-free {
+    height: 21px;
+    color: #9B9B9B;
+    font-family: "hvWorkSans";
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 32px;
+}
+
+.email-address {
+    margin-top: 15.5px !important;
+}
+
+
+.this-is-for-verifica {
+    color: #9B9B9B;
+    font-family: "hvWorkSans";
+    font-size: 10px;
+    line-height: 13px;
+    margin-top: 7.5px;
+    /* display: none; */
+}
+
+.btn_create_account {
+    height: 37px;
+    width: 395px;
+    border-radius: 4px;
+    background-color: #023d67;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: none;
+    border: none;
+}
+
+.phone-number-option {
+    color: #9B9B9B;
+    font-family: "hvWorkSans";
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.label_title {
+    color: rgba(0, 0, 0, 0.86);
+    font-family: "hvWorkSans";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    display: inline-block;
+    float: left;
+}
+
+.display_inline {
+    display: inline-block;
+    float: left;
+}
+
+.display_block {
+    display: block;
+    float: left;
+}
+
+.formDiv {
+    margin-left: 6.5px;
+}
+
+.input_shape {
+    box-sizing: border-box;
+    height: 38px;
+    width: 194.5px;
+    border: 1px solid #E6E8ED;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    padding-left: 12px;
+    outline: 0;
+}
+
+.input_shape2 {
+    box-sizing: border-box;
+    height: 38px;
+    width: 396px !important;
+    border: 1px solid #E6E8ED;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    padding-left: 12px;
+    outline: 0;
+}
+
+.margin_top {
+    margin-top: 15.5px;
+}
+
+.create-a-strong-pass {
+    color: #9B9B9B;
+    font-family: "hvWorkSans";
+    font-size: 10px;
+    line-height: 13px;
+    /* display: none; */
+}
+
+.i-agree-to-hayven-us {
+    font-family: "hvWorkSans";
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+}
+
+input.agree_Checkbox {
+    visibility: hidden;
+}
+
+input.agree_Checkbox[type=checkbox] {
+    cursor: pointer;
+    font-size: 14px;
+    visibility: hidden;
+    transform: scale(1);
+    left: 0px;
+    margin-top: 16px;
+    -moz-appearance: none;
+    margin-right: 8px;
+}
+
+input.agree_Checkbox[type=checkbox]:after {
+    content: " ";
+    background-color: #fff;
+    display: inline-block;
+    color: #00BFF0;
+    width: 16px;
+    height: 16px;
+    visibility: visible;
+    border: 1px solid #FFF;
+    padding: 0 3px;
+    margin: 0px 0;
+    border-radius: 4px;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.08), 0 0 2px 0 rgba(0, 0, 0, 0.16);
+}
+
+input.agree_Checkbox[type=checkbox]:checked:after {
+    content: "\2713";
+    display: block;
+    font-weight: 600;
+    background: #4B90E0;
+    color: white;
+    border: none;
+    font-size: 11px;
+    transform: scale(1);
+}
+
+.social-icon {
+    position: relative;
+    margin: 24px auto 34px;
+    height: 30px;
+    width: 208px;
+}
+
+.social-icon .fa-w-14 {
+    color: #9b9b9b;
+    width: 30px;
+    height: 30px;
+}
+
+.social-icon .fa-w-20 {
+    position: absolute;
+    margin: 0px 45px;
+    color: #9b9b9b;
+    width: 60px;
+    height: 30px;
+}
+
+.social-icon .windows-icon {
+    float: right;
+}
+
+.social-icon .fa-w-14:hover {
+    color: #4A90E2;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.social-icon .fa-w-20:hover {
+    color: #dc3545;
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.or {
+    color: #9B9B9B;
+    font-family: hvAssistant;
+    font-size: 14px;
+    line-height: 13px;
+    text-align: center;
+    margin-top: 24px;
+}
+
+.create_Account {
+    height: 50px;
+   /*  width: 395px; */
+    width: 475px;
+    border-radius: 4px;
+    background-color: #023d67;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+/*     font-size: 18px; */
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: 0;
+    border: 0;
+    padding-top: 4px;
+    padding-bottom: 7px;
+    cursor: pointer;
+}
+
+.create_Account a {
+    color: #FFFFFF;
+}
+
+.create_Account a:hover {
+    height: 37px;
+    width: 395px;
+    border-radius: 4px;
+    background-color: #4A90E2;
+    margin-top: 25px;
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+    outline: 0;
+    border: 0;
+    padding-top: 7px;
+}
+
+.mailing_centered-form {
+    position: absolute;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    /* width: 466px; */
+    width: 822px;
+    height: auto;
+    padding: 0;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    top: 125px;
+    margin-bottom: 35px;
+}
+
+.massage_icon {
+    text-align: center;
+    margin-top: 42px;
+}
+
+.thank-you-for-joining {
+    color: #4A4A4A;
+    font-family: "hvWorkSans";
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 33px;
+    text-align: center;
+    margin-top: 26px;
+    margin-bottom: 24px;
+}
+
+.we-ve-sent {
+    color: #9B9B9B;
+    font-family: hvAssistant;
+    font-size: 22px;
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.didn-t-get {
+    color: #9B9B9B;
+    font-family: hvAssistant;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.sendEmail {
+    height: 55px;
+    width: 133px;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    text-align: center;
+    color: #4A90E2;
+    font-family: hvAssistant;
+    font-size: 18px;
+    line-height: 23px;
+    margin-bottom: 40px;
+    padding-top: 12px;
+    margin-left: 345px;
+}
+
+.sendEmail a {
+    text-decoration: none;
+    color: #4A90E2;
+    text-align: center;
+}
+
+.sendEmail a:hover {
+    color: #4A90E2;
+}
+
+.invite_centered_form {
+    position: absolute;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    /* width: 466px; */
+    width: 438px;
+    height: auto;
+    padding: 0;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
+    top: 214px;
+    margin-bottom: 35px;
+    display: none;
+}
+
+.invite-family {
+    margin-top: 40px;
+    color: #4A4A4A;
+    font-family: hvWorkSans;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.shape_invite_input {
+    box-sizing: border-box;
+    height: 38px;
+    width: 279px;
+    border: 1px solid #E6E8ED;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    font-family: hvAssistant;
+    font-size: 16px;
+    line-height: 21px;
+    padding-left: 12px;
+    outline: 0;
+}
+
+.shape_invite_input>input::placeholder {
+    color: #E3E3E3;
+}
+
+.email_id {
+    text-align: center;
+}
+
+.add-another-invite {
+    color: #4A90E2;
+    font-family: "hvWorkSans";
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.add-another {
+    margin-left: 80px;
+    margin-bottom: 24px;
+}
+
+.add-another a {
+    text-decoration: none;
+}
+
+.add-another a:hover {
+    color: #4A90E2;
+}
+
+.send_invite {
+    height: 34px;
+    width: 124px;
+    border-radius: 4px;
+    background-color: #4A90E2;
+    text-align: center;
+    padding-top: 4px;
+    display: inline-block;
+    float: left;
+    margin-left: 162px;
+}
+
+.send_invite a {
+    text-decoration: none;
+    text-align: center;
+}
+
+.send_invite a:hover {
+    color: #FFFFFF;
+}
+
+.send-invites-text {
+    color: #FFFFFF;
+    font-family: "hvWorkSans";
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: center;
+}
+
+.skip_invite {
+    display: inline-block;
+    box-sizing: border-box;
+    height: 34.5px;
+    width: 64.5px;
+    border: 0.5px solid #9B9B9B;
+    border-radius: 4px;
+    text-align: center;
+    margin-left: 8px;
+    padding-top: 3px;
+}
+
+.skip_text {
+    color: #9B9B9B;
+    font-family: "hvWorkSans";
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: center;
+}
+
+.skip_invite a {
+    text-decoration: none;
+    text-align: center;
+    color: #9B9B9B;
+}
+
+.buttons_area {
+    margin-bottom: 40px;
+}
+
+.password {
+    position: relative;
+}
+
+input#password {
+    padding-right: 39px;
+}
+
+.password>img {
+    position: absolute;
+    top: 36px;
+    right: 17px;
+}
+
+/* Company page css 20/04/2020 (Manzu)*/
+.box_area {
+  width: 100%;
+ 
+}
+.box_area_container {
+  display: inline-block;
+    width: 100%;
+
+}
+.box-item {
+width:150px;
+height: 150px;
+text-align: center;
+color: rgba(0, 0, 0, 0.86);
+font-family: "hvWorkSans";
+border: 1px solid #ccc; 
+margin: 5px;
+float: left;
+background-color: #f5f5f5;
+padding: 60px 0;
+cursor: pointer;
+border-radius: 10px;
+
+}
+.box-item:hover{
+    background-color: #fafafa;
+    border: 5px solid #023d67
+}
+.box-item.selected{
+    border: 5px solid #023d67;
+}
+img.back_icon {
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 35px;
+  
+}
+.back {
+ 
+    background-color: #023d67;
+ 
+}
+.back:hover {
+    background-color: #023d67;
+
+}
+
+/**
+ * ===========Tooltip Styles===============*
+ */
+
+[data-tooltip],
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Base styles for the entire tooltip */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after {
+  position: absolute;
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -webkit-transition: 
+      opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    -moz-transition:    
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        -moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+    transition:         
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform:    translate3d(0, 0, 0);
+  transform:         translate3d(0, 0, 0);
+  pointer-events: none;
+}
+
+/* Show the entire tooltip on hover and focus */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+/* Base styles for the tooltip's directional arrow */
+.tooltip:before,
+[data-tooltip]:before {
+  z-index: 1001;
+  border: 6px solid transparent;
+  background: transparent;
+  content: "";
+}
+
+/* Base styles for the tooltip's content area */
+.tooltip:after,
+[data-tooltip]:after {
+  z-index: 1000;
+  padding: 8px;
+  width: 200px;
+  background-color: #000;
+  background-color: hsla(0, 0%, 20%, 0.9);
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+/* Directions */
+
+/* Top (default) */
+[data-tooltip]:before,
+[data-tooltip]:after,
+.tooltip:before,
+.tooltip:after,
+.tooltip-top:before,
+.tooltip-top:after {
+  bottom: 100%;
+  left: 50%;
+}
+
+[data-tooltip]:before,
+.tooltip:before,
+.tooltip-top:before {
+  margin-left: -6px;
+  margin-bottom: -12px;
+  border-top-color: #000;
+  border-top-color: hsla(0, 0%, 20%, 0.9);
+}
+
+/* Horizontally align top/bottom tooltips */
+[data-tooltip]:after,
+.tooltip:after,
+.tooltip-top:after {
+  margin-left: -80px;
+}
+
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after,
+[data-tooltip]:focus:before,
+[data-tooltip]:focus:after,
+.tooltip:hover:before,
+.tooltip:hover:after,
+.tooltip:focus:before,
+.tooltip:focus:after,
+.tooltip-top:hover:before,
+.tooltip-top:hover:after,
+.tooltip-top:focus:before,
+.tooltip-top:focus:after {
+  -webkit-transform: translateY(-12px);
+  -moz-transform:    translateY(-12px);
+  transform:         translateY(-12px); 
+}
+
+/* Left */
+.tooltip-left:before,
+.tooltip-left:after {
+  right: 100%;
+  bottom: 50%;
+  left: auto;
+}
+
+.tooltip-left:before {
+  margin-left: 0;
+  margin-right: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-left-color: #000;
+  border-left-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-left:hover:before,
+.tooltip-left:hover:after,
+.tooltip-left:focus:before,
+.tooltip-left:focus:after {
+  -webkit-transform: translateX(-12px);
+  -moz-transform:    translateX(-12px);
+  transform:         translateX(-12px); 
+}
+
+/* Bottom */
+.tooltip-bottom:before,
+.tooltip-bottom:after {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+}
+
+.tooltip-bottom:before {
+  margin-top: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-bottom-color: #000;
+  border-bottom-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-bottom:hover:before,
+.tooltip-bottom:hover:after,
+.tooltip-bottom:focus:before,
+.tooltip-bottom:focus:after {
+  -webkit-transform: translateY(12px);
+  -moz-transform:    translateY(12px);
+  transform:         translateY(12px); 
+}
+
+/* Right */
+.tooltip-right:before,
+.tooltip-right:after {
+  bottom: 50%;
+  left: 100%;
+}
+
+.tooltip-right:before {
+  margin-bottom: 0;
+  margin-left: -12px;
+  border-top-color: transparent;
+  border-right-color: #000;
+  border-right-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-right:hover:before,
+.tooltip-right:hover:after,
+.tooltip-right:focus:before,
+.tooltip-right:focus:after {
+  -webkit-transform: translateX(12px);
+  -moz-transform:    translateX(12px);
+  transform:         translateX(12px); 
+}
+
+/* Move directional arrows down a bit for left/right tooltips */
+.tooltip-left:before,
+.tooltip-right:before {
+  top: 3px;
+}
+
+/* Vertically center tooltip content for left/right tooltips */
+.tooltip-left:after,
+.tooltip-right:after {
+  margin-left: 0;
+  margin-bottom: -16px;
+}
+/*
+input#password {
+    background: white url("") right no-repeat;
+    padding-right: 17px;
+} */
+
+@media (min-width: 300px) and (max-width: 1000px){
+
+.new_parentaccount_form{
+    
+    width: 90%;
+
+}
+.new_parentaccount_text{
+    position: absolute;
+    top: 0;
+    color: white;
+    font-size: 24px;
+    font-family: "hvWorkSans";
+    padding: 5px;
+    text-align: center;
+    
+    background-color: #023d67;
+    border-radius: 5px;
+    width: 90%;
+}
+
+
+.checkboxdiv{
+    margin-top: 10px;
+        width:100%;
+
+}
+.submit_area{
+  margin-top: 10px;
+      width:100%;
+
+}
+
+.centered_form_area{
+    
+}
+
+.submitBtn,.cancleBtn{
+    width:100%;
+}
+
+
+
+}

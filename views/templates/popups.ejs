@@ -1,0 +1,718 @@
+<!-- Popup selction Start  -->
+
+<div class="phase-wrapper">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <div class="single-phase" onclick="selectPhase(this)" style="background-color: #d8d8d8;"><span class="single_phase_txt">Prospecting</span> </div>
+    <div class="single-phase" onclick="selectPhase(this)" style="background-color: #579bfc;"><span class="single_phase_txt">Qualified</span> </div>
+    <div class="single-phase" onclick="selectPhase(this)" style="background-color: #00c875;"><span class="single_phase_txt">Proposal</span> </div>
+    <div class="single-phase" onclick="selectPhase(this)" style="background-color: #ffcb00;"> <span class="single_phase_txt">Negotiation </span></div>
+    <div class="single-phase" onclick="selectPhase(this)" style="background-color: #5cd4ef;"> <span class="single_phase_txt">Win </span></div>
+    <div class="single-phase" onclick="selectPhase(this)" style="background-color: #e2445c;"> <span class="single_phase_txt">Loss </span></div>
+    <!-- <div class="single-phase create-phase" onclick="createNewPhase(this)">New Phase</div> -->
+</div>
+
+<div class="status-wrapper">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <div class="single-status" onclick="selectStatus(this)" style="background-color: #d8d8d8;"><span class="single_status_txt">Initiate</span></div>
+    <div class="single-status" onclick="selectStatus(this)" style="background-color: #e2445c;"><span class="single_status_txt">In-progress</span></div>
+    <div class="single-status" onclick="selectStatus(this)" style="background-color: #5cd4ef;"><span class="single_status_txt">Review</span></div>
+    <div class="single-status" onclick="selectStatus(this)" style="background-color: #00c875;"> <span class="single_status_txt">Completed</span></div>
+    <div class="single-status create-status" onclick="createNewStatus(this)">Add/remove status</div>
+</div>
+
+<div class="header-column-menu">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <p class="columnMenu_list searchC" onclick="viewColumnSearch(this)">Search Column</p>
+    <p class="columnMenu_list sortAZC" data-sort="asc" onclick="sortTable(event)">Sort A to Z</p>
+    <p class="columnMenu_list sortZAC" data-sort="desc" onclick="sortTable(event)">Sort Z to A</p>
+    <p class="columnMenu_list filterC" onclick="abc(this)">Text Filters</p>
+    <p class="columnMenu_list freezeC" onclick="freez_unfreez(event)">Freeze Column</p>
+    <p class="columnMenu_list collaseC">Collapse Column</p>
+</div>
+
+<div class="column-setting-menu">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+
+    <p onclick="addColumn(this,'phase')" data-type="1" class="columnMenu_list phase_ac">Phase</p>
+    <p onclick="addColumn(this,'duedate')" data-type="1" class="columnMenu_list duedate_ac">Due Date</p>
+    <p onclick="addColumn(this,'estWorkHour')" data-type="1" class="columnMenu_list hoursworked_ac">Estimated Work Hour </p>
+    <p onclick="addColumn(this,'hoursworked')" data-type="1" class="columnMenu_list hoursworked_ac">Hours worked </p>
+    <p onclick="addColumn(this,'moneyspent')" data-type="1" class="columnMenu_list moneyspent_ac">Money Spent </p>
+    <p onclick="addColumn(this,'status')" data-type="1" class="columnMenu_list status_ac">Status</p>
+    
+    <p onclick="addColumn(this,'taskbudget')" data-type="0" class="columnMenu_list taskbudget_ac">Budget</p>
+    <p onclick="addColumn(this,'tasktime')" data-type="0" class="columnMenu_list tasktime_ac">Activity Time</p>
+    <p onclick="addColumn(this,'compdate')" data-type="0" class="columnMenu_list compdate_ac">Completed Date</p>
+    <p onclick="addColumn(this,'owner')" data-type="0" class="columnMenu_list co-owner_ac">Owner/Co-owner</p>
+    <p onclick="addColumn(this,'observer')" data-type="0" class="columnMenu_list observer_ac">Observer</p>
+    <p onclick="addColumn(this,'assignee')" data-type="0" class="columnMenu_list assignee_ac">Assignee</p>
+</div>
+
+<div class="assignee_users">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <input class="src_users" type="text" placeholder="Person Name" onkeyup="searchUsersContainer(event,'observer')">
+    <div class="users_container">
+        <div data-uid="" class="usersList" id="subtask" onclick="addAsDemo(this)">
+            <img src="" class="demo_img" style="pointer-events: none;">
+            <h3 class="name_label" style="pointer-events: none;">Sadequr Rahman</h3>
+        </div>
+        <div data-uid="" class="usersList" id="subtask" onclick="addAsDemo(this)">
+            <img src="" class="demo_img" style="pointer-events: none;">
+            <h3 class="name_label" style="pointer-events: none;">Anwar Ali</h3>
+        </div>
+        <div data-uid="" class="usersList" id="subtask" onclick="addAsDemo(this)">
+            <img src="" class="demo_img" style="pointer-events: none;">
+            <h3 class="name_label" style="pointer-events: none;">Sharlene Manuba</h3>
+        </div>
+        <div data-uid="" class="usersList" id="subtask" onclick="addAsDemo(this)">
+            <img src="" class="demo_img" style="pointer-events: none;">
+            <h3 class="name_label" style="pointer-events: none;">Amer Ahmed</h3>
+        </div>
+    </div>
+</div>
+
+<div class="single_rowOption">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <div class="subtask_file_view single_rowOptLi" onclick="//viewSUbtaskFile(this)">
+        <div class="ico_div"> <i class="fas fa-plus-circle"></i> </div>
+        <h3 class="name_label">Create a Board</h3>
+    </div>
+    <div class="subtask_file_view single_rowOptLi" onclick="//viewSUbtaskFile(this)">
+        <div class="ico_div"> <i class="fas fa-link"></i> </div>
+        <h3 class="name_label">Link to a Board</h3>
+    </div>
+    <div class="renameSubtask single_rowOptLi" onclick="renameActivity(this,event)">
+      <div class="ico_div"> <i class="fas fa-copy"></i> </div>
+      <h3 class="name_label" style="pointer-events:none">Copy to a Board <span class="cmdKey"></span></h3>
+    </div>
+    <div class="renameSubtask single_rowOptLi" onclick="renameActivity(this,event)">
+      <div class="ico_div"> <i class="fas fa-edit"></i> </div>
+      <h3 class="name_label" style="pointer-events:none">Rename <span class="cmdKey">(Shift + R)</span></h3>
+    </div>
+
+    <div class="duplicate single_rowOptLi" onclick="duplicateActivity(this,event)">
+      <div class="ico_div"> <i class="fas fa-copy"></i> </div>
+      <h3 class="name_label" style="pointer-events:none">Duplicate <span class="cmdKey">(Shift + D)</span></h3>
+    </div>
+    <!-- <div class="batchAct single_rowOptLi" onclick="//openbatchactionbytrigger()">
+        <div class="ico_div"><i class="fas fa-sticky-note"></i> </div>
+      <h3 class="name_label" style="pointer-events:none">Batch Action <span class="cmdKey">(Shift + B)</span></h3>
+    </div> -->
+    <!-- <div class="addNotePopup single_rowOptLi" data-unseen="0" onclick="//subtaskProperty(this)">
+      <div class="ico_div"> <i class="fas fa-sticky-note"></i> </div>
+      <h3 class="name_label" style="pointer-events:none">Note <span class="cmdKey">(Shift + N)</span></h3>
+    </div> -->
+
+    <div class="subtask_chat single_rowOptLi subChat" data-unseen="" onclick="activity_chat(this,event)">
+      <div class="ico_div"> <i class="fas fa-comment-alt"></i> </div>
+      <h3 class="name_label">Chat <span class="cmdKey">(Shift + C)</span></h3>
+    </div>
+    <div class="subtask_file_view single_rowOptLi" onclick="//viewSUbtaskFile(this)">
+      <div class="ico_div"> <i class="fas fa-eye"></i> </div>
+      <h3 class="name_label">View File(s)</h3>
+    </div>
+    <div class="subtask_file_up single_rowOptLi" id="">
+      <div class="ico_div"> <i class="fas fa-upload"></i> </div>
+      <h3 class="name_label datamyid" data-myid="" data-type="subtask" onclick="//open_file_browser_for_send_msg(this)">Upload File(s)</h3>
+    </div>
+    <div class="deleteSubtask single_rowOptLi" onclick="delete_Activity(event)">
+      <div class="ico_div"> <i class="fas fa-trash-alt"></i> </div>
+      <h3 class="name_label">Delete <span class="cmdKey">(Del)</span></h3>
+    </div>
+    <div class="subProperty single_rowOptLi" onclick="subtaskProperty(this)">
+      <div class="ico_div"> <i class="fas fa-info-circle"></i> </div>
+      <h3 class="name_label">Properties <span class="cmdKey">(Shift + P)</span></h3>
+    </div>
+</div>
+
+<div class="warningPopup" id="warningsPopup">
+	<div class="warningPopupBody">
+		<div class="closeModal" onclick="closeModal('warningPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Warning !</h2>
+		<div class="warningPopupContent"> </div>
+		<div class="warningPopupFooter">
+			<button class="closeWarningPopup" onclick="$('#warningsPopup').hide()">Close</button>
+		</div>
+	</div>
+</div>
+
+<div class="informationPopup" id="informationPopup">
+	<div class="informationPopupBody">
+		<div class="closeModal" onclick="closeModal('informationPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Add Hours Worked </h2>
+		<div class="warningPopupContent">
+			<div class="popupContentRow">
+                <!-- <div class="popRowField" style="width: 40%">
+                    <div class="assigneeHolder" onclick="addAssignAbleUser(this)" placeholder="Assignee">
+                        <span class="single_owner">
+                            <img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem">
+                        </span>
+                    </div>
+                </div>
+                <div class="popRowField" style="width: 30%">
+                    <input type="text" placeholder="Date">
+                </div> -->
+                <div class="popRowField" style="width: 100%">
+                    <input type="text" onkeypress="globalOnKeypress_2(event)" data-type="inp-data" placeholder="Hours Worked">
+                </div>
+            </div>
+			<div class="popupContentRow">
+                <div class="popRowField" style="width: 100%;">
+                    <textarea name="" id="" placeholder="Comments (Optional)"></textarea>
+                </div>
+            </div>
+			<div class="popupContentRow">
+                <p class="viewLoggs" onclick="viewLogHistory(this)">View logged</p>
+            </div>
+			<div class="popupContentRow" style="margin-bottom: 0px">
+                <div class="log_container">
+                    <div class="logs_row logged_header" style="position: sticky;left: 0;top: 0;">
+                        <div style="width: 10%;font-weight: bold;" class="log_column">#</div>
+                        <div style="width: 50%;font-weight: bold;" class="log_column">Log title</div>
+                        <div style="width: 20%;font-weight: bold;" class="log_column">Date</div>
+                        <div style="width: 15%;font-weight: bold;" class="log_column">Amount</div>
+                    </div>
+                    <div class="logs_row">
+                        <div style="width: 10%;" class="log_column">1</div>
+                        <div style="width: 50%;" class="log_column">Lorem ipsum dolor sit amet ...</div>
+                        <div style="width: 20%;" class="log_column">12.12.12</div>
+                        <div style="width: 15%;" class="log_column">12</div>
+                    </div>
+                    <div class="logs_row">
+                        <div style="width: 10%;" class="log_column">2</div>
+                        <div style="width: 50%;" class="log_column">Lorem ipsum dolor sit amet ...</div>
+                        <div style="width: 20%;" class="log_column">15.12.12</div>
+                        <div style="width: 15%;" class="log_column">24</div>
+                    </div>
+                    <div class="logs_row">
+                        <div style="width: 10%;" class="log_column">3</div>
+                        <div style="width: 50%;" class="log_column">Lorem ipsum dolor sit amet ...</div>
+                        <div style="width: 20%;" class="log_column">28.12.12</div>
+                        <div style="width: 15%;" class="log_column">36</div>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="informationPopupFooter">
+			<button class="informationPopupBtn" btn-type="cancel" onclick="$('#informationPopup').hide()">Cancel</button>
+			<button class="informationPopupBtn" btn-type="save" style="background-color: var(--Away);" onclick="saveHoursWorked(this,'save')">Save Time</button>
+			<button class="informationPopupBtn" btn-type="saveNadd" onclick="saveHoursWorked(this,'saveNadd')">Save & Add Another</button>
+		</div>
+	</div>
+</div>
+
+<div class="contactPopup" id="contactListsPopup">
+	<div class="informationPopupBody">
+		<div class="closeModal" onclick="closeModal('contactListsPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Contact Lists <p onclick="open_new_contactpopup()">+ Add new contact</p></h2>
+        <div class="warningPopupContent">
+            <div class="popupContentRow">
+                <div class="popRowField contact_lists" style="width: 100%">
+                    <ul>
+                        <% if(contacts.length > 0) { %>
+                            <% _.each(contacts, function(v, k){ %>
+                                <li data-id="<%= v.id %>" onclick="toggle_contact_select(this)"><span><%= v.salutation %> <%= v.first_name%> <%= v.last_name %></span> <img src="/images/basicAssets/Remove.svg"></li>
+                            <% }); %>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="informationPopupFooter">
+            <button class="informationPopupBtn" style="background-color: var(--Away);" onclick="add_into_contact_list()">Add Contact</button>
+        </div>
+	</div>
+</div>
+<div class="contactPopup" id="contactPopup">
+	<div class="informationPopupBody">
+		<div class="closeModal" onclick="closePopup(event, 'contactPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Add New Contact </h2>
+        <form method="POST">
+            <div class="warningPopupContent">
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 20%">
+                        <label>Salutation</label>
+                        <input type="text" name="salutation" placeholder="Salutation">
+                    </div>
+                    <div class="popRowField require" style="width: 40%">
+                        <label>First (and Middle) Name(<span>*</span>)</label>
+                        <input type="text" name="first_name" placeholder="First (and Middle) Name">
+                    </div>
+                    <div class="popRowField require" style="width: 40%">
+                        <label>Last Name(<span>*</span>)</label>
+                        <input type="text" name="last_name" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField require" style="width: 60%">
+                        <label>Email Address (<span>*</span>)</label>
+                        <input type="text" name="email[0]" placeholder="Email Address">
+                        <p class="suggession" onclick="addfield(event)">+ Add another e-mail address</p>
+                    </div>
+                    <div class="popRowField require" style="width: 40%">
+                        <label>Phone Number(<span>*</span>)</label>
+                        <input type="text" name="phone[0]" placeholder="Phone Number">
+                        <p class="suggession" onclick="addfield(event)">+ Add another phone number</p>
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 60%">
+                        <label>Company/ Business</label>
+                        <select name="company_id">
+                            <option value="" disabled selected>Select Company/ Business</option>
+                            <% if(companies.length > 0) { %>
+                                <% _.each(companies, function(v, k){ %>
+                                    <option value="<%= v.id %>"><%= v.name %></option>
+                                <% }); %>
+                            <% } %>
+                        </select>
+                        <p class="suggession" style="text-decoration: underline; cursor: pointer;" onclick="open_companypopup()">+ Add new company/ business</p>
+                    </div>
+                    <div class="popRowField" style="width: 40%">
+                        <label>Title/ Position/ Occupation</label>
+                        <input type="text" name="position" placeholder="Title/ Position/ Occupation">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 60%">
+                        <label>Street Address</label>
+                        <input type="text" name="street" placeholder="Street Address">
+                    </div>
+                    <div class="popRowField" style="width: 40%">
+                        <label> </label>
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 30%">
+                        <label>City</label>
+                        <input type="text" name="city" placeholder="City">
+                    </div>
+                    <div class="popRowField" style="width: 30%">
+                        <label>Province/ State</label>
+                        <input type="text" name="province" placeholder="Province/ State">
+                    </div>
+                    <div class="popRowField" style="width: 20%">
+                        <label>Country</label>
+                        <input type="text" name="country" placeholder="Country">
+                    </div>
+                    <div class="popRowField" style="width: 20%">
+                        <label>Postal Code</label>
+                        <input type="text" name="postal_code" placeholder="Postal Code">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 60%">
+                        <label>Company/ Business E-mail Address</label>
+                        <input type="text" name="office_email[0]" placeholder="E-mail Address">
+                        <p class="suggession" onclick="addfield(event)">+ Add another e-mail address</p>
+                    </div>
+                    <div class="popRowField" style="width: 40%">
+                        <label>Company/ Business Phone Number</label>
+                        <input type="text" name="office_phone[0]" placeholder="Phone Number">
+                        <p class="suggession" onclick="addfield(event)">+ Add another phone number</p>
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 60%">
+                        <label>Parent Company/ Business</label>
+                        <select name="root_company_id">
+                            <option value="" disabled selected>Select Company/ Business</option>
+                            <% if(companies.length > 0) { %>
+                                <% _.each(companies, function(v, k){ %>
+                                    <option value="<%= v.id %>"><%= v.name %></option>
+                                <% }); %>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="informationPopupFooter">
+                <div class="popRowField" style="width: 50%">
+                    <label class="container"><p style="font-weight: 900;">Private Contact</p>
+                        <p style="font-style: 12px;">This contact will only be seen by you</p>
+                        <input type="checkbox" name="private">
+                        <span class="checkmark" onclick="trigger_checkbox(event)"></span>
+                    </label>
+                </div>
+                <button class="informationPopupBtn" btn-type="cancel" onclick="closePopup(event, 'contactPopup')">Cancel</button>
+                <button class="informationPopupBtn" btn-type="add" style="background-color: var(--Away);" onclick="add_contact(event)">Add Contact</button>
+            </div>
+        </form>
+	</div>
+</div>
+<div class="contactPopup" id="companyPopup">
+	<div class="informationPopupBody">
+		<div class="closeModal" onclick="close_copmanypopup()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Add New Company/ Business </h2>
+        <form method="POST">
+            <div class="warningPopupContent">
+                <div class="popupContentRow">
+                    <div class="popRowField require" style="width: 100%">
+                        <label>Company/ Business Name(<span>*</span>)</label>
+                        <input type="text" name="company_name" placeholder="Company/ Business Name">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 100%">
+                        <label>Street Address</label>
+                        <input type="text" name="street" placeholder="Street Address">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 50%">
+                        <label>City</label>
+                        <input type="text" name="city" placeholder="City">
+                    </div>
+                    <div class="popRowField" style="width: 50%">
+                        <label>Province/ State</label>
+                        <input type="text" name="province" placeholder="Province/ State">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 50%">
+                        <label>Country</label>
+                        <input type="text" name="country" placeholder="Country">
+                    </div>
+                    <div class="popRowField" style="width: 50%">
+                        <label>Postal Code</label>
+                        <input type="text" name="postal_code" placeholder="Postal Code">
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 100%">
+                        <label>E-mail Address</label>
+                        <input type="text" name="office_email[0]" placeholder="E-mail Address">
+                        <p class="suggession" onclick="addfield(event)">+ Add another e-mail address</p>
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField require" style="width: 100%">
+                        <label>Phone Number(<span>*</span>)</label>
+                        <input type="text" name="office_phone[0]" placeholder="Phone Number">
+                        <p class="suggession" onclick="addfield(event)">+ Add another phone number</p>
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 100%">
+                        <label>Parent Company/ Business</label>
+                        <select name="root_company_id">
+                            <option value="" disabled selected>Select Company/ Business</option>
+                            <% if(companies.length > 0) { %>
+                                <% _.each(companies, function(v, k){ %>
+                                    <option value="<%= v.id %>"><%= v.name %></option>
+                                <% }); %>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="popupContentRow">
+                    <div class="popRowField" style="width: 100%">
+                        <label class="container"><p style="font-weight: 900;">Private Company/ Business</p>
+                            <p style="font-style: 12px;">This Company/ Business will only be seen by you</p>
+                            <input type="checkbox" name="private" checked="checked">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="informationPopupFooter">
+                <div class="popRowField" style="width: 100%">
+                    <button class="informationPopupBtn" btn-type="cancel" style="margin: unset; float: left;" onclick="close_copmanypopup()">Cancel</button>
+                    <button class="informationPopupBtn" style="background-color: var(--Away); margin: unset; float: right;" onclick="add_copmany(event)">Add Company</button>
+                </div>
+            </div>
+        </form>
+	</div>
+</div>
+
+<div class="expensePopup" id="expensePopup">
+	<div class="informationPopupBody">
+		<div class="closeModal" onclick="closeModal('expensePopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+		<h2 class="popup_title">Add Budget </h2>
+		<div class="warningPopupContent">
+			<div class="popupContentRow">
+                <!-- <div class="popRowField" style="width: 40%">
+                    <div class="assigneeHolder" onclick="addAssignAbleUser(this)" placeholder="Assignee">
+                        <span class="single_owner">
+                            <img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem">
+                        </span>
+                    </div>
+                </div>
+                <div class="popRowField" style="width: 30%">
+                    <input type="text" placeholder="Date">
+                </div> -->
+                <div class="popRowField" style="width: 100%">
+                    <input type="text" class="amount" onkeypress="globalOnKeypress_2(event)" data-type="inp-data" placeholder="Expense Amount">
+                </div>
+            </div>
+			<div class="popupContentRow">
+                <div class="popRowField" style="width: 100%;">
+                    <textarea name="" id="" placeholder="Expense description / Note"></textarea>
+                </div>
+            </div>
+			<div class="popupContentRow">
+                <p class="viewLoggs" onclick="viewLogHistory(this)">View Budget history</p>
+            </div>
+            <div class="popupContentRow" style="margin-bottom: 0px">
+                <div class="log_container">
+                    <div class="logs_row logged_header" style="position: sticky;left: 0;top: 0;">
+                        <div style="width: 10%;font-weight: bold;" class="log_column">#</div>
+                        <div style="width: 50%;font-weight: bold;" class="log_column">Log title</div>
+                        <div style="width: 20%;font-weight: bold;" class="log_column">Date</div>
+                        <div style="width: 15%;font-weight: bold;" class="log_column">Amount</div>
+                    </div>
+                    <div class="logs_row">
+                        <div style="width: 10%;" class="log_column">1</div>
+                        <div style="width: 50%;" class="log_column">Lorem ipsum dolor sit amet ...</div>
+                        <div style="width: 20%;" class="log_column">12.12.12</div>
+                        <div style="width: 15%;" class="log_column">12</div>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="informationPopupFooter">
+			<button class="informationPopupBtn" onclick="$('#expensePopup').hide()">Cancel</button>
+			<button class="informationPopupBtn" style="background-color: var(--Away);" onclick="save_expense()">Save Budget</button>
+			<button class="informationPopupBtn" onclick="$('#expensePopup').hide()">Save & Add Another</button>
+		</div>
+	</div>
+</div>
+
+<div class="stageOptionPopup">
+    <span class="closeMiniPopUp" style="top: 10px;right: 6px;width: 19px;height: 19px;" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <p class="editThisActivity" onclick="addDemoActivity(this,event,'Sub-activity')">Add a Sub-activity</p>
+    <p class="editThisActivity" onclick="editThisActivity(this,event)">Edit Activity</p>
+    <div class="colorContainer">
+        <span class="st_borderColor none" onclick="st_borderColor(this,event)" data-color="#ccc" style="background-color: #FFF;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #F06050;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #F4A460;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #F7CD1F;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #6CC1ED;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #814968;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #EB7E7F;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #2C8397;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #475577;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #D6145F;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #30C381;"></span>
+        <span class="st_borderColor" onclick="st_borderColor(this,event)" style="background-color: #9365B8;"></span>
+    </div>
+</div>
+<div class="stageOptionPopup_2">
+    <span class="closeMiniPopUp" onclick="//closeMiniPopUp('assignee_users')">+</span>
+    <p class="editThisActivity" onclick="createNewPhase(this)">Add a Stage</p>
+    <p class="editThisActivity" onclick="addDemoActivity(this,event,'activity')">Add a Activity</p>
+</div>
+
+<div id="singlerowid" style="display: none;">
+    <li class="row">
+        <ul class="singlerow" data-activity_id = "">
+            <span class="row_handlr"></span>
+            <!-- Expandable Body Column start -->
+            <li class="task_expandable">
+                <div class="ds-menu-button-container" style="opacity: 1;position: relative;left: -4px;">
+                    <div class="ds-menu-button ds-menu-button-sm right" onclick="expandActivity(this,event)" style="background-color: rgb(240, 240, 240);">
+                        <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-caret-right"></i>
+                    </div>
+                </div>
+            </li>
+            <!-- Title Body Column start -->
+            <li class="sticky_title" onclick="subtasksByThisTask(this)" style="max-width: 500px;min-width: calc(32% - 16px);">
+                <span class="checkThis_task" onclick="selectThis_row(this, event)">
+                    <div class="left-indicator-checkbox">
+                        <span class="left-indicator-checkbox-mark fa fa-check"></span>
+                    </div>
+                </span>
+                <div class="editable_title" onkeypress="saveThisTitle(this, event)" onblur="$(this).attr('contenteditable','false')" onfocus="selectAllTxt(this)" contenteditable="false"><%= title %></div> 
+                <div class="group_option">
+                    <span class="edit_thisTitle" onclick="edit_thisTitle(this, event)"><i class="fas fa-pencil-alt"></i></span>
+                    <!-- <span class="flag_thisTask"></span> -->
+                    <span class="moreOpt_thisTask"  onclick="singleRowOption(this, event)"><i style="font-size: 18px;" class="fas fa-ellipsis-h"></i></span>
+                </div>
+            </li>
+            <!-- Owner Body Column start -->
+            <li class="owner_column">
+                <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+                    <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+                    <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+                </div>
+            </li>
+            <!-- Co-owner Body Column start -->
+            <li class="coowner_column">
+                <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+                    <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+                    <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+                </div>
+            </li>
+            <!-- Observer Body Column start -->
+            <li class="observer_column">
+                <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+                    <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+                    <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+                </div>
+            </li>
+            <!-- Assignee Body Column start -->
+            <li class="assignee_column">
+                <div class="sinple_ownerContainer" onclick="viewUsersList(this)">
+                    <span class="single_owner"><img src="/images/users/joni.jpg" alt="Dalim Chowdhury" title="Dalim Chowdhury"></span>
+                    <span class="single_owner"><img src="/images/users/nayeem.jpg" alt="A.H. Nayeem" title="A.H. Nayeem"></span>
+                </div>
+            </li>
+            <!-- Actual Amount Body Column start -->
+            <li class="acAmount_column">
+                <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Variance Body Column start -->
+            <li class="bgVariance_column">
+                <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Estimated Work Hour Body Column start -->
+            <li class="estWorkHour_column">
+                <input type="text" onkeypress="globalOnKeypress_2(event)" class="input_field colon_field" value="">
+            </li>
+            <!-- Hours Worked Body Column start -->
+            <li class="hoursWorked_column">
+                <input type="text" onclick="hoursWorkedInformation(this)" onkeypress="globalOnKeypress_2(event)" class="input_field colon_field" value="">
+            </li>
+            <!-- Budget Amount Body Column start -->
+            <li class="bgAmount_column" onclick="viewExpensedtl(this)">
+                <input type="text" onclick="viewExpensedtl(this)" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Money Spent Body Column start -->
+            <li class="moneySpent_column">
+                <input type="text" onclick="viewExpensedtl(this)" onclick="viewExpensedtl(this)" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Estimated Hourly Rate Body Column start -->
+            <li class="estHourRate_column">
+                <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Actual Work Hour Body Column start -->
+            <li class="acWorkHour_column">
+                <input type="text" onkeypress="globalOnKeypress_2(event)" class="input_field colon_field" value="">
+            </li>
+            <!-- Actual Hourly Rate Body Column start -->
+            <li class="acHourRate_column">
+                <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Actual Variance Rate Body Column start -->
+            <li class="acVarianceRate_column">
+                <input type="text" onkeypress="globalOnKeypress(event)" class="input_field point_field" value="">
+            </li>
+            <!-- Due Date Body Column start -->
+            <li class="dueDate_column due_date_div">
+                <input type="text" class="due_date" value="">
+            </li>
+            <!-- Completed Date Body Column start -->
+            <li class="compDate_column due_date_div">
+                <input type="text" class="due_date" value="">
+            </li>
+            <!-- Phase Body Column start -->
+            <li class="phase_column">
+                <div class="phaseBody_txt" onclick="choosePhase(this)">High </div>
+            </li>
+            <!-- Status Body Column start -->
+            <li class="status_column">
+                <div class="statusBody_txt" style="background-color: #d8d8d8;" onclick="chooseStatus(this)">Initiate</div>
+            </li>
+            <!-- Ending Body Column start -->
+            <li class="lastColumn_ofRow" style="min-width: 40px;max-width: 40px;"></li>
+        </ul>
+    </li>
+</div>
+
+<li id="empty_row" class="row">
+    <ul class="singlerow" data-activity_id = "">
+        <li style="min-width: 40px !important;background-color: #FFF;border-bottom: none;"></li>
+        <li style="min-width: calc(100% - 80px) !important;margin-top: 50px;">No Activities found in this Sub Activity</li>
+        <li style="min-width: 40px !important;background-color: #FFF;border-bottom: none;"></li>
+    </ul>
+</li>
+
+<div id="kvactivity_data" style="display: none;">
+    <div class="ds-menu-button-container stage_act_expnd">
+        <div class="phase_act ds-menu-button ds-menu-button-sm right" style="background-color: rgb(240, 240, 240);">
+            <i class="fa fa-caret-down"></i>
+            <i class="fa fa-caret-right"></i>
+        </div>
+    </div>
+    <span class="stage_act_option" onclick="viewStageActOption(this,event)"></span>
+    <div class="warningdiv"></div>
+    <p class="stage_title">Activity One</p>
+    <p class="dateByact">Due: 01-Dec-19</p>
+</div>
+
+<div class="propertyPopup" id="propertyPopup">
+    <div class="popupBody_div">
+        <div class="closeModal" onclick="closeModal('propertyPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+        <h2 class="popup_title">Activity Properties </h2>
+        <div class="warningPopupContent">
+            <div class="ct_row">
+                <div class="t_title" style="width: 100%;">
+                    <label class="field_lable">Title (<span style="color: #c00;font-size: 20px;position: relative;bottom: -6px;">*</span>)</label>
+                    <input type="text" id="create_task_title" onkeypress="prevent_space(event) //createTaskTitle(event)" placeholder="Title">
+                </div>
+            </div>
+            <div class="ct_row">
+                <div class="t_description">
+                    <label class="field_lable">Description</label>
+                    <textarea name="" id="create_task_desc" onkeypress="create_task_desc(event)" placeholder="Description"></textarea>
+                </div>
+                <div class="st_date" style="margin-bottom: 10px;width: 30%;">
+                    <label class="field_lable">Start Date</label>
+                    <input type="text" id="create_st_date" class="select_date" placeholder="Start Date">
+                </div>
+                <div class="du_date" style="width: 30%;">
+                    <label class="field_lable">Due Date</label>
+                    <input type="text" id="create_du_date" class="select_date" placeholder="Due Date">
+                </div>
+            </div>
+            <div class="ct_row">
+                <h2 class="toggle_title" onclick="toggleChild(this)"> + Add client information </h2>
+                <div class="estw_hour" style="display: none;width: 35%;">
+                    <label class="field_lable">Client Name</label>
+                    <input type="text" id="create_EstWorkHour" onkeypress="prevent_space(event)" placeholder="Client Name">
+                </div>
+                <div class="t_budget" style="display: none;width: 35%;">
+                    <label class="field_lable">Company Name</label>
+                    <input type="text" id="" onkeypress="prevent_space(event)" placeholder="Company Name">
+                </div>
+            </div>
+            <div class="ct_row">
+                <h2 class="toggle_title" onclick="toggleChild(this)"> + Add activity budget & Estimated work hours </h2>
+                <div class="estw_hour" style="display: none;width: 35%;">
+                    <label class="field_lable">Estimated Work Hours</label>
+                    <input type="text" id="create_EstWorkHour" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="hh:mm">
+                </div>
+                <div class="t_budget" style="display: none;width: 35%;">
+                    <label class="field_lable">Activity Budget</label>
+                    <input type="text" id="create_task_budget" onkeypress="globalOnKeypress(event)" onblur="onblurTbudget(event)" placeholder="0.00">
+                </div>
+            </div>
+            <div class="ct_row" style="margin-bottom: 45px">
+                <h2 class="toggle_title" onclick="toggleChild(this)"> + Add team to collaborate </h2>
+                <div class="t_team" style="display: none;width: 35%;">
+                    <label class="field_lable">Team</label>
+                    <select name="" id="create_task_team">
+                        <option value="" disabled selected>Select a Team</option>
+                        <option value="Android">Android</option>
+                        <option value="Development">Development</option>
+                    </select>
+                </div>
+                <div class="t_choose_member" style="display: none;">
+                    <label class="field_lable">Choose Members and their roles</label>
+                    <input type="text" onclick="//addTaskMembers()" placeholder="Search Users">
+                    <!-- <h3 class="taskmemberDivTitle">Activity Member(s)</h3>
+                    <ul class="taskMemberlist" id="ctaskMemberlist">
+    
+                    </ul> -->
+                </div>
+            </div>
+            <div class="ct_row ctbtn_row">
+                <button onclick="closeModal('propertyPopup'); //close_create_board()" class="ctCancel_btn">Cancel</button>
+                <button class="ctCreate_btn" id="activity_action_btn" onclick="updateStageAct(this)">Update Activity</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup selction End  -->

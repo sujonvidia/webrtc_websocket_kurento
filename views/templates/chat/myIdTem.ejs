@@ -1,0 +1,6 @@
+<li onclick="start_conversation(event)" data-privacy="private" data-status="active" data-mute="unmute" data-pin="unpin" data-cnv-type="personal" ; data-nom="0" data-myid="<%= myid %>" data-createdby="<%= createdby%>" data-nor="0" data-id="<%= userid %>"
+    data-tm="<%= totalMember %>" data-subtitle="<%= sub_title %>" data-conversationtype="<%= conversation_type %>" data-conversationid="<%= conversation_id %>" data-name="<%= users_name %>" data-img="<% if(users_img !== ''){%><%= users_img %><% }else{ %> feelix.jpg <% }%>"
+    id="conv<%= conversation_id %>" class="">
+    <span class="online"></span> <span id="userName" class="usersName user_name<%= userid %>"><%if(user_role == 'Guest'){%>About Workfreeli<% } else { %><%= users_name %><% } %></span>
+    <span class="sub-text"><%if(user_role != 'Guest'){%> - It's you!<% } %></span>
+</li>

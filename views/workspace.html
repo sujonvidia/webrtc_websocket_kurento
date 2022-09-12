@@ -1,0 +1,3093 @@
+<%- include('layouts/basic_head') %>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style-popup.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style_basic_connect.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/OverlayScrollbars.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/hover.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.css">
+    <link href="/stylesheets/pluginCss/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/stylesheets/style-workspace.css">
+    <!-- <link rel="stylesheet" href="/javascripts/plugins/editor/css/froala_editor.pkgd.min.css"> -->
+    <!-- <link rel="stylesheet" href="/javascripts/plugins/editor/css/froala_editor.css"> -->
+    <!-- <link rel="stylesheet" href="/javascripts/plugins/editor/css/froala_style.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="/javascripts/plugins/editor/simditor.css" />
+
+    <link href="/tablesorter/css/theme.default.min.css" rel="stylesheet">
+    <script src="/tablesorter/js/jquery.tablesorter.min.js"></script>
+    <script src="/tablesorter/js/jquery.tablesorter.widgets.min.js"></script>
+
+    <script src="/javascripts/jquery.dataTables.min.js"></script>
+    <script src="/javascripts/dataTables.buttons.min.js"></script>
+    <script src="/javascripts/jszip.min.js"></script>
+    <script src="/javascripts/pdfmake.min.js"></script>
+    <script src="/javascripts/vfs_fonts.js"></script>
+    <script src="/javascripts/buttons.html5.min.js"></script>
+    <script src="/javascripts/datetime-moment.js"></script>
+
+    <%- include('templates/sideBar') %>
+        <style>
+            [placeholder]:empty::before {
+                content: attr(placeholder);
+                color: #555;
+            }
+            
+            [placeholder]:empty:focus::before {
+                content: "";
+            }
+            
+            .comnameli {
+                position: relative;
+                background: #FFF;
+                padding: 15px 10px;
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+            
+            .comnamebtn {
+                position: absolute;
+                top: 5px;
+                text-align: center;
+            }
+            
+            .tab span {
+                background: #CCC;
+                position: relative;
+                padding: 8px;
+                cursor: pointer;
+                border-radius: 4px;
+                line-height: 45px;
+            }
+            
+            .tab span:hover,
+            .tab span.select {
+                background: var(--PrimaryC);
+                color: #FFF;
+            }
+            
+            .btn1 {
+                width: 175px;
+                font-size: 14px;
+                border-radius: 4px;
+                background-color: var(--PrimaryC);
+                border: none;
+                cursor: pointer;
+                color: #ffffff;
+                font-family: var(--F1);
+                font-size: 15px;
+                font-weight: 400;
+                line-height: 19px;
+                height: 36px;
+            }
+            
+            .btn2 {
+                width: 175px;
+                font-size: 14px;
+                border-radius: 4px;
+                background-color: #FFFFFF;
+                border: 1px solid var(--PrimaryC);
+                cursor: pointer;
+                color: var(--PrimaryC);
+                font-family: var(--F1);
+                font-size: 15px;
+                font-weight: 400;
+                line-height: 19px;
+                height: 36px;
+            }
+        </style>
+
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <h2>Remove User</h2>
+                <a class="closeicon" href="#">&times;</a>
+                <div class="content">
+                    <p class="first">Are you sure you want to remove Demo User from OHS Global Team?</p>
+                    <p class="secound">Doing this will remove this person’s access to all Rooms associated with Demo Team</p>
+                    <div class="button_area">
+                        <button class="canclebutton" onclick="closeWin()">Cancel</button>
+                        <button class="removebutton" onclick="remove_member4(event)">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section id="admin-setting-right-section" style="display: block">
+            <div class="global_msg_con">
+                <div class="global_suc_msg" onclick="$(this).hide()">
+                    <!--Here, SuccMsg show-->
+                </div>
+                <div class="global_err_msg" onclick="$(this).hide()">
+                    <!--Here, warningMsg show-->
+                </div>
+            </div>
+            <!-- User management section start here -->
+            <div id="userManageMent" class="adminSettingBody" style="display:<%if(is_team_admin == 'no') {%>block<% } else { %>none<% } %>">
+                <!-- <a href="/" class="close-back backpage">
+				<img class="" src="/images/setting/back_icon.png" alt="">
+			    </a> -->
+                <a href="/alpha2" class="close-back-conn-page" id="backToConnectForUserManagement">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <a onclick="adminSettngActive('user')" class="close-back-conn-page" id="backToUserManagement" style="display: none;">
+                    <div class="admin-setting-close">Back to User Management</div>
+                </a>
+
+
+                <div class="main-userManageMent" style="display:block">
+                    <div class="input-div tab_sec_user">
+                        <h2 id="userManageMent_countAll" onclick="filterManUsers('all_user')" class="userManTab_all_user active" style="cursor: pointer;">All</h2>
+                        <h2 id="userManageMent_count" onclick="filterManUsers('normal_user')" class="userManTab_normal_user" style="left: 40px;cursor: pointer;">Users <span></span></h2>
+                        <h2 id="guestManageMent_count" onclick="filterManUsers('guest_user')" class="userManTab_guest_user" style="left: 160px;cursor: pointer;">Guest <span></span></h2>
+                        <!-- <li class="user-management-input">
+                        <select name="" id="active_deactive_user_search">
+                                <option value="all_users">All Users</option>
+                                <option value="active_users">Active Users</option>
+                                <option value="deactive_users">Deactive Users</option>
+                        </select>
+                </li>
+                <li class="user-management-input">
+                        <select name="" id="roll_wise_user_search">
+                                <option value="All Roll">All Roll</option>                  
+                                <option value="Normal User">Normal User</option>
+                                <option value="System Admin">System Admin</option>
+                        </select>
+                </li> -->
+                        <!-- <li class="create-user-input" style=" margin:0 10px;"><button onclick="showInvitePopup()">Invite User</button></li> -->
+                        <!-- <li class="create-user-input" style="float: right; margin:0 10px;"><button onclick="showInvitePopup()">Invite User</button></li> -->
+
+                        <li class="user-management-input" style="float: left">
+                            <div contenteditable="true" id="user_search_from_ws" onkeyup="filter_user_info(event)" value="" placeholder="Search users">
+                            </div>
+                        </li>
+                        <li class="create-user-input"><button onclick="showCreateUserPopup('user_management')">+ Create New User</button></li>
+                        <li class="create-user-input" style="    margin-left: 7px;">
+                            <button style="width: 100px;" onclick="generate_user_export('pdf')">PDF</button>
+                        </li>
+                        <li class="create-user-input" style="    margin-left: 7px;">
+                            <button style="width: 100px;" onclick="generate_user_export('xls')">Excel</button>
+                        </li>
+                    </div>
+                    <div class="table_fulldata">
+                        <table class="user-table" id="userManageTable">
+                            <thead class="user-table-head">
+                                <tr>
+                                    <th style="width:20%">Full Name</th>
+                                    <th style="width:25%">Email Address</th>
+                                    <th style="width:20%;">Role</th>
+                                    <th style="width:15%">Created Date</th>
+                                    <th style="width:15%">Created By</th>
+                                    <th style="width:5%">Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="user-table-body all_user" id="User-management-User-list" data-type="all_user">
+
+                            </tbody>
+                        </table>
+                        <table class="user-table" id="userManageTableExport">
+                            <thead class="user-table-head">
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email Address</th>
+                                    <th>Role</th>
+                                    <th style="width: 50%;">Created Date</th>
+                                    <th>Created By</th>
+                                    <th>Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="user-table-body all_user" id="User-management-User-Export" data-type="all_user">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="manage-user-profile" style="display:none">
+                    <!-- <span class="close-back backpage" onclick="$(this).parents().find('#manage-user-profile').hide();$(this).parents().find('.main-userManageMent').show();">
+						<img class="" src="/images/setting/back_icon.png" alt="">
+					</span> -->
+
+                    <!-- <img class="back-main-userManageMent" onclick="backToManageMentDiv()" src="/images/basicAssets/arrow-circle-left.svg" alt=""> -->
+                    <!-- <img class="manage-profile-option" src="/images/basicAssets/ellipsis.svg" alt=""> -->
+                    <!-- <div class="change-profile-photo">
+              <img src="" alt="">
+              <label for="changePhoto" class="profile-img-change">Upload / Change
+                  <input type="file" name="" id="changePhoto" onchange="userImageUpdate('',event,this.files)" accept="image/x-png,image/jpeg,image/jpg" style="display:none">
+              </label>
+          </div> -->
+                    <div class="profile-information" style="margin-bottom: 30px;">
+                        <!-- <h2 class="profile-user-name"><span id="UserProfileName">Hallie Lambert </span><span class="edit-value" id="UserEditProfileName">Edit</span></h2>
+              <table id="userInfoTable">
+                  <tr>
+                      <td class="information-label">Email Address: </td>
+                      <td class="information-value" id="UserProfileEmail">gottlieb_raegan@ivy.name</td>
+                  </tr>
+                  <tr>
+                      <td class="information-label">Username: </td>
+                      <td class="information-value" id="UserProfileUserName">HLambert</td>
+                  </tr>
+   
+                  <tr>
+                      <td class="information-label">Account Status: </td>
+                      <td class="information-value" id="User-Profile-Active-Deactive">Active <span class="edit-value">Deactive</span></td>
+                  </tr>
+                  <tr>
+                      <td class="information-label">Account Creation:</td>
+                      <td class="information-value user-creation-date">10 June 2018</td>
+                  </tr>
+              </table> -->
+                        <div class="profile_head_text">
+                            <p id="UserProfileName">Demo User</p>
+                            <p>Created at: <span class="createdat">03-Mar-2020</span></p>
+                            <!-- <p>Created by: Anwar Ali | Last Updated by: Anwar Ali on 03-Mar-2020</p>  -->
+                            <!-- <p>Created by: Kallol Ray94, Dated on: 5th May 2020, 5:19 PM | Last Updated by: Kallol Ray94, Dated on: 5th May 2020, 5:19 PM</p>  -->
+                        </div>
+                        <div class="input-div" style="position: absolute; right: 0;top: 0;">
+                            <li class="user-management-input" style="float: right">
+                                <!-- <div contenteditable="true"
+                        style=""
+                        id="user_search_from_ws" onkeyup="filter_user_info(event)" value="" placeholder="Search users"></div> -->
+                            </li>
+                        </div>
+
+                    </div>
+                    <div class="channel-team-permission">
+                        <div class="channel-team-permission-tab">
+                            <li id="controlChannel" style="display:none" onclick="channelTeamPermission('channel')">Channels</li>
+                            <li id="controlPersonalDetails" onclick="channelTeamPermission('PersonalDetails')" class="active">Personal Details</li>
+                            <li id="controlTeam" onclick="channelTeamPermission('team')" class="">Teams</li>
+                            <!-- <li id="controlPermission" onclick="channelTeamPermission('permission')" class="">Roles & Permissions</li> -->
+                        </div>
+                        <div id="channelMainTab" class="user-control-tabs" style="display:none">
+                            <table class="channel-table">
+                                <thead class="channel-table-head">
+                                    <tr>
+                                        <th>Name</td>
+                                            <th>Description</th>
+                                            <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="channel-table-body">
+                                    <tr class="channel-body-row">
+                                        <td class="channel-names">Everyone</td>
+                                        <td>Company-wide announcements and work-based matters.</td>
+                                        <td> <button>Remove</button> </td>
+                                    </tr>
+                                    <tr class="channel-body-row">
+                                        <td class="channel-names">Random</td>
+                                        <td>Non-work banter and water cooler conversation.</td>
+                                        <td> <button>Remove</button> </td>
+                                    </tr>
+                                    <tr class="channel-body-row">
+                                        <td class="channel-names">Hayven</td>
+                                        <td>Hayven specific project announcements and updates.</td>
+                                        <td> <button>Remove</button> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="add-chennel-btn">+ Add Channel</button>
+                        </div>
+                        <div id="PersonalDetailsTab" class="user-control-tabs" style="display:block">
+
+                            <!-- <div class="change-profile-photo">
+                                <img src="" alt="">
+                                <label for="changePhoto" class="profile-img-change">Upload / Change
+                                    <input type="file" name="" id="changePhoto" onchange="userImageUpdate('',event,this.files)"
+                                accept="image/x-png,image/jpeg,image/jpg" style="display:none">
+                                </label>
+                            </div>
+                            <div class="user_area">
+                                <table class="usercommonTable">
+
+                                    <tr style="height:40px;">
+                                        <td><span class="userName">Common Name:</span></td>
+                                        <td id="common_name">Demo User</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><span class="userName">Birthday:</span></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="userName">Role:</span></td>
+                                        <td id="roleselect214"></td>
+                                    </tr>
+                                </table>
+
+                                <div class="edit_area" style="float: right;"><img style="width: 24px;position: relative;
+    top: 5px;" src="/images/setting/pencil_icon.png" alt="">Edit</div>
+                            </div>
+                            <div class="userDetail_area" style="width: 100%;clear: both;margin-top: 60px;">
+                                <div class="user_area1">
+                                    <table style="width: 400px;" class="userdetailsTable">
+
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Personal Email:</span></td>
+                                            <td id="UserProfileEmail">demo@personal.com</td>
+
+                                        </tr>
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Personal Number:</span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Personal Address:</span></td>
+                                            <td style="width: 70px;">
+                                                <p class="textClasss">
+
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+                                <div class="user_area1">
+                                    <table style="width: 400px;" class="userdetailsTable">
+
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Date Employed:</span></td>
+                                            <td></td>
+
+                                        </tr>
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Salary:</span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Work Email:</span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr style="height:40px;">
+                                            <td><span class="userName">Work Number:</span></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+
+
+                            </div> -->
+
+                            <div class="userPersonalDetails">
+                                <div class="userMainContainer">
+                                    <div class="userImageContainer">
+                                        <img id="user_logo" src="https://wfss001.freeli.io/profile-pic/Photos/img.png" alt=""/>
+                                        <!-- <label for="changePhoto" class="profile-img-change">
+                                            <input type="file" name="" id="changePhoto" onchange="userImageUpdate('',event,this.files)"
+                                        accept="image/x-png,image/jpeg,image/jpg" style="display:none">
+                                        </label> -->
+                                    </div>
+                                    <div class="userInfoTable">
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Common Name:</div>
+                                            <div class="userInfo_column name_column"><span id="common_name" class="userInfoField" onblur="userInfoOnBlur(event, this)"></span><span class="edit_row" onclick="editUserInfo(this,'common_name','name')">Edit</span></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Birthday:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Role:</div>
+                                            <div class="userInfo_column" id="user_roles">
+                                                <!-- <span class="userInfoRole">Guest</span>
+                                                <span class="userInfoRole">Normal User</span>
+                                                <span class="userInfoRole active">System Admin</span> -->
+                                            </div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Personal Email:</div>
+                                            <div class="userInfo_column email_column"><span id="UserProfileEmail" class="userInfoField" onblur="userInfoOnBlur(event, this)"></span><span class="edit_row" onclick="editUserInfo(this,'UserProfileEmail','email')">Edit</span></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Personal Number:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Personal Address:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Date Employed:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Salary:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Work Email:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                        <div class="userInfo_row">
+                                            <div class="userInfo_column">Work Number:</div>
+                                            <div class="userInfo_column"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- <div id="teamMainTab" class="user-control-tabs" style="display:none">
+                  <div class="teams-div">
+                      <p class="team-title">Design</p>
+                  </div>
+
+
+                  
+              </div> -->
+                        <div id="teamMainTab" class="user-control-tabs" style="display:none">
+                            <!-- <div class="teams-div">
+                    <div class="team-title">Demo Team</div>
+                    <div class="user">Admin User</div>
+                    <div class="bin_icon"><img src="/images/setting/bin_icon_png" alt=""></div>
+                </div> -->
+                            <div class="teams_area disabled_admin">
+                                <div class="team-head">Demo Team</div>
+                                <div class="team-user">Admin User</div>
+                                <div class="bin_icon"><img src="/images/setting/bin_icon.png" alt=""></div>
+                            </div>
+                            <div class="teams_area ">
+                                <div class="team-head">OHS Global</div>
+                                <div class="team-user">Normal User</div>
+                                <div class="bin_icon">
+                                    <a onclick="showWin()" href="#popup1"><img src="/images/setting/bin_icon.png" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="teams_area ">
+                                <div class="team-head">Navigate Team</div>
+                                <div class="team-user">Normal User</div>
+                                <div class="bin_icon">
+                                    <a onclick="showWin()" href="#popup1"><img src="/images/setting/bin_icon.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="permissionMainTab" class="user-control-tabs" style="display:none">
+                            <!-- <div class="permission-wrapper">
+                      <div class="msgs-notifi" id="connect_page_access">
+                          
+                      </div>                      
+                  </div> -->
+
+                            <div id="vertical_tab_nav">
+
+                                <ul>
+
+                                    <li><a href="">General Connect Permissions</a></li>
+                                    <li><a href="">Connect Room Permissions</a></li>
+                                    <li><a href="">Call Permissions</a></li>
+                                </ul>
+
+                                <div class="article_perm_con">
+
+
+                                    <article>
+                                        <p class="header_sub_perm">General Connect Permissions</p>
+
+
+                                    </article>
+
+                                    <article>
+                                        <p class="header_sub_perm">Connect Room Permissions</p>
+
+
+                                    </article>
+
+                                    <article>
+                                        <p class="header_sub_perm">Call Permission Settings:</p>
+
+                                        <div class="permission_area">
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Video Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Audio Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Screen</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Call Link</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" >
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Video Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Audio Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Screen</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Call Link</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox">
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Video Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Audio Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                        <div class="permission_area">
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Video Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Audio Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Screen</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Call Link</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Video Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Audio Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Screen</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Share Call Link</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox">
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Video Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+                                            <div class="permissiondiv">
+                                                <div class="permission_heading">
+                                                    <label for="">Audio Call</label>
+
+                                                </div>
+                                                <div class="permission_activition">
+                                                    <label class="switch">
+                                                            <input type="checkbox" checked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </article>
+
+                                </div>
+
+                            </div>
+                            <div class="changed_area">
+                                <img class="" src="/images/setting/change_icon.png" alt=""> <span>Any permissions changed will be applied to this user only</span>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- role main section start here -->
+            <div id="roleManagement" class="adminSettingBody" style="display:none">
+                <!-- workspace Team sectin start here -->
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+
+                <div class="workspace-tab-body" id="roledisplaydiv" style="display:inline-block">
+                    <!-- <a href="/" class="round-back-sett" dis>
+						<img src="/images/back_34px_200 @1x.png" class="roll-back" onclick="" id="">
+						<img src="/images/setting/back_icon.png" class="roll-back" onclick="" id="">
+					</a> -->
+                    <div class="rolesHomeHead">
+                        <h2>
+                            <span>Roles</span>
+                            <!-- <div class="triangle-down" id="sort_roll_sh"></div> -->
+                            <ul id="sort_role_menu">
+                                <li>Sort Roles by Name</li>
+                                <li>Most Recently Updated</li>
+                            </ul>
+                        </h2>
+                        <p class="role-info-text">
+                            <span class="info-img-con">
+                    <img src="/images/basicAssets/info_role_i_blue.png" class="info-role-i" alt="Info Role"/>
+                  </span> A role determines the set of permissions and actions available to a user
+                        </p>
+                        <div class="csBtnConRole">
+                            <div class="createRollBtn" onclick="showAdminpopup('addrole')">+ Create Role</div>
+                            <!-- <input type="text" id="roleSearchbox" class="roleSearch" placeholder="Search roles"> -->
+                        </div>
+                    </div>
+                    <div class="" id="all-role-container">
+
+                    </div>
+                    <!-- Here viewing all roles -->
+                </div>
+                <div class="workspace-tab-body" id="wsTeamPermission" style="display: none;">
+                    <span class="round-back-sett">
+							<!-- <img src="/images/back_34px_200 @1x.png" onclick="adminSettngActive('role')" class="ws-roll-details-to-back-roll"> -->
+							<!-- <img src="/images/setting/back_icon.png" onclick="adminSettngActive('role')" class="ws-roll-details-to-back-roll"> -->
+					</span>
+                    <div class="Popup-back-Header-role">
+                        <div>
+                            <span class="wsM-Roll-name">Role: </span>
+                            <span class="wsM-Roll-name" id="roll_name_place"></span>
+                            <span style="color: var(--CFFF);margin-left: 50px;background: var(--PrimaryC);padding: 0px 5px 0px 5px;border-radius: 5px;cursor: pointer;" id="roleDelBtn" onclick="$('#wsDeleteRolePopup').css('display', 'flex')">Delete</span>
+                        </div>
+                        <div class="create-update-info">
+                            Created by: <span id="role-creator-name"></span>, Dated on: <span id="role-create-date"></span> | Last Updated by: <span id="role-updator-name"></span> Dated on: <span id="role-update-date"></span>
+                            <!-- Created by: Anwar Ali | Last Updated by: Anwar Ali on 03-Mar-2020 -->
+
+                        </div>
+                        <div class="role-search-con">
+                            <button class="ws-add-user-role" onclick="addUserRoleBtn()" id="addUserRoleBtn">+ Add User</button>
+                            <!-- <input type="search" class="role-search" id="roleUserPermissionSearch" onkeyup="" value="" placeholder="Search users" autocomplete="off"> -->
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="">
+            <button onclick="" class="ws-add-user">Add User</button>            
+            <button onclick="" onclick="delete_role_popup(event)" class="ws-delete-team">Delete Role</button>
+				</div> -->
+
+
+                    <div class="roll-menu-main">
+                        <ul class="roll-menu-ul">
+                            <li class="role-main-menu-active" id="permissions-mnu" onclick="role_main_menu_sh(this)">Permissions</li>
+                            <li id="users-mnu" onclick="role_main_menu_sh(this)">Users</li>
+                        </ul>
+                    </div>
+                    <div class="roll-menu-content">
+                        <div class="permission-menu-content" id="permission-menu-content-id">
+                            <div class="prm-menu-left">
+                                <ul class="prm-side-menu-ul">
+                                    <li onclick="role_permission_menu_sh(this)" id="general_conect_perm">General Connect Permissions
+                                        <div class="triangle-right"></div>
+                                    </li>
+                                    <li onclick="role_permission_menu_sh(this)" id="conect_room_perm">Connect Room Permissions
+                                        <div class="triangle-right"></div>
+                                    </li>
+                                    <li onclick="role_permission_menu_sh(this)" id="call_perm" class="prm-left-side-menu-actve">Call Permissions
+                                        <div class="triangle-right"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="prm-menu-right">
+                                <div class="general-conn-prm-details" id="general_perm_id">
+                                    <div class="perm-head-text">General Connection Permission Settings:</div>
+                                </div>
+                                <div class="connect-prm-room-details" id="connect_perm_id">
+                                    <div class="perm-head-text">Connect Permission Room Settings:</div>
+                                </div>
+                                <div class="call-perm-details" id="call_perm_id">
+                                    <div class="perm-head-text">Call Permission Settings:</div>
+                                    <!-- <p>Limited permision</p> -->
+                                    <div class="individual-call-prm-con">
+                                        <div class="prm-individual-con">
+                                            <span class="prm-switch-title">Video Call</span>
+                                            <span class="permissionSwitchCon">
+                                  <label class="switchRole">
+                                      <input type="checkbox" checked>
+                                      <span class="sliderRole roundStyleRoleSwitch"></span>
+                                            </label>
+                                            </span>
+                                        </div>
+                                        <div class="prm-individual-con">
+                                            <span class="prm-switch-title">Audio Call</span>
+                                            <span class="permissionSwitchCon">
+                                  <label class="switchRole">
+                                      <input type="checkbox">
+                                      <span class="sliderRole roundStyleRoleSwitch"></span>
+                                            </label>
+                                            </span>
+                                        </div>
+                                        <div class="prm-individual-con">
+                                            <span class="prm-switch-title">Share Screen</span>
+                                            <span class="permissionSwitchCon">
+                                  <label class="switchRole">
+                                      <input type="checkbox">
+                                      <span class="sliderRole roundStyleRoleSwitch"></span>
+                                            </label>
+                                            </span>
+                                        </div>
+                                        <div class="prm-individual-con">
+                                            <span class="prm-switch-title"> Share Call Link</span>
+                                            <span class="permissionSwitchCon">
+                                <label class="switchRole">
+                                    <input type="checkbox" checked>
+                                    <span class="sliderRole roundStyleRoleSwitch"></span>
+                                            </label>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="users-menu-content" id="users-menu-content-id">
+                            <div class="ws-Custom_Table">
+                                <table class="user-table" id="roleUsersListTable">
+                                    <thead class="user-table-head">
+                                        <tr>
+                                            <th style="width: 20%;">Full Name</th>
+                                            <th style="width: 15%;">Email Address</th>
+                                            <th style="width: 14%;">Role</th>
+                                            <th style="width: 14%;">Created Date</th>
+                                            <th style="width: 14%;">Created By</th>
+                                            <th style="width: 5%;">Status</th>
+                                            <!-- <th style="width: 5%;"></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody class="user-table-body" id="roleUsersList">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <br><br><br><br><br><br>
+        <h3>Permissions</h3>
+        <div class="permission"></div> -->
+                </div>
+            </div>
+            <!-- Workspace main section start here -->
+            <div id="workSpaceManagement" class="adminSettingBody" style="display:none">
+                <!-- Workspace tab section start here -->
+                <!-- <div id="workSpaceTabDiv">
+          <h2 class="workSpace-tab-title">Navigate Group <img onclick="showAdminpopup('wsColorPopUp')" src="/images/basicAssets/Settings.svg" alt=""></h2>
+          <div class="work-space-tabs active-ws" onclick="workSpaceTabs('team')" >
+              <p>
+                  <span class="teamCount">6</span>
+                  <span class="workspacetabTitle">Teams</span>
+              </p>
+          </div>
+          <div class="work-space-tabs" onclick="workSpaceTabs('members')">
+              <p>
+                  <span class="MemberCount">49</span>
+                  <span class="workspacetabTitle">Members</span>
+              </p>
+          </div>
+          <div class="work-space-tabs" onclick="workSpaceTabs('channel')">
+              <p>
+                  <span class="ChannelCount">4</span>
+                  <span class="workspacetabTitle">Rooms</span>
+              </p>
+          </div>
+      </div> -->
+                <!-- workspace Team sectin start here -->
+                <div class="workspace-tab-body" id="workSpaceTeamDiv" style="display:inline-block">
+                    <a href="/alpha2" class="close-back-conn-page">
+                        <div class="admin-setting-close">Back to Connect</div>
+                    </a>
+                    <h2>Teams <span>(6)</span></h2>
+                    <!-- <div onclick="exploreTeam()" class="teams-div">
+              <p class="team-title">Business Strategy</p>
+          </div>
+          <div onclick="exploreTeam()" class="teams-div">
+              <p class="team-title">Design</p>
+          </div>
+          <div onclick="exploreTeam()" class="teams-div">
+              <p class="team-title">Engineering</p>
+          </div>
+          <div onclick="exploreTeam()" class="teams-div">
+              <p class="team-title">Legal & Finance</p>
+          </div>
+          <div onclick="exploreTeam()" class="teams-div">
+              <p class="team-title">Marketing</p>
+          </div>
+          <div onclick="exploreTeam()" class="teams-div">
+              <p class="team-title">Sales & Support</p>
+          </div> -->
+                    <div class="teams-div create-teams" onclick="showAdminpopup('createteam')" id="wsCreateTeam">
+                        <p class="team-title create-teams-title">
+                            <span class="add-more-task"></span><br> Create Team
+                        </p>
+                    </div>
+                </div>
+                <!-- workspace Team Explore sectin start here -->
+                <div id="workSpaceTeamExplore" style="display:none">
+                    <div id="ws-team-details" style="display: block;" class="team_details">
+                        <a onclick="adminSettngActive('workspace')" class="close-back-conn-page">
+                            <div class="admin-setting-close">Back to Team Management</div>
+                        </a>
+                        <div class="Popup-back-Header">
+                            <!-- <span class="">
+                      <img src="/images/back_34px_200 @1x.png" onclick="backToWsTeamList()" id="ws-team-details-to-back-team"style="">
+                  </span> -->
+                            <span class="wsM-Team-name" onkeypress="updateTeamNameBy13(event)" onblur="updateTeamName(event)" id="team-title-edit"></span> <span class="total_teamMember" id="total_teamMember"></span>
+                            <span style="margin-left: 8px" class="edit-ws-team-name" id="team-edit-btn-id">Edit</span>
+                            <div class="wsm-created-updated">
+                                Created by: <span id="team-created-by"></span>, Dated on: <span id="team-created-date-time"></span> &nbsp;|&nbsp; Last updated by: <span id="team-updated-by"></span>, Dated on: <span id="team-updated-date-time"></span>
+                            </div>
+                        </div>
+
+                        <div id="ws-user-management-table">
+                            <div class="">
+                                <div contenteditable="true" class="ws-search" id="wsteamusersearch" onkeyup="wsteamusersearch(event)" placeholder="Search users"></div>
+                            </div>
+                            <!-- <div class="">
+                      <select class="ws-select">
+                          <option value="">Active Users</option>
+                      </select>
+                  </div>
+                  <div class="">
+                      <select class="ws-select">
+                          <option value="">All Access Labels</option>
+                      </select>
+                  </div> -->
+                            <div class="">
+                                <button onclick="showAdminpopup('addUserToTeam')" class="ws-add-user">Add User</button>
+                                <!-- <button onclick="showAdminpopup('editTeam')" class="ws-edit-team">Edit Permissions</button> -->
+                                <button onclick="showAdminpopup('deleteTeam')" class="ws-delete-team">Delete Team</button>
+                            </div>
+                            <div class="ws-Custom_Table">
+                                <table class="user-table" id="teamMembersListTable">
+                                    <thead class="user-table-head">
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th style="width: 20%;">Role</th>
+                                            <th style="width:16%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="user-table-body" id="allTeamMembersList">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Workspace member section start here -->
+                <div class="workspace-tab-body" id="workSpaceMemberDiv" style="display:none">
+                    <h2>Members <span>(49)</span></h2>
+                    <div class="members-input-div">
+                        <div>
+                            <input type="text" class="ws-search" placeholder="Search Users">
+                        </div>
+                        <div>
+                            <select name="" class="ws-select">
+                      <option value="">Active Users</option>
+                  </select>
+                        </div>
+                        <div>
+                            <select name="" class="ws-select">
+                      <option value="">All Access Lebels</option>
+                  </select>
+                        </div>
+                        <div>
+                            <button class="wsCreateNewUser">Create New User</button>
+                        </div>
+                    </div>
+                    <table class="user-table">
+                        <thead class="user-table-head">
+                            <tr>
+                                <th>Full Name</th>
+                                <th style="width:13%">User Name</th>
+                                <th style="width: 10%;">Role</th>
+                                <th>Email Address</th>
+                                <th style="width:12%">Last Active</th>
+                                <th style="width:13%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="user-table-body">
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- workspace channel sectin start here -->
+                <div class="workspace-tab-body" id="workSpaceChannelDiv" style="display:none">
+                    <h2>Rooms<span>(4)</span></h2>
+                    <div class="wsChannelContainer">
+                        <div class="channels-div" onclick="channelExplore()">
+                            <h3 class="channel-title">Everone @ Navigate Group</h3>
+                            <p>76 Members</p>
+                        </div>
+                        <div class="channels-div" onclick="channelExplore()">
+                            <h3 class="channel-title">Random</h3>
+                            <p>29 Members</p>
+                        </div>
+                        <div class="channels-div" onclick="channelExplore()">
+                            <h3 class="channel-title">Navigate Design</h3>
+                            <p>7 Members</p>
+                        </div>
+                        <div class="channels-div" onclick="channelExplore()">
+                            <h3 class="channel-title">Design Trends & News</h3>
+                            <p>42 Members</p>
+                        </div>
+                        <div class="channels-div" id="createChannelDiv">
+                            <p class="channel-title">
+                                <span></span><br> Create Room
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Workspace Channel explore section start here -->
+                <div id="wsChannelExplore" style="display:none">
+                    <div id="ws-team-details" style="display: block;" class="team_details">
+                        <div class="Popup-back-Header">
+                            <!-- <span class="">
+                      <img src="/images/back_34px_200 @1x.png" onclick="backToWsconversation_list_sidebar()" id="ws-team-details-to-back-team"style="">
+                  </span> -->
+                        </div>
+
+                        <div id="ws-user-management-table">
+                            <div class="">
+                                <input type="search" class="ws-search" value="" placeholder="Search users">
+                            </div>
+                            <div class="">
+                                <select class="ws-select">
+                          <option value="">Active Users</option>
+                      </select>
+                            </div>
+                            <div class="">
+                                <select class="ws-select">
+                          <option value="">All Access Labels</option>
+                      </select>
+                            </div>
+                            <div class="">
+                                <button class="ws-add-user">Add User</button>
+                                <button class="ws-edit-team">Edit Permissions</button>
+                                <button class="ws-delete-team">Delete Team</button>
+                            </div>
+                            <div class="ws-Custom_Table">
+                                <table class="user-table">
+                                    <thead class="user-table-head">
+                                        <tr>
+                                            <th>Full Name</th>
+                                            <th style="width:13%">User Name</th>
+                                            <th style="width: 10%;">Role</th>
+                                            <th>Email Address</th>
+                                            <th style="width:12%">Created Date</th>
+                                            <th style="width:12%">Created By</th>
+                                            <th style="width:13%">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="user-table-body">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Workspace main section end here -->
+
+            <!-- Workspace main section start here -->
+            <div id="fileManagement" class="adminSettingBody" style="display:none">
+                <a onclick="adminSettngActive('file')" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to File Management</div>
+                </a>
+                <div class="file-management-status">
+                    <div class="file-status-left">
+                        <div class="hayven-basic">
+                            <h2>Workfreeli Basic</h2>
+                            <p>See other plans</p>
+                            <button>Upgrade</button>
+                        </div>
+                        <div class="storage-proggressbar">
+                            <p class="left-label">Used Storage</p>
+                            <p class="right-label">Using <span id="total_used"> 700 MB</span> of 5GB</p>
+                            <div class="storage_progressBar">
+                                <div id="proggress_value"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file-status-middle">
+                        <div id="chartContainer" style="height: 150px; width: 100%;"></div>
+                    </div>
+                    <div class="file-status-right">
+
+                        <p class="keepDeleteFile">Keep deleted files up to <span class="deleteFileCount" contenteditable="true">120</span> day(s)</p>
+                        <p class="dowmloadlabel">Download a files report</p>
+                        <button class="dowmloadReport">Download Report</button>
+                    </div>
+                </div>
+                <div class="allFilesDiv">
+                    <h2 class="filetab allfilestab" onclick="show_all_files(0)">All Files <span id="nooffiles">(753)</span></h2>
+                    <h2 class="filetab deletedfilestab" onclick="show_all_files(1)">Deleted Files <span id="noofdeletedfiles"></span></h2>
+                    <!-- <button class="downloadFile">Download</button>
+          <button class="deleteFile">Delete</button> -->
+                </div>
+                <div class="file-table-div">
+                    <table class="file-table">
+                        <thead class="file-table-head">
+                            <tr class="file-table-head-row">
+                                <th class="checkth">
+                                    <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckAllFile"></span>
+                                </th>
+                                <th>File Name</th>
+                                <th style="width: 12%;">Type</th>
+                                <th style="width: 12%;">Size</th>
+                                <th>Upload On</th>
+                                <th>Owner</th>
+                                <th style="width:12%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="file-table-body">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="fileManagement_all" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <input type="text" class="setInpField" placeholder="Search Users" onkeyup="searchFileUsers(event)" style="margin:12px; width: 40%;">
+                <div class="file-table-div">
+                    <table class="file-table">
+                        <thead class="file-table-head">
+                            <tr class="file-table-head-row">
+                                <th>User Name</th>
+                                <th>Size</th>
+                                <th>Total Used</th>
+                                <th style="width:12%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="file-table-body" id="fileManagement_all_table">
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div id="callingManagement" class="adminSettingBody" style="display:none">
+                <div class="input-div">
+                    <li class="user-management-input">
+                        <form autocomplete="off">
+                            <input contenteditable="true" type="text" id="user_search_from_call" autocomplete="off" onkeyup="filter_call_info(event)" placeholder="Search users">
+                        </form>
+                    </li>
+                    <li class="user-management-input">
+                        <select name="">
+                        <option value="">Active Users</option>
+                </select>
+                    </li>
+                    <li class="user-management-input">
+                        <select name="">
+                        <option value="">All Access Levels</option>
+                </select>
+                    </li>
+                    <a href="/alpha2" class="close-back-conn-page">
+                        <div class="admin-setting-close">Back to Connect</div>
+                    </a>
+                </div>
+                <div>
+                    <table class="calling-table">
+                        <thead class="user-table-head">
+                            <tr>
+                                <th style="width:auto">Sender Name</th>
+                                <!-- <th style="width:auto">Sender Device</th> -->
+                                <th style="width:auto">Sender In/Out</th>
+                                <th style="width:auto">Receiver Name</th>
+                                <!-- <th style="width:auto">Receiver Device</th> -->
+                                <th style="width:auto">Receiver In/Out</th>
+                                <th style="width:auto">Server Address</th>
+                                <th style="width:auto">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Call-management-User-list" class="Call-management-User-list">
+                            <!--<tr class="user-table-row">
+                  <td class="fullName"> <img src="/images/users/nayeem.jpg" alt=""><span> Hallie Lambert </span></td>
+                  <td>Chrome 75.0.3770.142</td>
+                  <td>
+                    <p>Video: /</p>
+                    <p>Audio: /</p>
+                  </td>
+                  <td class="fullName"> <img src="/images/users/nayeem.jpg" alt=""><span> Hallie Lambert </span></td>
+                  <td>Chrome 75.0.3770.142 </td>
+                  <td>
+                    <p>Video: /</p>
+                    <p>Audio: /</p>
+                  </td>
+                  <td>wss://209.59.180.75:8433/kurento</td>
+                  <td><span class="user-status">Switch</span></td>
+              </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="businessManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="businessUnit_body">
+                    <div class="createB_unit">
+                        <h4 class="poup_subtitle">Create a Work Category</h4>
+                        <form autocomplete="off" style="display: contents;">
+                            <input class="setInpField" autocomplete="off" id="createUnitName" onkeyup="createNewUnit(event,this)" style="margin-bottom: 10px;" type="text" placeholder="Enter Category Name" autocomplete="off">
+                        </form>
+                        <button class="proSaveBtn" onclick="saveNewUnit()">Add Category</button>
+                    </div>
+
+                    <h4 class="poup_subtitle">All Work Category</h4>
+
+                    <ul id="allbusinessUnit" class="unitContainer">
+                        <li class="bunit_fac105e0-a18f-11e9-a115-17816f8505e3">
+                            <span class="name name_bunit bname_fac105e0-a18f-11e9-a115-17816f8505e3" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" data-id="fac105e0-a18f-11e9-a115-17816f8505e3" contenteditable="false">Marketing</span>
+                            <span
+                                class="removeIco" onclick="removeThisUnit(this)" data-id="fac105e0-a18f-11e9-a115-17816f8505e3" style="opacity:1"></span>
+                                <span class="editIco" onclick="editthisRoom(this)" data-id="fac105e0-a18f-11e9-a115-17816f8505e3"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="tipsManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="tips_body_con" id="view_tips">
+                    <h4 class="poup_subtitle">Tip(s)</h4>
+                    <div class="" id="tips_indivisual_con">
+                        <!-- <div class="indivisual-tips" onclick="update_tips(tips_id)">
+                    <div class="tipsGallary">
+                        <h3 class="tips-name">
+                            <span class="tipes-title">Tips Name</span>
+                        </h3>
+                        <p class="tips-details">Tips details</p>
+                    </div>
+                    <div class="tipsFoot">
+                        <h3 class="go-circle">GO</h3>
+                    </div>
+                </div> -->
+
+                        <!-- <div class="indivisual-tips" onclick="view_create_new_tips()">
+                    <div class="tipsGallary">
+                        <h3 class="tips-name create-new-tips">Create Tip(s)</h3>
+                    </div>
+                    <div class="tipsFoot">
+                        <h3 class="go-circle add-tipes">+</h3>
+                    </div>
+                </div> -->
+                    </div>
+                </div>
+
+                <div class="tips_body_con" id="create_update_tips" style="display: none;">
+                    <!-- <h4 class="poup_subtitle">View Tip(s)</h4> -->
+                    <!-- <span class="back-to-tips" onclick="backToTipsList()">
+                <img src="/images/back_34px_200 @1x.png">
+            </span> -->
+                    <h4 class="poup_subtitle" id="tips_create_update" style="margin-left: 35px;">Create Tip(s)</h4>
+                    <div class="delete_tips" id="delete_tips_btn_con">
+                        <!-- <div class="delete_tips_btn" onclick="delete_tips()">Delete</div> -->
+                    </div>
+
+                    <div class="tips-input">
+                        <label for="tipsTitle">Tips Name</label>
+                        <input type="text" autocomplete="off" id="tipsTitle" placeholder="Tips Name...">
+                        <span id="errTipsTitle"></span>
+                    </div>
+                    <div class="tips-input">
+                        <label for="tipsDetails">Details</label>
+                        <textarea name="" id="tipsDetails" cols="30" rows="3" autocomplete="off" placeholder="Tips details..."></textarea>
+
+                        <span id="errTipsDetails"></span>
+                    </div>
+                    <div class="tips-input">
+                        <label for="tipsKeywords">Hot keys</label>
+                        <input type="text" autocomplete="off" id="tipsKeywords" placeholder="Keywords...">
+                        <span id="errTipsKeywords"></span>
+                    </div>
+                    <div class="tips-input">
+                        <label for="tipsLifeTime">Life time of Tips</label>
+                        <select name="" id="tipsLifeTime" class="" autocomplete="off">
+                    <option value="">Select one...</option>
+                    <option value="6h">6 Hour</option>
+                    <option value="12h">12 Hour</option>
+                    <option value="1d">1 Day</option>
+                    <option value="3d">3 Day</option>
+                    <option value="1w">1 Week</option>
+                    <option value="2w">2 Week</option>
+                    <option value="3w">3 Week</option>
+                    <option value="1m">1 Month</option>
+                    <option value="2m">2 Month</option>
+                    <option value="4m">4 Month</option>
+                    <option value="6m">6 Month</option>
+                    <option value="1y">1 Year</option>
+                    <option value="">Date & Time</option>
+                </select>
+                        <span id="errTipsLifeTime"></span>
+                    </div>
+                    <div class="tips-input">
+                        <label for="tipsConversation">Add Room/Conversation</label>
+                        <input type="text" autocomplete="off" id="tipsConversation" data-conv="" placeholder="Add Room/Conversation..." onclick="viewRoomAndUserlists(event, this);">
+                        <span id="errTipsConversation"></span>
+                    </div>
+                    <div class="added-conv-con">
+                        <div class="added-conv-title">Added Room/Converstion(s)</div>
+                        <div class="added_conv" id="added_conv_for_tips">
+                            <!-- <div class="member-div" data-type="member" id="member4f0d830f-c85b-4fa4-bbc5-cffee0fe0442">
+                        <img src="https://wfss001.freeli.io/profile-pic/Photos/img.png" class="member-img">
+                        <div class="member-name" onclick="actionMentionUser('4f0d830f-c85b-4fa4-bbc5-cffee0fe0442')">
+                            Maher Murshed <span>[Member]</span>
+                        </div>
+                        <span class="remove-it GroupFlRight" onclick="removeMember('member','4f0d830f-c85b-4fa4-bbc5-cffee0fe0442','2d4de31f-6c42-47c8-84ba-d694cfc9d0e1');">Remove</span>
+                    </div> -->
+                        </div>
+                    </div>
+                    <div id="tips_create_update_btn">
+                        <button class="close-tips-button" autocomplete="off" onclick="backToTipsList()">Close</button>
+                        <button class="createTipsBtn" id="createNewTips" autocomplete="off" onclick="create_tips(this)">Create Tips</button>
+                    </div>
+
+                </div>
+
+                <div class="tips-backwrap" id="updateConvDirectMsgPopup">
+                    <div class="tips_Modal_Container">
+                        <div class="tips_Modal_heading">
+                            <h1>Add Room/Conversation(s)</h1>
+                            <div class="closeModal-tips" onclick="add_conv_popup_close()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                        </div>
+                        <div class="tips_Modal_Content">
+                            <form autocomplete="off">
+                                <div class="input_tips">
+                                    <div class="tips_mini_item_holder" id="tips_mini_items_con" data-ids="">
+                                        <!-- <div class="tips_mini_item">
+                                    <div class="tips_mini_img">
+                                        <img src="https://wfss001.freeli.io/profile-pic/Photos/images_(15)@1582463833600.jpg">
+                                    </div>
+                                    <p class="tips_mini_name">Jahirul Islam</p>
+                                    <span class="tips_mini_remove_ico" onclick="" data-id=""></span>
+                                </div> -->
+                                    </div>
+                                    <input type="text" autocomplete="off" onkeyup="" onkeydown="" placeholder="Search user">
+                                </div>
+                            </form>
+                            <div class="submit_tips_btn active" onclick="selected_conv_for_tips()">Submit</div>
+                            <ul id="updateTipsForConversation" class="tipsList" style="display:block; width:100%">
+                                <!-- <li class="" onclick="" data-id="" data-img="" data-name="">
+                            <img src="https://wfss001.freeli.io/profile-pic/Photos/img.png" class="tipsprofile">
+                            <span class="conv-name">Alamgir  Hossain[Deleted]</span>
+                        </li> -->
+                            </ul>
+                        </div>
+                        <div class="tips_Modal_endSection">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="boardManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="businessUnit_body">
+                    <div class="createB_unit">
+                        <h4 class="poup_subtitle">Create a Board</h4>
+                        <select name="" class="setInpField" style="margin-bottom: 10px;">
+            <option value="" selected>Select board type</option>
+            <option value="" selected>CRM</option>
+            <option value="" selected>ERM</option>
+            <option value="" selected>SRM</option>
+            <option value="" selected>Project</option>
+            <option value="" selected>Process</option>
+            <option value="" selected>Blank</option>
+        </select>
+                        <form autocomplete="off" style="display: contents;">
+                            <input class="setInpField" autocomplete="off" id="createBoardName" onkeyup="createNewBoard(event,this)" style="margin-bottom: 10px;" type="text" placeholder="Board Name">
+                        </form>
+                        <button class="proSaveBtn" id="saveNewBoard" onclick="saveNewBoard(event)">Create</button>
+                    </div>
+
+                    <h4 class="poup_subtitle">All Board list</h4>
+
+                    <ul id="allBoard_container" class="boardContainer">
+                        <li class="board_list">
+                            <span class="name name_bunit board_txt" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" contenteditable="false">CRM Board</span><span class="removeIco" onclick="removeThisBoard(this)"
+                                style="opacity:1"></span>
+                            <span class="editIco" onclick="editthisBoard(this)" data-id=""></span>
+                        </li>
+                        <li class="board_list">
+                            <span class="name name_bunit board_txt" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" contenteditable="false">Project Board</span><span class="removeIco"
+                                onclick="removeThisBoard(this)" style="opacity:1"></span>
+                            <span class="editIco" onclick="editthisBoard(this)" data-id=""></span>
+                        </li>
+                        <li class="board_list">
+                            <span class="name name_bunit board_txt" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" contenteditable="false">Process Board</span><span class="removeIco"
+                                onclick="removeThisBoard(this)" style="opacity:1"></span>
+                            <span class="editIco" onclick="editthisBoard(this)" data-id=""></span>
+                        </li>
+                        <li class="board_list">
+                            <span class="name name_bunit board_txt" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" contenteditable="false">Blank Board</span><span class="removeIco" onclick="removeThisBoard(this)"
+                                style="opacity:1"></span>
+                            <span class="editIco" onclick="editthisBoard(this)" data-id=""></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- create_EstWorkHour -->
+            <div id="clientManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="createClientPopup" id="createClientPopup">
+                    <h2 class="create-topic-heading">Create New Client</h2>
+                    <img class="dir-msg-close back" onclick="$('#createClientPopup').hide()" src="/images/basicAssets/BackArrow.svg" alt="">
+                    <img class="dir-msg-close " onclick="$('#createClientPopup').hide()" src="/images/basicAssets/close_button.svg" alt="">
+
+                    <div class="" style="margin-top: 20px;">
+                        <div class="contactInfo">
+                            <h3>Contact Information</h3>
+                            <form autocomplete="off">
+                                <div class="rows">
+                                    <div class="name_space" style="width: 50%;">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="First Name (*)">
+                                    </div>
+                                    <div class="name_space" style="width: 50%;">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="First Name (*)">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Title">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="E-mail">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="companyInfo">
+                            <h3>Company Information</h3>
+                            <form autocomplete="off">
+                                <div class="rows">
+                                    <div class="estw_hour">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Company Name (*)">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour" style="width: 50%;">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="City">
+                                    </div>
+                                    <div class="estw_hour" style="width: 50%;">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Province/State">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour" style="width: 50%;">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Country">
+                                    </div>
+                                    <div class="estw_hour" style="width: 50%;">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Postal code">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="E-mail">
+                                    </div>
+                                </div>
+                                <div class="rows">
+                                    <div class="estw_hour" width="50%">
+                                        <label class="field_lable"></label>
+                                        <input type="text" onkeypress="globalOnKeypress_2(event)" onblur="onblurEstWh(event)" placeholder="Phone Number">
+                                    </div>
+
+                                    <div class="estw_hour" width="50%">
+                                        <label class="field_lable"></label>
+                                        <select name="">
+                                <option value="">Parent Company </option>
+                            </select>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="rows">
+                                <div class="estw_hour" style="display: flex;align-items: center;justify-content: flex-end;">
+                                    <button class="ctCancel_btn" onclick="$('#createClientPopup').hide()">Cancel</button>
+                                    <button class="ctCreate_btn">Save & Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="businessUnit_body">
+                    <div class="createB_unit">
+                        <!-- <h4 class="poup_subtitle">Create a Board</h4> -->
+                        <!-- <input class="setInpField" id="createUnitName" onkeyup="createNewUnit(event,this)" style="margin-bottom: 10px;" type="text" placeholder="Board Name"> -->
+                        <button class="proSaveBtn" onclick="$('#createClientPopup').css('display','flow-root')" style="border-radius: 4px;">Create client</button>
+                    </div>
+
+                    <h4 class="poup_subtitle">All Client list</h4>
+
+                    <ul id="allbusinessUnit" class="unitContainer">
+                        <li class="bunit_fac105e0-a18f-11e9-a115-17816f8505e3">
+                            <span class="name name_bunit" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" contenteditable="false">Client Name</span><span class="removeIco" onclick="removeThisUnit(this)"
+                                style="opacity:1"></span>
+                            <span class="editIco" onclick="editthisRoom(this)" data-id=""></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="tagManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="businessUnit_body" style="width: 100%;">
+                    <div class="createB_unit" id="tag_create_form">
+                        <!-- <h4 class="poup_subtitle">Create a Tag</h4> -->
+                        <div class="addedTagTeam"></div>
+                        <form autocomplete="off">
+                            <input type="color" value="#ff0000" class="colorPickerweb">
+                            <input class="setInpField" autocomplete="off" id="tag_title_input" style="margin-bottom: 10px;" type="text" placeholder="Create a tag (max 16 character)" autocomplete="off" onkeydown="adminCreateTag(event)">
+                            <!-- <select name="" id="business_unit"></select> -->
+                            <input name="" id="business_unit" placeholder="Select Team" onclick="viewTagTeamList(this)">
+                            <ul class="tagTeamPopup">
+                                <li class="" team-id="" onclick="addTagToTeam(this)">1</li>
+                            </ul>
+                            <button class="proSaveBtn tag_update_btn" id="tag_update_btn" onclick="updateTag(event)">Update</button>
+                            <button class="proSaveBtn add_tag_class" onclick="createNewTag(event)">Add Tag</button>
+                        </form>
+                    </div>
+                    <h4 class="poup_subtitle" style="display: none;">All Tag</h4>
+                    <ul id="allTagContainer" class="unitContainer" style="display: none;">
+                    </ul>
+                    <div class="table_fulldata">
+                        <table class="user-table">
+                            <thead class="user-table-head">
+                                <tr>
+                                    <th style="width:8%">Tag Color</th>
+                                    <th style="width:25%">Tag Title</th>
+                                    <th style="width:25%;">Team</th>
+                                    <th style="width:20%">Created Date</th>
+                                    <th style="width:12%">Created By</th>
+                                    <th style="width:10%">Actions</th>
+                                    <!-- <th style="width:10%">Status</th> -->
+
+                                </tr>
+                            </thead>
+                            <tbody class="user-table-body all_user" id="tag_table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="link_accountManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="businessUnit_body">
+                    <div class="createB_unit">
+                        <h4 class="poup_subtitle">Link Account</h4>
+                        <form autocomplete="off" style="display: contents;">
+                            <input class="setInpField" autocomplete="off" onkeyup="find_company(event)" id="link_email" style="margin-bottom: 10px;" type="text" placeholder="Enter Email Address for Link" autocomplete="off">
+                            <button class="proSaveBtn" onclick="find_company(event)">Search Company</button>
+                        </form>
+                        <br>
+                        <div id="company_name"></div>
+                    </div>
+                    <h4 class="poup_subtitle">Link Company Lists</h4>
+                    <ul id="allLinkAccount" class="unitContainer">
+                    </ul>
+                </div>
+            </div>
+
+            <div id="notificationManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="allFilesDiv">
+                    <h2 class="filetab allfilestab" onclick="">All Files <span id="total_notiFile">(0)</span></h2>
+                    <label for="notificationFile" class="filetab upButton" onclick="//notificationUploadFunc()">Add New </label>
+                    <img src="https://wfss001.freeli.io/common/imgLoader.gif" class="notiloader">
+                    <input type="file" name="file_upload" id="notificationFile" class="hidden" onchange="notificationFileUpServer(this.files)" accept="audio/*">
+                    <!-- multiple="" -->
+                </div>
+                <div class="file-table-div">
+                    <table class="file-table">
+                        <thead class="file-table-head">
+                            <tr class="file-table-head-row">
+                                <th class="checkth">
+                                    <span onclick="checkEachFile(event)" class="fileCheck-uncheck uncheckAllFile"></span>
+                                </th>
+                                <th>File Name</th>
+                                <th style="width: 12%;">Size</th>
+                                <th>Upload By</th>
+                                <th>Upload On</th>
+                                <th style="width:12%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="notificationList">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="companyManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="company_body_con" id="company_body">
+                    <div>
+                        <h4 class="poup_subtitle" id="companyCount">Companies (<span>00</span>)</h4>
+                    </div>
+                    <div class="company_con_all" id="company_con">
+                        <!-- <div class="teams-div" onclick="view_company_details(this, 'de622360-62ce-11ea-b9e7-bab3d5aec8e6')" id="company_622360-62ce-11ea-b9e7-bab3d5aec8e6">
+            <p class="team-title">ABC (<span class="company-member-length">24</span>)</p>
+            </div> -->
+                    </div>
+                </div>
+
+                <div class="company_details_con" id="company_details">
+                    <div class="com_details_header">
+                        <div class="com_head_top">
+                            <!-- <img id="backofcom" src="/images/back_34px_200 @1x.png" alt="Back" onclick="backToWsCompanyList()"> -->
+                            <span id="company_name_changeable" data-companyid="" onkeypress="updateCompanyNameBy13(event)" onblur="updateCompanyName(event)">OHS Global Inc.</span> (
+                            <span id="company_users_no">25</span>)&nbsp;
+                            <span id="company_edit_name">Edit</span>
+                        </div>
+                        <div class="com_head_down">
+                            Created by: <span id="com-created-by"></span>, Dated on: <span id="com-created-date-time"></span> &nbsp;|&nbsp; Last updated by: <span id="com-updated-by"></span>, Dated on: <span id="com-updated-date-time"></span>
+                        </div>
+                        <div class="new_company_and_search_con">
+                            <!-- <div class="search_company_name">
+                            <div class="com_search ws-search" contenteditable="true" placeholder="Search company"></div>
+                        </div> -->
+                            <div class="create_user_com">
+                                <button class="ws-add-user" onclick="showCreateUserPopup('under_company')">+ Create User</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="com_search_add_del_con">
+                        <div class="com_search_con">
+                            <div class="com_search ws-search" contenteditable="true" placeholder="Search user"></div>
+                        </div>
+                        <div class="com_btn_section">
+                            <div class="add_user_com">
+                                <!-- <button class="ws-add-user" id="add_indv_user_to_company" onclick="">Add User</button> -->
+                                <button class="ws-add-user" id="add_indv_user_to_company" onclick="showAdminpopup('addUserToCompany')">Add User</button>
+                            </div>
+                            <div class="au_com_team">
+                                <button class="ws-add-user-team" id="add_user_from_team_to_company" onclick="addUserByTeam(event)">Add User By Team</button>
+                            </div>
+                            <div class="delete_com">
+                                <button id="delete_com_by_id" class="ws-delete-com">Delete Company</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="com_usertable_con">
+                        <table class="user-table" id="companyUsersListTable">
+                            <thead class="user-table-head">
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th style="width: 20%;">Role</th>
+                                    <th style="width: 16%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="user-table-body" id="allComUsersList">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="emailFormatManagement" class="adminSettingBody" style="display:none">
+                <a href="/alpha2" class="close-back-conn-page">
+                    <div class="admin-setting-close">Back to Connect</div>
+                </a>
+                <div class="businessUnit_body" style="width: 70%;float:left;">
+                    <div class="createB_unit">
+                        <h4 class="poup_subtitle">Emails Management</h4>
+                        <div class="tab">
+                            <span class="tab_forgot" onclick="set_email_format('forgot')">Forgot Password</span>
+                            <span class="tab_reset" onclick="set_email_format('reset')">Reset Password</span>
+                            <span class="tab_otp" onclick="set_email_format('otp')">Invitation with OTP</span>
+                            <span class="tab_invite" onclick="set_email_format('invite')">Invitation without OTP</span>
+                            <span class="tab_rmroom" onclick="set_email_format('rmroom')">Remove from Room</span>
+                            <span class="tab_newuser" onclick="set_email_format('newuser')">New User Invite</span>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="email_body">
+                        <textarea id="editor" placeholder="" autofocus></textarea>
+                        <br>
+                        <button class="btn2" onclick="window.open('/settings', '_self')">Cancel</button>
+                        <button class="btn1" data-type="" data-id="0" onclick="save_email_format()">Save</button>
+                    </div>
+                </div>
+                <div class="businessUnit_body" style="width: 30%;position: relative;top:120px;">
+                    <h3 style="text-align: center;border-bottom: 1px solid #DDD;padding: 10px;">Short Code</h3>
+                    <p style="padding: 10px;" class="sclist scforgot"><span style="color:red">rl</span> = <span>Reset password link</span></p>
+                    <p style="padding: 10px;" class="sclist screset"><span style="color:red">fn</span> = <span>Full Name</span></p>
+                    <p style="padding: 10px;" class="sclist screset"><span style="color:red">np</span> = <span>New Password</span></p>
+                    <p style="padding: 10px;" class="sclist scforgot scotp scinvite scrmroom"><span style="color:red">gn</span> = <span>Guest Member Name</span></p>
+                    <p style="padding: 10px;" class="sclist scotp scinvite scrmroom"><span style="color:red">un</span> = <span>Your Name</span></p>
+                    <p style="padding: 10px;" class="sclist scrmroom"><span style="color:red">ue</span> = <span>Your Email</span></p>
+                    <p style="padding: 10px;" class="sclist scotp scinvite scrmroom"><span style="color:red">cn</span> = <span>Conversation Name</span></p>
+                    <p style="padding: 10px;" class="sclist scotp scinvite scrmroom"><span style="color:red">rcn</span> = <span>Root Conversation Name</span></p>
+                    <p style="padding: 10px;" class="sclist scotp scinvite"><span style="color:red">ge</span> = <span>Guest User Email</span></p>
+                    <p style="padding: 10px;" class="sclist scotp"><span style="color:red">otp</span> = <span>One Time Password</span></p>
+                    <p style="padding: 10px;" class="sclist scotp scinvite"><span style="color:red">sl</span> = <span>Signup Link</span></p>
+                </div>
+            </div>
+            <!-- Workspace main section start here -->
+        </section>
+
+
+
+        <!-- Popup section start here w -->
+        <div id="adminSettingBackWrap" style="display:none">
+            <div id="createNewUser" style="display:none">
+                <h2>Create New User</h2>
+                <img onclick="closeAdminSettingPop('createNewUser')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <form autocomplete="off">
+                    <div class="user-f-name">
+                        <label class="create-user-label" for="cnufname">First Name</label>
+                        <input type="text" placeholder="John" id="cnufname" autocomplete="off">
+                    </div>
+                    <div class="user-l-name">
+                        <label class="create-user-label" for="cnulname" autocomplete="off">Last Name</label>
+                        <input type="text" placeholder="Smith" id="cnulname">
+                    </div>
+                    <div class="user-email">
+                        <label class="create-user-label" for="cnuemail" autocomplete="off">Email</label>
+                        <input type="text" placeholder="Enter email address" id="cnuemail">
+                    </div>
+                    <div class="user-role">
+                        <label class="create-user-label" for="">Role</label>
+                        <select name="" id="cnurole" onchange="userRoleChangeOp(this)">
+                        <option value="">Select a role</option>
+                        <option value="sa">Super Admin</option>
+                </select>
+                    </div>
+                    <div class="user-team">
+                        <label class="create-user-label" for="">Team</label>
+                        <div class="addeTeamLi"></div>
+                        <input type="text" placeholder="Select team" onclick="viewTeamList(this)">
+                        <ul class="teamListView">
+                            <li class="">Test Team</li>
+                        </ul>
+                    </div>
+                </form>
+                <div id="guestUserOption"></div>
+                <button class="create-user-btn" onclick="create_new_user()">Create New User</button>
+            </div>
+            <div id="wsAddRolePopUp" style="display:none">
+                <h3 class="createRollPopTitle">New Role</h3>
+                <!-- <img onclick="closeAdminSettingPop('addRole')" class="close-popup" src="/images/basicAssets/close_button.svg" alt=""> -->
+                <img onclick="closeAdminSettingPop('addRole')" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="">
+
+                <div class="role-data-input">
+                    <form class="form-inline-role" autocomplete="off">
+                        <label for="">Role:</label>
+                        <input type="text" autocomplete="off" id="WsManagRoleName" placeholder="Enter a title for the new role">
+                    </form>
+                    <div class="" id="roleCreateErrMsg"></div>
+                    <div class="from-inline-block-role">
+                        <button class="createRoleBtn" id="WsManagAddRole">Create</button>
+                        <button class="cancelRoleBtn" onclick="closeAdminSettingPop('addRole')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="wsCreateTeamPopUp" style="display:none">
+                <h3 class="createTeamPopTitle">Create Team</h3>
+                <img onclick="closeAdminSettingPop('createTeam')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <form autocomplete="off">
+                    <div class="team-data-input">
+                        <label for="">Team Name</label>
+                        <input type="text" autocomplete="off" id="WsManagTeamName" placeholder="The design team">
+                        <span id="errWsCreateTeam"></span>
+                    </div>
+                </form>
+                <button class="createTeamBtn" id="WsManagCteateTeam">Create Team</button>
+            </div>
+            <div id="wsAddUserPopUp" style="display:none">
+                <h3>Add User</h3>
+                <img onclick="closeAdminSettingPop('addUser')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <div class="wsusbox">
+                    <input type="text" placeholder="Search user">
+                </div>
+                <div id="add_show_teamusers">
+
+                </div>
+            </div>
+            <!-- <div id="wsTeamPermission" style="display:none">
+      <h3 id="role_access_title">Role Permissions</h3>
+      <img onclick="closeAdminSettingPop('teamPermission')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+      <div class="msgs-notifi">
+          
+      </div>
+      <button class="wsDeleteTeamBtn" style="background:var(--BtnC);border:1px solid var(--BtnC)" onclick="closeAdminSettingPop('teamPermission')">Submit</button>
+      <button class="wsCancelBtn" onclick="closeAdminSettingPop('teamPermission')">Cancel</button>
+  </div> -->
+            <div id="wsDeleteTeam" style="display:none">
+                <h3>Delete Team</h3>
+                <img onclick="closeAdminSettingPop('deleteTeam')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <p class="teamDelMsg">Are you sure you want to delete this team?</p>
+                <p>This action will delete the business strategy team permanently.</p>
+                <button class="wsDeleteTeamBtn" onclick="delete_team()">Delete Team</button>
+                <button onclick="closeAdminSettingPop('deleteTeam')" class="wsCancelBtn">Cancel</button>
+            </div>
+            <div id="DeleteTeamUser" style="display:none">
+                <h3>Remove User</h3>
+                <img onclick="closeAdminSettingPop('deleteTeam')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <h4>Are you sure you want to remove Demo User from OHS Global Team?</h4>
+                <p>Doing this will remove this person’s access to all Rooms associated with Demo Team</p>
+                <button class="wsDeleteTeamBtn" onclick="delete_team()">Delete Team</button>
+                <button onclick="closeAdminSettingPop('deleteTeam')" class="wsCancelBtn">Cancel</button>
+            </div>
+            <div id="wsColorPopUp" style="display:none">
+                <h2>Workspace color</h2>
+                <img onclick="closeAdminSettingPop('wsColorPopUp')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <div class="colorsDiv">
+                    <div class="colors color1"></div>
+                    <div class="colors color2"></div>
+                    <div class="colors color3"></div>
+                    <div class="colors color4"></div>
+                    <div class="colors color5"></div>
+                    <div class="colors color6"></div>
+                    <div class="colors color7"></div>
+                    <div class="colors color8"></div>
+                    <div class="colors color9"></div>
+                    <div class="colors color10"></div>
+                </div>
+                <button class="wsColorBtn">Save Changes</button>
+            </div>
+            <div id="wsDeleteTips" style="display:none">
+                <h3>Delete Tips</h3>
+                <img onclick="closeAdminSettingPop('deleteTips')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <h4>Are you sure you want to delete this tips?</h4>
+                <p>This action will delete the tips permanently.</p>
+                <button class="wsDeleteTipsBtn" id="wsDeleteTipsBtn">Delete Tips</button>
+                <button onclick="closeAdminSettingPop('deleteTips')" class="wsCancelBtn">Cancel</button>
+            </div>
+            <div id="wsCreateCompanyPopUp" style="display: none;">
+                <h3 class="createTeamPopTitle">Create Company</h3>
+                <img onclick="closeAdminSettingPop('createCompany')" class="close-popup" src="/images/basicAssets/close_button.svg" alt="">
+                <form autocomplete="off">
+                    <div class="team-data-input">
+                        <label for="">Company Name</label>
+                        <input type="text" autocomplete="off" id="WsCompanyName" placeholder="Comapany Name">
+                        <span id="errWsCreateCompany"></span>
+                    </div>
+                </form>
+                <button class="createCompanyBtn" id="WsCreateCompany" onclick="view_company_details(this, 'create_new_company')">Create Company</button>
+            </div>
+        </div>
+
+
+
+        <div id="flash_msg"></div>
+        <div class="backwrap" style="display:none" id="delete_this_file">
+            <div class="delete_msg_div">
+                <img onclick="hide_this_popup()" src="/images/basicAssets/close_button.svg" alt="">
+                <div class="body">
+                    <p class="del_msg_title">Delete File(s)</p>
+                    <p class="delete_msg_sec_title">Are you sure you want to delete this file? This cannot be <span class="undone">undone</span>.</p>
+                    <p class="btn_div">
+                        <button type="button" class="btn-cancel btn-cancel-margin" onclick="hide_this_popup()">Cancel</button>
+                        <button type="button" id="confirm_data_id" class="btn-msg-del confirm" onclick="cconfirm()">Delete</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="warningPopup" id="roleChangerPopup">
+            <div class="changeRolePopupBody">
+                <h2 class="chg_popup_title">Change Role</h2>
+                <img onclick="closeModal('roleChangerPopup')" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="Close">
+                <!-- <img onclick="closeModal('roleChangerPopup')" class="close-popup" src="/images/basicAssets/close_button-white.svg" alt="Close" data-balloon="Press Esc to close" data-balloon-pos="up"> -->
+
+                <div class="chg-role-data-input">
+                    <form autocomplete="off" class="form-inline-role-chg">
+                        <div class="form-group-chg">
+                            <label for="">Change Role:</label>
+                            <!-- <input type="text" autocomplete="off" id="WsManagRoleName" placeholder="Enter a title for the new role"> -->
+                            <select class=""></select>
+                        </div>
+                    </form>
+                    <div class="chg-role-err-msg" id="chgRoleErrMsg"></div>
+                    <div class="chg-role-btn-con">
+                        <button class="chg-role-btn" onclick="change_role_submit()">Save Changes</button>
+                        <button class="cancel-role-btn" onclick="closeModal('roleChangerPopup')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="warningPopup" id="wsDeleteRolePopup">
+            <div class="warningPopupBody">
+                <div class="closeModal" onclick="closeModal('wsDeleteRolePopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title">Delete Role</h2>
+                <div class="warningPopupContent">
+                    <h4>Are you sure you want to delete this role?</h4>
+                    <p>This action will delete the business strategy team permanently.</p>
+                </div>
+                <div class="warningPopupFooter">
+                    <button class="wsDeleteTeamBtn" onclick="delete_role_submit(event)">Delete Role</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="backwrap" id="addMemberPopup" data-mute-id="" style="display: none">
+            <div class="hayven_Modal_Container">
+                <div class="hayven_Modal_heading">
+                    <h1>Add User(s)</h1>
+                    <div class="closeModal" onclick="closeModal('addMemberPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div class="hayven_Modal_Content">
+                    <form autocomplete="off">
+                        <div class="input_hayven">
+                            <div class="mini_item_holder" id="addnewMemberMini"> </div>
+                            <input type="text" autocomplete="off" class="src_inputBox" onkeyup="searchUsersInPopup(event,this)" placeholder="Search user">
+                        </div>
+                    </form>
+                    <div class="sub_btn" onclick="submitAddmemberPop()">Submit</div>
+                    <ul id="userListFornewRoom" class="hayvenList" style="display:block; width:100%">
+
+                    </ul>
+                </div>
+                <div class="hayven_Modal_endSection">
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- file upload popup start -->
+
+        <!-- <div id="filesUploadPopup" class="Chat_File_Upload backwrap" style="display: none">
+    <div class="chat-file-upload-popup">
+        <h4 class="chat-upload-popup-title">Upload File <span class="close-chat-file-popup" onclick="$('#filesUploadPopup').hide()" data-balloon="Press esc to close" data-balloon-pos="up"><img src="/images/basicAssets/close_button.svg" alt=""></span></h4>
+        <div class="chat-upload-popup-content">
+            <form method="POST" encType="multipart/form-data">
+                <div id="UploadedFileChat" style="margin-bottom: 16px">
+                    <label for="notificationFile" class="chat-file-drag-upload-label">Click here to upload file(s) from your device.</label>
+                </div>
+                <div id="attach_chat_file_list">
+
+                </div>
+                <input type="file" name="file_upload" id="notificationFile" multiple class="hidden" onchange="notificationFileUpServer(this.files)">
+                <button type="button" id="submitBtn" class="uploadbtn inactive" onclick="submit_attachment()">Upload</button>
+                <button type="button" class="uploadbtn" onclick="$('#filesUploadPopup').hide()">Cancel</button>
+            </form>
+
+        </div>
+    </div>
+</div> -->
+        <!-- file upload popup end -->
+
+
+        <img id="loadergif" src="images/loader.gif" style="display: none;position: absolute;z-index: 99;">
+
+
+        <script>
+            var user_id = '<%= user_id %>';
+            var company_id = '<%= company_id %>';
+            var user_fullname = '<%= user_fullname %>';
+            var user_img = '<%= user_img %>';
+            var user_email = '<%= user_email %>';
+            // var user_email = '<%= user_email %>';
+            var to = '<%= data[0].room_id %>';
+            var conversation_id = '<%= data[0].conversation_id %>';
+            var conversation_type = '<%= data[0].conversation_type %>';
+            var allUserdata = <%- JSON.stringify(data) %>;
+
+            function compare(a, b) {
+                const bandA = a.fullname.toUpperCase();
+                const bandB = b.fullname.toUpperCase();
+
+                let comparison = 0;
+                if (bandA > bandB) {
+                    comparison = 1;
+                } else if (bandA < bandB) {
+                    comparison = -1;
+                }
+                return comparison;
+            }
+            allUserdata = allUserdata.sort(compare);
+
+            var access_user_list = allUserdata;
+            var allteams = <%- JSON.stringify(teams) %>;
+            var allroles = <%- JSON.stringify(roles) %>;
+            var allcompanies = <%- JSON.stringify(companies) %>;
+            var all_company_user = <%- JSON.stringify(all_company_user) %>;
+            var file_server = '<%= file_server %>';
+            var allCalldata = <%- JSON.stringify(running_calls) %>;
+            all_company_user = all_company_user.sort(compare);
+
+            console.log("all_company_user", all_company_user);
+            console.log("allUserdata", allUserdata);
+            var email_format = [];
+            var editor;
+
+            console.log('allteams', allteams);
+        </script>
+        <script src="/javascripts/socket-client-side.js"></script>
+        <script src="/javascripts/socket-calling.js"></script>
+        <script src="/javascripts/canvasjs.min.js"></script>
+        <script src="/javascripts/custom-workspace.js"></script>
+        <script src="/javascripts/custom.js"></script>
+        <script src="/javascripts/custom-chat.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="/javascripts/plugins/select2.min.js"></script>
+        <script type="text/javascript" src="/javascripts/plugins/editor/module.js"></script>
+        <script type="text/javascript" src="/javascripts/plugins/editor/hotkeys.js"></script>
+        <script type="text/javascript" src="/javascripts/plugins/editor/uploader.js"></script>
+        <script type="text/javascript" src="/javascripts/plugins/editor/simditor.js"></script>
+
+        <script>
+            function generate_user_export(type){
+                if(type == 'pdf'){
+                    // table_export.button( '2-1' ).trigger();
+                    $('#userManageTableExport_wrapper .buttons-pdf').click();
+
+                }else{
+                    $('#userManageTableExport_wrapper .buttons-excel').click();
+                }
+
+            }
+            $(function() {
+                table_export =  $('#userManageTableExport').DataTable( {
+                    dom: 'Bfrtip',
+                    "paging": false,
+                    buttons: [
+                        'copyHtml5',
+                        // 'excelHtml5',
+                        {
+                            extend: 'excelHtml5',
+                            title: 'User List',
+                            filename: 'user_list_'+Date.now(),
+                              
+                        },
+                        'csvHtml5',
+                        // 'pdfHtml5',
+                        {
+                            extend: 'pdfHtml5',
+                            title: 'User List',
+                            filename: 'user_list_'+Date.now(),
+                            customize: function(doc) {
+                                // doc.defaultStyle.fontSize = 10; //<-- set fontsize to 16 instead of 10 
+                                doc.pageMargins = [20, 20, 20, 20 ];
+                                doc.content[1].table.dontBreakRows = true; 
+                            }     
+                        }
+                    ],
+                    // "columns": [
+                    //     { "width": "20%" },
+                    //     { "width": "20%" },
+                    //     { "width": "20%" },
+                    //     { "width": "20%" },
+                    //     { "width": "10%" },
+                    //     { "width": "10%" }
+                    // ]
+                } );
+
+                
+
+                editor = new Simditor({
+                    textarea: $('#editor')
+                });
+
+
+                console.log(1100, allUserdata, allroles);
+                $("[contenteditable]").focusout(function() {
+                    var element = $(this);
+                    if (!element.text().trim().length) {
+                        element.empty();
+                    }
+                });
+                setTimeout(function() {
+                    $("#user_search_from_ws").text("");
+                    my_link_account("allLinkAccount");
+                }, 1000);
+                if (getCookie("admintabname") == "workspace") {
+                    adminSettngActive('workspace');
+                    $("#AdminSettingSideBar li").removeClass("activeProfile");
+                    $("#AdminSettingSideBar li[data-tabname='workspace']").addClass("activeProfile");
+                    setCookie("admintabname", "");
+                    if (getCookie("triggerid") != "") {
+                        $("#WsMTeam" + getCookie("triggerid")).trigger("click");
+                        setCookie("triggerid", "");
+                    }
+                } else if (getCookie("admintabname") == "role") {
+                    adminSettngActive('role');
+                    $("#AdminSettingSideBar li").removeClass("activeProfile");
+                    $("#AdminSettingSideBar li[data-tabname='role']").addClass("activeProfile");
+                    setCookie("admintabname", "");
+                    if (getCookie("triggerid") != "") {
+                        $("#WsMTeam" + getCookie("triggerid")).trigger("click");
+                        setCookie("triggerid", "");
+                    }
+                } else if (getCookie("admintabname") == "tips") {
+                    adminSettngActive('tips');
+                    $("#AdminSettingSideBar li").removeClass("activeProfile");
+                    $("#AdminSettingSideBar li[data-tabname='tips']").addClass("activeProfile");
+                    setCookie("admintabname", "");
+
+                    // if(getCookie("triggerid") != ""){
+                    //     $("#WsMTeam"+getCookie("triggerid")).trigger("click");
+                    //     setCookie("triggerid", "");
+                    // }
+                } else if (getCookie("admintabname") == "company") {
+                    adminSettngActive('company');
+                    $("#AdminSettingSideBar li").removeClass("activeProfile");
+                    $("#AdminSettingSideBar li[data-tabname='companyManagement']").addClass("activeProfile");
+                    setCookie("admintabname", "");
+                } else if (getCookie("admintabname") == "tag") {
+                    adminSettngActive('tag');
+                    $("#AdminSettingSideBar li").removeClass("activeProfile");
+                    $("#AdminSettingSideBar li[data-tabname='tag']").addClass("activeProfile");
+                    setCookie("admintabname", "");
+                    if (getCookie("triggerid") != "") {
+                        $("#WsMTeam" + getCookie("triggerid")).trigger("click");
+                        setCookie("triggerid", "");
+                    }
+                    if(getCookie("not_a_system_admin") == "yes"){
+                        $.each($("#AdminSettingSideBar li"), function(){
+                            if($(this).attr('data-tabname') != 'tag') $(this).remove();
+                        });
+                    }
+                }
+            });
+
+            function save_email_format() {
+                var type = $('.btn1').attr('data-type');
+                var id = $('.btn1').attr('data-id');
+                var val = $("#editor").val().trim().replace(/ +(?= )/g, '');
+                $.ajax({
+                    url: "/settings/set_email_format",
+                    data: {
+                        id,
+                        type,
+                        val,
+                        user_id,
+                        company_id
+                    },
+                    dataType: "JSON",
+                    type: "POST",
+                    success: function(res) {
+                        console.log(1997, res);
+                        $.each(email_format, function(k, v) {
+                            if (v.email_type == type) {
+                                v.format_text = val;
+                            }
+                        });
+                        call_toastr("Email format successfully saved.");
+                    },
+                    error: function(e) {
+                        alert("Error");
+                        console.log(2000, e);
+                    }
+                })
+            }
+
+            function set_email_format(type) {
+                $('.tab span').removeClass('select');
+                $('.sclist').hide();
+                $('.sc' + type).show();
+                if (email_format.length == 0) {
+                    $('.tab_forgot').addClass('select');
+                    editor.setValue('');
+                    $('.btn1').attr('data-id', 0);
+                    $('.btn1').attr('data-type', 'forgot');
+                } else {
+                    $('.tab_' + type).addClass('select');
+                    $('.btn1').attr('data-type', type);
+                    editor.setValue('');
+                    $('.btn1').attr('data-id', 0);
+                    $.each(email_format, function(k, v) {
+                        if (v.email_type == type) {
+                            editor.setValue(v.format_text);
+                            $('.btn1').attr('data-id', v.id);
+                        }
+                    });
+                }
+            }
+
+            $("#search_ws_user").keyup(function(event) {
+                search_wsuser();
+            });
+
+            $.each(allroles, function(k, v) {
+                var design = '<div class="roles-div" onclick="role_access(\'' + v.role_title + '\', \'' + v.role_id + '\')" data-roleid="' + v.role_id + '" id="WsMTeam' + v.role_id + '"><p class="role-title">' + v.role_title + '</p></div>';
+                // $("#roledisplaydiv .rolesHomeHead").after(design);
+                $("#roledisplaydiv #all-role-container").append(design);
+            });
+
+            $("#workSpaceTeamDiv h2>span").text("(" + allteams.length + ")");
+            $("#allmyteamlist").find(".group_input").remove();
+            $.each(allteams, function(k, v) {
+                var design = '<div class="teams-div" onclick="add_team_member(\'' + v.team_id + '\')" id="WsMTeam' + v.team_id + '"><p class="team-title">' + v.team_title + '<span id = "team-member-length"> (' + v.participants.length + ')</span>' + '</p></div>';
+                $("#workSpaceTeamDiv h2").after(design);
+                if (v.participants.indexOf(user_id) > -1) {
+                    var html = '<div class="group_input">' +
+                        '<label class="switchNav">' +
+                        '<input onclick="onoffteam(event)" type="checkbox" id="myteamid' + v.team_id + '" checked="checked">' +
+                        '<span class="sliderNav round"></span>' +
+                        '<span class="switchFor">' + v.team_title + '</span>' +
+                        '</label>' +
+                        '</div>';
+                    $("#allmyteamlist").append(html);
+
+                }
+            });
+            $("#workSpaceTeamDiv h2>span").text("(" + allteams.length + ")");
+            $(".teamCount").text(allteams.length);
+
+            function resetTagManagement() {
+                $('#business_unit').html("");
+                $('#business_unit').prepend('<option value="">Select a Team</option>');
+                $.each(allteams, function(k, v) {
+                    if(has_permission(user_id, COTR_ADMIN_SETTINGS))
+                        $('#business_unit').append('<option value="' + v.team_id + '">' + v.team_title + '</option>');
+                    else if(v.team_admin && v.team_admin.indexOf(user_id) > -1)
+                        $('#business_unit').append('<option value="' + v.team_id + '">' + v.team_title + '</option>');
+                });
+                // $('#business_unit').select2();
+            }
+
+
+            // var xyz = 1;
+            $.each(allcompanies, function(k, v) {
+                // console.log("A company of allcompanies = ", v.company_id, "|| ", v.company_name);
+                var userUnderCompany = 0;
+                // $.each(allUserdata, function(ku, vu) {        
+                $.each(all_company_user, function(ku, vu) {
+                    if (vu.company_id == v.company_id && vu.is_delete == 0) {
+                        console.log("username = ", vu.email, "|| ", vu.company_id);
+                        // if(vu.company_id == 'e2a660c0-7fee-11ea-9205-bbf3a8141976') {
+                        //  console.log(vu.company_id, " == e2a660c0-7fee-11ea-9205-bbf3a8141976");
+                        //  alert("aaaaaaaaaaa");
+                        // }
+                        userUnderCompany++;
+                    }
+
+                });
+                // console.log("end a company =", v.company_name, " || user =", userUnderCompany, "\n\n\n");
+                // xyz++;
+                let mycomDesign = '';
+                if (v.company_id == company_id) {
+                    mycomDesign = ' style="color: var(--PrimaryC); font-weight: bold;"';
+                }
+                let cDesign = '<div class="teams-div" onclick="view_company_details(this, \'' + v.company_id + '\')" id="company_' + v.company_id + '" data-company-name="' + v.company_name + '">' +
+                    '<p class="team-title"' + mycomDesign + '><span class="comNameBox">' + v.company_name + '</span> (<span class="company-member-length">' + userUnderCompany + '</span>)</p>' +
+                    '</div>';
+                $("#companyManagement #company_con").append(cDesign);
+                // userUnderCompany = 0;
+            });
+            $("#companyCount span").text(allcompanies.length);
+            let cNewDesign = '<div class="teams-div create-teams" onclick="showAdminpopup(\'createCompany\')">' +
+                '<p class="team-title create-teams-title"><span class="add-more-task"></span><br>Create Company</p>' +
+                '</div>';
+            $("#companyManagement #company_con").append(cNewDesign);
+
+
+
+
+            function hide_this_popup() {
+                $('.backwrap').hide();
+                $('#confirm_data_id').attr('data-id', '');
+                $('#confirm_data_id').attr('data-type', '');
+            }
+
+            function search_wsuser() {
+                var str = $("#search_ws_user").val().trim().toLowerCase();
+                if (str != "") {
+                    $.each($("#User-management-User-list tr"), function(k, v) {
+                        if ($(v).find('.ws-profile-name').text().toLowerCase().indexOf(str) > -1) {
+                            $(v).show();
+                        } else {
+                            $(v).hide();
+                        }
+                    });
+                } else {
+                    $("#User-management-User-list tr").show();
+                }
+            }
+
+            // var allUnit = [];
+            // var allUnitName = [];
+            // var allconvdata= [];
+            // var alluseunitid= [];
+
+            // var industry_name = null;
+            // var industry_id = null;
+
+            // function start_settings(e,elm){
+            // var dataView = $(elm).attr('data-view');
+            // if(!$(elm).hasClass('activeTodo')){
+            // $('.side_bar_list_item li').removeClass('activeTodo');
+            // $(elm).addClass('activeTodo');
+            // close_all_tab();
+            // $("#"+dataView).show();
+            // 
+            // if(dataView == 'businessUnit'){
+            // socket.emit('getBUnit',{user_id:user_id,industry_name:industry_name,industry_id:industry_id},function(res){
+
+            // socket.emit('getuseunitid',function(data){
+            //   allconvdata = data.rows;
+            //   console.log(1283,data.rows)
+            //   $.each(data.rows,function(k,v){
+            //     if(alluseunitid.indexOf(v.b_unit_id) == -1){
+            //       alluseunitid.push(v.b_unit_id);
+            //     }
+            //   })
+            // });
+
+            //   if(res.status){
+            //     allUnit = res.data;
+            //     $.each(allUnit,function(k,v){
+            //       allUnitName.push(v.unit_name.toLowerCase());
+            //       $('#allbusinessUnit').prepend(unitDesign(v));
+            //     })
+            //   }
+            // });
+            //         }
+            //     }
+
+            // }
+
+            // socket.emit('getAllIndustry',function(res){
+            //   if(res.status){
+            //     console.log(res.data)
+            //     $.each(res.data,function(k,v){
+            //       if(v.industry_name == 'Information Technology'){
+            //         industry_name = v.industry_name;
+            //         industry_id = v.industry_id;
+
+            //       }
+            //     })
+            //   }
+            // })
+
+            // function saveNewUnit(){
+            //   var newUnit = $('#createUnitName').val().trim();
+
+            //   if(newUnit !== " "){
+            //     if(allUnitName.indexOf(newUnit.toLowerCase())  == -1){
+            //       socket.emit('addNewBUnit',{user_id:user_id,unit_name:newUnit,industry_name:industry_name,industry_id:industry_id},function(res){
+            //        if(res.status){
+            //         allUnit.push(res.data);
+            //         allUnitName.push(unit_name.toLowerCase());
+            //           $('#allbusinessUnit').prepend(unitDesign(res.data));
+            //           $('#createUnitName').val('');
+            //        }
+            //       })
+            //     }else{
+            //       alert('This business category already exist.');
+            //     }
+            //   }
+            // }
+
+            // function saveNewUnit(){
+            //   var newUnit = $('#createUnitName').val().trim();
+
+            //   if(newUnit !== " "){
+            //     if(allUnitName.indexOf(newUnit.toLowerCase())  == -1){
+            //       socket.emit('addNewBUnit',{user_id:user_id,unit_name:newUnit,industry_name:industry_name,industry_id:industry_id},function(res){
+            //        if(res.status){
+            //         allUnit.push(res.data);
+            //         allUnitName.push(unit_name.toLowerCase());
+            //           $('#allbusinessUnit').prepend(unitDesign(res.data));
+            //           $('#createUnitName').val('');
+            //        }
+            //       })
+            //     }else{
+            //       alert('This business category already exist.');
+            //     }
+            //   }
+            // }
+
+            // var unitDesign = (v)=>{
+            //   console.log(alluseunitid)
+            //     var html = '<li class="bunit_'+v.unit_id+'">'
+            //                 +'<span class="name name_bunit bname_'+v.unit_id+'" contenteditable="false" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" data-id="'+v.unit_id+'">'+v.unit_name+'</span>'
+            //                 +'<span class="removeIco" onclick="removeThisUnit(this)" data-id="'+v.unit_id+'" style="opacity:'+((alluseunitid.indexOf(v.unit_id) == -1)? '1':'0.5')+'"></span>'
+            //                 +'<span class="editIco" onclick="editthisRoom(this)" data-id="'+v.unit_id+'"></span>'
+            //               +'</li>';
+
+            //   return html;
+            // }
+
+            function editUnitNamekeyUp(e, elm) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    $(elm).blur();
+                }
+            }
+
+            function editUnitNamekeydown(e, elm) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+            }
+
+            function editthisRoom(elm) {
+                var unitId = $(elm).attr('data-id');
+                $('.bname_' + unitId).attr('contenteditable', true);
+                var el = $('.bname_' + unitId);
+                placeCaretAtEnd(el[0]);
+                $('.bname_' + unitId).focus();
+                $(elm).parent().addClass("active-edit");
+                $(elm).parent().siblings().removeClass("active-edit");
+            }
+
+            function updateUnitTitle(elm) {
+                var unitId = $(elm).attr('data-id');
+                var name = $(elm).text().trim();
+                var prevTitle = $(elm).attr('data-wc-name');
+                $('.bname_' + unitId).attr('contenteditable', false);
+                $(elm).parent().removeClass("active-edit");
+                if (name !== '') {
+                    socket.emit('bunittitleUpdate', {
+                        user_id: user_id,
+                        unit_name: name,
+                        unit_id: unitId
+                    }, function(res) {
+                        console.log(res);
+                        removeA(allUnitName, prevTitle);
+                        allUnitName.push(name.toLowerCase());
+                    })
+                }
+            }
+
+            function removeThisUnit(elm) {
+                var unitId = $(elm).attr('data-id');
+                var data_wc_name = $(elm).attr('data-wc-name');
+
+                if (unitId != '') {
+                    socket.emit('removeBunit', {
+                        user_id: user_id,
+                        unit_id: unitId
+                    }, function(res) {
+                        $('.bunit_' + unitId).remove();
+                        removeA(allUnitName, data_wc_name);
+                    })
+                }
+            }
+
+            function createNewUnit(e, elm) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    saveNewUnit();
+                }
+            }
+
+            function filter_user_info(event) {
+                var str = $("#user_search_from_ws").text().trim().toLowerCase();
+                var attr = $('#User-management-User-list').attr('data-type');
+                console.log(attr)
+                $.each($(".usr_title"), function(k, v) {
+                    if ($(v).text().trim().toLowerCase().indexOf(str) > -1) {
+                        $(v).closest('tr.' + attr + '').show();
+                    } else {
+                        $(v).closest('tr.' + attr + '').hide();
+                    }
+                });
+            }
+
+            function filter_call_info(event) {
+                var str = $("#user_search_from_call").val().trim().toLowerCase();
+                $.each($(".usr_title_call"), function(k, v) {
+                    if ($(v).text().trim().toLowerCase().indexOf(str) > -1) {
+                        $(v).closest('tr').show();
+                    } else {
+                        $(v).closest('tr').hide();
+                    }
+                });
+            }
+
+            function wsteamusersearch(event) {
+                if ($("#ws-team-details").is(":visible")) {
+                    var str = $(event.target).text().trim().toLowerCase();
+                    $.each($(".fullName"), function(k, v) {
+                        if ($(v).text().trim().toLowerCase().indexOf(str) > -1) {
+                            $(v).closest('tr').show();
+                        } else {
+                            $(v).closest('tr').hide();
+                        }
+                    });
+                }
+            }
+
+            var user_id_board = [];
+
+            function saveNewBoard(e) {
+                if (user_id_board.length == 0) {
+                    // user_id_board.push(getCookie(user_id));
+                }
+                var value = $('#createBoardName').val().trim();
+                var i = 0;
+                if (value != '' && value != ' ') {
+                    var html = '<li class="board_list">';
+                    html += '    <span class="name name_bunit" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" contenteditable="false">' + value + '</span><span class="removeIco" onclick="removeThisUnit(this)" style="opacity:1"></span>';
+                    html += '    <span class="editIco" onclick="editthisRoom(this)" data-id=""></span>';
+                    html += '</li>';
+
+                    $('#allBoard_container').append(html);
+                    user_id_board.push(JSON.stringify({
+                        name: value
+                    }));
+                    // setCookie(user_id,user_id_board);
+                    $('#createBoardName').val('');
+                }
+            }
+
+
+            function removeThisBoard(ele) {
+                // var cookie_list = getCookie(user_id).split(',');
+                var data_txt = $(ele).siblings('.board_txt').text().trim();
+
+                $.each(cookie_list, function(i) {
+                    var data = JSON.parse(cookie_list[i]);
+                    if (data.name === data_txt) {
+                        cookie_list.splice(i, 1);
+                        user_id_board = [];
+                        user_id_board.push(cookie_list.join(','));
+                        // setCookie(user_id,user_id_board);
+                        $(ele).parents('.board_list').remove();
+                        return false;
+                    }
+                });
+            }
+
+
+
+            function createNewBoard(e, ele) {
+                var key = e.keyCode || e.charCode || e.which;
+                if (key == 13) {
+                    $('#saveNewBoard').trigger('click');
+                }
+            }
+
+            function userRoleChangeOp(elm) {
+
+                if ($(elm).val() != '' && $(elm).val() != 'sa') {
+                    var id = $(elm).val();
+                    console.log(thisRoleGuestOrNot(id))
+                    $('#guestUserOption').html('');
+                    if (thisRoleGuestOrNot(id)) {
+                        var design = '';
+                        design += '<div class="user-role" style="margin-bottom: 15.62px;">';
+                        design += '<label class="create-user-label" for= "" > Team</label >';
+
+                        design += '<ul class="listContainer">';
+                        $.each(allteams, function(k, v) {
+                            design += '<li data-value="' + v.team_id + '" onclick="gustUserTeam(this)">' + v.team_title + '</li>';
+                        });
+                        design += '</ul>';
+
+                        // design +=  '<select id="guestTeamSelect" name="" ><option value="">Select a Team</option>';
+                        // $.each(allteams, function (k, v) {
+                        //     design += '<option value="'+v.team_id+'">'+v.team_title+'</option>';
+                        // });
+                        design += '</select>'
+                        design += '</div >'
+
+                        design += '<div class="user-role" >';
+                        design += '<label class="create-user-label" for= "" > Conversation</label >';
+                        design += '<ul  class="listContainer" id="guestConvSelect" name="">';
+                        design += '</ul>'
+                        design += '</div >'
+
+                        $('#guestUserOption').append(design);
+                        getRoomAndDraw();
+                    }
+
+                }
+            }
+
+            function thisRoleGuestOrNot(id) {
+                var data = false;
+                $.each(allroles, function(k, v) {
+                    if (v.role_id == id) {
+                        if (v.role_access.indexOf(1600) != -1) {
+                            data = true;
+                        } else {
+                            if (!data) {
+                                data = false;
+                            }
+                        }
+                    }
+                });
+                return data;
+            }
+
+            function getRoomAndDraw() {
+                $('#guestConvSelect').find('li').remove();
+                var keySpace = 'Navigate';
+                socket.emit('public_conversation_history', {
+                    keySpace
+                }, (respons) => {
+                    if (respons.staus) {
+                        $.each(respons.rooms, function(k, v) {
+                            if (v.group == 'yes') {
+                                if (v.participants_admin.indexOf(user_id) != -1) {
+                                    $('#guestConvSelect').append('<li onclick="gustUserConv(this)" data-value="' + v.conversation_id + '">' + v.title + '</li>')
+                                }
+                            }
+                        });
+                    }
+
+                });
+            }
+            var guestuserTeam = [];
+
+            function gustUserTeam(elm) {
+                var value = $(elm).attr('data-value');
+                if (guestuserTeam.indexOf(value) > -1) {
+                    removeA(guestuserTeam, value);
+                    $(elm).removeClass('active');
+                } else {
+                    guestuserTeam.push(value);
+                    $(elm).addClass('active');
+                }
+            }
+
+            var guestuserConv = [];
+
+            function gustUserConv(elm) {
+                var value = $(elm).attr('data-value');
+                if (guestuserConv.indexOf(value) > -1) {
+                    removeA(guestuserTeam, value);
+                    $(elm).removeClass('active');
+                } else {
+                    guestuserConv.push(value);
+                    $(elm).addClass('active');
+                }
+            }
+
+            function find_company(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                var str = "";
+                str = $("#link_email").val();
+                if (str != "") {
+                    socket.emit("find_company_by_email", {
+                        email: str
+                    }, (res) => {
+                        console.log(res);
+                        $("#company_name").html("");
+                        $.each(res, function(k, v) {
+                            if (company_id != v.company_id.toString()) {
+                                var html = '<div class="comnameli" data-comid="' + v.company_id + '" data-email="' + str + '">' + v.company_name;
+                                html += '<span class="comnamebtn proSaveBtn">Link it</span>';
+                                html += '<input type="password" style="margin-top:20px;display:none;" placeholder="Enter your password to login this account" class="setInpField">';
+                                html += '<button class="proSaveBtn loginbtn" style="display:none;bottom:15px;" onclick="check_and_add(event)">Login</button>';
+                                html += '</div>';
+                                $("#company_name").append(html);
+                            }
+                        });
+                        $(".comnamebtn").on("click", function() {
+                            $(this).closest(".comnameli").find(".setInpField").toggle("slow");
+                            $(this).closest(".comnameli").find(".loginbtn").toggle("slow");
+                            $(this).text($(this).text() == "Link it" ? "X" : "Link it");
+                        });
+                    });
+                }
+            }
+
+            function check_and_add(event) {
+                if ($(event.target).closest(".comnameli").find(".setInpField").val().trim() != "") {
+                    var data = {
+                        comid: $(event.target).closest(".comnameli").attr("data-comid"),
+                        email: $(event.target).closest(".comnameli").attr("data-email"),
+                        passw: $(event.target).closest(".comnameli").find(".setInpField").val().trim(),
+                        cur_company_id: company_id,
+                        cur_user_email: user_email
+                    };
+                    console.log(data);
+                    socket.emit("check_and_add", data, (res) => {
+                        console.log(res);
+                        $(event.target).closest(".comnameli").remove();
+                        my_link_account("allLinkAccount");
+                    });
+                } else {
+                    alert("Please enter your password to link this account.");
+                }
+            }
+
+            function showInvitePopup() {
+                var dept = findObjForUser(user_id).dept;
+                var type = (dept.toLowerCase() == "social") ? "social" : "work";
+                var url = window.location;
+                window.open(url.origin + "/signup_invite/" + type + "/" + user_email + "/" + company_id, "_blank", "toolbar=no,scrollbars=yes,resizable=yes,top=10,left=100,width=1024,height=700");
+            }
+
+            function role_main_menu_sh(elem) {
+                // console.log(elem);
+                if (!$(elem).hasClass('role-main-menu-active')) {
+                    $(elem).siblings().removeClass('role-main-menu-active');
+                    $(elem).addClass('role-main-menu-active');
+                    // console.log(elem);
+                    if ($(elem).attr("id") == "permissions-mnu") {
+                        $("#permission-menu-content-id").show();
+                        $("#users-menu-content-id").hide();
+                    } else if ($(elem).attr("id") == "users-mnu") {
+                        $("#permission-menu-content-id").hide();
+                        $("#users-menu-content-id").show();
+                    } else {}
+                }
+                if ($("#users-mnu").hasClass("role-main-menu-active")) {
+                    $("#addUserRoleBtn").show();
+                } else {
+                    $("#addUserRoleBtn").hide();
+                }
+            }
+
+            function role_permission_menu_sh(elem) {
+                if (!$(elem).hasClass('prm-left-side-menu-actve')) {
+                    $(elem).siblings().removeClass('prm-left-side-menu-actve');
+                    $(elem).addClass('prm-left-side-menu-actve');
+                    // console.log(elem);
+
+
+
+
+                    if ($(elem).attr("id") == "general_conect_perm") {
+                        $("#general_perm_id").show();
+                        $("#connect_perm_id").hide();
+                        $("#call_perm_id").hide();
+                    } else if ($(elem).attr("id") == "conect_room_perm") {
+                        $("#general_perm_id").hide();
+                        $("#connect_perm_id").show();
+                        $("#call_perm_id").hide();
+                    } else if ($(elem).attr("id") == "call_perm") {
+                        $("#general_perm_id").hide();
+                        $("#connect_perm_id").hide();
+                        $("#call_perm_id").show();
+                    } else {}
+                }
+            }
+
+            function show_user_info(elem) {
+                $(elem).closest("tr").find("td").eq(0).click();
+                $(".ws-moremenu ul").hide();
+            }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+
+
+                //----------Select the first tab and div by default
+
+                $('#vertical_tab_nav > ul > li > a').eq(0).addClass("selected");
+                $('#vertical_tab_nav > div > article').eq(0).css('display', 'block');
+
+
+                //---------- This assigns an onclick event to each tab link("a" tag) and passes a parameter to the showHideTab() function
+
+                $('#vertical_tab_nav > ul').click(function(e) {
+
+                    if ($(e.target).is("a")) {
+
+                        /*Handle Tab Nav*/
+                        $('#vertical_tab_nav > ul > li > a').removeClass("selected");
+                        $(e.target).addClass("selected");
+
+                        /*Handles Tab Content*/
+                        var clicked_index = $("a", this).index(e.target);
+                        $('#vertical_tab_nav > div > article').css('display', 'none');
+                        $('#vertical_tab_nav > div > article').eq(clicked_index).fadeIn();
+
+                    }
+
+                    $(this).blur();
+                    return false;
+
+                });
+
+
+            }); //end ready	
+
+
+            // $(".disabled_admin").attr("disabled", "disabled").off('click').css('opacity', '0.5');
+            $('.disabled_admin').prop('disabled', true).css('opacity', '0.5');
+
+            $('#popup1').hide();
+
+            function closeWin() {
+                $('#popup1').hide();
+            }
+
+            function showWin(event) {
+                var tid = $(event.target).closest(".teams_area").attr("data-tid");
+                $('#popup1').show();
+                $('#popup1').attr("data-tid", tid);
+                $('#popup1').attr("data-type", 'remove_team_member');
+            }
+
+            function remove_member4(event) {
+                var uid = $("#UserProfileEmail").attr("data-id");
+                var teamid = $('#popup1').attr("data-tid");
+                if ($('#popup1').attr("data-type") == 'remove_team_member') {
+                    add_remove_team_member(event, uid, teamid, user_id, 'remove');
+                    $('.teams_area[data-tid="' + teamid + '"]').remove();
+                }
+                closeWin();
+            }
+
+            $(document).on("keyup", function(e) {
+                if (e.keyCode === 27) {
+                    let tab_name = '';
+                    let tab_menus = $("#AdminSettingSideBar .presentTab");
+                    $.each(tab_menus, function(k, tab) {
+                        // console.log(k, tab);
+                        if ($(tab).hasClass("activeProfile")) {
+                            tab_name = $(tab).attr("data-tabname");
+                        }
+                    });
+                    console.log(tab_name);
+                    // user=role=workspace=file=calling=business=board=client=tag=link_account
+                    if (tab_name == 'user') {
+                        if ($("#userManageMent").is(":visible") && $("#userManageMent").find(".main-userManageMent").is(":visible")) {
+                            //when user page viewing
+                            //from user tab to cennect route						
+                            if ($("#adminSettingBackWrap").is(":visible") && $("#adminSettingBackWrap").find("#createNewUser").is(":visible")) {
+                                // console.log("close create user.");
+                                // if create user popup showing
+                                $("#createNewUser").find("img.close-popup").trigger("click");
+                            } else if ($("#chageRolePopUpId").is(":visible")) {
+                                //role change popup showing
+                                $("#chageRolePopUpId").find("button.cancel-role-btn").trigger("click");
+                            } else if ($("#resetPasSucMsg").is(":visible")) {
+                                //reset password popup showing
+                                $("#resetPasSucMsg").find("button.cancel_pwd").trigger("click");
+                            } else if ($("#changePasSucMsg").is(":visible")) {
+                                //if showing reset passwor success msg
+                                // and if showing change password success msg
+                                $("#changePasSucMsg").find("button.cancel_pwd").trigger("click");
+                            } else if ($("#reset_password").is(":visible")) {
+                                //if showing change password popup
+                                $("#reset_password").find("button.cancel_pwd").trigger("click");
+                            } else {
+                                window.location.href = "/";
+                            }
+                        } else if ($("#userManageMent").is(":visible") && !$("#userManageMent").find(".main-userManageMent").is(":visible")) {
+                            //when user details page viewing
+                            if ($("#popup1").is(":visible")) {
+                                $("#popup1").find(".canclebutton").trigger("click");
+                            } else {
+                                $("#manage-user-profile").find(".close-back").trigger("click");
+                            }
+                        }
+                    } else if (tab_name == 'role') {
+                        if ($("#roleManagement").find("#roledisplaydiv").is(":visible") && !$("#roleManagement").find("#wsTeamPermission").is(":visible")) {
+                            if ($("#roleManagement").find("#roledisplaydiv").find("ul#sort_role_menu").is(":visible")) {
+                                //role drop down showing
+                                $("#roleManagement").find("#roledisplaydiv").find("#sort_role_menu").hide();
+                            } else if ($("#adminSettingBackWrap").is(":visible") && $("#adminSettingBackWrap").find("#wsAddRolePopUp").is(":visible")) {
+                                //when showing new role popup
+                                $("#adminSettingBackWrap").find("#wsAddRolePopUp").find("button.cancelRoleBtn").trigger("click");
+                            } else {
+                                goto_user_management_tab();
+                            }
+                        } else if (!$("#roleManagement").find("#roledisplaydiv").is(":visible") && $("#roleManagement").find("#wsTeamPermission").is(":visible")) {
+                            if ($("#chageRolePopUpId").is(":visible")) {
+                                //role change popup showing
+                                $("#chageRolePopUpId").find("button.cancel-role-btn").trigger("click");
+                            } else {
+                                //back from to role name main page
+                                $("#roleManagement").find("#wsTeamPermission").find(".ws-roll-details-to-back-roll").trigger("click");
+                            }
+                        }
+                    } else if (tab_name == 'workspace') {
+                        //team menu
+                        if ($("#workSpaceManagement").is(":visible") && !$("#workSpaceTeamExplore").is(":visible")) {
+                            //team name home showing to user menu
+                            if ($("#adminSettingBackWrap").is(":visible") && $("#adminSettingBackWrap").find("#wsCreateTeamPopUp").is(":visible")) {
+                                $("#adminSettingBackWrap").find("#wsCreateTeamPopUp").find("img.close-popup").trigger("click");
+                            } else {
+                                goto_user_management_tab();
+                            }
+                        } else if ($("#workSpaceManagement").is(":visible") && $("#workSpaceTeamExplore").is(":visible")) {
+                            //if viweing team deatails
+                            if ($("#adminSettingBackWrap").is(":visible") && $("#adminSettingBackWrap").find("#wsDeleteTeam").is(":visible")) {
+                                //if delete popup showing
+                                $("#adminSettingBackWrap").find("#wsDeleteTeam").find("img.close-popup").trigger("click");
+                            } else if ($("#removeTeamMemberWarningId").is(":visible")) {
+                                //if remeve team member popup showing
+                                $("#removeTeamMemberWarningId").find("button.cancel-role-btn").trigger("click");
+                            } else if ($("#addMemberPopup").is(":visible")) {
+                                // $("#addMemberPopup").find(".closeModal").trigger("click");
+                            } else {
+                                //back to team name main page
+                                $("#workSpaceTeamExplore").find("#ws-team-details-to-back-team").trigger("click");
+                            }
+                        }
+                    } else if (tab_name == 'file') {
+                        if ($("#delete_this_file").is(":visible")) {
+                            $("#delete_this_file").find("button.btn-cancel").trigger("click");
+                        } else {
+                            goto_user_management_tab();
+                        }
+                    } else if (tab_name == 'calling') {
+                        goto_user_management_tab();
+                    } else if (tab_name == 'business') {
+                        goto_user_management_tab();
+                    } else if (tab_name == 'board') {
+                        goto_user_management_tab();
+                    } else if (tab_name == 'client') {
+                        if ($("#clientManagement").is(":visible") && !$("#clientManagement #createClientPopup").is(":visible")) {
+                            goto_user_management_tab();
+                        } else if ($("#clientManagement").is(":visible") && $("#clientManagement .businessUnit_body").is(":visible")) {
+                            $("#createClientPopup").find("img.back").trigger("click");
+                        }
+                    } else if (tab_name == 'tag') {
+                        goto_user_management_tab();
+                    } else if (tab_name == 'link_account') {
+                        goto_user_management_tab();
+                    }
+                }
+            });
+
+            function goto_user_management_tab() {
+                let tab_menus = $("#AdminSettingSideBar .presentTab");
+                $.each(tab_menus, function(k, tab) {
+                    // console.log(k, tab);
+                    if ($(tab).attr("data-tabname") == "user") {
+                        $(tab).trigger("click");
+                    }
+                });
+            }
+
+            function closeModal(id) {
+                console.log(id)
+                $('#' + id).hide();
+            }
+
+            function addUserRoleBtn() {
+                showCreateUserPopup('user_management');
+            }
+        </script>
+
+        <div class="backwrap" id="deleteBackWrapForTag" style="display: none;">
+            <div class="delete_msg_div ui-draggable ui-draggable-handle">
+                <div onclick="$('#deleteBackWrapForTag').hide()" class="closeModal"></div>
+                <div class="body">
+                    <p class="del_msg_title">Delete Tag</p>
+                    <p class="delete_msg_sec_title">Are you sure you want to delete this Tag? This cannot be <span class="undone">undone</span>.</p>
+                    <!-- <div class="main-deleted-msg"></div> -->
+                    <p class="btn_div">
+                        <br style="display: none;">
+                        <button type="button" class="btn-cancel btn-cancel-margin" onclick="$('#deleteBackWrapForTag').hide()">Cancel</button>
+                        <button type="button"  class="btn-msg-del" onclick="confirmTagDelete()">Delete</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="backwrap" id="editTagBackwrap" style="display: none;">
+            <div class="delete_msg_div ui-draggable ui-draggable-handle">
+                <div onclick="$('#editTagBackwrap').hide()" class="closeModal"></div>
+                <div class="body">
+                    <p class="del_msg_title">Edit Tag</p>
+                    <p class="delete_msg_sec_title"><input type="text" placeholder="Tag title" value="" id="editTagInputBar"></p>
+                    <!-- <div class="main-deleted-msg"></div> -->
+                    <p class="btn_div">
+                        <br style="display: none;">
+                        <button type="button" class="btn-cancel btn-cancel-margin" onclick="$('#editTagBackwrap').hide()">Cancel</button>
+                        <button type="button"  class="btn-cancel btn-cancel-margin" style="margin-left: 4px; color:#FFF;background-color: var(--PrimaryC);" onclick="confirmEdit()">Submit</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <%- include('layouts/basic_foot') %>

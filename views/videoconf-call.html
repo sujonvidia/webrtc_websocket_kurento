@@ -1,0 +1,1150 @@
+<%- include('layouts/basic_head') %>
+
+    <video style="display: none" id="leftVideo" width="640" height="480" controls autoplay playsinline muted loop>
+	<source src="/videos/black_new.mp4" type="video/mp4">
+	Your browser does not support the video tag.
+</video>
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style_basic_connect.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/OverlayScrollbars.css">
+    <link rel="stylesheet" href="/stylesheets/style-login.css">
+    <link rel="stylesheet" href="/stylesheets/conf/index.css">
+    <div id="call_container_form">
+        <div id="groupcalltitle">
+            <div id="header_info">
+                <img class="conf_parent_window" src='/images/call/back_34px.png' onclick="goParentWindow()">
+                <img class="conf_privacy">
+                <span class="conf_name"></span>
+                <span class="conf_main_timer">0:0:0</span>
+            </div>
+        </div>
+        <div id="room">
+            <div style="display:none" class="txt_main_connecting">
+                <p class="txt_status"></p>
+                <p class="txt_user_main"></p>
+            </div>
+            <div style="display:none" class="init-loader loading-cam"></div>
+            <div id="screen_share_loader" style="display:none" class="screen-share-loader"></div>
+            <div style="display:none" class="more-call-opts" onclick="moreActionCall(event,'mobile_call_option_div')"></div>
+            <div id="mobile_call_option_div">
+                <div class="closeModal" onclick="moreActionCall(event,'mobile_call_option_div')" data-balloon="Press Esc to close" data-balloon-pos="left" style="right: 5px;top: 5px;z-index: 100;"></div>
+                <div class="options_container">
+                    <div class="option batch_mute_btn" onmouseup="batch_mute_audio(event)" data-status="unmuted">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Mute all participants</div>
+                    </div>
+                    <div class="option batch_mute_btn" onmouseup="batch_mute_video(event)" data-status="unmuted">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Turn off others' video</div>
+                    </div>
+                    <div class="option batch_mute_btn" onmouseup="batch_mute_screen(event)" data-status="unmuted">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Block participants' screen sharing option</div>
+                    </div>
+                    <div class="option toggle_participant_auto" onclick="toggleParticipantAuto(event)" data-status="manual">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Automatically answer participant call(s)</div>
+                    </div>
+                    <div class="option toggle_guest_auto" onclick="toggleGuestAuto(event)" data-status="manual">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Automatically answer guest call(s)</div>
+                    </div>
+                    <div class="option toggle_member_timer" onclick="toggleTimerMember(event)" data-status="hide">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Show individual timers</div>
+                    </div>
+                    <div id="chat_share_icon2" class="chat_share_icon option muteNotifi" onmouseup="openChatShare()">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Chat Screen</div>
+                    </div>
+                    <div id="call_addmember_icon2" class="call_addmember_icon option muteNotifi" onmouseup="viewAddParticipant()">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <span class="text">Invite People</span>
+                    </div>
+                    <div class="option set_clipboard_admin" onclick="setClipboardURL()">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Copy conference ID to share with Guest(s)</div>
+                    </div>
+                </div>
+            </div>
+            <div data-status="max" id="participants" class="container-members"></div>
+            <div data-status="max" id="participants_min" class="container-members"></div>
+        </div>
+        <div id="beforecallicons" class="main-icons">
+            <div onmouseup="closeRoomBeforeKurento()" class="call-btn-div" data-balloon="Click to close" data-balloon-pos="up">
+                <div class="icon_holder_div">
+                    <img id="hangup2" class="call-btn" src="/images/call/close-call.svg">
+                    <span class="call_btn_label">Close</span>
+                </div>
+            </div>
+        </div>
+        <div id="icons" class="main-icons" data-status="max">
+            <div id="batch_options_icon" class="call-btn-div" data-balloon="Click to open more options" data-balloon-pos="up-left" style="display: none;">
+                <div class="icon_holder_div">
+                    <img id="more_menu_img" class="call-btn" src="/images/call/MoreMenu.svg">
+                    <span class="call_btn_label">Options</span>
+                </div>
+            </div>
+            <div id="batch_options_div">
+                <div id="batch_options_close" class="closeModal" data-balloon="Press Esc to close" data-balloon-pos="up" style="right: 5px;top: 5px;z-index: 100;"></div>
+                <div class="options_container">
+                    <div class="option batch_mute_btn" onclick="batch_mute_audio(event)" data-status="unmuted">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Mute all participants</div>
+                    </div>
+                    <div class="option batch_mute_btn" onclick="batch_mute_video(event)" data-status="unmuted">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Turn off others' video</div>
+                    </div>
+                    <div class="option batch_mute_btn" onclick="batch_mute_screen(event)" data-status="unmuted">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Block participants' screen sharing option</div>
+                    </div>
+                    <div class="option toggle_participant_auto" onclick="toggleParticipantAuto(event)" data-status="manual">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Automatically answer participant call(s)</div>
+                    </div>
+                    <div class="option toggle_guest_auto" onclick="toggleGuestAuto(event)" data-status="manual">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Automatically answer guest call(s)</div>
+                    </div>
+                    <div class="option toggle_member_timer" onclick="toggleTimerMember(event)" data-status="hide">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Show individual timers</div>
+                    </div>
+                    <div class="option toggle_action_label" onclick="toggleActionLabels(event)" data-status="show">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Hide action labels</div>
+                    </div>
+                    <div class="option toggle_action_icons" onclick="toggleActionIcons(event)" data-status="show">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Hide action icons</div>
+                    </div>
+                    <div class="option set_clipboard_admin" onclick="setClipboardURL()">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Copy conference ID to share with Guest(s)</div>
+                    </div>
+                    <div class="option keyboard_options_icon" onclick="openKeyboardShortcuts()" data-status="manual">
+                        <span class="hyvenCheckboxBefore hyvenCheckbox checked"></span>
+                        <div class="text">Keyboard shortcuts</div>
+                    </div>
+                </div>
+            </div>
+            <div id="keyboard_options_div" class="">
+                <div class="options_container">
+                    <div id="keyboard_options_close" class="closeModal" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                    <div id="options_container_body">
+                        <div class="option">
+                            <span class="text left">Start or stop your video camera</span>
+                            <span class="text right">V</span>
+                        </div>
+                        <div class="option">
+                            <span class="text left">Mute or unmute your microphone</span>
+                            <span class="text right">M</span>
+                        </div>
+                        <div class="option">
+                            <span class="text left">Share or stop your screen </span>
+                            <span class="text right">S</span>
+                        </div>
+                        <div class="option">
+                            <span class="text left">Raise or lower your hand </span>
+                            <span class="text right">R</span>
+                        </div>
+                        <div class="option">
+                            <span class="text left">Open or close the chat sidebar </span>
+                            <span class="text right">T</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="cam_setting_icon" class="call-btn-div" data-balloon="Click to switch cam/mic" data-balloon-pos="up" onmouseup="viewSwitchDialog()">
+                <div class="icon_holder_div">
+                    <img id="switch_video_img" class="call-btn">
+                    <span class="call_btn_label">Settings</span>
+                </div>
+            </div>
+            <div id="mic_setting_icon" class="call-btn-div" data-balloon="Click to switch mic" data-balloon-pos="up" onmouseup="micSwitchDialog()">
+                <div class="icon_holder_div">
+                    <img id="switch_audio_img" class="call-btn">
+                    <span class="call_btn_label">Settings</span>
+                </div>
+            </div>
+            <div id="call_addmember_icon1" class="call_addmember_icon call-btn-div" data-balloon="Click to add new participants" data-balloon-pos="left" onmouseup="viewAddParticipant()">
+                <div class="icon_holder_div">
+                    <img id="add_member_img" class="call-btn" src="/images/call/add-contact_48px.svg">
+                    <span class="call_btn_label">Invite</span>
+                </div>
+            </div>
+            <div id="toggle_mute_icon" class="call-btn-div" data-balloon="Click to toggle mute" data-balloon-pos="up" onmouseup="toggleMuteConf()">
+                <div class="icon_holder_div">
+                    <img id="tog_audio_img" class="call-btn" data-enabled="yes">
+                    <span id="mute_audio_label" class="call_btn_label"></span>
+                </div>
+            </div>
+            <div id="toggle_video_icon" data-loading="no" class="call-btn-div" data-balloon="Click to toggle video" data-balloon-pos="up" onmouseup="toggleVideoConf()">
+                <div class="icon_holder_div">
+                    <img id="tog_video_img" class="call-btn" data-enabled="yes">
+                    <span id="mute_video_label" class="call_btn_label">Camera</span>
+                </div>
+            </div>
+            <div id="screen_share_icon" class="screen_share_icon call-btn-div" data-balloon="Click to toggle screen share" data-balloon-pos="up" data-loading="no" onmouseup="toggleScreenShare()">
+                <div class="icon_holder_div">
+                    <img id="screen_share_img" class="call-btn" data-enabled="yes" data-status="no" src="/images/call/screen-share-on_48px.svg">
+                    <span id="screen_share_label" class="call_btn_label">Screen</span>
+                </div>
+            </div>
+            <div id="chat_share_icon1" class="chat_share_icon call-btn-div" data-balloon="Click to toggle messaging" data-balloon-pos="up" style="display: none" onmouseup="openChatShare()">
+                <div class="icon_holder_div">
+                    <img id="chat_share_img" class="call-btn" data-status="no" src='/images/call/message_56px.svg'>
+                    <span class="unreadMsgCount">0</span>
+                    <span class="call_btn_label">Chat</span>
+                </div>
+            </div>
+            <div id="raise_hand_div" onclick="toggleRaiseHand()" class="call-btn-div" data-balloon="Click to raise hand" data-balloon-pos="up">
+                <div class="icon_holder_div">
+                    <img id="raise_hand_img" class="call-btn" src="/images/call/raise-hand.svg">
+                    <span class="call_btn_label">Hand</span>
+                </div>
+            </div>
+            <div id="call_hangup_div" data-server="yes" class="call-btn-div" data-balloon="Click to hangup" data-balloon-pos="up" onmouseup="call_leave_button('self')">
+                <div class="icon_holder_div">
+                    <img id="hangup" class="call-btn" src='/images/call/hang-up_56px.svg'>
+                    <span class="call_btn_label">Leave</span>
+                </div>
+            </div>
+            <div style="display: none;" data-visible="true" id="call_icon_toggle" class="call-btn-div" data-balloon="Click to hide icons" data-balloon-pos="up-right" onclick="call_icon_toggle(this)" style="display: none;">
+                <div class="icon_holder_div">
+                    <img id="call_img_toggle" class="call-btn" src='/images/call/icon-down-arrow.svg'>
+                    <span id="call_span_toggle" class="call_btn_label">Icons</span>
+                </div>
+            </div>
+        </div>
+        <div id="device_container">
+            <div style="width:100%;display:block;position:static;height: 100%;">
+                <header class="clearfix">
+                    <img onmouseup="closeDeviceWindow()" class="chat-close" width="34" style="top:28px" src="/images/basicAssets/close_button.svg" alt="Close">
+                    <div class="heading_area" style="position:absolute;top:28px;margin:0px">
+                        <h4 class="todo_chat_room_title">Device List</h4>
+                    </div>
+                </header>
+
+                <div class="msg-separetor_head">
+                    <div id="top-date"></div>
+                </div>
+
+                <div class="todo-chat-body overlayScrollbars">
+                    <div class="devicelist-history">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="memberListBackWrap">
+            <div class="adminContainer">
+                <div class="closeBackwrap" onclick="viewAddParticipant()" data-balloon="Close" data-balloon-pos="left">
+                    <img src="/images/basicAssets/close_button.svg">
+                </div>
+                <div class="label">
+                    <h1 class="label_Title">Members </h1>
+                    <h1 class="list_Count">(<span id="list_count_add"></span>)</h1>
+                </div>
+                <input id="search_member_add" type="text" class="searchMember" placeholder="Search by name" onkeyup="searchMember(event,$(this).val());">
+                <span class="remove searchClear"></span>
+                <div class="suggest_Container overlayScrollbars">
+                    <ul id="suggested_list_add" class="suggested-list">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="registerDialogDiv" data-reg="normal">
+            <div class="switchDialog-Container">
+                <div class="switchDialog-heading">
+                    <h1 id="switchtitlemsg1">Choose preferred camera and microphone</p>
+                        <div class="closeModal" onclick="closeModalRegister(false)" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div id="guest_join_div">
+                    <div class="form-field-guest" style="width: 100%;">
+                        <span id="guest_convname"></span>
+                        <input type="text" id="guest_fullname" style="width: 50%;" placeholder="Full Name..." />
+                    </div>
+                </div>
+                <div class="switchDialog-Content">
+                    <div id="registerDivPreview">
+                        <video id="regVideoPreview" muted></video>
+                        <div id="mute_av_prev_div">
+                            <img id="mute_audio_preview" onclick="toggleAudioPreview()" style="display: none;">
+                            <img id="mute_video_preview" onclick="toggleVideoPreview()">
+                        </div>
+                        <p id="prev_nocamera_txt">Camera not found</p>
+                    </div>
+                    <div id="registerDivOption">
+                        <div class="videoSourceDiv" class="select">
+                            <label for="videoSourceSel">Camera: </label>
+                            <select id="videoSourceSel" onchange="changeStreamTrack('video')"></select>
+                        </div>
+                        <div class="audioSourceDiv" class="select">
+                            <label for="audioSourceSel">Microphone: </label>
+                            <select id="audioSourceSel" onchange="changeStreamTrack('audio')"></select>
+                        </div>
+                        <div class="audioOutputDiv" class="select">
+                            <label for="audioOutputSel">Sound Output: </label>
+                            <select id="audioOutputSel" onchange="changeAudioDestination()"></select>
+                        </div>
+                    </div>
+                </div>
+                <div id="regDialogOk" class="hayven_Modal_endSection">
+                    <div class="btn_group">
+                        <!-- <button class="buttonCancel" onclick="closeModalRegister(false)">Cancel</button> -->
+                        <button class="buttonAction" id="callSettingBtn" onclick="closeModalRegister(true)">Continue</button>
+                        <button class="buttonAction" id="callRingBtn" onclick="registerVoip()">Join Call</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="warningPopup" class="backwrap" style="display: none;position:absolute">
+            <div class="hayven_Modal_Container" style="max-width: 522px;width: 100%;">
+                <div class="hayven_Modal_heading">
+                    <h1 id="warningTitle">Confirm!</h1>
+                    <div class="closeModal" onclick="closeModal('warningPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div class="hayven_Modal_Content">
+                    <h6 id="warningMessage"> Would you like to leave this conference?</h6>
+                </div>
+                <div class="hayven_Modal_endSection">
+                    <div class="btn_group">
+                        <button id="warning_op1" class="buttonCancel" onclick="call_leave_choice('leave')">Leave call</button>
+                        <button id="warning_op2" class="buttonAction" onclick="call_leave_choice('finish')">End conference</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fileup_img_preview_div" class="backwrap" style="display: none">
+            <div class="hayven_Modal_Container" style="max-width: 90%;height: 90%;margin-top: 40px;">
+                <div class="hayven_Modal_heading" style="width: 100%;height: 10%;">
+                    <h1 id="warningTitle">Image Preview!</h1>
+                    <div class="closeModal" onclick="closeModal('fileup_img_preview_div')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div class="hayven_Modal_Content" style="width: 100%;height: 80%;overflow: auto;">
+                    <img id="fileup_img_preview">
+                </div>
+                <div class="hayven_Modal_endSection" style="width: 100%;height: 10%;">
+                    <div class="btn_group">
+                        <button id="btn_endconf" class="buttonAction" onclick="closeModal('fileup_img_preview_div')">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="delete_msg_div" class="backwrap">
+            <div class="delete_msg_div">
+                <img onclick="closeAllPopUp()" src="/images/basicAssets/close_button.svg" alt="">
+                <div class="body">
+                    <p class="del_msg_title">Delete message</p>
+                    <p class="delete_msg_sec_title">Are you sure you want to delete this message? This cannot be <span class="undone">undone</span>.</p>
+                    <!-- <div class="main-deleted-msg"></div> -->
+                    <p class="btn_div">
+                        <br style="display: none;" />
+                        <button type="button" class="btn-cancel btn-cancel-margin" onclick="closeAllPopUp()">Cancel</button>
+                        <button type="button" id="deleteForMe" class="btn-msg-del" onclick="deleteMessage(this,'for_me')">Delete for me</button>
+                        <button type="button" id="deleteForAll" class="btn-msg-del" onclick="deleteMessage(this,'for_all')">Delete for all</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="delete_attach" class="backwrap" style="display: none;">
+            <div class="delete_msg_div">
+                <img onclick="close_delete_attach()" src="/images/basicAssets/close_button.svg" alt="">
+                <div class="body">
+                    <p class="del_msg_title">Delete file</p>
+                    <p class="delete_msg_sec_title">Are you sure you want to delete this file? This cannot be <span class="undone">undone</span>.</p>
+                    <!-- <div class="main-deleted-msg"></div> -->
+                    <p class="btn_div">
+                        <br style="display: none;" />
+                        <button type="button" class="btn-cancel btn-cancel-margin" onclick="close_delete_attach()">Cancel</button>
+                        <button type="button" class="btn-msg-del" onclick="delete_attach()">Ok</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="shareLinkPop" data-type="" style="display: none">
+            <div class="hayven_Modal_Container" style="width: 522px">
+                <div class="hayven_Modal_heading">
+                    <h1>Share</h1>
+                    <div class="closeModal" onclick="closeModal('shareLinkPop')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div class="hayven_Modal_Content">
+                    <div class="from_group">
+                        <p class="from_label">Share link</p>
+                        <div contenteditable="true" onfocus="document.execCommand('selectAll',false,null)" class="input_text" id="shareLink" style="border: 1px solid rgb(225, 228, 232);"></div>
+                    </div>
+                </div>
+                <div class="hayven_Modal_endSection">
+                    <div class="btn_group">
+                        <button class="buttonAction" style="background: var(--PrimaryC);margin-right: 8px;" onclick="copyShareLink(this)">Copy</button>
+                        <button class="buttonCancel" onclick="closeModal('shareLinkPop')">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menuVideoContext">
+            <div onclick="showvideourl(this)" class="menu-item-vc">Show video URL</div>
+        </div>
+    </div>
+    <div id="chat_container">
+        <div id="threadReplyPopUp" style="width: 100%;height: 100%;">
+            <div class="msgs-thread-popup" style="margin: 0;width: 100%;height: 100%;position: unset;">
+                <div class="msgs-thread-head">
+                    <h3>
+                        <img src="/images/basicAssets/thread.svg" alt=""> Conference Chat
+                        <span style="display: none;" id="unreadthreadMsgCounter" data-counter="0" onclick="$(this).attr('data-counter',0);scrollToBottom('#repChatContainer', 0);"> New Reply
+					</span>
+                    </h3>
+                    <span class="tooltipmsg" data-balloon="Press Esc to close" data-balloon-pos="left">
+					<img class="thread-close" src="/images/basicAssets/close_button.svg" alt="" onclick="openChatShare()" style="z-index: 10000000000000000000;">
+				</span>
+                </div>
+                <div class="main-thread-msgs" style="width: 100%;display: none;">
+                    <div class="thread-user-msg">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="msgs-thread-reply">
+                    <div class="reply-separetor" style="display: none;">
+                        <p></p>
+                    </div>
+                    <!-- overlayScrollbars -->
+                    <div class="forScrollBar" id="repChatContainer">
+                        <div class="replies-container"></div>
+                    </div>
+                </div>
+                <div class="write-thread-msgs">
+                    <div id="define_thread_text"></div>
+                    <p class="rep-typing-indicator"></p>
+                    <div id="replymention_user" class="mention_user_list"></div>
+                    <div id="secretUserList_rep" class="secretUserList"></div>
+                    <div contenteditable="true" id="msg_rep" class="write-msgs" placeholder="Reply" onpaste="onpasteFun(event)" style="padding-right: 95px;"></div>
+                    <div class="add-attachment send-rep-attach" id="repAttachFconnect" onclick="chatFileUploadFunc('repmsg')" data-balloon="Attach files" data-balloon-pos="left"></div>
+                    <div class="add-emoji" data-balloon="Insert emoji" data-balloon-pos="left" onclick="open_rep_emoji(event)"></div>
+                    <div class="circle_up_arrow" onclick="rep_msg_send_fn_call()"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="guest_container_form" class="centered-form" style="display: none">
+        <div class="centered-form__form">
+            <div id="guest_again_div" style="display: none">
+                <div class="form-field">
+                    <span id="guest_again_span"></span><br>
+                </div>
+                <div id="guest_again_btn" class="sign-in" style="margin-top: 16px;">
+                    <button type="button" onclick="ring_guest_call()" class="sendButton" style="width: 100% !important;">Try to join the call again</button>
+                </div>
+            </div>
+            <div id="guest_thankyou_div" style="display: none">
+                <div class="form-field">
+                    <span id="guest_thankyou_span">Thank you for using Workfreeli call feature.</span><br>
+                </div>
+                <div id="guest_thankyou_btn" class="sign-in" style="margin-top: 16px;">
+                    <div class="form-field">
+                        <span id="guest_thankyou_span">You may close this window now.</span><br>
+                    </div>
+                </div>
+            </div>
+            <div id="guest_msg_div" style="display: none">
+                <div class="form-field">
+                    <p id="guest_msg_span"></p>
+                </div>
+            </div>
+            <div id="rejoin_call_div" style="display: none">
+                <div id="rejoin_container" class="form-field">
+                    <button id="rejoin_call_btn" class="rejoin-div" onclick="registerRejoin()">Rejoin</button>
+                    <button id="close_call_btn" class="rejoin-div" onclick="closeRoomBeforeKurento()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mypopupcall_div" class="backwrap" style="display: none;position:absolute">
+        <div class="hayven_Modal_Container" style="max-width: 522px;width: 100%;">
+            <div class="hayven_Modal_heading">
+                <h1 id="mypopupcall_title">Confirm!</h1>
+                <!-- <div class="closeModal" onclick="" data-balloon="Press Esc to close" data-balloon-pos="up"></div> -->
+            </div>
+            <div class="hayven_Modal_Content">
+                <h6 id="mypopupcall_msg"></h6>
+            </div>
+            <div class="hayven_Modal_endSection">
+                <div class="btn_group">
+                    <button id="mypopupcall_op2" class="buttonCancel" onclick="mypopupcall_no()">NO</button>
+                    <button id="mypopupcall_op1" class="buttonAction" onclick="mypopupcall_yes()">YES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="consoleDiv">
+        <div class="stats-box"></div>
+        <div id="bwdiv"></div>
+        <p id="bwmeter"></p>
+        <p id="bwtransport"></p>
+    </div>
+
+    <script>
+        // support check ==========================================================================
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            $('#warningsPopup .warningMsg').text('Browser not supported.');
+            $('#warningsPopup').css('display', 'flex');
+            window.stop();
+        }
+
+        function check_webrtc_support() {
+            var isWebRTCSupported = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia || navigator.mediaDevices.msGetUserMedia || window.RTCPeerConnection;
+            if (window.navigator.userAgent.indexOf("Edge") > -1) return false;
+            if (isWebRTCSupported) return true;
+            else return false;
+        }
+        if (check_webrtc_support() == false) {
+            $('#warningsPopup .warningMsg').text('Browser not supported.');
+            $('#warningsPopup').css('display', 'flex');
+            window.stop();
+        } else {
+            if (window.RTCRtpSender && !("replaceTrack" in window.RTCRtpSender.prototype)) {
+                $('#warningsPopup .warningMsg').text('Please update your browser.');
+                $('#warningsPopup').css('display', 'flex');
+                window.stop();
+            }
+        }
+        // file upload vars ============================================================================
+        var isTabActive = true;
+        var recentEmo = [];
+        var allUserTagList = [];
+        var FtempArray = [],
+            formDataTemp = [];
+        var deletedMessages = [];
+        var filedata = [],
+            audiofile = [],
+            videofile = [],
+            imgfile = [],
+            otherfile = [],
+            allfiles = [];
+        var filesCount = 0;
+        var per_conv_all_files = [];
+        var unread_replay_data = [];
+        var tagListForFileAttach = [];
+        var threadReplySecrectuser = [];
+        var threadReplyMsgStatus = [];
+        var read_rep_counter = 0;
+        var alldeletemsgid = [];
+        var deletedFilesId = [];
+
+        // calling vars ===============================================================================================
+        var call_data = <%- JSON.stringify(conf_data) %>;
+        console.log('server_conf__data', call_data);
+        var access_user_list = call_data.allUserdata;
+        console.log('access_user_list', access_user_list);
+        var user_list = _.orderBy(call_data.allUserdata, ["fullname"], ["asc"]);
+        var user_id_to_img = {};
+        var user_id_to_fullname = {};
+        $.each(user_list, function(k, v) {
+            user_id_to_img[v.id] = v.img;
+            user_id_to_fullname[v.id] = v.fullname;
+        });
+        var peer_connection_state = null;
+        var menuDisplayed = false;
+        var menuBox = null;
+        var is_fullscreen = false;
+        var stream_audio = null;
+        var stream_video = null;
+        var stream_screen = null;
+        var stream_ended = false;
+        var stream_audio_pv = null;
+        var stream_video_pv = null;
+
+        function stopPreview_video() {
+            if (stream_video_pv) {
+                stream_video_pv.forEach(track => {
+                    track.stop();
+                });
+                stream_video_pv = null;
+            }
+        }
+
+        function stopPreview_audio() {
+            if (stream_audio_pv) {
+                stream_audio_pv.forEach(track => {
+                    track.stop()
+                });
+                stream_audio_pv = null;
+            }
+        }
+
+        function stopMedia_video() {
+            if (stream_video) {
+                stream_video.forEach(track => {
+                    track.stop();
+                });
+                stream_video = null;
+            }
+        }
+
+        function stopMedia_audio() {
+            if (stream_audio) {
+                stream_audio.forEach(track => {
+                    track.stop();
+                });
+                stream_audio = null;
+            }
+        }
+
+        function stopScreen_share() {
+            if (stream_screen) {
+                stream_screen.forEach(track => {
+                    track.stop();
+                });
+                stream_screen = null;
+            }
+        }
+
+        function stopPreview_all() {
+            stopPreview_audio();
+            stopPreview_video();
+            $('#registerDialogDiv video').each(function(i, v) {
+                if ($(v)[0].srcObject) {
+                    let tracks = $(v)[0].srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                    $(v)[0].srcObject = null;
+                    console.log('webrtc:preview:close:', $(v).attr('id'));
+                }
+
+            });
+        }
+
+        function stopMedia_all() {
+            stopMedia_video();
+            stopMedia_audio();
+        }
+        // var socketid_list = [];
+        var close_window = true;
+        var deviceid_video = null;
+        var deviceid_audio = null;
+        var deviceid_output = null;
+        var user_socketid = null,
+            networkdown = false,
+            handleTimeout = false;
+        let lastResult;
+        let lastResult2;
+        let bitrateGraph;
+        let bitrateSeries;
+        let bytesPrev;
+        let timestampPrev;
+        var stream_count = 0;
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        var isWebview = /wv/i.test(navigator.userAgent); //alert(isWebview);
+        var is_register = false;
+        var isFrontCamera = true;
+        var list_videoinput = [];
+        var file_server = call_data.file_server;
+        var msgid = thread_root_id = call_data.msgid; //alert('thread_root_id:msgid:'+msgid);
+        var repid = thread_id = call_data.repid; //alert('thread_id+repid:'+msgid+':'+repid);
+        var participants_admin = call_data.participants_admin; //alert(participants_admin);
+        var participants_all = call_data.participants_all;
+        console.log('ppe', participants_all);
+        var call_running = call_data.call_running; //alert(call_running);
+        var company_id = call_data.company_id; //alert(company_id);
+        var devicetype = call_data.devicetype; //alert(devicetype);
+        var tokencount = call_data.tokencount;
+        var arr_participants = call_data.arr_participants; //alert(arr_participants);
+        var reloadstatus = call_data.reloadstatus;
+        var conversation_init = call_data.conversation_init; //alert('conversation_init:'+conversation_init);
+        var conversation_type = call_data.conversation_type; //alert('conversation_type:'+conversation_type);
+        if (conversation_type == 'personal') var conversation_type_mob = 'single';
+        else var conversation_type_mob = 'group';
+        var session_id = call_data.sessionID; //alert('session_id:' + session_id);
+        var privacy = call_data.privacy;
+        var prev_convid = call_data.prev_convid; // alert(prev_convid);
+        var waiting_running = call_data.waiting_running;
+        var callwaiting = call_data.callwaiting; //alert(callwaiting);
+        var user_id = call_data.user_id; //alert('user_id:' + user_id);
+        var user_email = call_data.user_email; //alert(user_email);
+        var conference_id = call_data.conference_id;
+        var conversation_id = call_data.conversation_id; //alert('conversation_id:'+conversation_id);
+        var user_img = call_data.user_img;
+        var partner_id = to = call_data.room_id;
+        var partner_name = call_data.room_name; //alert(partner_name);
+        var user_fullname = call_data.user_fullname; //alert(user_fullname);
+        var tabid = call_data.tabid; //alert(tabid);
+        var join_who = call_data.join_who; //alert('join_who:'+join_who);
+        var guest_status = call_data.guest_status; //alert('guest_status:'+guest_status);
+        var user_role = call_data.user_role; //alert('user_role:'+user_role + ':'+call_data.link_type);
+        var call_type_route = call_data.set_calltype; //alert(call_type_route);
+        var init_id = '<%= init_id %>';
+        var call_option = '<%= call_option %>';
+        var conversation_img = '<%= conversation_img %>';
+        var conversation_status = '<%= conversation_status %>';
+        var conversation_mute = '<%= conversation_mute %>';
+        var conversation_pin = '<%= conversation_pin %>';
+
+        // var iframe_url = "/connect/chat/"+conversation_type_mob+'/'+privacy+'/'+user_id+'/'+'false'+'/'+'false'+'/'+conversation_status+'/'+conversation_id+'/'+call_data.convname+'/'+conversation_img+'/'+conversation_pin+'/'+conversation_mute;
+        var iframe_url = "/connect/chat/" + conversation_type_mob + '/' + privacy + '/' + user_id + '/' + 'false' + '/' + 'false' + '/' + conversation_status + '/' + conversation_id + '/' + call_data.convname + '/' + conversation_img + '/' + 'false' + '/' + 'false';
+
+        $(document).ready(function() {
+            if (isWebview) {
+                $("#iframe_back").attr('src', iframe_url);
+                $('.conf_parent_window').show();
+            } else if (devicetype == 'web') {
+                $('.conf_parent_window').hide();
+            } else {
+                $("#iframe_back").attr('src', iframe_url);
+                $('.conf_parent_window').show();
+            }
+        });
+
+
+        participants = {}; // important
+        const name = tokencount; // change
+        history.replaceState({
+            join_who: join_who
+        }, "", '/call/' + conference_id);
+        if (user_role != 'guest') {
+            $('#repAttachFconnect').show();
+        } else {
+            $('#repAttachFconnect').hide();
+        }
+        $('#guest_fullname').val(user_fullname);
+        if (user_role == 'guest') {
+            $('#guest_join_div').show();
+        } else {
+            $('#guest_join_div').hide();
+        }
+
+        if (user_role == 'moderator' || join_who == 'initiator') {
+            $('.toggle_guest_auto').show();
+            if (conversation_init == 'personal' && call_option == 'window') {
+                $('.toggle_participant_auto').show();
+            } else {
+                $('.toggle_participant_auto').hide();
+            }
+        } else {
+            $('.toggle_guest_auto,.toggle_participant_auto').hide();
+        }
+
+        if (init_id == user_id) {
+            if (call_option == 'ring') {
+                if (user_role != 'moderator') {
+                    $('#callRingBtn').attr('data-type', 'join').show();
+                } else {
+                    $('#callRingBtn').attr('data-type', 'call').show();
+                }
+                $('.txt_main_connecting .txt_status').text('Calling...');
+            } else if (call_option == 'window') {
+                $('#callRingBtn').attr('data-type', 'join').show();
+                $('.txt_main_connecting .txt_status').text('Setting up call room...');
+            }
+        } else {
+            $('#callRingBtn').attr('data-type', 'join').show();
+            $('.txt_main_connecting .txt_status').text('Connecting...');
+        }
+
+        $('#callSettingBtn').hide();
+
+        var arrBitrate = [];
+        var webrtc_timeout = null;
+        var timer_tone_sender = null;
+
+        if (devicetype == 'android') {
+            window.name = 'calling';
+            $('#guest_container_form').hide();
+        }
+        var totalSeconds_main = 0,
+            timerstarted_main = false,
+            timervar_main = null;
+
+        if (conversation_init == 'group') {
+            $('#groupcalltitle .conf_name').html("Room: " + call_data.convname + " | ");
+            $('#groupcalltitle').show();
+            $('#guest_convname').text(call_data.convname).addClass('group');
+            $('#room').css('height', '85%');
+            $('.txt_main_connecting .txt_user_main').text(call_data.convname);
+        } else {
+            $('#groupcalltitle .conf_name').html("Direct Call | ");
+            $('#groupcalltitle').show();
+            $('#guest_convname').text(call_data.convname).addClass('personal');
+            $('#room').css('height', '85%');
+            $('.txt_main_connecting .txt_user_main').text(partner_name);
+        }
+
+        if (isMobile == true || devicetype == 'android') { // mobile version
+            $('#call_icon_toggle').hide();
+            $('.main-icons .call_btn_label').hide();
+            $('.main-icons .call-btn').css({
+                'height': "100%",
+                'background-size': '100%'
+            });
+            $('.main-container').addClass('android');
+            $('#switch_video_img').addClass('mobile').attr('src', '/images/call/switch_video_mobile.svg');
+            $('#mic_setting_icon').show();
+            $('.screen_share_icon').hide();
+            $('.call_addmember_icon').hide();
+            $('.keyboard_options_icon').hide();
+            if (user_role == 'moderator') {
+                $('#call_addmember_icon1').show();
+                $('.set_clipboard_admin,.batch_mute_btn').show();
+            } else {
+                $('#call_addmember_icon1').hide();
+                $('.set_clipboard_admin,.batch_mute_btn').hide();
+            }
+            $('#chat_share_icon1').show();
+            $('#chat_share_icon2').hide();
+            $('.more-call-opts').hide();
+
+            $('#batch_options_icon').show();
+            $('#raise_hand_div').show();
+            $('.toggle_action_label').hide();
+            $('.toggle_action_icons').hide();
+        } else { // web version
+            $('#call_icon_toggle').hide();
+            $('.circle_up_arrow').attr({
+                'data-balloon': "Click to send or press Enter",
+                'data-balloon-pos': "left"
+            });
+            $('.keyboard_options_icon').show();
+            $('.more-call-opts').hide();
+            $('#switch_video_img').addClass('web').attr('src', '/images/call/switch_video_48px.svg');
+            $('#mic_setting_icon').hide();
+            if ($('.toggle_action_label[data-status="show"]').length > 0) {
+                $('.main-icons .call_btn_label').show();
+            } else {
+                $('.main-icons .call_btn_label').hide();
+            }
+            $('.main-icons .call-btn').css({
+                'height': "50%"
+            });
+            $('.screen_share_icon').show();
+            $('.call_addmember_icon').hide();
+            if (user_role == 'moderator') {
+                $('#call_addmember_icon1').show();
+                $('.set_clipboard_admin,.batch_mute_btn').show();
+            } else {
+                $('#call_addmember_icon1').hide();
+                $('.set_clipboard_admin,.batch_mute_btn').hide();
+            }
+            $('#chat_share_icon1').show();
+            $('#chat_share_icon2').hide();
+            $('#batch_options_icon').show();
+            $('#raise_hand_div').show();
+        }
+        $('.init-loader,.txt_main_connecting').show();
+        $('#participants').css('visibility', 'hidden');
+
+        if (reloadstatus == 'newconf') {
+            setCookieCall('reloadstatus', call_data.reloadstatus, 1);
+            setCookieCall('callList_username', '', 1);
+        }
+
+        if (privacy == 'public') $('.conf_privacy').attr('src', '/images/basicAssets/PublicHash.svg');
+        else $('.conf_privacy').attr('src', '/images/basicAssets/PrivateLock.svg');
+
+        if (devicetype == 'android') {
+            var viewtype = 'webview';
+            $('#guest_container_form').hide();
+        } else {
+            var viewtype = 'web';
+        }
+
+        $('#mute_audio_label').html('Mute');
+        $('#tog_audio_img').attr('data-status', 'no').attr('src', '/images/call/microphone-solid.svg');
+
+        audioInputReg = document.querySelector('#audioSourceSel'); // mic
+        videoInputReg = document.querySelector('#videoSourceSel'); // cam
+        audioOutputSel = document.querySelector('#audioOutputSel'); // speaker
+        selectorsReg = [audioInputReg, audioOutputSel, videoInputReg];
+
+        $('.chat-history').append('<h1 class="msgNotFound">No messages found in this thread!</h1>');
+        var is_chrome = /chrome/i.test(navigator.userAgent);
+        var media_status = true;
+        var call_msg_send = false;
+        if (isMobile == true || devicetype == 'android' || $(window).width() <= 640) {
+            $('#participants').hide();
+        }
+        if (getCookieCall('callList_username') != '') {
+            var callList_username = JSON.parse(getCookieCall('callList_username'));
+        } else {
+            var callList_username = [];
+        }
+
+        function callCleanupLogic(paramstatus, reloadstatus, isChoice, cleanup_flag) {
+            if (typeof callCleanupLogic == 'function' && window.name === 'calling') {
+                // //debugger;
+                socket.emit('message_voip', {
+                    'id': 'leaveRoom',
+                    'user_id': user_id,
+                    'name': name,
+                    'rootId': user_id,
+                    'sender_img': user_img,
+                    'sender_name': user_fullname,
+                    'user_fullname': user_fullname,
+                    'partner_id': partner_id,
+                    'partner_name': partner_name,
+                    'conversation_id': conversation_id,
+                    'data_conf': {
+                        'conversation_id': conversation_id,
+                        'user_fullname': user_fullname,
+                        'msgid': msgid,
+                        'callwaiting': callwaiting,
+                        'company_id': company_id
+                    },
+                    'msg': paramstatus,
+                    'msgid': msgid,
+                    'conversation_type': conversation_type,
+                    'conversation_init': conversation_init,
+                    'call_duration': '',
+                    'paramstatus': paramstatus,
+                    'arr_participants': arr_participants,
+                    'msg_status': join_who,
+                    'join_who': join_who,
+                    'reloadstatus': reloadstatus, // screen/refresh/no/switch_server
+                    'isRefresh': get_isrefresh(),
+                    'isChoice': isChoice,
+                    'prev_convid': prev_convid,
+                    'duration': $(".conf_main_timer").text(),
+                    'screenstatus': $('#screen_share_img').attr('data-status'),
+                    'callList_username': callList_username,
+                    'tokencount': tokencount,
+                    'devicetype': devicetype,
+                    'isMobile': isMobile,
+                    'isHold': $('.onhold_message[uid="' + name + '"]').is(':visible'),
+                    'callwaiting': callwaiting,
+                    'waiting_running': waiting_running,
+                    'conference_id': conference_id,
+                    'set_calltype': call_data.set_calltype,
+                    'participants_admin': participants_admin,
+                    'user_role': user_role,
+                    'cleanup_flag': cleanup_flag,
+                    'close_window': close_window
+                }, function(res) {
+                    // if (!res) window.close();
+
+                });
+            }
+        }
+
+
+
+        var iOS = ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0;
+        var unload_event_list = iOS ? 'pagehide' : 'beforeunload';
+        var emoCount = 0;
+        var emojiArray = ['😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚', '🙂', '🤗', '🤩', '🤔', '🤨', '😐', '😑', '😶', '🙄', '😏', '😣', '😥', '😮', '🤐', '😯', '😪', '😫', '😴', '😌', '😛', '😜', '😝', '🤤', '😒', '😓', '😔', '😕', '🙃', '🤑', '😲', '🙁', '😖', '😞', '😟', '😤', '😢', '😭', '😦', '😧', '😨', '😩', '🤯', '😬', '😰', '😱', '🥵', '🥶', '😳', '🤪', '😵', '😡', '😠', '🤬', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '😇', '🤠', '🤡', '🥳', '🥴', '🥺', '🤥', '🤫', '🤭', '🧐', '🤓', '😈', '👿', '👹', '👺', '💀', '👻', '👽', '🤖', '💩', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'];
+        var peopleFantasy = ['👶', '👧', '🧒', '👦', '👩', '🧑', '👨', '👵', '🧓', '👴', '👲', '👳‍♀️', '👳‍♂️', '🧕', '🧔', '👱‍♂️', '👱‍♀️', '👨‍🦰', '👩‍🦰', '👨‍🦱', '👩‍🦱', '👨‍🦲', '👩‍🦲', '👨‍🦳', '👩‍🦳', '🦸‍♀️', '🦸‍♂️', '🦹‍♀️', '🦹‍♂️', '👮‍♀️', '👮‍♂️', '👷‍♀️', '👷‍♂️', '💂‍♀️', '💂‍♂️', '🕵️‍♀️', '🕵️‍♂️', '👩‍⚕️', '👨‍⚕️', '👩‍🌾', '👨‍🌾', '👩‍🍳', '👨‍🍳', '👩‍🎓', '👨‍🎓', '👩‍🎤', '👨‍🎤', '👩‍🏫', '👨‍🏫', '👩‍🏭', '👨‍🏭', '👩‍💻', '👨‍💻', '👩‍💼', '👨‍💼', '👩‍🔧', '👨‍🔧', '👩‍🔬', '👨‍🔬', '👩‍🎨', '👨‍🎨', '👩‍🚒', '👨‍🚒', '👩‍✈️', '👨‍✈️', '👩‍🚀', '👨‍🚀', '👩‍⚖️', '👨‍⚖️', '👰', '🤵', '👸', '🤴', '🤶', '🎅', '🧙‍♀️', '🧙‍♂️', '🧝‍♀️', '🧝‍♂️', '🧛‍♀️', '🧛‍♂️', '🧟‍♀️', '🧟‍♂️', '🧞‍♀️', '🧞‍♂️', '🧜‍♀️', '🧜‍♂️', '🧚‍♀️', '🧚‍♂️', '👼', '🤰', '🤱', '🙇‍♀️', '🙇‍♂️', '💁‍♀️', '💁‍♂️', '🙅‍♀️', '🙅‍♂️', '🙆‍♀️', '🙆‍♂️', '🙋‍♀️', '🙋‍♂️', '🤦‍♀️', '🤦‍♂️', '🤷‍♀️', '🤷‍♂️', '🙎‍♀️', '🙎‍♂️', '🙍‍♀️', '🙍‍♂️', '💇‍♀️', '💇‍♂️', '💆‍♀️', '💆‍♂️', '🧖‍♀️', '🧖‍♂️', '💅', '🤳', '💃', '🕺', '👯‍♀️', '👯‍♂️', '🕴', '🚶‍♀️', '🚶‍♂️', '🏃‍♀️', '🏃‍♂️', '👫', '👭', '👬', '💑', '👩‍❤️‍👩', '👨‍❤️‍👨', '💏', '👩‍❤️‍💋‍👩', '👨‍❤️‍💋‍👨', '👪', '👨‍👩‍👧', '👨‍👩‍👧‍👦', '👨‍👩‍👦‍👦', '👨‍👩‍👧‍👧', '👩‍👩‍👦', '👩‍👩‍👧', '👩‍👩‍👧‍👦', '👩‍👩‍👦‍👦', '👩‍👩‍👧‍👧', '👨‍👨‍👦', '👨‍👨‍👧', '👨‍👨‍👧‍👦', '👨‍👨‍👦‍👦', '👨‍👨‍👧‍👧', '👩‍👦', '👩‍👧', '👩‍👧‍👦', '👩‍👦‍👦', '👩‍👧‍👧', '👨‍👦', '👨‍👧', '👨‍👧‍👦', '👨‍👦‍👦', '👨‍👧‍👧', '🤲', '👐', '🙌', '👏', '🤝', '👍', '👎', '👊', '✊', '🤛', '🤜', '🤞', '✌️', '🤟', '🤘', '👌', '👈', '👉', '👆', '👇', '☝️', '✋', '🤚', '🖐', '🖖', '👋', '🤙', '💪', '🦵', '🦶', '🖕', '✍️', '🙏', '💍', '💄', '💋', '👄', '👅', '👂', '👃', '👣', '👁', '👀', '🧠', '🦴', '🦷', '🗣', '👤', '👥'];
+        var clothingAccessories = ['🧥', '👚', '👕', '👖', '👔', '👗', '👙', '👘', '👠', '👡', '👢', '👞', '👟', '🥾', '🥿', '🧦', '🧤', '🧣', '🎩', '🧢', '👒', '🎓', '⛑', '👑', '👝', '👛', '👜', '💼', '🎒', '👓', '🕶', '🥽', '🥼', '🌂', '🧵', '🧶'];
+        var paleEmojis = ['👶🏻', '👦🏻', '👧🏻', '👨🏻', '👩🏻', '👱🏻‍♀️', '👱🏻', '👴🏻', '👵🏻', '👲🏻', '👳🏻‍♀️', '👳🏻', '👮🏻‍♀️', '👮🏻', '👷🏻‍♀️', '👷🏻', '💂🏻‍♀️', '💂🏻', '🕵🏻‍♀️', '🕵🏻', '👩🏻‍⚕️', '👨🏻‍⚕️', '👩🏻‍🌾', '👨🏻‍🌾', '👩🏻‍🍳', '👨🏻‍🍳', '👩🏻‍🎓', '👨🏻‍🎓', '👩🏻‍🎤', '👨🏻‍🎤', '👩🏻‍🏫', '👨🏻‍🏫', '👩🏻‍🏭', '👨🏻‍🏭', '👩🏻‍💻', '👨🏻‍💻', '👩🏻‍💼', '👨🏻‍💼', '👩🏻‍🔧', '👨🏻‍🔧', '👩🏻‍🔬', '👨🏻‍🔬', '👩🏻‍🎨', '👨🏻‍🎨', '👩🏻‍🚒', '👨🏻‍🚒', '👩🏻‍✈️', '👨🏻‍✈️', '👩🏻‍🚀', '👨🏻‍🚀', '👩🏻‍⚖️', '👨🏻‍⚖️', '🤶🏻', '🎅🏻', '👸🏻', '🤴🏻', '👰🏻', '🤵🏻', '👼🏻', '🤰🏻', '🙇🏻‍♀️', '🙇🏻', '💁🏻', '💁🏻‍♂️', '🙅🏻', '🙅🏻‍♂️', '🙆🏻', '🙆🏻‍♂️', '🙋🏻', '🙋🏻‍♂️', '🤦🏻‍♀️', '🤦🏻‍♂️', '🤷🏻‍♀️', '🤷🏻‍♂️', '🙎🏻', '🙎🏻‍♂️', '🙍🏻', '🙍🏻‍♂️', '💇🏻', '💇🏻‍♂️', '💆🏻', '💆🏻‍♂️', '🕴🏻', '💃🏻', '🕺🏻', '🚶🏻‍♀️', '🚶🏻', '🏃🏻‍♀️', '🏃🏻', '🤲🏻', '👐🏻', '🙌🏻', '👏🏻', '🙏🏻', '👍🏻', '👎🏻', '👊🏻', '✊🏻', '🤛🏻', '🤜🏻', '🤞🏻', '✌🏻', '🤟🏻', '🤘🏻', '👌🏻', '👈🏻', '👉🏻', '👆🏻', '👇🏻', '☝🏻', '✋🏻', '🤚🏻', '🖐🏻', '🖖🏻', '👋🏻', '🤙🏻', '💪🏻', '🖕🏻', '✍🏻', '🤳🏻', '💅🏻', '👂🏻', '👃🏻'];
+        var creamWhiteEmojis = ['👶🏼', '👦🏼', '👧🏼', '👨🏼', '👩🏼', '👱🏼‍♀️', '👱🏼', '👴🏼', '👵🏼', '👲🏼', '👳🏼‍♀️', '👳🏼', '👮🏼‍♀️', '👮🏼', '👷🏼‍♀️', '👷🏼', '💂🏼‍♀️', '💂🏼', '🕵🏼‍♀️', '🕵🏼', '👩🏼‍⚕️', '👨🏼‍⚕️', '👩🏼‍🌾', '👨🏼‍🌾', '👩🏼‍🍳', '👨🏼‍🍳', '👩🏼‍🎓', '👨🏼‍🎓', '👩🏼‍🎤', '👨🏼‍🎤', '👩🏼‍🏫', '👨🏼‍🏫', '👩🏼‍🏭', '👨🏼‍🏭', '👩🏼‍💻', '👨🏼‍💻', '👩🏼‍💼', '👨🏼‍💼', '👩🏼‍🔧', '👨🏼‍🔧', '👩🏼‍🔬', '👨🏼‍🔬', '👩🏼‍🎨', '👨🏼‍🎨', '👩🏼‍🚒', '👨🏼‍🚒', '👩🏼‍✈️', '👨🏼‍✈️', '👩🏼‍🚀', '👨🏼‍🚀', '👩🏼‍⚖️', '👨🏼‍⚖️', '🤶🏼', '🎅🏼', '👸🏼', '🤴🏼', '👰🏼', '🤵🏼', '👼🏼', '🤰🏼', '🙇🏼‍♀️', '🙇🏼', '💁🏼', '💁🏼‍♂️', '🙅🏼', '🙅🏼‍♂️', '🙆🏼', '🙆🏼‍♂️', '🙋🏼', '🙋🏼‍♂️', '🤦🏼‍♀️', '🤦🏼‍♂️', '🤷🏼‍♀️', '🤷🏼‍♂️', '🙎🏼', '🙎🏼‍♂️', '🙍🏼', '🙍🏼‍♂️', '💇🏼', '💇🏼‍♂️', '💆🏼', '💆🏼‍♂️', '🕴🏼', '💃🏼', '🕺🏼', '🚶🏼‍♀️', '🚶🏼', '🏃🏼‍♀️', '🏃🏼', '🤲🏼', '👐🏼', '🙌🏼', '👏🏼', '🙏🏼', '👍🏼', '👎🏼', '👊🏼', '✊🏼', '🤛🏼', '🤜🏼', '🤞🏼', '✌🏼', '🤟🏼', '🤘🏼', '👌🏼', '👈🏼', '👉🏼', '👆🏼', '👇🏼', '☝🏼', '✋🏼', '🤚🏼', '🖐🏼', '🖖🏼', '👋🏼', '🤙🏼', '💪🏼', '🖕🏼', '✍🏼', '🤳🏼', '💅🏼', '👂🏼', '👃🏼'];
+        var moderateBrownEmojis = ['👶🏽', '👦🏽', '👧🏽', '👨🏽', '👩🏽', '👱🏽‍♀️', '👱🏽', '👴🏽', '👵🏽', '👲🏽', '👳🏽‍♀️', '👳🏽', '👮🏽‍♀️', '👮🏽', '👷🏽‍♀️', '👷🏽', '💂🏽‍♀️', '💂🏽', '🕵🏽‍♀️', '🕵🏽', '👩🏽‍⚕️', '👨🏽‍⚕️', '👩🏽‍🌾', '👨🏽‍🌾', '👩🏽‍🍳', '👨🏽‍🍳', '👩🏽‍🎓', '👨🏽‍🎓', '👩🏽‍🎤', '👨🏽‍🎤', '👩🏽‍🏫', '👨🏽‍🏫', '👩🏽‍🏭', '👨🏽‍🏭', '👩🏽‍💻', '👨🏽‍💻', '👩🏽‍💼', '👨🏽‍💼', '👩🏽‍🔧', '👨🏽‍🔧', '👩🏽‍🔬', '👨🏽‍🔬', '👩🏽‍🎨', '👨🏽‍🎨', '👩🏽‍🚒', '👨🏽‍🚒', '👩🏽‍✈️', '👨🏽‍✈️', '👩🏽‍🚀', '👨🏽‍🚀', '👩🏽‍⚖️', '👨🏽‍⚖️', '🤶🏽', '🎅🏽', '👸🏽', '🤴🏽', '👰🏽', '🤵🏽', '👼🏽', '🤰🏽', '🙇🏽‍♀️', '🙇🏽', '💁🏽', '💁🏽‍♂️', '🙅🏽', '🙅🏽‍♂️', '🙆🏽', '🙆🏽‍♂️', '🙋🏽', '🙋🏽‍♂️', '🤦🏽‍♀️', '🤦🏽‍♂️', '🤷🏽‍♀️', '🤷🏽‍♂️', '🙎🏽', '🙎🏽‍♂️', '🙍🏽', '🙍🏽‍♂️', '💇🏽', '💇🏽‍♂️', '💆🏽', '💆🏽‍♂️', '🕴🏼', '💃🏽', '🕺🏽', '🚶🏽‍♀️', '🚶🏽', '🏃🏽‍♀️', '🏃🏽', '🤲🏽', '👐🏽', '🙌🏽', '👏🏽', '🙏🏽', '👍🏽', '👎🏽', '👊🏽', '✊🏽', '🤛🏽', '🤜🏽', '🤞🏽', '✌🏽', '🤟🏽', '🤘🏽', '👌🏽', '👈🏽', '👉🏽', '👆🏽', '👇🏽', '☝🏽', '✋🏽', '🤚🏽', '🖐🏽', '🖖🏽', '👋🏽', '🤙🏽', '💪🏽', '🖕🏽', '✍🏽', '🤳🏽', '💅🏽', '👂🏽', '👃🏽'];
+    </script>
+
+    <script src="/javascripts/socket-client-side.js"></script>
+    <script src="/javascripts/socket-calling.js"></script>
+    <script src="/bower_components/adapter.js/adapter-latest.js"></script>
+    <script src="/bower_components/adapter.js/adapter.js"></script>
+    <script src="/bower_components/kurento-utils/js/kurento-utils.js"></script>
+    <script src="/javascripts/conf_index.js"></script>
+    <script src="/javascripts/conf_participants.js"></script>
+    <script src="/javascripts/localstorage_fun.js"></script>
+    <%- include('templates/chat/message-send-form') %>
+        </div>
+        <!-- Calling Modal -->
+        <div id="call_ring_container"></div>
+
+        <div class="warningPopup" id="warningsPopup">
+            <div class="warningPopupBody">
+                <div class="closeModal" onclick="closeModal('warningsPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title">Warning !</h2>
+                <div class="warningPopupContent">
+                    <p class="warningMsg" id="warnignMsgText"></p>
+                </div>
+                <div class="warningPopupFooter">
+                    <button class="closeWarningPopup" onclick="$('#warningsPopup').hide()">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="warningPopup" id="warningsPopupCall">
+            <div class="warningPopupBody">
+                <div class="closeModal" onclick="closeModal('warningsPopupCall')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title">Rejected !</h2>
+                <div class="warningPopupContent">
+                    <p class="warningMsg"></p>
+                </div>
+                <div class="warningPopupFooter">
+                    <button class="closeWarningPopup" onclick="$('#warningsPopupCall').hide()">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="warningPopup" id="mediasourceCall">
+            <div class="warningPopupBody">
+                <div class="closeModal" onclick="closeModal('mediasourceCall')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title">Warning !</h2>
+                <div class="warningPopupContent">
+                    <p class="warningMsg">Please check your microphone or webcam.</p>
+                </div>
+                <div class="warningPopupFooter">
+                    <button class="closeWarningPopup" onclick="checkmedia()">Retry</button>
+                </div>
+            </div>
+        </div>
+        <div class="warningPopup" id="downloadPreviewPopup" style="z-index: 999999999;">
+            <div class="downloadPreviewBody">
+                <div class="closeModal" onclick="closeModal('downloadPreviewPopup')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title" style="padding-top: 15px;width: 100%;text-align:center;line-height: 33px;font-size: 20px;">Sorry! This file cannot be previewed, would you like to download the file instead?</h2>
+                <div class="downloadPreviewContent">
+                    <p class="file_namee"></p>
+                    <p class="file_sizee"></p>
+                </div>
+                <div class="warningPopupFooter">
+                    <button class="closeWarningPopup" style="margin-right: 15px;" onclick="closeModal('downloadPreviewPopup')">Cancel</button>
+                    <a download id="download_link" href="" class="closeWarningPopup" style="background-color: var(--BtnC);text-decoration: none" onclick="$('#downloadPreviewPopup').hide()">Sure</a>
+                </div>
+            </div>
+        </div>
+        <div class="warningPopup" id="mediasourceCall">
+            <div class="warningPopupBody">
+                <div class="closeModal" onclick="closeModal('mediasourceCall')" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                <h2 class="popup_title">Warning !</h2>
+                <div class="warningPopupContent">
+                    <p class="warningMsg">Please check your microphone or webcam.</p>
+                </div>
+                <div class="warningPopupFooter">
+                    <button class="closeWarningPopup" onclick="checkmedia()">Retry</button>
+                </div>
+            </div>
+        </div>
+        <div class="backwrapCall" id="rejectmsgListBackWrap" data-mute-id="" style="display: none">
+            <div class="hayven_Modal_Container" style="position:fixed;margin:0px;top: 63px;right: 0;width:350px;height: calc(100% - 63px);background-color: #F0F0F0;">
+                <div class="hayven_Modal_heading">
+                    <h1>Reject Messages</h1>
+                    <div class="closeModal" onclick="closeAllPopUpMsgReject()" data-balloon="Press Esc to close" data-balloon-pos="up"></div>
+                </div>
+                <div class="hayven_Modal_Content">
+                    <h6>Please select one of the reject messages.</h6>
+                    <ul class="notification_mute_time">
+                        <li data-status="" onclick="callRejectBtn(1)">
+                            <label class="radioItem showEl">
+						<span style="font-size:14px" class="radioItemName">I'll call you later.</span>
+
+					</label>
+                        </li>
+                        <li data-status="" onclick="callRejectBtn(2)">
+                            <label class="radioItem showEl">
+						<span style="font-size:14px" class="radioItemName">Can't talk now. Call me later?</span>
+
+					</label>
+                        </li>
+                        <li data-status="" onclick="callRejectBtn(3)">
+                            <label class="radioItem showEl">
+						<span style="font-size:14px" class="radioItemName">I'm in a meeting. I'll call you back.</span>
+
+					</label>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+        <link rel="stylesheet" href="/javascripts/jquery-confirm/jquery-confirm.min.css">
+        <script src="/javascripts/jquery-confirm/jquery-confirm.min.js"></script>
+        <style type="text/css">
+            .backwrap {
+                z-index: 9999999999 !important;
+            }
+            
+            .jconfirm .jconfirm-scrollpane {
+                width: 40% !important;
+                position: fixed !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
+            
+            .jconfirm-content-pane.no-scroll {
+                padding-bottom: 20px !important;
+            }
+        </style>
+
+        <!-- <script src="/javascripts/custom-basic.js"></script> -->
+        <script src="/javascripts/plugins/OverlayScrollbars.js"></script>
+        <script src="/javascripts/jQuery/jquery-ui.min.js"></script>
+        <script src="/javascripts/responsive_basic.js"></script>
+        <script>
+            function downloadFilePopup(elm, type) {
+                if ($('#threadReplyPopUp').is(':visible')) {
+                    $('#downloadPreviewPopup').attr('thread-view', true);
+                    // if(window.name !='calling')
+                    if (typeof callCleanupLogic !== 'function' && window.name !== 'calling') {
+                        $('#threadReplyPopUp').hide();
+                        placeCaretAtEnd(document.getElementById('msg'));
+                    }
+                } else {
+                    $('#downloadPreviewPopup').attr('thread-view', false);
+                }
+                var file_size = '';
+                var file_name = $(elm).attr('file-name');
+                var file_link = $(elm).attr('data-href');
+                if (type == 'frmMsg') {
+                    file_size = $(elm).parents('.per_img_hover_opt').siblings('.file-name').find('.fileSize').text();
+                } else {
+                    file_size = $(elm).parents('.msg_per_img_div').siblings('.img-name').find('.for_list_view .fileSize').text();
+                }
+                $('#downloadPreviewPopup').css('display', 'flex');
+                $('.file_namee').text('File : ' + file_name);
+                $('.file_sizee').text('size : ' + file_size);
+                $('#download_link').attr('href', file_link);
+            }
+
+
+            $(document).on('focus', ':input', function() {
+                $(this).attr('autocomplete', 'off');
+            });
+
+
+            function downloadAnyFile(elm) {
+                var url = $(elm).attr('data-href');
+                var fileName = $(elm).attr('file-name');
+                var type;
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('HEAD', url);
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == this.DONE) {
+                        type = this.getResponseHeader("Content-Type");
+                        d_file(url, type);
+                        // mimetype
+                    }
+                };
+                xhttp.send();
+            }
+
+            function d_file(url, fileName, type) {
+                download(url, type);
+            }
+
+            function onpasteFun(e) {
+                if ($(e.target).parents('#msg').length > 0) return false;
+                e.preventDefault();
+                var text = '';
+                console.log(17748, e);
+                if (e.clipboardData || e.originalEvent.clipboardData) {
+                    text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                } else if (window.clipboardData) {
+                    text = window.clipboardData.getData('Text');
+                }
+                if (document.queryCommandSupported('insertText')) {
+                    document.execCommand('insertText', false, text);
+                } else {
+                    document.execCommand('paste', false, text);
+                }
+            }
+        </script>
+        <!-- <script src="/push_client.js"></script> -->
+        <div onclick="goto_callingWindow()" class="iframe_parent" style="color: white;font-size: 3vh;text-align: center;background:red;position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:5%; border:none; margin:0; padding:0; overflow:hidden; z-index:9999999999;display: none;cursor: pointer;">Return to calling window</div>
+        <iframe id="iframe_back" class="iframe_parent" style="position:fixed; top:5%; left:0; bottom:0; right:0; width:100%; height:95%; border:none; margin:0; padding:0; overflow:hidden; z-index:9999999999;display: none;"></iframe>
+        </body>
+
+        </html>

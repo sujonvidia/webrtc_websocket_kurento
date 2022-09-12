@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title id="titleTag">
+        <%= page_title %>
+    </title>
+    <style>
+        #hayvenFilePage {
+            display: none;
+        }
+    </style>
+    <% if(title !== 'Freeli | Sign In'){%>
+        <script src="/javascripts/plugins/socket.io.js" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style-basic.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style-call.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/toastr.min.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/balloon.min.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/responsive_basic.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/flatpickr.min.css">
+        <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/select2.min.css">
+        <% } %>
+
+            <% if(title == 'calendar'){%>
+                <link rel="stylesheet" type="text/css" href="/stylesheets/style_basic_calendar.css">
+                <% }%>
+                    <% if(title == 'Boards' || title == 'Activity_task'){%>
+                        <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/style-basic_to_do.css?v=1.<%= moment().format('X') %>"> -->
+                        <link rel="stylesheet" type="text/css" href="/stylesheets/activity.css">
+                        <link rel="stylesheet" type="text/css" href="/stylesheets/jquery-ui.css">
+                        <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/OverlayScrollbars.css">
+                        <link href="/stylesheets/pluginCss/select2.min.css" rel="stylesheet" />
+                        <% }%>
+
+                            <script src="/javascripts/fontawesome-all.js"></script>
+                            <script src="/javascripts/jQuery/jquery-3.3.1.min.js"></script>
+
+                            <% if(title !== 'Freeli | Sign In'){%>
+                                <script src="/javascripts/lodash.js"></script>
+                                <script src="/javascripts/moment.js"></script>
+                                <script src="/javascripts/moment-timer.js"></script>
+                                <script src="/javascripts/moment-timezone-with-data.js"></script>
+                                <script src="/javascripts/tooltipster.bundle.min.js"></script>
+                                <script src="/javascripts/jquery.highlight.js"></script>
+                                <script src="/javascripts/toastr.min.js"></script>
+                                <script src="/push.js"></script>
+                                <script src="/javascripts/masonry.pkgd.min.js"></script>
+                                <script src="/javascripts/canvasjs.min.js"></script>
+                                <script src="/javascripts/plugins/flatpickr"></script>
+                                <script src="/javascripts/Activity.js"></script>
+                                <script src="/javascripts/validate.min.js"></script>
+                                <script src="/javascripts/plugins/clipboard.min.js"></script>
+                                <!-- <script src="/javascripts/socket-calling.js"></script> -->
+                                <!-- The core Firebase JS SDK is always required and must be listed first -->
+                                <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+                                <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-messaging.js"></script>
+                                <!-- <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script> -->
+                                <script src="/javascripts/howler.core.min.js"></script>
+                                <script src="/javascripts/stripe_v3.js"></script>
+                                <script src="/javascripts/checkout.js"></script>
+                                
+                                <% } %>
+                                    <script>
+                                        var my_token='';
+                                        $(function() {
+                                            $('.testcloseNotification').click(function() {
+                                                if ($(this).parent('.testnotificationDiv').attr('id') != 'headRefreshDialog') { // refresh div check
+                                                    $(this).parent('.testnotificationDiv').remove();
+                                                } else {
+                                                    $(this).parent('.testnotificationDiv').hide();
+                                                }
+                                                if ($('.testnotificationDiv').is(':visible') == false) {
+                                                    $('.side-bar').css({
+                                                        'height': 'calc(100vh - 64px)'
+                                                    });
+                                                }
+
+
+                                            });
+
+                                            $('body').css('pointer-events', 'auto');
+                                        });
+                                    </script>
+
+
+                                    <script type="text/javascript">
+                                        let log = console.log;
+
+                                        function delete_cookie(name) {
+                                            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                        }
+
+                                        var setCookie = (cname, cvalue, exdays) => {
+                                            var d = new Date();
+                                            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                                            var expires = "expires=" + d.toUTCString();
+                                            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                                        }
+
+                                        var getCookie = (cname) => {
+                                            var name = cname + "=";
+                                            var decodedCookie = decodeURIComponent(document.cookie);
+                                            var ca = decodedCookie.split(';');
+                                            for (var i = 0; i < ca.length; i++) {
+                                                var c = ca[i];
+                                                while (c.charAt(0) == ' ') {
+                                                    c = c.substring(1);
+                                                }
+                                                if (c.indexOf(name) == 0) {
+                                                    return c.substring(name.length, c.length);
+                                                }
+                                            }
+                                            return "";
+                                        }
+
+                                        var setCookieCall = (cname, cvalue, exdays = 1) => {
+                                            var d = new Date();
+                                            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                                            var expires = "expires=" + d.toUTCString();
+                                            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                                        }
+
+                                        var getCookieCall = (cname) => {
+                                            var name = cname + "=";
+                                            var decodedCookie = decodeURIComponent(document.cookie);
+                                            var ca = decodedCookie.split(';');
+                                            for (var i = 0; i < ca.length; i++) {
+                                                var c = ca[i];
+                                                while (c.charAt(0) == ' ') {
+                                                    c = c.substring(1);
+                                                }
+                                                if (c.indexOf(name) == 0) {
+                                                    return c.substring(name.length, c.length);
+                                                }
+                                            }
+                                            return "";
+                                        }
+
+                                        function forActiveCallIcon(onlineUserList, participants, type, id) {
+
+                                            var participantActive = _.intersection(onlineUserList, participants);
+                                            // console.log('onlineUserList:',onlineUserList, 'participants:',participants,'participantActive:',participantActive);
+                                            $('.voice-call , .redial-audiocall').removeClass('onC');
+                                            $('.video-call , .redial-videocall').removeClass('onC');
+                                            $('.voice-call , .redial-audiocall').removeClass('off_G_C');
+                                            $('.video-call , .redial-videocall').removeClass('off_G_C');
+                                            $('.voice-call , .redial-audiocall').removeClass('off_P_C');
+                                            $('.video-call , .redial-videocall').removeClass('off_P_C');
+                                            if (participants.length < 2) {
+                                                // $('.voice-call').hide();
+                                                // $('.video-call').hide();
+                                            } else if (participants.length >= 2) {
+                                                // $('.voice-call').show();
+                                                // $('.video-call').show();
+                                            }
+                                            if (type == 'personal') {
+                                                if (participantActive.length > 1) {
+                                                    $('.voice-call , .redial-audiocall').addClass('onC');
+                                                    $('.video-call , .redial-videocall').addClass('onC');
+                                                    $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/voice_call_for_active.svg');
+                                                    $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/video_call_for_active.svg');
+                                                } else {
+                                                    // //debugger;
+                                                    $('.voice-call , .redial-audiocall').addClass('off_P_C');
+                                                    $('.video-call , .redial-videocall').addClass('off_P_C');
+                                                    $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/custom_voice_call.svg');
+                                                    $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/custom_video_call.svg');
+                                                }
+                                            } else if (type == 'group') {
+                                                if (participantActive.length > 1) {
+                                                    $('.voice-call , .redial-audiocall').addClass('onC');
+                                                    $('.video-call , .redial-videocall').addClass('onC');
+                                                    $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/voice_call_for_active.svg');
+                                                    $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/video_call_for_active.svg');
+                                                    $('.mid_area .status').html('Online');
+                                                } else {
+                                                    $('.voice-call , .redial-audiocall').addClass('off_G_C');
+                                                    $('.video-call , .redial-videocall').addClass('off_G_C');
+                                                    $('.voice-call img , .redial-audiocall img').attr('src', '/images/basicAssets/custom_voice_call.svg');
+                                                    $('.video-call img , .redial-videocall img').attr('src', '/images/basicAssets/custom_video_call.svg');
+                                                    $('.mid_area .status').html('Offline');
+                                                }
+                                            }
+                                        }
+
+                                        function forActiveRedialIcon(onlineUserList, participants, type, id) {
+                                            var participantActive = _.intersection(onlineUserList, participants);
+                                            $('.redial-audiocall').removeClass('onC');
+                                            $('.redial-videocall').removeClass('onC');
+                                            $('.redial-audiocall').removeClass('off_G_C');
+                                            $('.redial-videocall').removeClass('off_G_C');
+                                            $('.redial-audiocall').removeClass('off_P_C');
+                                            $('.redial-videocall').removeClass('off_P_C');
+                                            if (type == 'personal') {
+                                                if (onlineUserList.indexOf(id) !== -1) {
+                                                    $('.redial-audiocall').addClass('onC');
+                                                    $('.redial-videocall').addClass('onC');
+                                                    $('.redial-audiocall img').attr('src', '/images/basicAssets/voice_call_for_active.svg');
+                                                    $('.redial-videocall img').attr('src', '/images/basicAssets/video_call_for_active.svg');
+                                                } else {
+                                                    $('.redial-audiocall').addClass('off_P_C');
+                                                    $('.redial-videocall').addClass('off_P_C');
+                                                    $('.redial-audiocall img').attr('src', '/images/basicAssets/custom_voice_call.svg');
+                                                    $('.redial-videocall img').attr('src', '/images/basicAssets/custom_video_call.svg');
+                                                }
+                                            } else if (type == 'group') {
+                                                if (participantActive.length > 1) {
+                                                    $('.redial-audiocall').addClass('onC');
+                                                    $('.redial-videocall').addClass('onC');
+                                                    $('.redial-audiocall img').attr('src', '/images/basicAssets/voice_call_for_active.svg');
+                                                    $('.redial-videocall img').attr('src', '/images/basicAssets/video_call_for_active.svg');
+                                                } else {
+                                                    $('.redial-audiocall').addClass('off_G_C');
+                                                    $('.redial-videocall').addClass('off_G_C');
+                                                    $('.redial-audiocall img').attr('src', '/images/basicAssets/custom_voice_call.svg');
+                                                    $('.redial-videocall img').attr('src', '/images/basicAssets/custom_video_call.svg');
+                                                }
+                                            }
+                                        }
+
+                                        function removeA(arr) {
+                                            var what, a = arguments,
+                                                L = a.length,
+                                                ax;
+                                            while (L > 1 && arr.length) {
+                                                what = a[--L];
+                                                while ((ax = arr.indexOf(what)) !== -1) {
+                                                    arr.splice(ax, 1);
+                                                }
+                                            }
+                                            return arr;
+                                        }
+                                    </script>
+                                    <style>
+                                        .linkaccimg {
+                                            position: relative;
+                                            display: inline;
+                                        }
+                                    </style>
+</head>
+
+<body ondragenter="dragEnterChat(this);" ondragleave="stopDefault(event);" ondragover="stopDefault(event);">
+    <div id="dragdrop_filediv" style="display: none;" ondragenter="stopDefault(event);" ondragleave="stopDefault(event); dragLeaveChat(this);" ondragover="stopDefault(event);" ondrop="stopDefault(event); dropFilesSubmit(event);">Drop to upload</div>
+    <div class="main-container">
+        <div class="global_toastr" onclick="$('.global_toastr').hide()">Changes have been updated successfully!</div>
+        <div class="info_tooltip">
+            <span class="tooltip_close" onclick="tooltip_close()"></span>
+            <div class="tooltip_body"></div>
+        </div>
+        <!-- <div class="testnotificationDiv" id="headNoficationDialog">
+            <img class="testcloseNotification" src="/images/basicAssets/close_button-white.svg" alt="">
+            <div class="notification-wrapper">
+                <div class="notification_content">
+                    <img src="/images/basicAssets/custom_thread_for_reply-white.svg" alt="">
+                    <p>Please allow Workfreeli to use cookies, enable browser notification and to use microphone & camera for calling actions.</p>
+                </div>
+                <div class="notification-grp-btn"> -->
+        <!-- <button id="allowNotification">Allow</button>
+                    <button id="denyNotification">Deny</button> -->
+        <!-- <button onclick="UpgradeApplication()" id="UpgradeApplication">Upgrade</button> -->
+        <!-- </div>
+            </div>
+        </div> -->
+        <!-- <div class="testnotificationDiv" id="refresh_popup">
+            <div class="notification-wrapper">
+                <div class="notification_content">
+                    <p>Workfreeli has been updated. Please click refresh button to load revised session.</p>
+                </div>
+                <div class="notification-grp-btn">
+                    <button id="refresh_loc" onclick="refresh_loc()">REFRESH</button>
+                </div>
+            </div>
+        </div> -->
+        <!-- <div class="" id="refresh_blank">
+
+        </div> -->
+        <div class="testnotificationDiv" id="headRefreshDialog" style="display: none;">
+            <img class="testcloseNotification" src="/images/basicAssets/close_button-white.svg" alt="">
+            <div class="notification-wrapper">
+                <div class="notification_content">
+                    <img src="/images/basicAssets/custom_thread_for_reply-white.svg" alt="">
+                    <p>Your Workfreeli session is idle for more than 10 minutes. Please click refresh button to continue. .</p>
+                </div>
+                <div class="notification-grp-btn">
+                    <button id="refreshNotificationbtn">Refresh</button>
+                    <!-- <button id="closeNotificationbtn">Close</button> -->
+                </div>
+            </div>
+        </div>
+        <% if(title !== 'Call'){%>
+            <header class="main-header">
+                <div class="header-left">
+                    <!-- <a href="/" class="hayven-logo">
+					<p style="display: inline-block;cursor: pointer; box-sizing: border-box;">
+					<img style="background-color: #023d67;" src="/images/Workfreeli_logo_full_connect.png" alt="Workfreeli">	
+					</p>
+				</a> -->
+                    <ul class="main-menu-list">
+                        <li id="hayvenConnectPage" class="<% if (title=='Connect') {%>active<% }%>">
+                            <!-- <a  onclick="triggerConnectPage()">Connect</a> -->
+                            <a href="/">Connect</a>
+                        </li>
+                        <% if(user_email == 'msrkhokoncse@gmail.com' || user_email == 'maher@ohs.global' || user_email == 'anwar@ohs.global' || user_email == 'dalimchyjony@gmail.com' || user_email == 'mahfuzak08@gmail.com' || user_email == 'ahn.nayeem@gmail.com'){ %>
+                            <li id="hayvenFilePage" class="<% if (title=='Files') {%>active<% }%>">
+                                <a href="/alpha2/files">Files</a >
+						<!-- <a onclick="viewAllFilesPop()">Files</a > -->
+					</li>
+					<% } %>
+					<!-- <li class="<% if (title=='Boards') {%>active<% }%>">
+						<a href="/boards">Boards</a>
+                            </li> -->
+                            <!-- <li id="headActionTab" style="margin-right: 4px; display: none;">
+						<a onclick="viewDropDown('#headActionDropdown')">Actions</a>
+						<img class="nav_ico" src="/images/basicAssets/down_Chevron9B.svg" onclick="viewDropDown('#headActionDropdown')" style="<% if (title=='ToDo' || title == 'calendar') {%> transform: rotate(270deg); <% }else{ %> transform: rotate(0deg);<% } %> float: right;margin-top: 4px;">
+						<div id="headActionDropdown">
+							<a class="<% if (title=='Activity_task') {%>active<% }%>" href="/activity_new">Tasks</a>
+							<a class="<% if (title=='Boards') {%>active<% }%>" href="/boards">Boards</a>
+							 <a class="<% if (title=='calendar') {%>active<% }%>" href="/basic_calendar">Calendar</a> 
+						</div>
+					</li> -->
+                            <!-- <li class="headActionItem" style="display: none">
+						<a href="/basic_to_do" style="<% if (title=='ToDo') {%>color:#1676EA<% }%>">Tasks</a>
+						<a href="/basic_calendar" style="<% if (title=='calendar') {%>color:#1676EA<% }%>">Calendar</a>
+					</li> -->
+                            <% if (title=='Activity_task') {%>
+                                <!-- <li id="hayvenToDoPage" class="<% if (title=='Activity_task') {%>active<% }%>">
+							<a href="/activity_new">Tasks</a>
+						</li> -->
+                                <% }%>
+                                    <% if (title=='Boards') {%>
+                                        <!-- <li id="hayvenToDoPage" class="<% if (title=='Boards') {%>active<% }%>">
+							<a href="/boards">Boards</a>
+						</li> -->
+                                        <% }%>
+                                            <!-- <% if (title == 'calendar') {%>
+
+						<li class="<% if (title == 'calendar') {%>active<%} %>">
+							<a href="/basic_calendar">Calendar</a>
+						</li>
+					<%} %> -->
+                                            <!-- <li class="">Files</li> -->
+                    </ul>
+                </div>
+                <div class="header-midd">
+                    <!-- <ul class="main-menu-list">
+					<li id="hayvenConnectPage" class="<% if (title=='Connect') {%>active<% }%>">
+						<a href="/">Connect</a>
+					</li>
+				</ul> -->
+                    <% if (title=='Activity_task') {%>
+                        <!-- <ul class="main-menu-list">
+					<li id="hayvenToDoPage" class="<% if (title=='Activity_task') {%>active<% }%>">
+						<a href="/activity_new">Tasks</a>
+					</li>
+				</ul> -->
+                        <% }else if(title=='Boards'){ %>
+                            <ul class="main-menu-list">
+                                <li id="hayvenToDoPage" class="<% if (title=='Boards') {%>active<% }%>">
+                                    <a href="/boards">Boards</a>
+                                </li>
+                            </ul>
+                            <% }else if(title=='calendar'){ %>
+                                <!-- <ul class="main-menu-list">
+					<li class="<% if (title == 'calendar') {%>active<%} %>">
+						<a href="/basic_calendar">Calendar</a>
+					</li>
+				</ul> -->
+                                <% }else{ %>
+                                    <!-- <a href="/" class="hayven-logo"><img src="/images/basicAssets/HayvenWordmark.svg"></a> -->
+
+                                    <a href="/" class="hayven-logo">
+                                        <!-- <p style="display: inline-block;cursor: pointer; box-sizing: border-box;"> -->
+                                        <img src="/images/Workfreeli_logo_full_connect.png" alt="Workfreeli">
+                                        <!-- </p> -->
+                                    </a>
+
+                                    <% } %>
+                </div>
+                <div class="header-right">
+                    <% if (title=='Connect') {%>
+                        <!-- <div class="plus">
+					<img class="plus_ico" src="/images/svg/actions-create_24px_000.svg">
+				</div> -->
+                        <% } %>
+                            <div class="notification">
+                                <img src="/images/basicAssets/Top_Nav_Bell.svg" class="notification_ico">
+                            </div>
+                            <div class="profile_nav">
+                                <span data-balloon="Call in progress. Click to view details." data-balloon-pos="left">
+						<img id="profile_video_call" onclick="focusVideoCall()" class="animate-flicker-call onC" src="/images/basicAssets/video_call_for_profile.svg">
+					</span>
+                                <span data-balloon="Call in progress. Click to view details." data-balloon-pos="left">
+						<img id="profile_audio_call" onclick="focusVideoCall()" class="animate-flicker-call onC" src="/images/basicAssets/voice_call_for_profile.svg">
+					</span>
+                                <span id="link_accounts"></span>
+
+                                <img class="profilePic user_img<%= user_id %>" src="<%=file_server%>profile-pic/Photos/<%= user_img %>" onclick="profileNav()">
+
+                                <img class="nav_ico" src="/images/basicAssets/Down_Chevron.svg" onclick="profileNav()">
+
+                                <div class="profilenavMainSection" style="display: none">
+                                    <div class="profileNavContainer" id="allmyteamlist">
+                                        <div class="headNav">
+                                            <h1 id="company_id_name"></h1>
+                                            <span class="settingEmail" onclick="viewCovidPublicLink()"></span>
+                                            <h1 id="user_email_address">
+                                                <%= user_email %>
+                                            </h1>
+                                            <span class="settingEmail" onclick="editProfileBackwrap()"></span>
+                                        </div>
+                                        <!-- <div class="group_input">
+								<label class="switchNav">
+									<input type="checkbox" checked="checked">
+									<span class="sliderNav round"></span>
+									<span class="switchFor">Thirty Six Knots</span>
+								</label>
+							</div>
+							<div class="group_input">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+									<span class="switchFor">Navigate Design</span>
+								</label>
+							</div>
+							<div class="group_input">
+								<label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+									<span class="switchFor">Sweet Salvation</span>
+								</label>
+							</div> -->
+                                    </div>
+                                    <div class="profileNavContainer" style="display: none">
+                                        <div class="headNav">
+                                            <h1>
+                                                <%= user_email %>
+                                            </h1>
+                                            <img class="settingEmail" src="/images/basicAssets/Settings.svg" />
+                                        </div>
+                                        <div class="group_input">
+                                            <label class="switchNav">
+									<input type="checkbox">
+									<span class="sliderNav round"></span>
+									<span class="switchFor">Thirty Six Knots</span>
+								</label>
+                                        </div>
+                                    </div>
+                                    <span class="linkAccount" id="admin_settings_btn" onclick="window.location.href='/settings'">Admin Settings</span>
+                                    <!-- <span class="linkAccount">Link another account</span> -->
+                                    <span class="linkAccount" onclick="$('#changePwdPopup').css('display','flex');profileNav();reset_change_password_form();">Change Password</span>
+                                    <span class="linkAccount" onclick="$('#changePaymentPopupNew').css('display','flex');">Payment</span>
+                                    <div class="linkAccount dontDisturb">
+                                        <div class="group_input">
+                                            <label class="switchNav">
+									<input onclick="dontDisturb()" type="checkbox" id="turnOffSound">
+									<span class="sliderNav round"></span>
+									<span class="switchFor">Mute Notification Sound</span>
+								</label>
+                                        </div>
+                                    </div>
+                                    <!-- <span class="logOut" onclick="window.location.href='/logout'">Sign out form all account</span> -->
+
+                                    <div class="profileNavContainer" style="padding: 2px"></div>
+                                    <span class="logOut" onclick="window.location.href='/logout'" style="text-align:center;padding: 15px 0px;
+						font-size: 20px; ">Sign out</span>
+                                </div>
+
+                            </div>
+                </div>
+                <!-- <span class="top_border"></span> -->
+            </header>
+
+
+
+
+            <% } %>
+                <script>
+                    function checkguestMsg(data) {
+                        if (data.sender != user_id) {
+                            if (has_permission(user_id, GUEST)) {
+                                if (has_permission(user_id, ALL_MESSAGE)) {
+                                    if (has_permission(user_id, MENTION_MESSAGE)) {
+                                        if (data.msg_body.indexOf(user_id) == -1) {
+                                            return false;
+                                        }
+                                    }
+                                } else {
+                                    if (has_permission(user_id, MESSAGE_AFTER_JOINED)) {
+                                        if (moment(data.created_at).unix() < moment(findObjForUser(user_id).createdat).unix()) {
+                                            return false;
+                                        } else {
+                                            if (has_permission(user_id, MENTION_MESSAGE)) {
+                                                if (data.msg_body.indexOf(user_id) == -1) {
+                                                    return false;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                </script>

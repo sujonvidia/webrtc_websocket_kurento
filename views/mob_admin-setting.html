@@ -1,0 +1,596 @@
+<%- include('layouts/mob_head') %>
+<!-- <div class="loading_connect"> <img src="/images/assets/loading_data.gif"></div> -->
+<div id="flash_msg" style="background: #F00;position: absolute;width: 100%;height: 30px;display: none"></div>
+<div class="backwrap" style="display: flex">
+	<div class="adminSettingDiv">
+		<div class="back_ico" style="height: 28px;position: relative;top: -5px;margin-right: 10px;" onclick="backToConnect2(event,this)"></div>
+		<h2 class="popup_title">Admin Setting</h2>
+		<div class="searchAdmin" onclick="search_usrs(this)">
+			<input type="text" class="searchAdmin_input" id="user_search" onkeyup="search_user_list()" placeholder="Search">
+			<i onclick="closeSearchBox(this,event)" class="fas fa-times-circle closeSearch"></i>
+		</div>
+		<div class="adminTopSide">
+			<select name="" class="selectAdminSetting" id="" onchange="changeAdminTabs(this)">
+				<option value="user" selected>User Management</option>
+				<option value="workspace">Workspace Management</option>
+				<option value="file">File Management</option>
+				<option value="calling">Calling</option>
+				<option value="business">Work Category</option>
+				<option value="tagMgmt">Tag Management</option>
+			</select>
+		</div>
+		<div class="scrollable_div">
+			<div class="adminBodyTabs user" id="user" style="display: flow-root;">
+				<h2 class="table_title">User Management</h2>
+				<table role="table">
+					<thead role="rowgroup">
+						<tr role="row">
+							<th role="columnheader">Full Name</th>
+							<th role="columnheader">Email Address</th>
+							<th role="columnheader">Designation</th>
+							<th role="columnheader">Role</th>
+							<!-- <th role="columnheader">Last Active</th> -->
+							<th role="columnheader">Status</th>
+							<th role="columnheader">Action</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup" id="user_management">
+					</tbody>
+				</table>
+			</div>
+			<div class="adminBodyTabs workspace_div" id="workspace">
+				<h2 class="table_title">Workspace Management</h2>
+				<div class="navigate_group">
+					<div class="navigates navigate_teams active" onclick="selectNavigate(this, 'teams')" style="margin-right: 1.7%">
+						<h3>6</h3>
+						<p>Teams</p>
+					</div>
+					<div class="navigates navigate_members" onclick="selectNavigate(this, 'members')" style="margin-right: 1.7%">
+						<h3>49</h3>
+						<p>Members</p>
+					</div>
+					<div class="navigates navigate_rooms" onclick="selectNavigate(this, 'rooms')">
+						<h3>4</h3>
+						<p>Rooms</p>
+					</div>
+				</div>
+				<div class="navigates_tabBody">
+					<h4 class="poup_subtitle" id="body_title">Teams (6)</h4>
+					<div class="tab_Bodies navigatesTeamBody" style="display: flow-root">
+						<div class="teamsList navigate_rooms">
+							<h3>Business Strategy</h3>
+						</div>
+						<div class="teamsList navigate_rooms">
+							<h3>Design</h3>
+						</div>
+						<div class="teamsList navigate_rooms">
+							<h3>Engineering</h3>
+						</div>
+						<div class="teamsList navigate_rooms">
+							<h3>Legal & Finance</h3>
+						</div>
+						<div class="teamsList navigate_rooms">
+							<h3>Marketing</h3>
+						</div>
+						<div class="teamsList navigate_rooms">
+							<h3>Sales & Support</h3>
+						</div>
+						<div class="teamsList createTeam navigate_rooms" onclick="createTeam(this)">
+							<h3>+ Create Team</h3>
+						</div>
+					</div>
+					<div class="tab_Bodies navigatesMemberBody">
+						<h2 class="table_title">Members</h2>
+						<table role="table">
+							<thead role="rowgroup">
+								<tr role="row">
+									<th role="columnheader">Full Name</th>
+									<th role="columnheader">User Name</th>
+									<th role="columnheader">Role</th>
+									<th role="columnheader">Email Address</th>
+									<!-- <th role="columnheader">Last Active</th> -->
+									<th role="columnheader">Status</th>
+									<th role="columnheader">Action</th>
+								</tr>
+							</thead>
+							<tbody role="rowgroup">
+								<tr role="row">
+									<td role="members" class="user-title"> <img class="user-logo" src="" alt=""> Maher Murshed</td>
+									<td role="members">HLamber</td>
+									<td role="members">Admin</td>
+									<td role="members">gottlieb_raegan@ivy.name</td>
+									<!-- <td role="members">9th Jul 2018</td> -->
+									<td role="members">Active</td>
+									<td role="members"><button class="hv_btn hv_btn_sm btn_info" onclick="updateUserInfo(this)">Update Info</button> <button class="hv_btn hv_btn_sm btn_danger">Delete</button></td>
+								</tr>
+								<tr role="row">
+									<td role="members" class="user-title"> <img class="user-logo" src="" alt=""> Maher Murshed</td>
+									<td role="members">HLamber</td>
+									<td role="members">Admin</td>
+									<td role="members">gottlieb_raegan@ivy.name</td>
+									<!-- <td role="members">9th Jul 2018</td> -->
+									<td role="members">Deactive</td>
+									<td role="members"><button class="hv_btn hv_btn_sm btn_info" onclick="updateUserInfo(this)">Update Info</button> <button class="hv_btn hv_btn_sm btn_danger">Delete</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab_Bodies navigatesRoomBody">
+						<div class="roomsList navigate_rooms">
+							<h3>Navigate Design</h3>
+							<p>29 Members</p>
+						</div>
+						<div class="roomsList navigate_rooms">
+							<h3>Navigate Group</h3>
+							<p>29 Members</p>
+						</div>
+						<div class="roomsList createroom navigate_rooms" onclick="createRoomFromAdmin()">
+							<h3>+ Create Room </h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="adminBodyTabs file_div" id="file">
+				<div class="file-management-status">
+					<div class="file-status-left">
+						<div class="hayven-basic">
+							<h2>Hayven Basic</h2>
+							<p>See other plans</p>
+							<button>Upgrade</button>
+						</div>
+						<div class="storage-proggressbar">
+							<p class="left-label">Used Storage</p>
+							<p class="right-label">Using <span> 700 MB</span> of 5GB</p>
+							<div class="progress-bar">
+								<div class="proggress">14%</div>
+							</div>
+						</div>
+					</div>
+					<div class="file-status-right">
+						<p class="keepDeleteFile">Keep deleted files up to <span class="deleteFileCount" contenteditable="true">120</span> day(s)</p>
+						<p class="dowmloadlabel">Download a files report</p>
+						<button class="hv_btn hv_btn_block btn_success">Download Report</button>
+					</div>
+				</div>
+				<div class="all_files">
+					<h2 class="table_title">All Files (725)</h2>
+					<table role="table">
+						<thead role="rowgroup">
+							<tr role="row">
+								<th role="columnheader">File Name</th>
+								<th role="columnheader">Type</th>
+								<th role="columnheader">Size</th>
+								<th role="columnheader">Upload On</th>
+								<th role="columnheader">Owner</th>
+								<th role="columnheader">Action</th>
+							</tr>
+						</thead>
+						<tbody role="rowgroup">
+							<tr role="row">
+								<td role="files_td" class="">Chat_Connect_JD_034</td>
+								<td role="files_td">Sketch</td>
+								<td role="files_td">28.9 MB</td>
+								<td role="files_td">Today @ 3:34 PM</td>
+								<td role="files_td">Cordelia Campbell</td>
+								<td role="files_td"><button class="hv_btn hv_btn_sm btn_success" onclick="">Download</button> <button class="hv_btn hv_btn_sm btn_danger">Delete</button>  <button class="hv_btn hv_btn_sm btn_info">More</button></td>
+							</tr>
+							<tr role="row">
+								<td role="files_td" class="">Chat_Connect_JD_034</td>
+								<td role="files_td">Sketch</td>
+								<td role="files_td">28.9 MB</td>
+								<td role="files_td">Today @ 3:34 PM</td>
+								<td role="files_td">Cordelia Campbell</td>
+								<td role="files_td"><button class="hv_btn hv_btn_sm btn_success" onclick="">Download</button> <button class="hv_btn hv_btn_sm btn_danger">Delete</button>  <button class="hv_btn hv_btn_sm btn_info">More</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="adminBodyTabs calling_div" id="calling">
+				<h2 class="table_title">Calling</h2>
+				<table role="table">
+					<thead role="rowgroup">
+						<tr role="row">
+						<th role="columnheader">Sender Name</th>
+						<th role="columnheader">Sender Device</th>
+						<th role="columnheader">Sender In/Out</th>
+						<th role="columnheader">Receiver Name</th>
+						<th role="columnheader">Receiver Device</th>
+						<th role="columnheader">Receiver Device</th>
+						<th role="columnheader">Receiver In/Out</th>
+						<th role="columnheader">Server Address</th>
+						<th role="columnheader">Actions</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup">
+						<tr role="row">
+						<td role="admin_td" class="user-title"> <img class="user-logo" src="" alt=""> AH Nayeem</td>
+						<td role="admin_td">Chrome 75.0.3770.142</td>
+						<td role="admin_td"> <p>Audio://</p> <p>Video://</p> </td>
+						<td role="admin_td">  <img class="user-logo" src="" alt=""> DEF</td>
+						<td role="admin_td">Chrome 75.0.3770.142</td>
+						<td role="admin_td"> <p>Audio://</p> <p>Video://</p> </td>
+						<td role="admin_td">wss://209.59.180.75:8433/kurento</td>
+						<td role="admin_td"> <button class="hv_btn hv_btn_sm btn_info"> Switch </button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="adminBodyTabs business_div" id="business">
+				<h2 class="table_title">Work Category</h2>
+				<div class="createB_unit"style="margin-bottom: 8px; ">
+					<h4 class="poup_subtitle">Create a Work Category</h4>
+					<input id="createUnitName" class="setInpField" style="margin-bottom: 10px;" type="text" placeholder="Enter Category Name">
+					<button onclick="saveNewUnit()" class="hv_btn hv_btn_block btn_success">Add Category</button>
+				</div>
+				<h4 class="poup_subtitle">All Work Category</h4>
+				<div class="all_unitsContainer" id="allbusinessUnit">
+					<div class="eachUnit">Category 1</div>
+				</div>
+			</div>
+			<div class="adminBodyTabs tag_div" id="tagMgmt">
+				<h2 class="table_title">Tag Management</h2>
+				<div class="createB_unit"style="margin-bottom: 8px; ">
+					<h4 class="poup_subtitle">Create a Tag </h4>
+					<input id="tag_title_input" class="setInpField" style="margin-bottom: 10px;" type="text" placeholder="Enter tag Name">
+					<button onclick="createNewTag()" class="hv_btn hv_btn_block btn_success">Add Tag</button>
+				</div>
+				<h4 class="poup_subtitle">All Tag</h4>
+				<div class="all_tagsContainer" id="all_tagsContainer">
+					<div class="eachtag">
+						<span class="tag_name" contenteditable="false" tagged-by="" onblur="updateUserTagTitle(this)" data-id="">Category 1</span>
+						<span class="removeIco" onclick="removeThisUserTag(this)" data-id="" tagged-by=""></span>
+						<span class="editIco" onclick="editUserTag(this)" data-id=""></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var user_id = '<%= user_id %>';
+	var company_id = '<%= company_id %>';
+	var user_fullname = '<%= user_fullname %>';
+	var user_img = '<%= user_img %>';
+	var user_email = '<%= user_email %>';
+	var file_server = '<%= file_server %>';
+	
+	var allUserdata = <%- JSON.stringify(data) %>;
+	var access_user_list = <%- JSON.stringify(data) %>;
+	var page_title = "<%= page %>";
+</script>
+<script src="/javascripts/socket-client-side.js"></script>
+<script src="/javascripts/socket-calling.js"></script>
+<script>
+	load_user_data();
+
+	var allUnit = [];
+	var allUnitName = [];
+	var allconvdata= [];
+	var alluseunitid= [];
+
+	var industry_name = null;
+	var industry_id = null;
+	
+	function changeAdminTabs(elm) {
+		var id = $(elm).val();
+		$('.adminBodyTabs').hide();
+		$('#'+id).css('display','flow-root');
+		if (id == 'business') {
+			socket.emit('getBUnit',{user_id:user_id,industry_name:industry_name,industry_id:industry_id},function(res){
+				// socket.emit('getuseunitid',function(data){
+				//   allconvdata = data.rows;
+				//   $.each(data.rows,function(k,v){
+				//     if(alluseunitid.indexOf(v.b_unit_id) == -1){
+				//       alluseunitid.push(v.b_unit_id);
+				//     }
+				//   })
+				// });
+				if(res.status){
+				$('#allbusinessUnit').html('');
+				allUnit = res.data;
+				$.each(allUnit,function(k,v){
+					allUnitName.push(v.unit_name.toLowerCase());
+					$('#allbusinessUnit').prepend(unitDesign(v));
+				});
+				}
+			});
+		}else if (id == 'tagMgmt') {
+			$('#all_tagsContainer').html('');
+			socket.emit('getAllUserTag',{user_id:user_id,company_id:company_id},function(res){
+				if(res.status){
+					$.each(res.data,function(k,v){
+						$('#all_tagsContainer').append(tag_design(v));
+					});
+				}
+			});
+		}
+	}
+
+	
+	function createNewTag(){
+		var title = $('#tag_title_input').val().trim().toLowerCase().replace(/[`~!@#$%^&*()|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+		title = title.replace(/\s/g, '');
+		if(title.length == 0){
+			return false;
+		}
+		var createData = {
+			mention_users:[],
+			title:title,
+			tagged_by:user_id
+		}
+		$('#tag_title_input').val('').focus();
+		socket.emit('createNewUserTag',createData,function(res){
+			if(res.status){
+				$('#all_tagsContainer').prepend(tag_design(res.data));
+			}
+		});
+	}
+
+	function removeThisUserTag(elm){
+		var tag_id = $(elm).attr('data-id');
+		var tagged_by = $(elm).attr('tagged-by');
+
+		socket.emit('deleteOneTag',{tag_id:tag_id,tagged_by:tagged_by},function(res){
+			if(res.status){
+				$('.tag_id_'+tag_id).remove();
+			}
+		});
+	}
+
+	function editUserTag(elm){
+		var tag_id = $(elm).attr('data-id');
+		$('.tag_id'+tag_id).attr('contenteditable',true);
+		var el = $('.tag_id'+tag_id);
+		placeCaretAtEnd(el[0]);
+		$('.tag_id'+tag_id).focus();
+	}
+
+	var tag_design = (v)=>{
+		var html = '<div class="eachtag tag_id_'+v.tag_id+'">'
+						+'<span class="tag_name tag_id'+v.tag_id+'" tagged-by="'+v.tagged_by+'" onblur="updateUserTagTitle(this)" onkeyup="editUnitNamekeyUp(event,this)" onkeydown="editUnitNamekeyUp(event,this)" contenteditable="false"  data-id="'+v.tag_id+'">'+v.title+'</span>'
+						+'<span class="removeIco" onclick="removeThisUserTag(this)" data-id="'+v.tag_id+'" tagged-by="'+v.tagged_by+'"></span>'
+						+'<span class="editIco" onclick="editUserTag(this)" data-id="'+v.tag_id+'"></span>'
+					+'</div>';
+
+	return html;
+	}
+
+	function updateUserTagTitle(elm){
+		var tag_id = $(elm).attr('data-id');
+		var tagged_by = $(elm).attr('tagged-by');
+		var name = $(elm).text().trim().toLowerCase().replace(/[`~!@#$%^&*()|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+		name = name.replace(/\s/g, '');
+		$('.tag_id'+tag_id).attr('contenteditable',false);
+		if(name !== ''){
+			socket.emit('updateUserTagTitle',{update_by:user_id,title:name,tag_id:tag_id,tagged_by:tagged_by},function(res){
+				console.log(res);
+			});
+		}
+	}
+
+	function editUnitNamekeyUp(e,elm){
+		if(e.keyCode == 13){
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			$(elm).blur();
+		}
+	}
+	function editUnitNamekeydown(e,elm){
+		if(e.keyCode == 13){
+			e.preventDefault();
+			e.stopImmediatePropagation();
+		}
+	}
+
+	socket.emit('getAllIndustry',function(res){
+	if(res.status){
+	  $.each(res.data,function(k,v){
+		if(v.industry_name == 'Information Technology'){
+		  industry_name = v.industry_name;
+		  industry_id = v.industry_id;
+
+		}
+	  })
+	}
+  });
+
+	function saveNewUnit(){
+	var newUnit = $('#createUnitName').val().trim();
+
+	if(newUnit !== " "){
+	  if(allUnitName.indexOf(newUnit.toLowerCase())  == -1){
+		socket.emit('addNewBUnit',{user_id:user_id,unit_name:newUnit,industry_name:industry_name,industry_id:industry_id},function(res){
+		 if(res.status){
+		  allUnit.push(res.data);
+		  allUnitName.push(newUnit.toLowerCase());
+			$('#allbusinessUnit').prepend(unitDesign(res.data));
+			$('#createUnitName').val('');
+		 }
+		})
+	  }else{
+		// alert('This business category already exist.');
+
+		$('#warningsPopup').css('display','flex');
+		$('#warningsPopup .warningMsg').text('This business category already exist.');
+	  }
+	}
+  }
+
+  var unitDesign = (v)=>{
+	  var html = '<div class="eachUnit bunit_'+v.unit_id+'">'
+				  +'<span class="bunit-name bname_'+v.unit_id+'" contenteditable="false" onblur="updateUnitTitle(this)" onkeydown="editUnitNamekeydown(event,this)" onkeyup="editUnitNamekeyUp(event,this)" data-id="'+v.unit_id+'">'+v.unit_name+'</span>'
+				  +'<span class="removeIco" onclick="removeThisUnit(this)" data-id="'+v.unit_id+'" style="opacity:'+((alluseunitid.indexOf(v.unit_id) == -1)? '1':'0.5')+'"></span>'
+				  +'<span class="editIco" onclick="editthisRoom(this)" data-id="'+v.unit_id+'"></span>'
+				+'</div>';
+
+	return html;
+  }
+
+  function editthisRoom(elm){
+      var unitId = $(elm).attr('data-id');
+      $('.bname_'+unitId).attr('contenteditable',true);
+      var el = $('.bname_'+unitId);
+      placeCaretAtEnd(el[0]);
+      $('.bname_'+unitId).focus();
+
+    }
+
+    function updateUnitTitle(elm){
+      var unitId = $(elm).attr('data-id');
+      var name = $(elm).text().trim();
+      $('.bname_'+unitId).attr('contenteditable',false);
+      if(name !== ''){
+        socket.emit('bunittitleUpdate',{user_id:user_id,unit_name:name,unit_id:unitId},function(res){
+          console.log(res);
+        })
+      }
+    }
+
+    function removeThisUnit(elm){
+      var unitId = $(elm).attr('data-id');
+
+      if(unitId != ''){
+        socket.emit('removeBunit',{user_id:user_id,unit_id:unitId},function(res){
+          $('.bunit_'+unitId).remove();
+        })
+      }
+    }
+
+
+	function load_user_data(){
+		$.each(access_user_list, function(k, v){
+			var html = '';
+			html += '<tr role="row" data-id="'+ v.id +'" data-createdat="'+ v.createdat +'" data-email="'+ v.email +'" data-fullname="'+ v.fullname +'" data-designation="'+ v.designation +'" data-img="'+ v.img +'">'+
+						'<td role="user_profile" class="user-title"> <img class="user-logo" src="'+ file_server +'profile-pic/Photos/'+ v.img +'" alt="">'+ v.fullname +'</td>'+
+						'<td role="user_profile">'+ v.email +'</td>'+
+						'<td role="user_profile">'+ v.designation +'</td>'+
+						'<td role="user_profile">Users</td>'+
+						// '<td role="user_profile">9th Jul 2018</td>'+
+						'<td role="user_profile">Active</td>';
+			if(v.id == user_id || user_email == 'msrkhokoncse@gmail.com')
+			html += 	'<td role="user_profile"><button class="hv_btn hv_btn_sm btn_info" onclick="updateUserInfo(this)">Update Info</button> <button class="hv_btn hv_btn_sm btn_danger" onclick="show_delete_user_popup(\''+ v.id +'\')">Delete</button></td>';
+			else
+			html += 	'<td role="user_profile"><button class="hv_btn hv_btn_sm btn_info" onclick="updateUserInfo(this)">View Info</button></td>';
+			html += '</tr>';
+			$("#user_management").append(html);
+		});
+	}
+	function updateUserInfo(elm) {
+		var el = $(elm).closest('tr');
+		$('#admin_userInfoUpdatePopup').find('.admin_userImg').attr('src', file_server + 'profile-pic/Photos/' + el.attr('data-img'));
+		$('#admin_userInfoUpdatePopup').find('.email').text(el.attr('data-email'));
+		$('#admin_userInfoUpdatePopup').find('.username').text(el.attr('data-email'));
+		$('#admin_userInfoUpdatePopup').find('.createdat').text(moment(el.attr('data-createdat')).format('LL'));
+		$('#admin_userInfoUpdatePopup').find('#UserProfileName').text(el.attr('data-fullname'));
+		$('#admin_userInfoUpdatePopup').find('#UserProfileJobTitle').text(el.attr('data-designation'));
+		$('#admin_userInfoUpdatePopup').attr('data-id', el.attr('data-id'));
+		$('#admin_userInfoUpdatePopup').css('display','flex');
+		var uid = el.attr('data-id');
+		$.each(all_access_array, function(k, v){
+			var html = 	'<div class="each-notifi-setting">'+
+							'<div class="notification-text"><p>'+ v +'</p></div>'+
+							'<div class="notification-active-inactive">';
+								if(has_permission(uid, Number(k)))
+									html += '<label class="switchNav"><input value='+ k +' onclick="change_permission(event)" type="checkbox" checked><span class="sliderNav round"></span></label>';
+								else 
+									html += '<label class="switchNav"><input value='+ k +' onclick="change_permission(event)" type="checkbox"><span class="sliderNav round"></span></label>';
+							html += '</div>'+
+						'</div>';
+			$("#connect_page_access").append(html);
+		});
+	}
+
+	function update_user_info(){
+		var id = $('#admin_userInfoUpdatePopup').attr('data-id');
+		if(id == user_id || user_email == 'msrkhokoncse@gmail.com'){
+			$.ajax({
+				url: '/settings/update_user_info',
+				dataType: 'JSON',
+				type: 'POST',
+				data: {id, fullname: $("#UserProfileName").text().trim(), designation: $("#UserProfileJobTitle").text().trim()},
+				beforeSend: function(){
+					console.log({id, fullname: $("#UserProfileName").text().trim(), designation: $("#UserProfileJobTitle").text().trim()});
+				},
+				success: function(res){
+					console.log(res);
+				},
+				error: function(err){
+					console.log(err);
+				}
+			})
+		}else{
+			alert("Only admin can do this");
+		}
+	}
+
+	function UserEditProfileName(){
+		$("#UserProfileName").attr("contenteditable","true");
+		$("#UserProfileName").focus();
+	}
+
+	function userProfileName(e){
+		if(e.keyCode == 13){
+			$("#UserProfileName").attr("contenteditable", "false")
+			$("#UserProfileName").html($("#UserProfileName").text());
+			update_user_info();
+		}
+	}
+
+	function UserProfileEditJobTitle(){
+		$("#UserProfileJobTitle").attr("contenteditable", "true");
+		$("#UserProfileJobTitle").focus();
+	}
+  
+	function UserProfileJobTitle(e){
+		if(e.keyCode == 13){
+			$("#UserProfileJobTitle").attr("contenteditable", "false")
+			$("#UserProfileJobTitle").html($("#UserProfileJobTitle").text());
+			update_user_info();
+		}
+	}
+
+	function search_user_list(event){
+		var str = $("#user_search").val().trim().toLowerCase();
+		$.each($('.user-title'), function(k, v){
+			if($(v).text().toLocaleLowerCase().indexOf(str) > -1)
+				$(v).closest('tr').show();
+			else
+				$(v).closest('tr').hide();
+		});
+	}
+
+	function delete_user(id){
+		if(user_email == 'msrkhokoncse@gmail.com'){
+			var r = confirm("Are you sure you want delete this user?");
+			if (r == true) {
+				$.ajax({
+					url: '/settings/delete_user',
+					type: 'POST',
+					data: {id: id},
+					dataType: 'JSON',
+					success: function(res){
+						if(res.status){
+							// $(".wsuserrow_"+id).hide("slow").remove();							
+							window.location.reload();
+						}
+					},
+					error: function(err){
+						console.log(err);
+					}
+				});
+			}
+		} else {
+			$("#flash_msg").html("Sorry... Only admin manager can do this.").show();
+			setTimeout(function(){ 
+				$("#flash_msg").html("");
+				$("#flash_msg").hide('slow');
+			}, 3000);
+		}
+	}
+</script>
+<script>
+	console.log("User has permission" , has_permission(user_id, COTR_FILTER));
+</script>
+<%- include('layouts/mob_foot') %>

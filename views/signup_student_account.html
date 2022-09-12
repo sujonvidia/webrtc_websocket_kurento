@@ -1,0 +1,212 @@
+<%- include('layouts/head') %>
+    <style>
+        .border-err {
+            border: 2px solid #900 !important;
+        }
+        
+        .submitDisable {
+            pointer-events: none !important;
+            background: gray !important;
+            cursor: no-drop !important;
+        }
+        
+        .hayven-logo {
+            position: absolute;
+            top: 0;
+        }
+        
+        .centered_form_area {
+            width: unset !important;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pluginCss/select2.min.css">
+    <script src="/javascripts/plugins/select2.min.js"></script>
+    <link href="/stylesheets/singup.css" rel="stylesheet">
+    <!-- <div class="logo_icon_covid">
+                <a> <img src="https://wfss001.freeli.io/common/freeli-logo.jpg" alt="" style="border-radius: 4px;"></a>
+                <span class="workfreeli_text">Workfreeli</span>
+     </div> -->
+    <a href="/" class="hayven-logo">
+        <!-- <p style="display: inline-block;cursor: pointer; box-sizing: border-box;"> -->
+        <img src="/images/Workfreeli_logo_full_connect.png" alt="Workfreeli">
+        <!-- </p> -->
+    </a>
+    <!-- <div class="backPage_area">
+        <a href="/signup" data-tooltip="Back to previous page" class="tooltip-right">
+            <button class="backBtn">
+                <img class="back_icon" src="/images/back-icon.png" alt="" style="border-radius: 4px;width: 25px;">
+            </button>
+    
+        </a>
+    </div> -->
+    <div class="new_parentaccount_text">Sign-up Student</div>
+    <div class="new_parentaccount_form">
+        <form action="/covid/newaccount" method="POST">
+            <div class="centered_form_area">
+                <div class="input_area_helf">
+                    <label class="form_label" for="fname">First Name</label>
+                    <input type="text" class="half_width" id="fname" name="first_name" placeholder="First Name">
+
+                </div>
+                <div class="input_area_helf">
+                    <label class="form_label" for="lname">Last Name</label>
+                    <input type="text" class="half_width" id="lname" name="last_name" placeholder="Last Name">
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="phone">School Name</label>
+                    <div>
+                        <select name="school" id="school" class="full_width" placeholder="School" style="width:98% !important;">
+                            <option value="volvo">Scholastica</option>
+                            <option value="saab">Oxford</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="phone">Campus</label>
+                    <div>
+                        <select name="campus" id="campus" class="full_width" placeholder="Company" style="width:98% !important;">
+                            <option value="volvo">Senior Campus, Uttara</option>
+                            <option value="saab">Junior Campus, Uttara </option>
+                            <option value="mercedes">Senior Campus, Mirpur </option>
+                            <option value="audi">Junior Campus, Dhanmondi</option>
+                            <option value="audi">Junior Campus, Gulshan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="phone">Class</label>
+                    <div>
+                        <select class="full_width" id="class" name="class" placeholder="Class" style="width:98% !important;">
+                            <option value="volvo">Class I</option>
+                            <option value="saab">Class II</option>
+                            <option value="mercedes">Class III</option>
+                            <option value="audi">Class IV</option>
+                            <option value="audi">Class V</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input_area">
+                    <label class="form_label" for="phone">Section</label>
+                    <!-- <input type="text"  > -->
+                    <div>
+                        <select class="full_width" id="section" name="section" placeholder="Section" style="width:98% !important;">
+                            <option value="volvo">Section A</option>
+                            <option value="saab">Section B</option>
+                            <option value="mercedes">Section C</option>
+                            <option value="audi">Section D</option>
+                            <option value="audi">Section E</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- <div class="input_area">
+                    <label class="form_label" for="phone">Relationship with student</label>
+                    <input type="text"  class="full_width" id="relationship" name="relationship" placeholder="Relationship">
+                </div> -->
+                <div class="input_area">
+                    <label class="form_label" for="email">Email Address</label>
+                    <% if(email != "") { %>
+                        <input type="email" class="full_width" disabled id="email" value="<%= email %>">
+                        <input type="hidden" name="email" value="<%= email %>">
+                        <% } else { %>
+                            <input type="email" class="full_width" id="email" name="email" placeholder="Email Address">
+                            <% } %>
+                </div>
+                <!-- <div class="input_area">
+                    <label class="form_label" for="phone">Login ID</label>
+                    <input type="text"  class="full_width" id="login_id" name="login_id" placeholder="Login ID">
+                </div> -->
+
+                <div class="input_area">
+                    <label class="form_label" for="phone">Phone Number (Optional)</label>
+                    <input type="text" class="full_width" id="phone" name="phone" placeholder="Phone Number">
+                    <p class="discribe_text">This is for verification and security purposes only. We will never share your phone number with anyone.</p>
+                </div>
+            </div>
+            <div class="checkboxdiv">
+                <input type="checkbox" name="agreement" id="agreement"> <span class="agreement_text">I agree to the <a href="#"> Workfreeli agreement</a>, <a href="#">terms of service</a> and <a href="#">privacy policy</a></span>
+            </div><br><br>
+            <div class="submit_area">
+                <button type="submit" class="submitBtn submitDisable" id="submitBtn">Sign-up</button>
+                <!-- <button class="cancleBtn " id="skipBtn" onclick="skipContinuePage(event)">Skip and Continue</button> -->
+                <button class="cancleBtn " id="cancleBtn" onclick="returnLoginPage(event)" style="background-color: #e91e63;color: white;">Cancel</button>
+                <input type="hidden" name="company_id" value="<%= comid %>">
+                <input type="hidden" name="student_id" value="<%= student_id %>">
+                <input type="hidden" name="account_type" value="School">
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        var error_list = <%- error ? JSON.stringify(error) : 'false' %>;
+        $(function() {
+            if (error_list) {
+                for (let err of error_list) {
+                    console.log(1092, err.param);
+                    $('input[name="' + err.param + '"]').addClass('border-err');
+                }
+            }
+            $('#campus').select2();
+            $('#class').select2();
+            $('#school').select2();
+            $('#section').select2();
+
+
+
+
+        });
+
+        function skipContinuePage(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/covid/skip_login',
+                type: "POST",
+                data: {},
+                dataType: "JSON",
+                // beforeSend: function(){
+                //     // console.log(456, data);
+                // },
+                success: function(res) {
+                    if (res.status) window.location.href = res.url;
+                    else alert("Something error");
+                },
+                error: function(err) {
+                    console.log(462, err);
+                }
+            });
+
+        }
+
+        function returnLoginPage(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/covid/return_login',
+                type: "POST",
+                data: {},
+                dataType: "JSON",
+                // beforeSend: function(){
+                //     // console.log(456, data);
+                // },
+                success: function(res) {
+                    // //debugger
+                    // if(res.status) window.location.reload();
+                    if (res.status) window.location.href = '/';
+                    else alert("Something error");
+                },
+                error: function(err) {
+                    console.log(462, err);
+                }
+            });
+        }
+
+
+        $("#agreement").change(function() {
+            if ($(this).is(':checked')) {
+                $('#submitBtn').removeClass('submitDisable')
+            } else {
+                $('#submitBtn').addClass('submitDisable')
+            }
+        });
+    </script>
+
+    <%- include('layouts/foot') %>
